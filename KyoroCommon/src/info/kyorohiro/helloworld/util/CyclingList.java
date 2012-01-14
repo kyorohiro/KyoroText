@@ -1,46 +1,51 @@
 package info.kyorohiro.helloworld.util;
 
-
+import java.util.ArrayList;
 
 public class CyclingList<X> {
 
-	private final Object[] mList;
+	private final ArrayList<X> mList;
+	private final int mMaxOfStackedElement;
 	private int mNextAddedPoint = 0;
 	private boolean mListIsFull = false;//
 
 	public CyclingList(int listSize) {
-		mList = new Object[listSize];
+		mMaxOfStackedElement = listSize;
+		mList = new ArrayList<X>(listSize);
+		for(int i=0;i<listSize;i++){
+			mList.add(i, null);
+		}
 	}
 
-	public synchronized void clear(){
+	public synchronized void clear() {
 		mNextAddedPoint = 0;
 		mListIsFull = false;//
 	}
 
-	public synchronized void add(Object element) {
-		mList[mNextAddedPoint] = element;
+	public synchronized void add(X element) {
+		mList.set(mNextAddedPoint, element);
 		mNextAddedPoint = mNextAddedPoint + 1;
 
-		if (mNextAddedPoint >= mList.length) {
+		if (mNextAddedPoint >= mMaxOfStackedElement) {
 			mListIsFull = true;//
 		}
-		mNextAddedPoint = mNextAddedPoint % mList.length;
+
+		mNextAddedPoint = mNextAddedPoint % mMaxOfStackedElement;
 	}
 
-	public synchronized Object[] getLast(int numberOfRetutnArrayElement) {
+	public synchronized X[] getLast(X[] ret, int numberOfRetutnArrayElement) {
 		int lengthOfList = numberOfRetutnArrayElement;
 		int max = getNumberOfStockedElement();
 		if (max <= lengthOfList) {
 			lengthOfList = max;
 		}
-		Object[] ret = new Object[lengthOfList];
 		for (int i = 0; i < lengthOfList; i++) {
 			ret[i] = get(max - lengthOfList + i);
 		}
 		return ret;
 	}
 
-	public synchronized Object[] getElements(int start, int end) {
+	public synchronized X[] getElements(X[] ret, int start, int end) {
 		int max = getNumberOfStockedElement();
 		if (max < end) {
 			end = max;
@@ -54,29 +59,31 @@ public class CyclingList<X> {
 			end = t;
 		}
 		int lengthOfList = end - start;
+		if (ret.length < lengthOfList) {
+			lengthOfList = ret.length;
+		}
 
-		Object[] ret = new Object[lengthOfList];
 		for (int i = 0; i < end - start; i++) {
 			ret[i] = get(i + start);
 		}
 		return ret;
 	}
 
-	public Object get(int i) {
-		int num = i % mList.length;
-		if (mListIsFull) {
-			return mList[num];
+	public X get(int i) {
+		int num = i % mMaxOfStackedElement;
+		if (!mListIsFull) {
+			return mList.get(num);
 		} else {
-			num = (mNextAddedPoint + num) % mList.length;
-			return mList[num];
+			num = (mNextAddedPoint + num) % mMaxOfStackedElement;
+			return mList.get(num);
 		}
 	}
 
 	public int getNumberOfStockedElement() {
-		if (mListIsFull) {
+		if (!mListIsFull) {
 			return mNextAddedPoint;
 		} else {
-			return mList.length;
+			return mMaxOfStackedElement;
 		}
 	}
 

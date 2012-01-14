@@ -1,19 +1,14 @@
 package info.kyorohiro.helloworld.logcat.util;
 
+import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Paint;
 
-public class CyclingStringList {
+public class CyclingStringList extends CyclingList<String>{
 	private Paint mPaint = null;
-
-	private final int mLength;
-	private final String[] mList;
 	private int mWidth = 1000;
-	private int mNextAddedPoint = 0;
-	private boolean mStartPointIsZero = true;
 
 	public CyclingStringList(int listSize,int width, int textSize) {
-		mLength = listSize;
-		mList = new String[mLength];
+		super(listSize);
 		mWidth = width;
 		mPaint = new Paint();
 		mPaint.setTextSize(textSize);
@@ -23,17 +18,8 @@ public class CyclingStringList {
 		mWidth = w;
 	}
 
-	public int getLength() {
-		return mLength;
-	}
-
 	public Paint getPaint() {
 		return mPaint;
-	}
-
-	public synchronized void clear(){
-		mNextAddedPoint = 0;
-		mStartPointIsZero = true;
 	}
 
 	public synchronized void addLinePerBreakText(String line) {
@@ -61,69 +47,27 @@ public class CyclingStringList {
 		if (line == null) {
 			line = "";
 		}
-
-		mList[mNextAddedPoint] = line;
-		mNextAddedPoint = mNextAddedPoint + 1;
-
-		if (mNextAddedPoint >= mList.length) {
-			mStartPointIsZero = false;
-		}
-
-		mNextAddedPoint = mNextAddedPoint % mList.length;
+		add(line);
 	}
 
-	public synchronized String[] getLast(int count) {
-		int lengthOfList = count;
-		int max = getMax();
-		if (max <= lengthOfList) {
-			lengthOfList = max;
+	public synchronized String[] getLastLines(int numberOfRetutnArrayElement) {
+		if(numberOfRetutnArrayElement < 0){
+			return new String[0];
 		}
-
-		String[] ret = new String[lengthOfList];
-		for (int i = 0; i < lengthOfList; i++) {
-			ret[i] = getLine(max - lengthOfList + i);
-		}
-		return ret;
+		String[] ret = new String[numberOfRetutnArrayElement];
+		return (String[])getLast(ret, numberOfRetutnArrayElement);
 	}
 
-	public synchronized String[] getlines(int start, int end) {
-		int max = getMax();
-		if (max < end) {
-			end = max;
+	public synchronized String[] getLines(int start, int end) {
+		if(start > end){
+			return new String[0];
 		}
-		if (start < 0) {
-			start = 0;
-		}
-		if (start > end) {
-			int t = start;
-			start = end;
-			end = t;
-		}
-		int lengthOfList = end - start;
-
-		String[] ret = new String[lengthOfList];
-		for (int i = 0; i < end - start; i++) {
-			ret[i] = getLine(i + start);
-		}
-		return ret;
+		String[] ret = new String[end-start];
+		return getElements(ret, start, end);
 	}
 
 	public String getLine(int i) {
-		int num = i % mList.length;
-		if (mStartPointIsZero) {
-			return mList[num];
-		} else {
-			num = (mNextAddedPoint + num) % mList.length;
-			return mList[num];
-		}
-	}
-
-	public int getMax() {
-		if (mStartPointIsZero) {
-			return mNextAddedPoint;
-		} else {
-			return mList.length;
-		}
+		return (String)super.get(i);
 	}
 
 }

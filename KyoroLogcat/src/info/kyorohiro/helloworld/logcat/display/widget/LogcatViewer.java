@@ -44,7 +44,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			updateStatus(graphics);
 			drawBG(graphics);
 
-			int numOfStackedString = mCyclingString.getMax();
+			int numOfStackedString = mCyclingString.getNumberOfStockedElement();
 			int referPoint = numOfStackedString-(mPosition+mNumOfLine);
 			int start = referPoint;
 			int end = start + mNumOfLine;
@@ -57,7 +57,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			if(end >= numOfStackedString){
 				end = numOfStackedString;
 			}
-			String[] list = mCyclingString.getlines(start, end);
+			String[] list = mCyclingString.getLines(start, end);
 
 			int blank = 0;//mNumOfLine - list.length;
 			boolean uppserSideBlankisViewed = (referPoint)<0;
@@ -126,8 +126,8 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			int blankSpace = mNumOfLine / 3;
 			if (mPosition < -(mNumOfLine - blankSpace)) {
 				mPosition = -(mNumOfLine - blankSpace);
-			} else if (mPosition > (mCyclingString.getMax() - blankSpace)) {
-				mPosition = mCyclingString.getMax() - blankSpace;
+			} else if (mPosition > (mCyclingString.getNumberOfStockedElement() - blankSpace)) {
+				mPosition = mCyclingString.getNumberOfStockedElement() - blankSpace;
 			}
 
 			int margine = graphics.getTextWidth("[9999]:  ");
