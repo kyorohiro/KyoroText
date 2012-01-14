@@ -17,14 +17,6 @@ public class SimpleLineChart extends SimpleDisplayObjectContainer {
 		mLine = new Line();
 		mData = new ChartData(1000);
 		addChild(mLine);
-		addCharDatam(new CharDatam(0,10));
-		addCharDatam(new CharDatam(0,10));
-		addCharDatam(new CharDatam(0,10));
-		addCharDatam(new CharDatam(0,10));
-		addCharDatam(new CharDatam(0,10));
-		addCharDatam(new CharDatam(0,10));
-		addCharDatam(new CharDatam(0,10));
-		addCharDatam(new CharDatam(0,80));
 	}
 
 	public void addCharDatam(CharDatam datam){
@@ -47,14 +39,12 @@ public class SimpleLineChart extends SimpleDisplayObjectContainer {
 			int startY = graphics.getHeight()/2 + mData.get(length-1).getValue()/scale;
 			int startX = graphics.getWidth()/2;
 
-//			startX /= scale;
-//			startY /= scale;
 
 			setPoint(10, startY);
 
 			graphics.drawBackGround(Color.parseColor("#FFFFFF"));
 			graphics.setColor(Color.parseColor("#FF0000"));
-			graphics.setStrokeWidth(10);
+			graphics.setStrokeWidth(1);
 
 
 			int pre = 0;
@@ -79,19 +69,26 @@ public class SimpleLineChart extends SimpleDisplayObjectContainer {
 	
 
 	static public class CharDatam {
-		private int mTime = 0;
+		private String mTag = "";
 		private int mValue = 0;
+		private long mTime = 0;
 
-		public CharDatam(int time, int value) {
+		public CharDatam(String tag, int value) {
 			mValue = value;
+			mTag = tag;
+			mTime = System.currentTimeMillis();
 		}
 
 		public int getValue() {
 			return mValue;
 		}
 
-		public int getTime() {
-			return mValue;
+		public long getTime() {
+			return mTime;
+		}
+
+		public String getTag() {
+			return mTag;
 		}
 
 	}

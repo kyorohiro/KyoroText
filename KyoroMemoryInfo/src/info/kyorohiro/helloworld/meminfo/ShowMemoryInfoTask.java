@@ -31,7 +31,9 @@ public class ShowMemoryInfoTask extends Thread {
 						if(pkg.equals("info.kyorohiro.helloworld.logcat")){
 							Log.v("kiyohiro", pkg);
 							android.os.Debug.MemoryInfo _minfo = me.getMemInfoData(mContext, info.pid);
-							mChart.add(new CharDatam(0, _minfo.getTotalPrivateDirty()));
+							mChart.add(new CharDatam("TotalPrivateDirty", _minfo.getTotalPrivateDirty()));
+							mChart.add(new CharDatam("TotalPss", _minfo.getTotalPss()));
+							mChart.add(new CharDatam("TotalSharedDirty", _minfo.getTotalSharedDirty()));
 						}
 					}
 				}
