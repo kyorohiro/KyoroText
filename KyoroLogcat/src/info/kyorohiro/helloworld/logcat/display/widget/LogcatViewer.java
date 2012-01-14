@@ -14,7 +14,7 @@ import info.kyorohiro.helloworld.logcat.util.CyclingStringList;
 
 public class LogcatViewer extends SimpleDisplayObjectContainer {
 
-	private CyclingStringList mCyclingString = null;
+	private CyclingStringList mShowedText = null;
 	private Viewer viewer = new Viewer();
 	private int mPosition = 0;
 	private int mTextSize = 14;
@@ -22,7 +22,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 
 	public LogcatViewer(int numOfStringList) {
 		this.addChild(viewer);
-		mCyclingString = new CyclingStringList(numOfStringList, 1000, mTextSize);
+		mShowedText = new CyclingStringList(numOfStringList, 1000, mTextSize);
 		mCircleControllerEvent = new MyCircleControllerEvent();
 	}
 
@@ -31,7 +31,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 	}
 
 	public CyclingStringList getCyclingStringList() {
-		return mCyclingString;
+		return mShowedText;
 	}
 
 	private class Viewer extends SimpleDisplayObject {
@@ -44,7 +44,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			updateStatus(graphics);
 			drawBG(graphics);
 
-			int numOfStackedString = mCyclingString.getNumberOfStockedElement();
+			int numOfStackedString = mShowedText.getNumberOfStockedElement();
 			int referPoint = numOfStackedString-(mPosition+mNumOfLine);
 			int start = referPoint;
 			int end = start + mNumOfLine;
@@ -57,7 +57,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			if(end >= numOfStackedString){
 				end = numOfStackedString;
 			}
-			String[] list = mCyclingString.getLines(start, end);
+			String[] list = mShowedText.getLines(start, end);
 
 			int blank = 0;//mNumOfLine - list.length;
 			boolean uppserSideBlankisViewed = (referPoint)<0;
@@ -126,12 +126,12 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			int blankSpace = mNumOfLine / 3;
 			if (mPosition < -(mNumOfLine - blankSpace)) {
 				mPosition = -(mNumOfLine - blankSpace);
-			} else if (mPosition > (mCyclingString.getNumberOfStockedElement() - blankSpace)) {
-				mPosition = mCyclingString.getNumberOfStockedElement() - blankSpace;
+			} else if (mPosition > (mShowedText.getNumberOfStockedElement() - blankSpace)) {
+				mPosition = mShowedText.getNumberOfStockedElement() - blankSpace;
 			}
 
 			int margine = graphics.getTextWidth("[9999]:  ");
-			LogcatViewer.this.mCyclingString.setWidth(mWidth - margine);
+			LogcatViewer.this.mShowedText.setWidth(mWidth - margine);
 		}
 	}
 
