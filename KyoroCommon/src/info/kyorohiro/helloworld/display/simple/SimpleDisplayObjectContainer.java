@@ -12,7 +12,8 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 	public void paintGroup(SimpleGraphics graphics) {
 		for(SimpleDisplayObject child: mMyChildren){
 			if(child != null) {
-				SimpleGraphics childGraphics = new SimpleGraphics(graphics.getCanvas(),
+				SimpleGraphics childGraphics = graphics.getChildGraphics(
+						graphics,
 						child.getX()+graphics.getGlobalX(), 
 						child.getY()+graphics.getGlobalY());
 				child.paint(childGraphics);

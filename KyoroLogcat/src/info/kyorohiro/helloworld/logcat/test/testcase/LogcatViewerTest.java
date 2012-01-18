@@ -1,8 +1,8 @@
 package info.kyorohiro.helloworld.logcat.test.testcase;
 
 import android.os.Bundle;
-import info.kyorohiro.helloworld.base.TestActivity;
-import info.kyorohiro.helloworld.base.TestResult;
+import info.kyorohiro.helloworld.android.base.TestActivity;
+import info.kyorohiro.helloworld.android.base.TestResult;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.logcat.display.widget.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.util.CyclingStringList;

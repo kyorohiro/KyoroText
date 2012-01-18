@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
-import info.kyorohiro.helloworld.base.TestService;
+import info.kyorohiro.helloworld.android.base.TestService;
 
 /**
  * change a permanent process to use this class.

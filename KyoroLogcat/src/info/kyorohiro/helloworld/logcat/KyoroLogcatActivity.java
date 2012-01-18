@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.logcat;
 
-import info.kyorohiro.helloworld.base.TestActivity;
+import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;

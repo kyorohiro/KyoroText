@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.meminfo;
 
-import info.kyorohiro.helloworld.base.TestActivity;
+import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleLineChart;

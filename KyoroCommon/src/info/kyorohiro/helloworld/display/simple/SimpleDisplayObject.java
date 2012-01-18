@@ -1,7 +1,5 @@
 package info.kyorohiro.helloworld.display.simple;
 
-import android.graphics.Point;
-
 public abstract class SimpleDisplayObject {
 	private int mX=0;
 	private int mY=0;
@@ -44,8 +42,5 @@ public abstract class SimpleDisplayObject {
 	 */
 	public boolean onKeyDown(int keycode) {
 		return false;
-	}
-	public Point globalToLocal(Point point){
-		return point;
 	}
 }

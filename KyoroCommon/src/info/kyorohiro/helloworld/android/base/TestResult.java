@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.base;
+package info.kyorohiro.helloworld.android.base;
 
 import java.util.HashMap;
 

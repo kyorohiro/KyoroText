@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.simple;
 
+import info.kyorohiro.helloworld.android.adapter.SimpleGraphicsForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -68,7 +69,7 @@ public class SimpleStage extends SurfaceView {
 
 	private void doDraw(Canvas canvas) {
 		canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
-		mRoot.paint(new SimpleGraphics(canvas, 0, 0));
+		mRoot.paint(new SimpleGraphicsForAndroid(canvas, 0, 0));
 	}
 
 
@@ -142,26 +143,4 @@ public class SimpleStage extends SurfaceView {
 		public void surfaceChanged(SurfaceHolder holder, int format, int width,int height) {
 		}
 	}
-
-//
-// 	private ZeemoteControllerExtention mZeemoteExtention = new ZeemoteControllerExtention();
-//
-//	public ZeemoteControllerExtention getZeemoteControllerExtention() {
-//		return mZeemoteExtention;
-//	}
-//
-//
-//	public class ZeemoteControllerExtention implements IJoystickListener, IButtonListener {
-//		public void joystickMoved(JoystickEvent e) {			
-//			
-//		}
-//
-//		public void buttonPressed(ButtonEvent e) {
-//			//e.getButtonGameAction()SimpleStage
-//		}
-//
-//		public void buttonReleased(ButtonEvent arg0) {
-//			
-//		}
-//	}
 }

@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.base;
+package info.kyorohiro.helloworld.android.base;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
