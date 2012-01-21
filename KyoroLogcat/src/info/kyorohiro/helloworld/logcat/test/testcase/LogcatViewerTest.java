@@ -4,7 +4,7 @@ import android.os.Bundle;
 import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.android.base.TestResult;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.logcat.display.widget.LogcatViewer;
+import info.kyorohiro.helloworld.logcat.display.parts.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.util.CyclingStringList;
 
 public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCase2<LogcatViewerTest.LogcatViewerTestActivity>{

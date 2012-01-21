@@ -5,7 +5,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
-import info.kyorohiro.helloworld.logcat.display.widget.LogcatViewer;
+import info.kyorohiro.helloworld.logcat.display.parts.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.util.CyclingStringList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -126,10 +126,10 @@ public class KyoroLogcatActivity extends TestActivity {
 
 		boolean myResult = false;
 		if (MENU_START_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
-			KyoroLogcatTaskManagerForSave.startSaveTask(this);
+			KyoroLogcatTaskManagerForSave.startSaveTask(this.getApplicationContext());
 			myResult = true;
 		} else if (MENU_STOP_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
-			KyoroLogcatTaskManagerForSave.stopSaveTask();
+			KyoroLogcatTaskManagerForSave.stopSaveTask(this.getApplicationContext());
 			myResult = true;
 		} else if (MENU_START_SHOW_LOG.equals(selectedItemTitle)) {
 			if(mShowTask == null || !mShowTask.isAlive()){

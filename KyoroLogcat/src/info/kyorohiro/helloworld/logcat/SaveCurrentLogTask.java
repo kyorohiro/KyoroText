@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.logcat;
 
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
+import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
 
 import java.io.File;
 import java.io.FileOutputStream;

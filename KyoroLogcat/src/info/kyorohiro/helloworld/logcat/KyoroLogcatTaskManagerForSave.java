@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.logcat;
 
+import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
 import android.content.Context;
 
 public class KyoroLogcatTaskManagerForSave {
@@ -20,17 +21,15 @@ public class KyoroLogcatTaskManagerForSave {
 			}
 			sSaveTask = new SaveCurrentLogTask("-v time");
 			sSaveTask.start();
-//			KyoroLogcatService.startLogcatService(context.getApplicationContext());
 		} catch (Throwable t) {
 			sSaveTask = null;
 		}
 	}
 
-	public static void stopSaveTask() {
+	public static void stopSaveTask(Context context) {
 		if(!saveTaskIsAlive()){
 			return;
 		}
 		sSaveTask.terminate();
-//		KyoroLogcatService.stopLogcatService(null, null);
 	}
 }

@@ -4,34 +4,65 @@
     android:versionCode="102"
     android:versionName="102" >
 
-    <uses-sdk android:minSdkVersion="4" />    
+    <uses-sdk android:minSdkVersion="4" />
+
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
-        android:name=".KyoroApplication"
+        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" android:debuggable="true">
+        android:label="@string/app_name"
+        android:name=".KyoroApplication" >
         <uses-library android:name="android.test.runner" />
+
         <activity
-            android:label="@string/app_name"
-            android:name=".KyoroLogcatActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask">
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:name=".KyoroLogcatActivity" >
+
             <!-- android:theme="@android:style/Theme.Translucent" -->
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".test.testcase.LogcatViewerTest$LogcatViewerTestActivity"/>
-        <service 
-            android:name=".KyoroLogcatService"
-            android:exported="true">
+        <activity android:name=".test.testcase.LogcatViewerTest$LogcatViewerTestActivity" />
+
+        <service
+            android:exported="true"
+            android:name=".KyoroLogcatService" >
         </service>
+
+        <receiver android:name=".widget.KyoroSaveWidget" android:label="save logcat log">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_save" />
+
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".widget.KyoroWidgetService" >
+        </service>
+
+        <receiver android:name=".widget.KyoroMailWidget" android:label="send logcat log">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_mail" />
+
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+        </receiver>
     </application>
 
-    <instrumentation android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="info.kyorohiro.helloworld.logcat"
-        android:label="KyoroLogcatTest" />
+    <instrumentation
+        android:label="KyoroLogcatTest"
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="info.kyorohiro.helloworld.logcat" />
+
 </manifest>

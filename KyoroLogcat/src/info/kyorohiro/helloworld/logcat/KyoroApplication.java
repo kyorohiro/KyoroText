@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.logcat;
 
+import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,10 +25,12 @@ public class KyoroApplication extends Application {
 
 	public static void shortcutToStartKyoroLogcatService() throws NullPointerException {
 		KyoroLogcatService.startLogcatService(sInstance);
+		KyoroSaveWidget.setStopImage(sInstance);
 	}
 
 	public static void shortcutToStopKyoroLogcatService() throws NullPointerException {
 		KyoroLogcatService.stopLogcatService(null, null);
+		KyoroSaveWidget.setSaveImage(sInstance);
 	}
 
 	public static void showMessageAndNotification(String message) {

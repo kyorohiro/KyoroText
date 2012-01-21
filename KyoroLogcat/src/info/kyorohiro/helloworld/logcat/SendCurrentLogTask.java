@@ -72,6 +72,7 @@ public class SendCurrentLogTask extends Thread {
 		emailIntent .putExtra(android.content.Intent.EXTRA_EMAIL,  new String[]{address});
 		emailIntent .putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
 		emailIntent .putExtra(android.content.Intent.EXTRA_TEXT, body.toString());
+		emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		mContext.startActivity(emailIntent);
 	}
 }
