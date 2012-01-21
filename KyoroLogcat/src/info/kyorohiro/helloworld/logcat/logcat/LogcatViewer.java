@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.logcat.display.parts;
+package info.kyorohiro.helloworld.logcat.logcat;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,11 +10,10 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerEvent;
-import info.kyorohiro.helloworld.logcat.util.CyclingStringList;
 
 public class LogcatViewer extends SimpleDisplayObjectContainer {
 
-	private CyclingStringList mShowedText = null;
+	private LogcatCyclingLineDataList mShowedText = null;
 	private Viewer viewer = new Viewer();
 	private int mPosition = 0;
 	private int mTextSize = 14;
@@ -22,7 +21,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 
 	public LogcatViewer(int numOfStringList) {
 		this.addChild(viewer);
-		mShowedText = new CyclingStringList(numOfStringList, 1000, mTextSize);
+		mShowedText = new LogcatCyclingLineDataList(numOfStringList, 1000, mTextSize);
 		mCircleControllerEvent = new MyCircleControllerEvent();
 	}
 
@@ -30,7 +29,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 		return mCircleControllerEvent;
 	}
 
-	public CyclingStringList getCyclingStringList() {
+	public LogcatCyclingLineDataList getCyclingStringList() {
 		return mShowedText;
 	}
 
@@ -57,7 +56,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			if(end >= numOfStackedString){
 				end = numOfStackedString;
 			}
-			String[] list = mShowedText.getLines(start, end);
+			LogcatLineData[] list = mShowedText.getLines(start, end);
 
 			int blank = 0;//mNumOfLine - list.length;
 			boolean uppserSideBlankisViewed = (referPoint)<0;
@@ -65,50 +64,12 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 				blank = -1*referPoint;
 			}
 
-			for (int i = 0; i < list.length; i++) {				
-				 setColorPerLine(graphics, list[i]);
+			for (int i = 0; i < list.length; i++) {
+				graphics.setColor(list[i].getColor());
 				graphics.drawText(
 						"[" + (start + i) + "]:  " + list[i],
 						0,
 						graphics.getTextSize()*(blank+i + 1));
-			}
-		}
-
-
-		Pattern mPatternForFontColorPerLine = Pattern.compile(":[\\t\\s0-9\\-:.,]*[\\t\\s]([VDIWEFS]{1})/");
-		//
-		// todo “K“–‚·‚¬‚é
-		private void setColorPerLine(SimpleGraphics graphics, String line){
-			try{
-				Matcher m = mPatternForFontColorPerLine.matcher(line);
-				if(m == null){
-					graphics.setColor(Color.parseColor("#ccc9f486"));
-				}
-				if(m.find()){
-					if("D".equals(m.group(1))){
-						graphics.setColor(Color.parseColor("#cc86c9f4"));
-					}
-					else if("I".equals(m.group(1))){
-						graphics.setColor(Color.parseColor("#cc86f4c9"));						
-					}
-					else if("V".equals(m.group(1))){
-						graphics.setColor(Color.parseColor("#ccc9f486"));					
-					}
-					else if("W".equals(m.group(1))){
-						graphics.setColor(Color.parseColor("#ccffff00"));					
-					}
-					else if("E".equals(m.group(1))){
-						graphics.setColor(Color.parseColor("#ccff2222"));					
-					}
-					else if("F".equals(m.group(1))){
-						graphics.setColor(Color.parseColor("#ccff2222"));					
-					}
-					else if("S".equals(m.group(1))){
-						graphics.setColor(Color.parseColor("#ccff2222"));					
-					}
-				}
-			} catch (Throwable e){
-				
 			}
 		}
 

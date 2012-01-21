@@ -5,12 +5,16 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
-import info.kyorohiro.helloworld.logcat.display.parts.LogcatViewer;
-import info.kyorohiro.helloworld.logcat.util.CyclingStringList;
+import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
+import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_START_SHOW_LOG = "Start show log";
@@ -21,7 +25,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_CLEAR_LOG = "clear log";
 
 	private LogcatViewer mLogcatViewer = new LogcatViewer(3000);
-	private CyclingStringList mLogcatOutput = mLogcatViewer.getCyclingStringList();
+	private LogcatCyclingLineDataList mLogcatOutput = mLogcatViewer.getCyclingStringList();
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
 
@@ -37,7 +41,15 @@ public class KyoroLogcatActivity extends TestActivity {
 		mStage.getRoot().addChild(mLogcatViewer);
 		mStage.getRoot().addChild(mCircleController);
 		mStage.start();
-		setContentView(mStage);
+		
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		EditText text = new EditText(this);
+		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, 
+		          LayoutParams.WRAP_CONTENT);
+		layout.addView(text,params);
+		layout.addView(mStage);
+		setContentView(layout);
 	}
 
 	@Override

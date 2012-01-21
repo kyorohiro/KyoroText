@@ -1,12 +1,9 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
 import info.kyorohiro.helloworld.logcat.R;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.widget.RemoteViews;
 
 public class KyoroSaveWidget extends KyoroWidgetBase {
@@ -16,14 +13,14 @@ public class KyoroSaveWidget extends KyoroWidgetBase {
 	}
 
 	public static void setSaveImage(Context context){
-    	chagneImage(context, R.drawable.ic_start_save);
-    }
- 
-    public static void setStopImage(Context context){
-    	chagneImage(context, R.drawable.ic_stop_save);
-    }
+		chagneImage(context, R.drawable.ic_start_save);
+	}
 
-    protected static void chagneImage(Context context, int id) {
+	public static void setStopImage(Context context){
+		chagneImage(context, R.drawable.ic_stop_save);
+	}
+
+	protected static void chagneImage(Context context, int id) {
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.widget_save);
 		remoteViews.setImageViewResource(R.id.widget_save_img, id);
 		ComponentName cn = new ComponentName(context.getPackageName(), KyoroSaveWidget.class.getName());
