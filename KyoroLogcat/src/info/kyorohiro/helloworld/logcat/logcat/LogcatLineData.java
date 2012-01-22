@@ -28,7 +28,7 @@ public class LogcatLineData implements CharSequence{
 
 	@Override
 	public String toString() {
-		if(mLine == null){//todo
+		if(mLine == null){
 			return "";
 		}
 		return mLine;
@@ -36,5 +36,9 @@ public class LogcatLineData implements CharSequence{
 
 	public int getColor(){
 		return mColor;
+	}
+	
+	public int getStatus(){
+		return mStatus;
 	}
 }

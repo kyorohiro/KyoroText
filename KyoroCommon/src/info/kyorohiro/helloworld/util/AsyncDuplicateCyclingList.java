@@ -1,11 +1,8 @@
 package info.kyorohiro.helloworld.util;
 
-import javax.xml.ws.FaultAction;
 
 /**
  * duplicate asynchronously CyclingList.
- * 
- * todo
  */
 public class AsyncDuplicateCyclingList<T> implements CyclingListInter<T> {
 
@@ -14,6 +11,7 @@ public class AsyncDuplicateCyclingList<T> implements CyclingListInter<T> {
 	private Task mTask = null;
 	private boolean taskStatus = false;
 	private int mBufferSize = 0;
+	private int mIndexForNextCopy = 0;
 
 	public AsyncDuplicateCyclingList(CyclingList<T> base, int copyDataBuffer) {
 		mBase = base;
@@ -21,6 +19,7 @@ public class AsyncDuplicateCyclingList<T> implements CyclingListInter<T> {
 		mBufferSize = copyDataBuffer;
 	}
 
+	
 	public synchronized void start() {
 		stop();
 		taskStatus = true;
@@ -53,12 +52,10 @@ public class AsyncDuplicateCyclingList<T> implements CyclingListInter<T> {
 	@Override
 	public synchronized void add(T element) {
 		// following todo
-		if (taskStatus && mTask.isAlive()) {
+		if (copyTaskIsAlive()) {
 			copy();
 		} else {
-			if (filter(element)) {
-				mCopy.add(element);
-			}
+			copy(element);
 		}
 		mBase.add(element);
 	}
@@ -68,14 +65,45 @@ public class AsyncDuplicateCyclingList<T> implements CyclingListInter<T> {
 		return mBase.getNumberOfStockedElement();
 	}
 
+	@Override
+	public void clear() {
+		mBase.clear();
+		mCopy.clear();
+	}
+
+	@Override
+	public T[] getLast(T[] ret, int numberOfRetutnArrayElement) {
+		return mBase.getLast(ret, numberOfRetutnArrayElement);
+	}
+
+	@Override
+	public T[] getElements(T[] ret, int start, int end) {
+		return mBase.getElements(ret, start, end);
+	}
+
+	//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	
+	public boolean copyTaskIsAlive(){
+		if (taskStatus && mTask.isAlive()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	public CyclingList<T> getCopyingList() {
 		return mCopy;
 	}
 
-	private int mPosition = 0;
-
 	private synchronized void copy() {
-		T t = mBase.get(mPosition);
+		T t = mBase.get(mIndexForNextCopy);
+		if (filter(t)) {
+			mCopy.add(t);
+		}
+	}
+
+	private synchronized void copy(T t) {
 		if (filter(t)) {
 			mCopy.add(t);
 		}
@@ -91,7 +119,7 @@ public class AsyncDuplicateCyclingList<T> implements CyclingListInter<T> {
 			super.run();
 			int len = mBase.getNumberOfStockedElement();
 			try {
-				for (mPosition = 0; mPosition < len; mPosition++) {
+				for (mIndexForNextCopy = 0; mIndexForNextCopy < len; mIndexForNextCopy++) {
 					copy();
 					Thread.sleep(0);
 				}
@@ -99,24 +127,5 @@ public class AsyncDuplicateCyclingList<T> implements CyclingListInter<T> {
 
 			}
 		}
-	}
-
-	/**
-	 * todo: duplacated object's clear function's code is unimplements.
-	 */
-	@Override
-	public void clear() {
-		mBase.clear();
-		mCopy.clear();
-	}
-
-	@Override
-	public T[] getLast(T[] ret, int numberOfRetutnArrayElement) {
-		return mBase.getLast(ret, numberOfRetutnArrayElement);
-	}
-
-	@Override
-	public T[] getElements(T[] ret, int start, int end) {
-		return mBase.getElements(ret, start, end);
 	}
 }

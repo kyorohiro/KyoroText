@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.logcat.logcat;
 
+import java.util.ArrayList;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,24 +25,30 @@ public class LogcatCyclingLineDataList extends AsyncDuplicateCyclingList<LogcatL
 		mPaint.setTextSize(textSize);
 	}
 
+	private ArrayList<LogcatLineData> a = new ArrayList<LogcatLineData>();
+
 	@Override
 	protected boolean filter(LogcatLineData t) {
 		if(mFilter == null){
 			return true;
 		}
-		String i = null;
-		if(t != null){
-			i = t.toString();
-		}else {
-			i = "";
+		a.add(t);
+		if(t.getStatus() == LogcatLineData.INCLUDE_END_OF_LINE) {
+			StringBuilder builder = new StringBuilder("");
+			for(LogcatLineData d : a){
+				builder.append(d);
+			}
+			String i = builder.toString();
+			Matcher m = mFilter.matcher(i);
+			if(m.find()){
+				for(LogcatLineData d: a) {
+					getCopyingList().add(d);
+				}
+			}
+			a.clear();
 		}
-		Matcher m = mFilter.matcher(i);
-		if(m == null || m.find()){
-			return true;
-		}
-		else {
-			return false;
-		}
+		// ever time return false;
+		return false;
 	}
 
 	public void setWidth(int w) {
