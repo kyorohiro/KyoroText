@@ -62,27 +62,12 @@ public class KyoroLogcatActivity extends TestActivity {
 		layout.addView(mStage);
 		mText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		mText.setHint("Filter regex");
-		mText.addTextChangedListener(new TextWatcher() {
-			
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				android.util.Log.v("kiyohiro","changed:"+s);
-			}
-			
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				android.util.Log.v("kiyohiro","before:"+s);
-			}
-
-			public void afterTextChanged(Editable s) {
-				android.util.Log.v("kiyohiro","after:"+s);
-			}
-		});
-		mText.setImeOptions(EditorInfo.IME_ACTION_GO);
+		mText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if(actionId == EditorInfo.IME_ACTION_GO){
-					mLogcatViewer.startFilter(mText.getText().toString());
-				}
-				return true;
+				// All IME Application take that actionId become imeoption's value.
+				mLogcatViewer.startFilter(mText.getText().toString());
+				return false;
 			}
 		});
 
