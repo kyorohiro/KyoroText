@@ -10,6 +10,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerEvent;
+import info.kyorohiro.helloworld.util.CyclingListInter;
 
 public class LogcatViewer extends SimpleDisplayObjectContainer {
 
@@ -33,6 +34,12 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 		return mShowedText;
 	}
 
+	public void startFilter(String filter) {
+		mShowedText.stop();
+		mShowedText.setFileterText(filter);
+		mShowedText.start();
+	}
+
 	private class Viewer extends SimpleDisplayObject {
 		private int mWidth = 0;
 		private int mHeight = 0;
@@ -40,10 +47,19 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			updateStatus(graphics);
+
+			CyclingListInter<LogcatLineData> showingText = null;
+			if (mShowedText.taskIsAlive()) {
+				showingText = mShowedText.getCopyingList();
+			}
+			else {
+				showingText = mShowedText;
+			}
+
+			updateStatus(graphics, showingText);
 			drawBG(graphics);
 
-			int numOfStackedString = mShowedText.getNumberOfStockedElement();
+			int numOfStackedString = showingText.getNumberOfStockedElement();
 			int referPoint = numOfStackedString-(mPosition+mNumOfLine);
 			int start = referPoint;
 			int end = start + mNumOfLine;
@@ -56,7 +72,14 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			if(end >= numOfStackedString){
 				end = numOfStackedString;
 			}
-			LogcatLineData[] list = mShowedText.getLines(start, end);
+			
+			LogcatLineData[] list = null;
+			if (start > end) {
+				list =  new LogcatLineData[0];
+			} else {
+				list = new LogcatLineData[end - start];
+				list = showingText.getElements(list, start, end);
+			}
 
 			int blank = 0;//mNumOfLine - list.length;
 			boolean uppserSideBlankisViewed = (referPoint)<0;
@@ -65,6 +88,9 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			}
 
 			for (int i = 0; i < list.length; i++) {
+				if(list[i]==null){
+					continue;
+				}
 				graphics.setColor(list[i].getColor());
 				graphics.drawText(
 						"[" + (start + i) + "]:  " + list[i],
@@ -78,17 +104,17 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 			graphics.setColor(Color.parseColor("#ccc9f486"));
 		}
 
-		private void updateStatus(SimpleGraphics graphics) {
+		private void updateStatus(SimpleGraphics graphics, CyclingListInter<LogcatLineData> showingText) {
 			mWidth = (int) graphics.getWidth();
 			mHeight = (int) graphics.getHeight();
 			graphics.setTextSize(LogcatViewer.this.mTextSize);
 			mNumOfLine = mHeight / mTextSize;
 
-			int blankSpace = mNumOfLine / 3;
+			int blankSpace = mNumOfLine / 2;
 			if (mPosition < -(mNumOfLine - blankSpace)) {
 				mPosition = -(mNumOfLine - blankSpace);
-			} else if (mPosition > (mShowedText.getNumberOfStockedElement() - blankSpace)) {
-				mPosition = mShowedText.getNumberOfStockedElement() - blankSpace;
+			} else if (mPosition > (showingText.getNumberOfStockedElement() - blankSpace)) {
+				mPosition = showingText.getNumberOfStockedElement() - blankSpace;
 			}
 
 			int margine = graphics.getTextWidth("[9999]:  ");

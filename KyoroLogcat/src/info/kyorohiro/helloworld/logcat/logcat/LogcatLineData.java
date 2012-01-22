@@ -28,6 +28,9 @@ public class LogcatLineData implements CharSequence{
 
 	@Override
 	public String toString() {
+		if(mLine == null){//todo
+			return "";
+		}
 		return mLine;
 	}
 

@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.util;
 
 import java.util.ArrayList;
 
-public class CyclingList<X> {
+public class CyclingList<X> implements CyclingListInter<X> {
 
 	private final ArrayList<X> mList;
 	private final int mMaxOfStackedElement;
@@ -50,8 +50,14 @@ public class CyclingList<X> {
 		if (max < end) {
 			end = max;
 		}
+		if (max < start) {
+			start = max;
+		}
 		if (start < 0) {
 			start = 0;
+		}
+		if (end < 0) {
+			end = 0;
 		}
 		if (start > end) {
 			int t = start;
@@ -86,5 +92,4 @@ public class CyclingList<X> {
 			return mMaxOfStackedElement;
 		}
 	}
-
 }

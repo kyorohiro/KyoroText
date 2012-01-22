@@ -4,11 +4,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.util.AsyncDuplicateCyclingList;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class LogcatCyclingLineDataList extends CyclingList<LogcatLineData> {
+public class LogcatCyclingLineDataList extends AsyncDuplicateCyclingList<LogcatLineData> {
 	private Paint mPaint = null;
 	private int mWidth = 1000;
 	private Pattern mFilter = null;
@@ -16,10 +17,30 @@ public class LogcatCyclingLineDataList extends CyclingList<LogcatLineData> {
 			.compile(":[\\t\\s0-9\\-:.,]*[\\t\\s]([VDIWEFS]{1})/");
 
 	public LogcatCyclingLineDataList(int listSize, int width, int textSize) {
-		super(listSize);
+		super(new CyclingList<LogcatLineData>(listSize),listSize);
 		mWidth = width;
 		mPaint = new Paint();
 		mPaint.setTextSize(textSize);
+	}
+
+	@Override
+	protected boolean filter(LogcatLineData t) {
+		if(mFilter == null){
+			return true;
+		}
+		String i = null;
+		if(t != null){
+			i = t.toString();
+		}else {
+			i = "";
+		}
+		Matcher m = mFilter.matcher(i);
+		if(m == null || m.find()){
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public void setWidth(int w) {

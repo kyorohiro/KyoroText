@@ -9,12 +9,21 @@ import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_START_SHOW_LOG = "Start show log";
@@ -28,6 +37,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	private LogcatCyclingLineDataList mLogcatOutput = mLogcatViewer.getCyclingStringList();
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
+	private EditText mText = null; 
 
 	/** Called when the activity is first created. */
 	@Override
@@ -44,11 +54,39 @@ public class KyoroLogcatActivity extends TestActivity {
 		
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
-		EditText text = new EditText(this);
+		mText = new EditText(this);
+		mText.setSelected(false);
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, 
 		          LayoutParams.WRAP_CONTENT);
-		layout.addView(text,params);
+		layout.addView(mText,params);
 		layout.addView(mStage);
+		mText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+		mText.setHint("Filter regex");
+		mText.addTextChangedListener(new TextWatcher() {
+			
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				android.util.Log.v("kiyohiro","changed:"+s);
+			}
+			
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				android.util.Log.v("kiyohiro","before:"+s);
+			}
+
+			public void afterTextChanged(Editable s) {
+				android.util.Log.v("kiyohiro","after:"+s);
+			}
+		});
+		mText.setImeOptions(EditorInfo.IME_ACTION_GO);
+		mText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if(actionId == EditorInfo.IME_ACTION_GO){
+					mLogcatViewer.startFilter(mText.getText().toString());
+				}
+				return true;
+			}
+		});
+
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 		setContentView(layout);
 	}
 
