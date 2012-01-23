@@ -96,7 +96,6 @@ public class SimpleStage extends SurfaceView {
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {
-		android.util.Log.v("kiyohiro","x="+event.getX()+":y="+event.getY());
 		if(event.getY()>0){
 			getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_DOWN);
 			getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_DOWN);			

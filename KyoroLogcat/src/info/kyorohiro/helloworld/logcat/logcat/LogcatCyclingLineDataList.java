@@ -1,17 +1,15 @@
 package info.kyorohiro.helloworld.logcat.logcat;
 
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.util.AsyncDuplicateCyclingList;
+import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class LogcatCyclingLineDataList extends AsyncDuplicateCyclingList<LogcatLineData> {
+public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<LogcatLineData> {
 	private Paint mPaint = null;
 	private int mWidth = 1000;
 	private Pattern mFilter = null;
@@ -25,27 +23,26 @@ public class LogcatCyclingLineDataList extends AsyncDuplicateCyclingList<LogcatL
 		mPaint.setTextSize(textSize);
 	}
 
-	private ArrayList<LogcatLineData> a = new ArrayList<LogcatLineData>();
-
+	private ArrayList<LogcatLineData> mCashForFiltering = new ArrayList<LogcatLineData>();
 	@Override
 	protected boolean filter(LogcatLineData t) {
 		if(mFilter == null){
 			return true;
 		}
-		a.add(t);
+		mCashForFiltering.add(t);
 		if(t.getStatus() == LogcatLineData.INCLUDE_END_OF_LINE) {
 			StringBuilder builder = new StringBuilder("");
-			for(LogcatLineData d : a){
+			for(LogcatLineData d : mCashForFiltering){
 				builder.append(d);
 			}
 			String i = builder.toString();
 			Matcher m = mFilter.matcher(i);
 			if(m.find()){
-				for(LogcatLineData d: a) {
+				for(LogcatLineData d: mCashForFiltering) {
 					getCopyingList().add(d);
 				}
 			}
-			a.clear();
+			mCashForFiltering.clear();
 		}
 		// ever time return false;
 		return false;
@@ -73,11 +70,11 @@ public class LogcatCyclingLineDataList extends AsyncDuplicateCyclingList<LogcatL
 		while (true) {
 			len = mPaint.breakText(line.toString(), true, mWidth, null);
 			if (len == line.length()) {
-				add(new LogcatLineData(line, currentColor,
+				add(new LogcatLineData(line, mCurrentColor,
 						LogcatLineData.INCLUDE_END_OF_LINE));
 				break;
 			} else {
-				add(new LogcatLineData(line.substring(0, len), currentColor,
+				add(new LogcatLineData(line.substring(0, len), mCurrentColor,
 						LogcatLineData.EXCLUDE_END_OF_LINE));
 				line = line.substring(len, line.length());
 			}
@@ -117,8 +114,7 @@ public class LogcatCyclingLineDataList extends AsyncDuplicateCyclingList<LogcatL
 		return (LogcatLineData) super.get(i);
 	}
 
-	private int currentColor = Color.parseColor("#ccc9f486");
-
+	private int mCurrentColor = Color.parseColor("#ccc9f486");
 	private void setColorPerLine(String line) {
 		try {
 			Matcher m = mPatternForFontColorPerLine.matcher(line);
@@ -127,19 +123,19 @@ public class LogcatCyclingLineDataList extends AsyncDuplicateCyclingList<LogcatL
 			}
 			if (m.find()) {
 				if ("D".equals(m.group(1))) {
-					currentColor = Color.parseColor("#cc86c9f4");
+					mCurrentColor = Color.parseColor("#cc86c9f4");
 				} else if ("I".equals(m.group(1))) {
-					currentColor = Color.parseColor("#cc86f4c9");
+					mCurrentColor = Color.parseColor("#cc86f4c9");
 				} else if ("V".equals(m.group(1))) {
-					currentColor = Color.parseColor("#ccc9f486");
+					mCurrentColor = Color.parseColor("#ccc9f486");
 				} else if ("W".equals(m.group(1))) {
-					currentColor = Color.parseColor("#ccffff00");
+					mCurrentColor = Color.parseColor("#ccffff00");
 				} else if ("E".equals(m.group(1))) {
-					currentColor = Color.parseColor("#ccff2222");
+					mCurrentColor = Color.parseColor("#ccff2222");
 				} else if ("F".equals(m.group(1))) {
-					currentColor = Color.parseColor("#ccff2222");
+					mCurrentColor = Color.parseColor("#ccff2222");
 				} else if ("S".equals(m.group(1))) {
-					currentColor = Color.parseColor("#ccff2222");
+					mCurrentColor = Color.parseColor("#ccff2222");
 				}
 			}
 		} catch (Throwable e) {

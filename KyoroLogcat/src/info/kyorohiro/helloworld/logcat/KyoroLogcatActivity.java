@@ -37,7 +37,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	private LogcatCyclingLineDataList mLogcatOutput = mLogcatViewer.getCyclingStringList();
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
-	private EditText mText = null; 
+	private EditText mInputForLogFilter = null; 
 
 	/** Called when the activity is first created. */
 	@Override
@@ -52,27 +52,27 @@ public class KyoroLogcatActivity extends TestActivity {
 		mStage.getRoot().addChild(mCircleController);
 		mStage.start();
 		
-		LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		mText = new EditText(this);
-		mText.setSelected(false);
-		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, 
-		          LayoutParams.WRAP_CONTENT);
-		layout.addView(mText,params);
-		layout.addView(mStage);
-		mText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		mText.setHint("Filter regex");
-		mText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-		mText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mInputForLogFilter = new EditText(this);
+		mInputForLogFilter.setSelected(false);
+		mInputForLogFilter.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+		mInputForLogFilter.setHint("Filter regex(find)");
+		mInputForLogFilter.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+		mInputForLogFilter.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				// All IME Application take that actionId become imeoption's value.
-				mLogcatViewer.startFilter(mText.getText().toString());
+				mLogcatViewer.startFilter(mInputForLogFilter.getText().toString());
 				return false;
 			}
 		});
 
+		LinearLayout rootLayout = new LinearLayout(this);
+		rootLayout.setOrientation(LinearLayout.VERTICAL);
+		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		rootLayout.addView(mInputForLogFilter,params);
+		rootLayout.addView(mStage);
+
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
-		setContentView(layout);
+		setContentView(rootLayout);
 	}
 
 	@Override

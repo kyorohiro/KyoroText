@@ -7,7 +7,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
-import android.util.Log;
 
 public abstract class TestService extends Service {
 	private static final Class<?>[] mSetForegroundSignature = new Class[] {
@@ -31,10 +30,10 @@ public abstract class TestService extends Service {
 			method.invoke(this, args);
 		} catch (InvocationTargetException e) {
 			// Should not happen.
-			Log.w("ApiDemos", "Unable to invoke method", e);
+			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			// Should not happen.
-			Log.w("ApiDemos", "Unable to invoke method", e);
+                    	e.printStackTrace();
 		}
 	}
 

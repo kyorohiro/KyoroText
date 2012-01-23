@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class KyoroWidgetBase extends AppWidgetProvider {
 	// log tag
@@ -23,8 +24,15 @@ public class KyoroWidgetBase extends AppWidgetProvider {
 	}
 
 	@Override
+	public void onEnabled(Context context) {
+		Toast.makeText(context, "onEnable", Toast.LENGTH_LONG);
+		super.onEnabled(context);
+	}
+
+	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
+		Toast.makeText(context, "onUpdate", Toast.LENGTH_LONG);
 		KyoroWidgetService.setWidgetImage(context, mType);
 		Intent intentForClickAction = KyoroWidgetService.getIntentToStartButtonAction(context, mType);
 		intentForClickAction.setType(mType);
@@ -41,11 +49,7 @@ public class KyoroWidgetBase extends AppWidgetProvider {
 			views.setOnClickPendingIntent(id, pendingIntent);
 		}
 
-		int N = appWidgetIds.length;
-		for (int i = 0; i < N; i++) {
-			int appWidgetId = appWidgetIds[i];
-			appWidgetManager.updateAppWidget(appWidgetId, views);
-		}
+		appWidgetManager.updateAppWidget(appWidgetIds, views);
 	}
 
 }

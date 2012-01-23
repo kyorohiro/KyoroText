@@ -12,6 +12,11 @@ public class KyoroMailWidget extends KyoroWidgetBase {
 	public KyoroMailWidget() {
 		super(R.layout.widget_mail, new int[]{R.id.widget_mail,R.id.widget_mail_img,R.id.widget_mail_text}, TYPE);
 	}
+	
+	@Override
+	public void onEnabled(Context context) {
+		super.onEnabled(context);
+	}
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
