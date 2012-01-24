@@ -117,7 +117,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 				mPosition = showingText.getNumberOfStockedElement() - blankSpace;
 			}
 
-			int margine = graphics.getTextWidth("[9999]:  ");
+			int margine = graphics.getTextWidth("[9999]:_[9]");
 			LogcatViewer.this.mShowedText.setWidth(mWidth - margine);
 		}
 	}

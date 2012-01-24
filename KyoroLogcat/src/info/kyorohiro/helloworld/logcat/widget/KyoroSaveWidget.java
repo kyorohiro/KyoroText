@@ -1,15 +1,22 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
 import info.kyorohiro.helloworld.logcat.R;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 
-public class KyoroSaveWidget extends KyoroWidgetBase {
+public class KyoroSaveWidget extends AppWidgetProvider {
 	public static String TYPE = "save";
-	public KyoroSaveWidget() {
-		super(R.layout.widget_save, new int[]{R.id.widget_save,R.id.widget_save_img,R.id.widget_save_text}, TYPE);
+
+
+	@Override
+	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
+		KyoroWidgetService.setWidgetImage(context, TYPE);
 	}
 
 	public static void setSaveImage(Context context){
@@ -21,11 +28,28 @@ public class KyoroSaveWidget extends KyoroWidgetBase {
 	}
 
 	protected static void chagneImage(Context context, int id) {
-		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.widget_save);
-		remoteViews.setImageViewResource(R.id.widget_save_img, id);
+		Intent intentForClickAction = KyoroWidgetService.getIntentToStartButtonAction(context, TYPE);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_save);
+		views.setImageViewResource(R.id.widget_save_img, id);
+		PendingIntent pendingIntent = PendingIntent.getService(context, 0, intentForClickAction, 0);
+		views.setOnClickPendingIntent(R.id.widget_save, pendingIntent);
+		views.setOnClickPendingIntent(R.id.widget_save_img, pendingIntent);
+		views.setOnClickPendingIntent(R.id.widget_mail_text, pendingIntent);
 		ComponentName cn = new ComponentName(context.getPackageName(), KyoroSaveWidget.class.getName());
 		AppWidgetManager manager = AppWidgetManager.getInstance(context);
-		manager.updateAppWidget(cn, remoteViews);
+		manager.updateAppWidget(cn, views);
 	}
 
+	public static void set(Context context) {
+		Intent intentForClickAction = KyoroWidgetService.getIntentToStartButtonAction(context, TYPE);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_save);
+		PendingIntent pendingIntent = PendingIntent.getService(context, 0, intentForClickAction, 0);
+		views.setOnClickPendingIntent(R.id.widget_save, pendingIntent);
+		views.setOnClickPendingIntent(R.id.widget_save_img, pendingIntent);
+		views.setOnClickPendingIntent(R.id.widget_mail_text, pendingIntent);
+
+		ComponentName thisWidget = new ComponentName(context, KyoroSaveWidget.class);
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        manager.updateAppWidget(thisWidget, views);
+	}
 }

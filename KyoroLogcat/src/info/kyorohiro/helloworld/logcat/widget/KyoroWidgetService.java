@@ -1,14 +1,20 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
 import info.kyorohiro.helloworld.logcat.KyoroLogcatTaskManagerForSave;
+import info.kyorohiro.helloworld.logcat.R;
 import info.kyorohiro.helloworld.logcat.SendCurrentLogTask;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.widget.RemoteViews;
 
 public class KyoroWidgetService extends Service {
+	public static String ACTION_CHANGE = "ACTION_CHANGE";
+	public static String ACTION_SET = "ACTION_SET";
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -17,16 +23,15 @@ public class KyoroWidgetService extends Service {
 
 	public static void setWidgetImage(Context context, String type) {
         Intent intent =  new Intent(context, KyoroWidgetService.class);
-        intent.setAction(KyoroSaveWidget.ACTION_SET);
+        intent.setAction(KyoroWidgetService.ACTION_SET);
         intent.setType(type);
         context.startService(intent);
 	}
 	
 	public static Intent getIntentToStartButtonAction(Context context, String type) {
 	    Intent intent =  new Intent(context, KyoroWidgetService.class);
-	    intent.setAction(KyoroSaveWidget.ACTION_CHANGE);
+	    intent.setAction(KyoroWidgetService.ACTION_CHANGE);
         intent.setType(type);
-
 	    return intent;
 	}
 
@@ -37,7 +42,16 @@ public class KyoroWidgetService extends Service {
 
 		// 
 		if(KyoroSaveWidget.TYPE.equals(""+intent.getType())) {
-			if(KyoroSaveWidget.ACTION_CHANGE.equals(action)){
+			 if (KyoroWidgetService.ACTION_SET.equals(action)){
+					KyoroSaveWidget.set(this);	            
+					if(KyoroLogcatTaskManagerForSave.saveTaskIsAlive()){
+						KyoroSaveWidget.setStopImage(getApplicationContext());
+					}
+					else {
+						KyoroSaveWidget.setSaveImage(getApplicationContext());
+					}			
+				}
+			 else if(KyoroWidgetService.ACTION_CHANGE.equals(action)){
 				if(KyoroLogcatTaskManagerForSave.saveTaskIsAlive()){
 					KyoroLogcatTaskManagerForSave.stopSaveTask(getApplicationContext());
 				}
@@ -45,26 +59,16 @@ public class KyoroWidgetService extends Service {
 					KyoroLogcatTaskManagerForSave.startSaveTask(getApplicationContext());
 				}
 			}
-			else if (KyoroSaveWidget.ACTION_SET.equals(action)){
-				if(KyoroLogcatTaskManagerForSave.saveTaskIsAlive()){
-					KyoroSaveWidget.setStopImage(getApplicationContext());
-				}
-				else {
-					KyoroSaveWidget.setSaveImage(getApplicationContext());
-				}			
-			}
 		}
 		else if(KyoroMailWidget.TYPE.equals(""+intent.getType())) {
 			KyoroMailWidget.setSendMailImage(getApplicationContext());
-			if(KyoroSaveWidget.ACTION_CHANGE.equals(action)){
+			if(KyoroWidgetService.ACTION_SET.equals(action)){
+				KyoroSaveWidget.set(this);	            
+			}
+			else if(KyoroWidgetService.ACTION_CHANGE.equals(action)){
 				SendCurrentLogTask task = new SendCurrentLogTask(this.getApplicationContext());
 				task.start();
 			}
-		}
-		try {
-			finalize();
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 	}
 }
