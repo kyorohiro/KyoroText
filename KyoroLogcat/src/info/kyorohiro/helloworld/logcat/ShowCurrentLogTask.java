@@ -1,8 +1,10 @@
 package info.kyorohiro.helloworld.logcat;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
@@ -31,12 +33,13 @@ public class ShowCurrentLogTask extends Thread {
 		mLogcat.start(mOption);
 		try {
 			InputStream stream = mLogcat.getInputStream();
-			DataInputStream input  = new DataInputStream(stream);
+//			DataInputStream input  = new DataInputStream(stream);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			while(mLogcat.isAlive()) {
-				if(0 == input.available()){
-					Thread.sleep(100);
+				if(!reader.ready()){
+					Thread.sleep(200);
 				}
-				mData.addLinePerBreakText(input.readLine());
+				mData.addLinePerBreakText(reader.readLine());
 			}
 		} catch (LogcatException e) {
 			e.printStackTrace();
