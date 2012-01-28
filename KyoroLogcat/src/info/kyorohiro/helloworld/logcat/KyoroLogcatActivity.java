@@ -7,14 +7,19 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
+import info.kyorohiro.helloworld.util.SimpleFileExplorer;
+import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
@@ -27,6 +32,9 @@ import android.widget.Toast;
 
 public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_START_SHOW_LOG = "Start show log";
+	public static final String MENU_START_SHOW_LOG_FROM_FILE = "show log from file";
+	public static final String MENU_START_SHOW_LOG_FROM_SHELL = "show log from logcat";
+
 	public static final String MENU_STOP_SHOW_LOG = "Stop show log";
 	public static final String MENU_STOP_SAVE_AT_BGGROUND = "Stop Save at bg";
 	public static final String MENU_START_SAVE_AT_BGGROUND = "Start Save at bg";
@@ -119,7 +127,11 @@ public class KyoroLogcatActivity extends TestActivity {
 			menu.add(MENU_STOP_SHOW_LOG).setIcon(R.drawable.ic_stop);
 		}
 		else {
-			menu.add(MENU_START_SHOW_LOG).setIcon(R.drawable.ic_start);			
+			SubMenu showSubMenu = 
+				menu.addSubMenu(MENU_START_SHOW_LOG);
+			showSubMenu.setIcon(R.drawable.ic_start);
+			showSubMenu.add(MENU_START_SHOW_LOG_FROM_FILE);
+			showSubMenu.add(MENU_START_SHOW_LOG_FROM_SHELL);
 		}
 
 		if (KyoroLogcatTaskManagerForSave.saveTaskIsAlive()) {
@@ -172,7 +184,16 @@ public class KyoroLogcatActivity extends TestActivity {
 				mShowTask.start();
 			}
 			myResult = true;
-		} else if (MENU_STOP_SHOW_LOG.equals(selectedItemTitle)) {
+		} else if(MENU_START_SHOW_LOG_FROM_FILE.equals(selectedItemTitle)) {
+			runOnUiThread(new Runnable() {				
+				public void run() {
+					 Dialog  dialog = SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, Environment.getExternalStorageDirectory());
+						 //SiimpleFileReader.createDialog(KyoroLogcatActivity.this);
+					 dialog.show();
+				}
+			});
+		}
+		else if (MENU_STOP_SHOW_LOG.equals(selectedItemTitle)) {
 			if(mShowTask != null || mShowTask.isAlive()){
 				mShowTask.terminate();
 			}
