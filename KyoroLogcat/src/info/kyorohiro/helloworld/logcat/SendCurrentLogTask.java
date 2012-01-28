@@ -1,8 +1,10 @@
 package info.kyorohiro.helloworld.logcat;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,9 +34,11 @@ public class SendCurrentLogTask extends Thread {
 		try {
 			showMessage("start to collect log.");
 			InputStream stream = mLogcat.getInputStream();
-			DataInputStream input = new DataInputStream(new BufferedInputStream(stream));
+//			DataInputStream input  = new DataInputStream(stream);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			while(true) {
-				if(0 >= input.available()){
+				if(reader.ready()){
+//				if(0<input.available()){
 					if(!mLogcat.isAlive()){
 						break;
 					}
@@ -42,7 +46,8 @@ public class SendCurrentLogTask extends Thread {
 						Thread.sleep(100);
 					}
 				}
-				builder.append(input.readLine());
+				builder.append(reader.readLine());
+//				builder.append(input.readLine());
 				builder.append("\r\n");
 			}
 			showMessage("successed to collect log. and start to ticket for sending mail.");
