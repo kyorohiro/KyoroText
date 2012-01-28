@@ -29,20 +29,22 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 		if(mFilter == null){
 			return true;
 		}
-		mCashForFiltering.add(t);
-		if(t.getStatus() == LogcatLineData.INCLUDE_END_OF_LINE) {
-			StringBuilder builder = new StringBuilder("");
-			for(LogcatLineData d : mCashForFiltering){
-				builder.append(d);
-			}
-			String i = builder.toString();
-			Matcher m = mFilter.matcher(i);
-			if(m.find()){
-				for(LogcatLineData d: mCashForFiltering) {
-					getCopyingList().add(d);
+		if(t != null) {
+			mCashForFiltering.add(t);
+			if(t.getStatus() == LogcatLineData.INCLUDE_END_OF_LINE) {
+				StringBuilder builder = new StringBuilder("");
+				for(LogcatLineData d : mCashForFiltering){
+					builder.append(d);
 				}
+				String i = builder.toString();
+				Matcher m = mFilter.matcher(i);
+				if(m.find()){
+					for(LogcatLineData d: mCashForFiltering) {
+						getCopyingList().add(d);
+					}
+				}
+				mCashForFiltering.clear();
 			}
-			mCashForFiltering.clear();
 		}
 		// ever time return false;
 		return false;
