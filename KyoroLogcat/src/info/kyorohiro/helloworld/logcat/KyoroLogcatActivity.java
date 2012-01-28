@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.logcat;
 
+import java.util.regex.Pattern;
+
 import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -60,7 +62,17 @@ public class KyoroLogcatActivity extends TestActivity {
 		mInputForLogFilter.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				// All IME Application take that actionId become imeoption's value.
-				mLogcatViewer.startFilter(mInputForLogFilter.getText().toString());
+				try {
+					CharSequence mUserInputedText = mInputForLogFilter.getText();
+					String filterText = "";
+					if(mUserInputedText != null){
+						filterText = mUserInputedText.toString();
+					}
+					Pattern filter = Pattern.compile(filterText);
+					mLogcatViewer.startFilter(filter);
+				} catch(Throwable t) {
+					KyoroApplication.showMessageAndNotification("Failed to filter logcat log from input text.");
+				}
 				return false;
 			}
 		});

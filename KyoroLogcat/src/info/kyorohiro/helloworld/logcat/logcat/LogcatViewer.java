@@ -34,7 +34,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 		return mShowedText;
 	}
 
-	public void startFilter(String filter) {
+	public void startFilter(Pattern filter) {
 		mShowedText.stop();
 		mShowedText.setFileterText(filter);
 		mShowedText.start();

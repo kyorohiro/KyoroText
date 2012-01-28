@@ -56,8 +56,8 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 		return mPaint;
 	}
 
-	public void setFileterText(String filter) {
-		mFilter = Pattern.compile(filter);
+	public void setFileterText(Pattern filter) {
+		mFilter = filter;
 	}
 
 	public synchronized void addLinePerBreakText(String line) {
