@@ -7,7 +7,7 @@ public class LogcatLineData implements CharSequence{
 	private String mLine = "";
 	private int mColor = 0;
 	private int mStatus = 0;
-	
+
 	public LogcatLineData(String line, int color, int status) {
 		mLine = line;
 		mColor = color;
@@ -34,11 +34,11 @@ public class LogcatLineData implements CharSequence{
 		return mLine;
 	}
 
-	public int getColor(){
+	public int getColor() {
 		return mColor;
 	}
-	
-	public int getStatus(){
+
+	public int getStatus() {
 		return mStatus;
 	}
 }

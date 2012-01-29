@@ -10,33 +10,28 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
+import info.kyorohiro.helloworld.logcat.task.ClearCurrentLogTask;
+import info.kyorohiro.helloworld.logcat.task.SendCurrentLogTask;
+import info.kyorohiro.helloworld.logcat.task.ShowCurrentLogTask;
+import info.kyorohiro.helloworld.logcat.task.ShowFileContentTask;
 import info.kyorohiro.helloworld.util.SimpleFileExplorer;
-import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_START_SHOW_LOG = "Start show log";
 	public static final String MENU_START_SHOW_LOG_FROM_FILE = "open file";
-
 	public static final String MENU_STOP_SHOW_LOG = "Stop show log";
 	public static final String MENU_STOP_SAVE_AT_BGGROUND = "Stop Save at bg";
 	public static final String MENU_START_SAVE_AT_BGGROUND = "Start Save at bg";
@@ -48,6 +43,18 @@ public class KyoroLogcatActivity extends TestActivity {
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
 	private EditText mInputForLogFilter = null; 
+	private ShowCurrentLogTask mShowTask = null;
+
+
+
+	private boolean showTaskIsAlive() {
+		if(mShowTask == null || !mShowTask.isAlive()){
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 
 	/** Called when the activity is first created. */
 	@Override
@@ -55,7 +62,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		super.onCreate(savedInstanceState);
 		this.changeTitle(this, "kyoro logcat", Color.parseColor("#cc795514"), Color.parseColor("#e5cf2a"));
 		this.changeMenuBgColor(this, Color.parseColor("#e5cf2a"));
-		mCircleController.setEventListener(mLogcatViewer.getCircleControllerEvent());
+		mCircleController.setEventListener(mLogcatViewer.getCircleControllerAction());
 		mStage = new SimpleStage(this.getApplicationContext());
 		mStage.getRoot().addChild(new Layout());
 		mStage.getRoot().addChild(mLogcatViewer);
@@ -67,23 +74,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		mInputForLogFilter.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		mInputForLogFilter.setHint("Filter regex(find)");
 		mInputForLogFilter.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-		mInputForLogFilter.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				// All IME Application take that actionId become imeoption's value.
-				try {
-					CharSequence mUserInputedText = mInputForLogFilter.getText();
-					String filterText = "";
-					if(mUserInputedText != null){
-						filterText = mUserInputedText.toString();
-					}
-					Pattern filter = Pattern.compile(filterText);
-					mLogcatViewer.startFilter(filter);
-				} catch(Throwable t) {
-					KyoroApplication.showMessageAndNotification("Failed to filter logcat log from input text.");
-				}
-				return false;
-			}
-		});
+		mInputForLogFilter.setOnEditorActionListener(new FilterSettingAction());
 
 		LinearLayout rootLayout = new LinearLayout(this);
 		rootLayout.setOrientation(LinearLayout.VERTICAL);
@@ -157,20 +148,8 @@ public class KyoroLogcatActivity extends TestActivity {
 		return true;
 	}
 
-	private ShowCurrentLogTask mShowTask = null;
-	private boolean showTaskIsAlive() {
-		if(mShowTask == null || !mShowTask.isAlive()){
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-
-	ShowFileContentTask task = null;
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-
 		boolean parentResult = super.onMenuItemSelected(featureId, item);
 		if (parentResult == true || item == null) {
 			return parentResult;
@@ -198,26 +177,8 @@ public class KyoroLogcatActivity extends TestActivity {
 				public void run() {
 					SimpleFileExplorer dialog = 
 						SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, Environment.getExternalStorageDirectory());
-					 dialog.show();
-					 dialog.setOnSelectedFileAction(new SimpleFileExplorer.SelectedFileAction() {
-						public boolean onSelectedFile(File file) {
-							try {
-								if(file == null || !file.exists()||
-										file.isDirectory()){
-									return false;
-								}
-								else {
-									task = new ShowFileContentTask(mLogcatOutput, file);
-									Thread th = new Thread(task);
-									th.start();
-									return true;
-								}
-							} catch(Throwable t){
-								t.printStackTrace();
-								return false;
-							}
-						}
-					});
+					dialog.show();
+					dialog.setOnSelectedFileAction(new FileSelectedAction());
 				}
 			});
 		}
@@ -237,6 +198,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		return myResult;
 	}
 
+
 	public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
@@ -246,4 +208,39 @@ public class KyoroLogcatActivity extends TestActivity {
 		}
 	}
 
+	public class FileSelectedAction implements SimpleFileExplorer.SelectedFileAction {
+		public boolean onSelectedFile(File file) {
+			try {
+				if(file == null||!file.exists()||file.isDirectory()) {
+					return false;
+				}
+				else {
+					ShowFileContentTask task = new ShowFileContentTask(mLogcatOutput, file);
+					task.start();
+					return true;
+				}
+			} catch(Throwable t) {
+				t.printStackTrace();
+				return false;
+			}
+		}
+	}
+	
+	public class FilterSettingAction implements TextView.OnEditorActionListener {
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			// All IME Application take that actionId become imeoption's value.
+			try {
+				CharSequence mUserInputedText = mInputForLogFilter.getText();
+				String filterText = "";
+				if(mUserInputedText != null){
+					filterText = mUserInputedText.toString();
+				}
+				Pattern filter = Pattern.compile(filterText);
+				mLogcatViewer.startFilter(filter);
+			} catch(Throwable t) {
+				KyoroApplication.showMessageAndNotification("Failed to filter logcat log from input text.");
+			}
+			return false;
+		}
+	}
 }

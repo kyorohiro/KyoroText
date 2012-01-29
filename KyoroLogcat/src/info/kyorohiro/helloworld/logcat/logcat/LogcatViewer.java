@@ -1,43 +1,65 @@
 package info.kyorohiro.helloworld.logcat.logcat;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import android.graphics.Color;
-import android.graphics.Paint;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
-import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerEvent;
+import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 
 public class LogcatViewer extends SimpleDisplayObjectContainer {
 
-	private LogcatCyclingLineDataList mShowedText = null;
-	private Viewer viewer = new Viewer();
+	private LogcatCyclingLineDataList mInputtedText = null;
+	private Viewer mViewer = new Viewer();
 	private int mPosition = 0;
 	private int mTextSize = 14;
-	private MyCircleControllerEvent mCircleControllerEvent = null;
+	private MyCircleControllerEvent mCircleControllerAction = null;
 
 	public LogcatViewer(int numOfStringList) {
-		this.addChild(viewer);
-		mShowedText = new LogcatCyclingLineDataList(numOfStringList, 1000, mTextSize);
-		mCircleControllerEvent = new MyCircleControllerEvent();
+		addChild(mViewer);
+		mInputtedText = new LogcatCyclingLineDataList(numOfStringList, 1000, mTextSize);
+		mCircleControllerAction = new MyCircleControllerEvent();
 	}
 
-	public CircleControllerEvent getCircleControllerEvent() {
-		return mCircleControllerEvent;
+	public CircleControllerAction getCircleControllerAction() {
+		return mCircleControllerAction;
 	}
 
 	public LogcatCyclingLineDataList getCyclingStringList() {
-		return mShowedText;
+		return mInputtedText;
 	}
 
-	public void startFilter(Pattern filter) {
-		mShowedText.stop();
-		mShowedText.setFileterText(filter);
-		mShowedText.start();
+	public void startFilter(Pattern nextFilter) {
+		if(nextFilter == null || mInputtedText == null) {
+			return;
+		}
+		Pattern currentFilter = mInputtedText.getFilterText();
+
+		if(!equalFilter(currentFilter, nextFilter)){
+			mInputtedText.stop();
+			mInputtedText.setFileterText(nextFilter);
+			mInputtedText.start();
+		}
+	}
+
+	private boolean equalFilter(Pattern currentFilter, Pattern nextFilter){
+		if(nextFilter == null || nextFilter == null) {
+			return true;
+		}
+
+		String currentPattern = "";
+		String nextPattern = ""+nextFilter.pattern();
+		if(currentFilter != null) {
+			currentPattern = ""+currentFilter.pattern();
+		}
+
+		if (currentPattern.equals(nextPattern)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private class Viewer extends SimpleDisplayObject {
@@ -49,11 +71,11 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 		public void paint(SimpleGraphics graphics) {
 
 			CyclingListInter<LogcatLineData> showingText = null;
-			if (mShowedText.taskIsAlive()) {
-				showingText = mShowedText.getCopyingList();
+			if (mInputtedText.taskIsAlive()) {
+				showingText = mInputtedText.getDuplicatingList();
 			}
 			else {
-				showingText = mShowedText;
+				showingText = mInputtedText;
 			}
 
 			updateStatus(graphics, showingText);
@@ -81,7 +103,7 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 				list = showingText.getElements(list, start, end);
 			}
 
-			int blank = 0;//mNumOfLine - list.length;
+			int blank = 0;
 			boolean uppserSideBlankisViewed = (referPoint)<0;
 			if(uppserSideBlankisViewed){
 				blank = -1*referPoint;
@@ -107,42 +129,40 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 		private void updateStatus(SimpleGraphics graphics, CyclingListInter<LogcatLineData> showingText) {
 			mWidth = (int) graphics.getWidth();
 			mHeight = (int) graphics.getHeight();
-			graphics.setTextSize(LogcatViewer.this.mTextSize);
 			mNumOfLine = mHeight / mTextSize;
 
 			int blankSpace = mNumOfLine / 2;
+			int margine = graphics.getTextWidth("[9999]:_[9]");
+
 			if (mPosition < -(mNumOfLine - blankSpace)) {
 				mPosition = -(mNumOfLine - blankSpace);
 			} else if (mPosition > (showingText.getNumberOfStockedElement() - blankSpace)) {
 				mPosition = showingText.getNumberOfStockedElement() - blankSpace;
 			}
 
-			int margine = graphics.getTextWidth("[9999]:_[9]");
-			LogcatViewer.this.mShowedText.setWidth(mWidth - margine);
+			graphics.setTextSize(LogcatViewer.this.mTextSize);
+			LogcatViewer.this.mInputtedText.setWidth(mWidth - margine);
 		}
 	}
 
-	private class MyCircleControllerEvent implements
-			SimpleCircleController.CircleControllerEvent {
+	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
 		public void upButton(int action) {
-			if (action == CircleControllerEvent.ACTION_RELEASED) {
+			if (action == CircleControllerAction.ACTION_RELEASED) {
 				mPosition++;
 			}
 		}
 
 		public void downButton(int action) {
-			if (action == CircleControllerEvent.ACTION_RELEASED) {
+			if (action == CircleControllerAction.ACTION_RELEASED) {
 				mPosition--;
 			}
 		}
 
 		public void moveCircle(int action, int degree, int rateDegree) {
-			if (action == CircleControllerEvent.ACTION_MOVE) {
+			if (action == CircleControllerAction.ACTION_MOVE) {
 				mPosition += rateDegree*2;
 			}
-
 		}
-
 	}
 
 }

@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.logcat;
+package info.kyorohiro.helloworld.logcat.task;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import android.content.Context;
 import android.content.Intent;
 
+import info.kyorohiro.helloworld.logcat.KyoroApplication;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.util.CyclingList;
 

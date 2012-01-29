@@ -13,8 +13,8 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 	private Paint mPaint = null;
 	private int mWidth = 1000;
 	private Pattern mFilter = null;
-	private Pattern mPatternForFontColorPerLine = Pattern
-			.compile(":[\\t\\s0-9\\-:.,]*[\\t\\s]([VDIWEFS]{1})/");
+	private Pattern mPatternForFontColorPerLine = 
+		Pattern.compile(":[\\t\\s0-9\\-:.,]*[\\t\\s]([VDIWEFS]{1})/");
 
 	public LogcatCyclingLineDataList(int listSize, int width, int textSize) {
 		super(new CyclingList<LogcatLineData>(listSize),listSize);
@@ -40,12 +40,13 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 				Matcher m = mFilter.matcher(i);
 				if(m.find()){
 					for(LogcatLineData d: mCashForFiltering) {
-						getCopyingList().add(d);
+						getDuplicatingList().add(d);
 					}
 				}
 				mCashForFiltering.clear();
 			}
 		}
+
 		// ever time return false;
 		return false;
 	}
@@ -60,6 +61,10 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 
 	public void setFileterText(Pattern filter) {
 		mFilter = filter;
+	}
+	
+	public Pattern getFilterText() {
+		return mFilter;
 	}
 
 	public synchronized void addLinePerBreakText(String line) {

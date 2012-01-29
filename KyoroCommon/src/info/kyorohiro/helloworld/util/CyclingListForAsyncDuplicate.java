@@ -91,7 +91,7 @@ public class CyclingListForAsyncDuplicate<T> implements CyclingListInter<T> {
 			return false;
 		}
 	}
-	public CyclingList<T> getCopyingList() {
+	public CyclingList<T> getDuplicatingList() {
 		return mCopy;
 	}
 

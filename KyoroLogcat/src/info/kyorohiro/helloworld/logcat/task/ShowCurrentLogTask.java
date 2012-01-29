@@ -1,20 +1,25 @@
-package info.kyorohiro.helloworld.logcat;
+package info.kyorohiro.helloworld.logcat.task;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 
-public class ClearCurrentLogTask extends Thread {
+public class ShowCurrentLogTask extends Thread {
 	private final Logcat mLogcat = new Logcat();
 	private LogcatCyclingLineDataList mData;
-	private String mOption = "-c";
+	private String mOption = "-n";
 
-	public ClearCurrentLogTask(LogcatCyclingLineDataList data) {
+	public ShowCurrentLogTask(LogcatCyclingLineDataList data, String option) {
 		mData = data;
+		if(option != null) {
+			mOption = option;
+		}
 	}
 
 	public void terminate() {
@@ -28,12 +33,19 @@ public class ClearCurrentLogTask extends Thread {
 		mLogcat.start(mOption);
 		try {
 			InputStream stream = mLogcat.getInputStream();
-			DataInputStream input  = new DataInputStream(stream);
-			while(mLogcat.isAlive()) {
-				if(0 == input.available()){
-					Thread.sleep(100);
+//			DataInputStream input  = new DataInputStream(stream);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			while(true) {
+				if(!reader.ready()){
+					if(!mLogcat.isAlive()){
+						break;
+					}
+					Thread.sleep(200);
 				}
-				mData.addLine(input.readLine());
+				else {
+					mData.addLinePerBreakText(reader.readLine());
+					Thread.yield();
+				}
 			}
 		} catch (LogcatException e) {
 			e.printStackTrace();
@@ -43,7 +55,6 @@ public class ClearCurrentLogTask extends Thread {
 			// expected exception
 		} finally {
 			mLogcat.terminate();
-			mData.clear();
 		}
 	}
 }

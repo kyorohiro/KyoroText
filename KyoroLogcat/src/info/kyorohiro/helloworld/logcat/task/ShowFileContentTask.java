@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.logcat;
+package info.kyorohiro.helloworld.logcat.task;
 
 import java.io.File;
 import java.io.FileNotFoundException;

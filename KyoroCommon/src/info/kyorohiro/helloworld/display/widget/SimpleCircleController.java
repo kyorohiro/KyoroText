@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 
 public class SimpleCircleController extends SimpleDisplayObjectContainer {
 
-	private CircleControllerEvent mEvent = new NullCircleControllerEvent();
+	private CircleControllerAction mEvent = new NullCircleControllerEvent();
 
 	public SimpleCircleController() {
 		BG bg = new BG();
@@ -30,7 +30,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		return 100;
 	}
 
-	public void setEventListener(CircleControllerEvent event) {
+	public void setEventListener(CircleControllerAction event) {
 		if (event == null) {
 			mEvent = new NullCircleControllerEvent();
 		} else {
@@ -43,11 +43,11 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		switch(keycode){
 		case KeyEvent.KEYCODE_DPAD_UP:
 		case KeyEvent.KEYCODE_VOLUME_UP:
-			mEvent.upButton(CircleControllerEvent.ACTION_PRESSED);
+			mEvent.upButton(CircleControllerAction.ACTION_PRESSED);
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			mEvent.downButton(CircleControllerEvent.ACTION_PRESSED);
+			mEvent.downButton(CircleControllerAction.ACTION_PRESSED);
 			break;
 		}
 		return super.onKeyDown(keycode);
@@ -58,11 +58,11 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		switch(keycode){
 		case KeyEvent.KEYCODE_DPAD_UP:
 		case KeyEvent.KEYCODE_VOLUME_UP:
-			mEvent.upButton(CircleControllerEvent.ACTION_RELEASED);
+			mEvent.upButton(CircleControllerAction.ACTION_RELEASED);
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			mEvent.downButton(CircleControllerEvent.ACTION_RELEASED);
+			mEvent.downButton(CircleControllerAction.ACTION_RELEASED);
 			break;
 		}
 		return super.onKeyUp(keycode);
@@ -121,18 +121,18 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 				switch (action) {
 				case MotionEvent.ACTION_DOWN:
 					isTouched = true;
-					a = CircleControllerEvent.ACTION_PRESSED;
+					a = CircleControllerAction.ACTION_PRESSED;
 					break;
 				case MotionEvent.ACTION_UP:
 					isTouched = false;
-					a = CircleControllerEvent.ACTION_RELEASED;
+					a = CircleControllerAction.ACTION_RELEASED;
 					break;
 				case MotionEvent.ACTION_MOVE:
 					if(isTouched){
-					a = CircleControllerEvent.ACTION_MOVE;
+					a = CircleControllerAction.ACTION_MOVE;
 					}
 					else {
-						a = CircleControllerEvent.ACTION_IN;
+						a = CircleControllerAction.ACTION_IN;
 					}
 					isTouched = true;
 					break;
@@ -140,7 +140,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 				case MotionEvent.ACTION_OUTSIDE:
 				default:
 					isTouched = false;
-					a = CircleControllerEvent.ACTION_RELEASED;
+					a = CircleControllerAction.ACTION_RELEASED;
 					break;
 				}
 				ret = true;
@@ -153,7 +153,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 				mPrevDegree = curDegree;
 			} else {
 				isTouched = false;
-				a = CircleControllerEvent.ACTION_OUT;
+				a = CircleControllerAction.ACTION_OUT;
 				ret = false;
 				if(!isTouched) {
 					mEvent.moveCircle(a, mPrevDegree, 0);
@@ -267,26 +267,26 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				if (!prevTouched) {
-					run.a(CircleControllerEvent.ACTION_PRESSED);
+					run.a(CircleControllerAction.ACTION_PRESSED);
 				}
 				return true;
 			case MotionEvent.ACTION_UP:
 				if (prevTouched) {
-					run.a(CircleControllerEvent.ACTION_RELEASED);
+					run.a(CircleControllerAction.ACTION_RELEASED);
 				}
 				return false;
 			case MotionEvent.ACTION_MOVE:
 				if (prevTouched) {
-					run.a(CircleControllerEvent.ACTION_IN);
+					run.a(CircleControllerAction.ACTION_IN);
 				} else {
-					run.a(CircleControllerEvent.ACTION_MOVE);
+					run.a(CircleControllerAction.ACTION_MOVE);
 				}
 				return true;
 			case MotionEvent.ACTION_OUTSIDE:
 			case MotionEvent.ACTION_CANCEL:
 			default:
 				if (prevTouched) {
-					run.a(CircleControllerEvent.ACTION_RELEASED);
+					run.a(CircleControllerAction.ACTION_RELEASED);
 				}
 				return false;
 			}
@@ -299,7 +299,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 			case MotionEvent.ACTION_CANCEL:
 			default:
 				if (prevTouched) {
-					run.a(CircleControllerEvent.ACTION_OUT);
+					run.a(CircleControllerAction.ACTION_OUT);
 				}
 				return false;
 			}
@@ -321,7 +321,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		}
 	};
 
-	public static interface CircleControllerEvent {
+	public static interface CircleControllerAction {
 		public static int ACTION_PRESSED = 0;
 		public static int ACTION_RELEASED = 2;
 		public static int ACTION_IN = 4;
@@ -335,7 +335,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		void moveCircle(int action, int degree, int rateDegree);
 	}
 
-	class NullCircleControllerEvent implements CircleControllerEvent {
+	class NullCircleControllerEvent implements CircleControllerAction {
 		public void upButton(int action) {
 		}
 
