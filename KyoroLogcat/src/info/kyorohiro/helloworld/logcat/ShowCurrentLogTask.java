@@ -35,11 +35,17 @@ public class ShowCurrentLogTask extends Thread {
 			InputStream stream = mLogcat.getInputStream();
 //			DataInputStream input  = new DataInputStream(stream);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			while(mLogcat.isAlive()) {
+			while(true) {
 				if(!reader.ready()){
+					if(!mLogcat.isAlive()){
+						break;
+					}
 					Thread.sleep(200);
 				}
-				mData.addLinePerBreakText(reader.readLine());
+				else {
+					mData.addLinePerBreakText(reader.readLine());
+					Thread.yield();
+				}
 			}
 		} catch (LogcatException e) {
 			e.printStackTrace();
