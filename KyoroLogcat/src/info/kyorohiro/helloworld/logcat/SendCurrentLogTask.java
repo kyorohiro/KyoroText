@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import info.kyorohiro.helloworld.logcat.util.Logcat;
+import info.kyorohiro.helloworld.util.CyclingList;
 
 public class SendCurrentLogTask extends Thread {
 
@@ -30,27 +31,31 @@ public class SendCurrentLogTask extends Thread {
 
 	public void run() {
 		mLogcat.start(mOption);
-		StringBuilder builder = new StringBuilder();
+		CyclingList<String> temp = new CyclingList<String>(3000);
 		try {
 			showMessage("start to collect log.");
 			InputStream stream = mLogcat.getInputStream();
-//			DataInputStream input  = new DataInputStream(stream);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			while(true) {
-				if(reader.ready()){
-//				if(0<input.available()){
+				if(!reader.ready()){
+					//				if(0<input.available()){
 					if(!mLogcat.isAlive()){
 						break;
 					}
 					else {
 						Thread.sleep(100);
 					}
+				} else {
+					temp.add(reader.readLine()+"\r\n");
+					Thread.yield();
 				}
-				builder.append(reader.readLine());
-//				builder.append(input.readLine());
-				builder.append("\r\n");
 			}
 			showMessage("successed to collect log. and start to ticket for sending mail.");
+			StringBuilder builder = new StringBuilder();
+			int len = temp.getNumberOfStockedElement();
+			for(int i=0;i<len;i++) {
+				builder.append(temp.get(i));
+			}
 			sendMail("KyoroLogcat log(logcat -d)", "xxx@example.com", builder);
 		} catch (InterruptedException e) {
 			// expected exception
