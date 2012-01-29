@@ -20,17 +20,29 @@ public class BigLineData {
 	private int mCurrentPosition = 0;
 	private ArrayList<Long> mPositionPer1000Line = new ArrayList<Long>();
 
-	public BigLineData(String path) {
-		mPath = new File(path);
-	}
-
-	public void start() throws FileNotFoundException {
+	public BigLineData(File path) throws FileNotFoundException {
+		mPath = path;
 		mReader = new RandomAccessFile(mPath, "r");
 	}
 
 	public void moveLinePer1000(int index) throws IOException {
 		long filePointer = mPositionPer1000Line.get(index);
 		mReader.seek(filePointer);
+	}
+
+	public boolean isEOF() {
+		try {
+			android.util.Log.v("kiyohiro",""+mReader.length()+ ":"+mReader.getFilePointer());
+			if(mReader.length() <= mReader.getFilePointer()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		return false;
 	}
 
 	public String readLine() throws IOException {
@@ -40,5 +52,9 @@ public class BigLineData {
 			mPositionPer1000Line.add(mReader.getFilePointer());
 		}
 		return tmp;
+	}
+	
+	public void close() throws IOException {
+		mReader.close();
 	}
 }

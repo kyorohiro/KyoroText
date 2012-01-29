@@ -33,9 +33,8 @@ public class SimpleFileExplorer extends Dialog {
 	private LinearLayout mLayout = null;
 	private File mDir = null;
 	
-	public static Dialog createDialog(Activity owner, File dir) {
-		Dialog dialog = new SimpleFileExplorer(owner, owner,dir);		
-		return dialog;
+	public static SimpleFileExplorer createDialog(Activity owner, File dir) {
+		return new SimpleFileExplorer(owner, owner,dir);		
 	}
 
 	public SimpleFileExplorer(Context context, Activity owner, File dir) {
@@ -97,8 +96,17 @@ public class SimpleFileExplorer extends Dialog {
 				if(f.exists() && f.isDirectory()){
 					mDir = f;
 				}
-				if(mAction == null ||( mAction != null && !mAction.onSelectedFile(f))) {
-					startUpdateTask(f);
+				if(mAction == null || mAction != null) {
+					if(mAction.onSelectedFile(f)) {
+						try {
+							SimpleFileExplorer.this.dismiss();
+						} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} else {
+						startUpdateTask(f);
+					}
 				}
 			}
 		});

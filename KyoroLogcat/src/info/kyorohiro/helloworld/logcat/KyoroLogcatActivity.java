@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.logcat;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 import info.kyorohiro.helloworld.android.base.TestActivity;
@@ -34,8 +35,7 @@ import android.widget.Toast;
 
 public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_START_SHOW_LOG = "Start show log";
-	public static final String MENU_START_SHOW_LOG_FROM_FILE = "show log from file";
-	public static final String MENU_START_SHOW_LOG_FROM_SHELL = "show log from logcat";
+	public static final String MENU_START_SHOW_LOG_FROM_FILE = "open file";
 
 	public static final String MENU_STOP_SHOW_LOG = "Stop show log";
 	public static final String MENU_STOP_SAVE_AT_BGGROUND = "Stop Save at bg";
@@ -139,11 +139,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			menu.add(MENU_STOP_SHOW_LOG).setIcon(R.drawable.ic_stop);
 		}
 		else {
-			SubMenu showSubMenu = 
-				menu.addSubMenu(MENU_START_SHOW_LOG);
-			showSubMenu.setIcon(R.drawable.ic_start);
-			showSubMenu.add(MENU_START_SHOW_LOG_FROM_FILE);
-			showSubMenu.add(MENU_START_SHOW_LOG_FROM_SHELL);
+			menu.add(MENU_START_SHOW_LOG).setIcon(R.drawable.ic_start);
 		}
 
 		if (KyoroLogcatTaskManagerForSave.saveTaskIsAlive()) {
@@ -155,8 +151,8 @@ public class KyoroLogcatActivity extends TestActivity {
 		}
 
 		menu.add(MENU_SEND_MAIL).setIcon(R.drawable.ic_send_mail);
-
 		menu.add(MENU_CLEAR_LOG).setIcon(R.drawable.ic_clear_log);
+		menu.add(MENU_START_SHOW_LOG_FROM_FILE);
 
 		return true;
 	}
@@ -171,6 +167,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		}
 	}
 
+	ShowFileContentTask task = null;
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 
@@ -199,9 +196,28 @@ public class KyoroLogcatActivity extends TestActivity {
 		} else if(MENU_START_SHOW_LOG_FROM_FILE.equals(selectedItemTitle)) {
 			runOnUiThread(new Runnable() {				
 				public void run() {
-					 Dialog  dialog = SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, Environment.getExternalStorageDirectory());
-						 //SiimpleFileReader.createDialog(KyoroLogcatActivity.this);
+					SimpleFileExplorer dialog = 
+						SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, Environment.getExternalStorageDirectory());
 					 dialog.show();
+					 dialog.setOnSelectedFileAction(new SimpleFileExplorer.SelectedFileAction() {
+						public boolean onSelectedFile(File file) {
+							try {
+								if(file == null || !file.exists()||
+										file.isDirectory()){
+									return false;
+								}
+								else {
+									task = new ShowFileContentTask(mLogcatOutput, file);
+									Thread th = new Thread(task);
+									th.start();
+									return true;
+								}
+							} catch(Throwable t){
+								t.printStackTrace();
+								return false;
+							}
+						}
+					});
 				}
 			});
 		}
