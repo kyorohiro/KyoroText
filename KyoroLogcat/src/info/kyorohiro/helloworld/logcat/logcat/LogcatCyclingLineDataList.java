@@ -23,33 +23,6 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 		mPaint.setTextSize(textSize);
 	}
 
-	private ArrayList<LogcatLineData> mCashForFiltering = new ArrayList<LogcatLineData>();
-	@Override
-	protected boolean filter(LogcatLineData t) {
-		if(mFilter == null){
-			return true;
-		}
-		if(t != null) {
-			mCashForFiltering.add(t);
-			if(t.getStatus() == LogcatLineData.INCLUDE_END_OF_LINE) {
-				StringBuilder builder = new StringBuilder("");
-				for(LogcatLineData d : mCashForFiltering){
-					builder.append(d);
-				}
-				String i = builder.toString();
-				Matcher m = mFilter.matcher(i);
-				if(m.find()){
-					for(LogcatLineData d: mCashForFiltering) {
-						getDuplicatingList().add(d);
-					}
-				}
-				mCashForFiltering.clear();
-			}
-		}
-
-		// ever time return false;
-		return false;
-	}
 
 	public void setWidth(int w) {
 		mWidth = w;
@@ -65,6 +38,11 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 	
 	public Pattern getFilterText() {
 		return mFilter;
+	}
+
+	public synchronized void addLineToHead(String line) {
+		this.head(new LogcatLineData(line, mCurrentColor,
+						LogcatLineData.INCLUDE_END_OF_LINE));
 	}
 
 	public synchronized void addLinePerBreakText(String line) {
@@ -86,18 +64,6 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 				line = line.substring(len, line.length());
 			}
 		}
-	}
-
-	public synchronized void addLine(String line) {
-		LogcatLineData vLine = null;
-		if (line == null) {
-			vLine = new LogcatLineData("", 0,
-					LogcatLineData.INCLUDE_END_OF_LINE);
-		} else {
-			vLine = new LogcatLineData(line, 0,
-					LogcatLineData.INCLUDE_END_OF_LINE);
-		}
-		add(vLine);
 	}
 
 	public synchronized LogcatLineData[] getLastLines(
@@ -149,5 +115,34 @@ public class LogcatCyclingLineDataList extends CyclingListForAsyncDuplicate<Logc
 
 		}
 	}
+
+	private ArrayList<LogcatLineData> mCashForFiltering = new ArrayList<LogcatLineData>();
+	@Override
+	protected boolean filter(LogcatLineData t) {
+		if(mFilter == null){
+			return true;
+		}
+		if(t != null) {
+			mCashForFiltering.add(t);
+			if(t.getStatus() == LogcatLineData.INCLUDE_END_OF_LINE) {
+				StringBuilder builder = new StringBuilder("");
+				for(LogcatLineData d : mCashForFiltering){
+					builder.append(d);
+				}
+				String i = builder.toString();
+				Matcher m = mFilter.matcher(i);
+				if(m.find()){
+					for(LogcatLineData d: mCashForFiltering) {
+						getDuplicatingList().add(d);
+					}
+				}
+				mCashForFiltering.clear();
+			}
+		}
+
+		// ever time return false;
+		return false;
+	}
+
 
 }

@@ -127,4 +127,11 @@ public class CyclingListForAsyncDuplicate<T> implements CyclingListInter<T> {
 			}
 		}
 	}
+
+	@Override
+	public synchronized void head(T element) {
+		mBase.head(element);
+		mCopy.head(element);
+		mIndexForNextCopy++;
+	}
 }

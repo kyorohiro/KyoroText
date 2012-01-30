@@ -22,6 +22,10 @@ public class CyclingList<X> implements CyclingListInter<X> {
 		mListIsFull = false;//
 	}
 
+	public synchronized void head(X element) {
+		mList.add(0, element);
+	}
+
 	public synchronized void add(X element) {
 		mList.set(mNextAddedPoint, element);
 		mNextAddedPoint = mNextAddedPoint + 1;

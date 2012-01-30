@@ -114,6 +114,10 @@ public class LogcatViewer extends SimpleDisplayObjectContainer {
 					continue;
 				}
 				graphics.setColor(list[i].getColor());
+				int startStopY = graphics.getTextSize()*(blank+i + 1);
+				if(list[i].getStatus() == LogcatLineData.INCLUDE_END_OF_LINE){
+				graphics.drawLine(10, startStopY, graphics.getWidth()-10, startStopY);
+				}
 				graphics.drawText(
 						"[" + (start + i) + "]:  " + list[i],
 						0,

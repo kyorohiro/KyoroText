@@ -33,7 +33,7 @@ public class ClearCurrentLogTask extends Thread {
 				if(0 == input.available()){
 					Thread.sleep(100);
 				}
-				mData.addLine(input.readLine());
+				input.readLine();
 			}
 		} catch (LogcatException e) {
 			e.printStackTrace();
