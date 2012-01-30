@@ -1,5 +1,6 @@
-package info.kyorohiro.helloworld.logcat;
+package info.kyorohiro.helloworld.logcat.tasks;
 
+import info.kyorohiro.helloworld.logcat.KyoroApplication;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;

@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.logcat;
+package info.kyorohiro.helloworld.logcat.tasks;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import android.content.Context;
 import android.content.Intent;
 
+import info.kyorohiro.helloworld.logcat.KyoroApplication;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.util.CyclingList;
 
@@ -31,7 +32,7 @@ public class SendCurrentLogTask extends Thread {
 
 	public void run() {
 		mLogcat.start(mOption);
-		CyclingList<String> temp = new CyclingList<String>(3000);
+		CyclingList<String> temp = new CyclingList<String>(400);
 		try {
 			showMessage("start to collect log.");
 			InputStream stream = mLogcat.getInputStream();

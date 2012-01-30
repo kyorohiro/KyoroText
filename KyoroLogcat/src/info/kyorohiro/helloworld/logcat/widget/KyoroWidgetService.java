@@ -1,8 +1,8 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
-import info.kyorohiro.helloworld.logcat.KyoroLogcatTaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.R;
-import info.kyorohiro.helloworld.logcat.SendCurrentLogTask;
+import info.kyorohiro.helloworld.logcat.tasks.KyoroLogcatTaskManagerForSave;
+import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
