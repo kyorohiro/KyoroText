@@ -8,6 +8,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
+
+
 public class KyoroMailWidget extends AppWidgetProvider {
 	public static String TYPE = "send";
 

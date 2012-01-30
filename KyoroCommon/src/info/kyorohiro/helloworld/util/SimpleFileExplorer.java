@@ -15,6 +15,7 @@ import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,7 +33,10 @@ public class SimpleFileExplorer extends Dialog {
 	private EditText mEdit = null;
 	private LinearLayout mLayout = null;
 	private File mDir = null;
-	
+	private ViewGroup.LayoutParams mParams = 
+		new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+
 	public static SimpleFileExplorer createDialog(Activity owner, File dir) {
 		return new SimpleFileExplorer(owner, owner,dir);		
 	}
@@ -45,7 +49,9 @@ public class SimpleFileExplorer extends Dialog {
 		mCurrentFileList = new ListView(context);
 		mEdit = new EditText(context);
 		mDir = dir;
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 		init();
+		addContentView(mLayout, mParams);
 		startUpdateTask(dir);
 	}
 
@@ -75,17 +81,14 @@ public class SimpleFileExplorer extends Dialog {
 				return false;
 			}
 		});
-		ViewGroup.LayoutParams params = 
-			new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
+
 		ArrayAdapter<ListItemWithFile> adapter = 
 		 new ArrayAdapter<ListItemWithFile>(
 				getContext(),
 				android.R.layout.simple_list_item_1);
 
-		mLayout.addView(mEdit, params);
-		mLayout.addView(mCurrentFileList, params);
-		addContentView(mLayout, params);
+		mLayout.addView(mEdit, mParams);
+		mLayout.addView(mCurrentFileList, mParams);
 		mCurrentFileList.setAdapter(adapter);
 		mCurrentFileList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -101,7 +104,6 @@ public class SimpleFileExplorer extends Dialog {
 						try {
 							SimpleFileExplorer.this.dismiss();
 						} catch (Throwable e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					} else {
@@ -257,10 +259,11 @@ public class SimpleFileExplorer extends Dialog {
 			mPath = path;
 			mOutput = ""+output;
 		}
+
 		public ListItemWithFile(File path) {
 			mPath = path;
 			mOutput = path.getName();
-			if(path.isDirectory()){
+			if (path.isDirectory()) {
 				mOutput = mOutput+"/";
 			}
 		}
@@ -274,7 +277,8 @@ public class SimpleFileExplorer extends Dialog {
 			return mPath;
 		}	
 	}
-	
+
+
 	public static interface SelectedFileAction {
 		/**
 		 * @param file is user selected file

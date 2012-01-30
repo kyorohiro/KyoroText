@@ -9,12 +9,12 @@ import android.app.Service;
 import android.content.Context;
 
 public abstract class TestService extends Service {
-	private static final Class<?>[] mSetForegroundSignature = new Class[] {
-		boolean.class};
-	private static final Class<?>[] mStartForegroundSignature = new Class[] {
-		int.class, Notification.class};
-	private static final Class<?>[] mStopForegroundSignature = new Class[] {
-		boolean.class};
+	private static final Class<?>[] mSetForegroundSignature = 
+		new Class[] {boolean.class};
+	private static final Class<?>[] mStartForegroundSignature = 
+		new Class[] {int.class, Notification.class};
+	private static final Class<?>[] mStopForegroundSignature = 
+		new Class[] {boolean.class};
 
 	private NotificationManager mNM;
 	private Method mSetForeground;
@@ -23,7 +23,13 @@ public abstract class TestService extends Service {
 	private Object[] mSetForegroundArgs = new Object[1];
 	private Object[] mStartForegroundArgs = new Object[2];
 	private Object[] mStopForegroundArgs = new Object[1];
-	private int idOfStartForeground = 1;
+	private int mIdOfStartForeground = 1;
+
+	public TestService(int IdOfStartForeground) {
+		super();
+		mIdOfStartForeground = IdOfStartForeground;
+		// TODO Auto-generated constructor stub
+	}
 
 	void invokeMethod(Method method, Object[] args) {
 		try {
@@ -42,7 +48,7 @@ public abstract class TestService extends Service {
 	 * APIs if it is not available.
 	 */
 	public void startForegroundCompat(Notification notification) {
-		int id = idOfStartForeground;
+		int id = mIdOfStartForeground;
 		// If we have the new startForeground API, then use it.
 		if (mStartForeground != null) {
 			mStartForegroundArgs[0] = Integer.valueOf(id);
@@ -62,7 +68,7 @@ public abstract class TestService extends Service {
 	 * APIs if it is not available.
 	 */
 	public void stopForegroundCompat() {
-		int id = idOfStartForeground;
+		int id = mIdOfStartForeground;
 		// If we have the new stopForeground API, then use it.
 		if (mStopForeground != null) {
 			mStopForegroundArgs[0] = Boolean.TRUE;

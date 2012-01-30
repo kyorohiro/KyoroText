@@ -14,7 +14,6 @@ import info.kyorohiro.helloworld.android.base.TestService;
 public class KyoroLogcatService extends TestService {
 
 	private static KyoroLogcatService instance = null;
-
 	public static KyoroLogcatService getCurrentInstance() {
 		return instance;
 	}
@@ -49,18 +48,18 @@ public class KyoroLogcatService extends TestService {
 		}
 	}
 
+	
+	public KyoroLogcatService() {
+		super(1);
+	}
+
 	@Override
 	public void onCreate() {
 		// PF call only onCreate() when restarting service 
 		// after PF call force stop this service.
 		super.onCreate();
 		instance = this;
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		instance = null;
+		// todo 
 	}
 
 	@Override
@@ -71,17 +70,18 @@ public class KyoroLogcatService extends TestService {
 		n.setLatestEventInfo(this, "kyoro logcat", "run background to save log", contentIntent);
 		n.flags = Notification.FLAG_ONGOING_EVENT;
 		startForegroundCompat(n);
-
 	}
 
 	@Override
-	public IBinder onBind(Intent arg0) {
-		return null;
+	public void onDestroy() {
+		super.onDestroy();
+		instance = null;
 	}
 
 	@Override
-	public boolean onUnbind(Intent intent) {
-		return super.onUnbind(intent);
-	}
+	public IBinder onBind(Intent arg0) {return null;}
+
+	@Override
+	public boolean onUnbind(Intent intent) {return super.onUnbind(intent);}
 
 }

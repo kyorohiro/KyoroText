@@ -1,16 +1,11 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
 import info.kyorohiro.helloworld.logcat.KyoroLogcatTaskManagerForSave;
-import info.kyorohiro.helloworld.logcat.R;
 import info.kyorohiro.helloworld.logcat.task.SendCurrentLogTask;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.widget.RemoteViews;
 
 public class KyoroWidgetService extends Service {
 	public static String ACTION_CHANGE = "ACTION_CHANGE";
