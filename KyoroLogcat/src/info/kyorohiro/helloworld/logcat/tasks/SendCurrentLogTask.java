@@ -32,7 +32,7 @@ public class SendCurrentLogTask extends Thread {
 
 	public void run() {
 		mLogcat.start(mOption);
-		CyclingList<String> temp = new CyclingList<String>(3000);
+		CyclingList<String> temp = new CyclingList<String>(400);
 		try {
 			showMessage("start to collect log.");
 			InputStream stream = mLogcat.getInputStream();

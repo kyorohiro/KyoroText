@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.logcat;
+package info.kyorohiro.helloworld.logcat.tasks;
 
 import info.kyorohiro.helloworld.logcat.tasks.SaveCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;

@@ -11,6 +11,7 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
+import info.kyorohiro.helloworld.logcat.tasks.KyoroLogcatTaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowFileContentTask;

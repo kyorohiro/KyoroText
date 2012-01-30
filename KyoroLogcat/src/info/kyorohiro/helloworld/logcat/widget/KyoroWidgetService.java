@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
-import info.kyorohiro.helloworld.logcat.KyoroLogcatTaskManagerForSave;
+import info.kyorohiro.helloworld.logcat.tasks.KyoroLogcatTaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import android.app.Service;
 import android.content.Context;
