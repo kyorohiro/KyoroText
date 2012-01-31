@@ -7,8 +7,8 @@ import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
+import info.kyorohiro.helloworld.display.widget.CyclingFlowingLineData;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
-import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.KyoroLogcatTaskManagerForSave;
@@ -26,13 +26,15 @@ import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_START_SHOW_LOG = "Start show log";
-	public static final String MENU_START_SHOW_LOG_FROM_FILE = "open file";
+	public static final String MENU_START_SHOW_LOG_FROM_FILE = "open file(now test!!)";
 	public static final String MENU_STOP_SHOW_LOG = "Stop show log";
 	public static final String MENU_STOP_SAVE_AT_BGGROUND = "Stop Save at bg";
 	public static final String MENU_START_SAVE_AT_BGGROUND = "Start Save at bg";
@@ -40,10 +42,10 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_CLEAR_LOG = "clear log";
 
 	private LogcatViewer mLogcatViewer = new LogcatViewer(1000);
-	private LogcatCyclingLineDataList mLogcatOutput = mLogcatViewer.getCyclingStringList();
+	private CyclingFlowingLineData mLogcatOutput = mLogcatViewer.getCyclingStringList();
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
-	private EditText mInputForLogFilter = null; 
+	private AutoCompleteTextView mInputForLogFilter = null; 
 	private ShowCurrentLogTask mShowTask = null;
 
 
@@ -70,13 +72,21 @@ public class KyoroLogcatActivity extends TestActivity {
 		mStage.getRoot().addChild(mCircleController);
 		mStage.start();
 		
-		mInputForLogFilter = new EditText(this);
+		mInputForLogFilter = new AutoCompleteTextView(this);
 		mInputForLogFilter.setSelected(false);
 		mInputForLogFilter.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		mInputForLogFilter.setHint("Filter regex(find)");
 		mInputForLogFilter.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mInputForLogFilter.setOnEditorActionListener(new FilterSettingAction());
-
+        ArrayAdapter<String> automatedStrage = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,
+        		new String[]{
+        		"[DIVWEFS]/"," [DIVWEFS]/", ".[DIVWEFS]/",
+        		" D/"," I/"," V/"," W/"," E/"," F/"," S/",
+        		"D/","I/","V/","W/","E/","F/","S/",
+        		"[DIV]/","[IVW]/","[VWE]/","[WEF]/","[EFS]/"
+        		});
+        mInputForLogFilter.setAdapter(automatedStrage);
+        mInputForLogFilter.setThreshold(1);
 		LinearLayout rootLayout = new LinearLayout(this);
 		rootLayout.setOrientation(LinearLayout.VERTICAL);
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);

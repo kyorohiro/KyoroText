@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import info.kyorohiro.helloworld.logcat.logcat.LogcatCyclingLineDataList;
+import info.kyorohiro.helloworld.display.widget.CyclingFlowingLineData;
 import info.kyorohiro.helloworld.util.BigLineData;
 
 public class ShowFileContentTask extends Thread {
-	private LogcatCyclingLineDataList mData;
+	private CyclingFlowingLineData mData;
 	private BigLineData mLineData = null;
 	
-	public ShowFileContentTask(LogcatCyclingLineDataList data, File file) throws FileNotFoundException {
+	public ShowFileContentTask(CyclingFlowingLineData data, File file) throws FileNotFoundException {
 		super();
 		mData = data;
 		 mLineData = new BigLineData(file);

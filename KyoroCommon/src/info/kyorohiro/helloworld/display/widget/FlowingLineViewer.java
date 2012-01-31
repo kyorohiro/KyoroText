@@ -24,6 +24,15 @@ public class FlowingLineViewer extends SimpleDisplayObjectContainer {
 	public CyclingFlowingLineData getCyclingStringList() {
 		return mInputtedText;
 	}
+	
+	public void setPosition(int position) {
+		mPosition = position;
+	}
+
+	public int getPosition() {
+		return mPosition;
+	}
+
 
 	public void startFilter(Pattern nextFilter) {
 		if(nextFilter == null || mInputtedText == null) {

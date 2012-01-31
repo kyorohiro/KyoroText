@@ -10,24 +10,20 @@ import android.view.MotionEvent;
 public class SimpleCircleController extends SimpleDisplayObjectContainer {
 
 	private CircleControllerAction mEvent = new NullCircleControllerEvent();
+	private int mMaxRadius = 100;
+	private int mMinRadius = 50;
 
 	public SimpleCircleController() {
 		BG bg = new BG();
-		UP up = new UP();
-		up.setPoint(-50, -50);
-		DOWM down = new DOWM();
-		down.setPoint(-50, 10);
 		this.addChild(bg);
-		this.addChild(up);
-		this.addChild(down);
 	}
 
 	public int getWidth(){
-		return 100;
+		return mMaxRadius;
 	}
 
 	public int getHeight(){
-		return 100;
+		return mMaxRadius;
 	}
 
 	public void setEventListener(CircleControllerAction event) {
@@ -69,9 +65,9 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 	}
 
 	private class BG extends SimpleDisplayObject {
-		private int mMinSize = 70;
-		private int mSize = 90;
-		private int mMaxSize = 110;
+//		private int mMinSize = 70;
+//		private int mSize = 90;
+//		private int mMaxSize = 110;
 		private boolean isTouched = false;
 		private int mTouchX = 0;
 		private int mTouchY = 0;
@@ -81,28 +77,37 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 			graphics.setColor(Color.parseColor("#99ffff86"));
 			graphics.setStyle(SimpleGraphics.STYLE_STROKE);
 			graphics.setStrokeWidth(4);
+
+			int interSpace = (mMaxRadius-mMinRadius)/10;
+			int centerRadius = mMinRadius +(mMaxRadius-mMinRadius)/2;
+
 			for (int i = 0; i < 10; i++) {
-				graphics.drawCircle(0, 0, 100 - i * 3);
+				graphics.drawCircle(0, 0, mMaxRadius - i * interSpace);
 			}
 			graphics.setStrokeWidth(6);
 			graphics.setColor(Color.parseColor("#99ffff86"));
-			graphics.drawLine(-100, 0, +100, 0);
-			graphics.drawCircle(0, 0, 100);
-			graphics.drawCircle(0, 0, 80);
-
 			if (isTouched) {
 				graphics.setColor(Color.parseColor("#99ffc9f4"));
 				double pi = 0;
 				if (mTouchX != 0) {
 					pi = Math.atan2(mTouchY, mTouchX);
 				}
-
-				int x = (int) (mSize * Math.cos(pi));
-				int y = (int) (mSize * Math.sin(pi));
-				graphics.drawCircle(x, y, mSize / 3);
-				graphics.drawCircle(x, y, mSize / 4);
-				graphics.drawCircle(x, y, mSize / 5);
+				int x = (int) (centerRadius * Math.cos(pi));
+				int y = (int) (centerRadius * Math.sin(pi));
+				graphics.drawCircle(x, y, centerRadius / 3);
+				graphics.drawCircle(x, y, centerRadius / 4);
+				graphics.drawCircle(x, y, centerRadius / 5);
 			}
+
+			graphics.drawCircle(0, 0, mMaxRadius);
+			graphics.drawCircle(0, 0, mMinRadius);
+			graphics.drawCircle(0, 0, mMinRadius);
+
+			graphics.drawLine(mMinRadius, -10, centerRadius, 0);
+			graphics.drawLine(mMaxRadius, -10, centerRadius, 0);
+			graphics.drawLine(-mMinRadius, -10, -centerRadius, 0);
+			graphics.drawLine(-mMaxRadius, -10, -centerRadius, 0);
+
 		}
 
 		@Override
@@ -117,7 +122,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 				mPrevDegree = -999;
 			}
 
-			if (mMinSize * mMinSize < size && size < mMaxSize * mMaxSize) {
+			if (mMinRadius * mMinRadius < size && size < mMaxRadius * mMaxRadius) {
 				switch (action) {
 				case MotionEvent.ACTION_DOWN:
 					isTouched = true;
@@ -179,147 +184,6 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		private int mPrevDegree = -999;
 	}
 
-	private class UP extends SimpleDisplayObject {
-		private int mCenterX = 50;
-		private int mCenterY = 20;
-		private int mSize = 20;
-		private boolean isTouched = false;
-
-		@Override
-		public void paint(SimpleGraphics graphics) {
-			graphics.setStrokeWidth(4);
-			if (!isTouched) {
-				graphics.setColor(Color.parseColor("#99c9f4ff"));
-			} else {
-				graphics.setColor(Color.parseColor("#99ffc9f4"));
-			}
-			graphics.moveTo(50, 0);
-			graphics.lineTo(0, 40);
-			graphics.lineTo(100, 40);
-			graphics.lineTo(50, 0);
-		}
-
-		@Override
-		public boolean onTouchTest(int x, int y, int action) {
-			super.onTouchTest(x, y, action);
-
-			int leftX = mCenterX - mSize;
-			int leftY = mCenterY - mSize;
-			int rightX = mCenterX + mSize;
-			int rightY = mCenterY + mSize;
-
-			if (leftX <= x && x <= rightX && leftY <= y && y <= rightY) {
-				isTouched = notifyButtonEventAndReturnNextTouchedState(action,
-						true, isTouched, upAction);
-				return true;
-			} else {
-				isTouched = notifyButtonEventAndReturnNextTouchedState(action,
-						false, isTouched, upAction);
-				return false;
-			}
-		}
-
-	}
-
-	private class DOWM extends SimpleDisplayObject {
-		private int mCenterX = 50;
-		private int mCenterY = 20;
-		private int mSize = 20;
-		private boolean isTouched = false;
-
-		@Override
-		public void paint(SimpleGraphics graphics) {
-			graphics.setStrokeWidth(4);
-			if (!isTouched) {
-				graphics.setColor(Color.parseColor("#99c9f4ff"));
-			} else {
-				graphics.setColor(Color.parseColor("#99ffc9f4"));
-			}
-			graphics.moveTo(50, 40);
-			graphics.lineTo(0, 0);
-			graphics.lineTo(100, 0);
-			graphics.lineTo(50, 40);
-		}
-
-		@Override
-		public boolean onTouchTest(int x, int y, int action) {
-			super.onTouchTest(x, y, action);
-			int leftX = mCenterX - mSize;
-			int leftY = mCenterY - mSize;
-			int rightX = mCenterX + mSize;
-			int rightY = mCenterY + mSize;
-
-			if (leftX <= x && x <= rightX && leftY <= y && y <= rightY) {
-				isTouched = notifyButtonEventAndReturnNextTouchedState(action,
-						true, isTouched, downAction);
-				return true;
-			} else {
-				isTouched = notifyButtonEventAndReturnNextTouchedState(action,
-						false, isTouched, downAction);
-				return false;
-			}
-		}
-	}
-
-	private boolean notifyButtonEventAndReturnNextTouchedState(int action,
-			boolean isInside, boolean prevTouched, Action run) {
-		if (isInside) {
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				if (!prevTouched) {
-					run.a(CircleControllerAction.ACTION_PRESSED);
-				}
-				return true;
-			case MotionEvent.ACTION_UP:
-				if (prevTouched) {
-					run.a(CircleControllerAction.ACTION_RELEASED);
-				}
-				return false;
-			case MotionEvent.ACTION_MOVE:
-				if (prevTouched) {
-					run.a(CircleControllerAction.ACTION_IN);
-				} else {
-					run.a(CircleControllerAction.ACTION_MOVE);
-				}
-				return true;
-			case MotionEvent.ACTION_OUTSIDE:
-			case MotionEvent.ACTION_CANCEL:
-			default:
-				if (prevTouched) {
-					run.a(CircleControllerAction.ACTION_RELEASED);
-				}
-				return false;
-			}
-		} else {
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-			case MotionEvent.ACTION_MOVE:
-			case MotionEvent.ACTION_UP:
-			case MotionEvent.ACTION_OUTSIDE:
-			case MotionEvent.ACTION_CANCEL:
-			default:
-				if (prevTouched) {
-					run.a(CircleControllerAction.ACTION_OUT);
-				}
-				return false;
-			}
-		}
-	}
-
-	private interface Action {
-		public void a(int action);
-	}
-
-	private Action downAction = new Action() {
-		public void a(int action) {
-			mEvent.downButton(action);
-		}
-	};
-	private Action upAction = new Action() {
-		public void a(int action) {
-			mEvent.upButton(action);
-		}
-	};
 
 	public static interface CircleControllerAction {
 		public static int ACTION_PRESSED = 0;
