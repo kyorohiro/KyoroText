@@ -41,7 +41,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_SEND_MAIL = "send logcat(-d) log mail";
 	public static final String MENU_CLEAR_LOG = "clear log";
 
-	private LogcatViewer mLogcatViewer = new LogcatViewer(1000);
+	private LogcatViewer mLogcatViewer = new LogcatViewer(3000);
 	private CyclingFlowingLineData mLogcatOutput = mLogcatViewer.getCyclingStringList();
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;

@@ -32,26 +32,24 @@ public class ShowFileContentTask extends Thread {
 
 	@Override
 	public void run() {
-		android.util.Log.v("kiyohiro","--run()---");
 		try {
 			while(true) {
 				if(mLineData.isEOF()){
 					break;
 				}
-				android.util.Log.v("kiyohiro","--01--");
 				String line = mLineData.readLine();
-				android.util.Log.v("kiyohiro","--"+line+"--");
-				
 				mData.addLinePerBreakText(line);
 				Thread.sleep(0);
 			}
 		} catch (IOException e) {
-			android.util.Log.v("kiyohiro","--IOException---");
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			android.util.Log.v("kiyohiro","--InterrupedException---");
 		} finally {
-			android.util.Log.v("kiyohiro","-final-");
+			try {
+				mLineData.close();
+			} catch(Throwable t){
+				t.printStackTrace();
+			}
 		}
 	}
 }

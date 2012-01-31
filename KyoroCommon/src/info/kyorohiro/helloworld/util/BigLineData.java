@@ -32,7 +32,6 @@ public class BigLineData {
 
 	public boolean isEOF() {
 		try {
-			android.util.Log.v("kiyohiro",""+mReader.length()+ ":"+mReader.getFilePointer());
 			if(mReader.length() <= mReader.getFilePointer()) {
 				return true;
 			}
