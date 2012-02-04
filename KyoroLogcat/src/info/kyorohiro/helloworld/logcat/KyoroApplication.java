@@ -21,9 +21,9 @@ public class KyoroApplication extends Application {
 		super.onCreate();
 		sInstance = this;
 		mHandler = new Handler();
-		KyoroLogcatService.cancelForgroundNotificationAfterProcessKill(this);
+		//KyoroLogcatService.cancelForgroundNotificationAfterProcessKill(this);
 		if(TaskManagerForSave.saveTaskIsForceKilled()) {
-			// force kill process
+			// pf force kill process
 			TaskManagerForSave.startSaveTask(getApplicationContext());
 			KyoroApplication.showMessageAndNotification("spmode process is killed");
 		}

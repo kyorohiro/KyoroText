@@ -7,6 +7,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
+import android.os.Build;
+import android.os.Environment;
 
 public abstract class TestService extends Service {
 	private static final Class<?>[] mSetForegroundSignature = 
@@ -95,14 +97,16 @@ public abstract class TestService extends Service {
 	@Override
 	public void onCreate() {
 		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		try {
-			mStartForeground = getClass().getMethod("startForeground",
-					mStartForegroundSignature);
-			mStopForeground = getClass().getMethod("stopForeground",
-					mStopForegroundSignature);
-			return;
-		} catch (NoSuchMethodException e) {
-			mStartForeground = mStopForeground = null;
+		if(Build.VERSION.SDK_INT > 7){
+			try {
+				mStartForeground = getClass().getMethod("startForeground",
+						mStartForegroundSignature);
+				mStopForeground = getClass().getMethod("stopForeground",
+						mStopForegroundSignature);
+				return;
+			} catch (NoSuchMethodException e) {
+				mStartForeground = mStopForeground = null;
+			}
 		}
 		try {
 			mSetForeground = getClass().getMethod("setForeground",

@@ -126,7 +126,6 @@ public class KyoroLogcatActivity extends TestActivity {
 		String action = extras.getString("action");
 		if(action != null && action.equals("folder")){
 			startFolder();
-			Toast.makeText(this, "tap and long tap", Toast.LENGTH_LONG);
 		}
 	}
 
@@ -241,6 +240,8 @@ public class KyoroLogcatActivity extends TestActivity {
 	private void startFolder() {
 		runOnUiThread(new Runnable() {				
 			public void run() {
+				Toast.makeText(KyoroLogcatActivity.this, "tap and long tap", Toast.LENGTH_LONG).show();
+
 				SimpleFileExplorer dialog = 
 					SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, Environment.getExternalStorageDirectory());
 				dialog.show();
