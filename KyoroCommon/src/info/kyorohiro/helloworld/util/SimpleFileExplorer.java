@@ -19,11 +19,13 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SimpleFileExplorer extends Dialog {
 
@@ -100,7 +102,7 @@ public class SimpleFileExplorer extends Dialog {
 					mDir = f;
 				}
 				if(mAction == null || mAction != null) {
-					if(mAction.onSelectedFile(f)) {
+					if(mAction.onSelectedFile(f,SelectedFileAction.CLICK)) {
 						try {
 							SimpleFileExplorer.this.dismiss();
 						} catch (Throwable e) {
@@ -110,6 +112,28 @@ public class SimpleFileExplorer extends Dialog {
 						startUpdateTask(f);
 					}
 				}
+			}
+		});
+		mCurrentFileList.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int pos, long id) {
+				ListItemWithFile item = ((ArrayAdapter<ListItemWithFile>)mCurrentFileList.getAdapter()).getItem(pos);
+				File f = item.getFile();
+				if(f.exists() && f.isDirectory()){
+					mDir = f;
+				}
+				if(mAction == null || mAction != null) {
+					if(mAction.onSelectedFile(f,SelectedFileAction.LONG_CLICK)) {
+						try {
+							SimpleFileExplorer.this.dismiss();
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				return false;
 			}
 		});
 	}
@@ -167,25 +191,38 @@ public class SimpleFileExplorer extends Dialog {
 			ArrayList<File> mTmp = new ArrayList<File>();
 			
 			try {
+				SimpleFileExplorer.this.mOwnerActivity.runOnUiThread(new UpdateTitleTask("search...",Thread.currentThread()));
 				mTmp.add(mDir);
-				File t = mTmp.get(mTmp.size()-1);
-				mTmp.remove(t);
-				for(File f : t.listFiles()){
-					if(!f.exists()){
+				File t = null;
+				File[] l = null;
+				while(!mTmp.isEmpty()) {
+					t = mTmp.get(mTmp.size()-1);
+					mTmp.remove(t);
+					if(t == null){
 						continue;
 					}
-					if(f.isDirectory()){
-						mTmp.add(f);
+					l = t.listFiles();
+					if(l == null){
+						continue;
 					}
-					if(f.isFile()){
-						if(mPattern.matcher(f.getPath()).find()) {
-							mOutput.add(new ListItemWithFile(f));
+					for(File f : l){
+						if(!f.exists()){
+							continue;
+						}
+						if(f.isDirectory()){
+							mTmp.add(f);
+						}
+						if(f.isFile()){
+							if(mPattern.matcher(f.getPath()).find()) {
+								mOutput.add(new ListItemWithFile(f));
+							}
 						}
 					}
 				}
-				
+				SimpleFileExplorer.this.mOwnerActivity.runOnUiThread(new UpdateTitleTask(""+mPattern.pattern()+":"+mDir.getPath(), Thread.currentThread()));
 			} catch(Throwable t){
-				
+				t.printStackTrace();
+				SimpleFileExplorer.this.mOwnerActivity.runOnUiThread(new UpdateTitleTask("failed search",Thread.currentThread()));
 			} finally {
 				ArrayAdapter<ListItemWithFile> adapter =
 					new ArrayAdapter<ListItemWithFile>(
@@ -229,7 +266,9 @@ public class SimpleFileExplorer extends Dialog {
 					}
 					adapter.add(new ListItemWithFile(f));
 				}
-				SimpleFileExplorer.this.mOwnerActivity.runOnUiThread(new UpdateListTask( adapter,Thread.currentThread()));
+				SimpleFileExplorer.this.mOwnerActivity.runOnUiThread(new UpdateListTask(adapter,Thread.currentThread()));
+				SimpleFileExplorer.this.mOwnerActivity.runOnUiThread(new UpdateTitleTask(mDir.getPath(),Thread.currentThread()));
+
 			} catch(Throwable t) {
 				t.printStackTrace();
 			} finally {
@@ -248,6 +287,20 @@ public class SimpleFileExplorer extends Dialog {
 		@Override
 		public void run() {
 			add(mAdapter, mOwner);
+		}
+	}
+
+	public class UpdateTitleTask implements Runnable {
+		private String mTitle;
+		private Thread mOwner;
+		
+		public UpdateTitleTask(String title, Thread owner) {
+			mTitle = title;
+			mOwner = owner;
+		}
+		@Override
+		public void run() {
+			SimpleFileExplorer.this.setTitle(mTitle);
 		}
 	}
 
@@ -280,10 +333,13 @@ public class SimpleFileExplorer extends Dialog {
 
 
 	public static interface SelectedFileAction {
+		public static String LONG_CLICK = "long click";
+		public static String CLICK = "click";
+		
 		/**
 		 * @param file is user selected file
 		 * @return if end dialog return true, else return false;  
 		 */
-		public boolean onSelectedFile(File file);
+		public boolean onSelectedFile(File file, String action);
 	}
 }

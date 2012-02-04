@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.logcat.tasks;
 
 import info.kyorohiro.helloworld.logcat.KyoroApplication;
+import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
@@ -62,6 +63,7 @@ public class SaveCurrentLogTask extends Thread {
 		InputStream input = null;
 		File saveFile = null;
 		try {
+			KyoroLogcatSetting.saveTaskStateIsStart();
 			Date date = new Date();
 			date.setTime(System.currentTimeMillis());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss",Locale.getDefault());
@@ -97,6 +99,7 @@ public class SaveCurrentLogTask extends Thread {
 			KyoroApplication.showMessageAndNotification("failed to throw unexcepted error.\n  please restart this application!!");			
 		}
 		finally {
+			KyoroLogcatSetting.saveTaskStateIsStop();
 			if(output != null){
 				try {
 					output.close();

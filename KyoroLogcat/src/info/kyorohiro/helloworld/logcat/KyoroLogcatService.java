@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import info.kyorohiro.helloworld.android.base.TestService;
+import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 
 /**
  * change a permanent process to use this class.
@@ -60,6 +61,11 @@ public class KyoroLogcatService extends TestService {
 		super.onCreate();
 		instance = this;
 		// todo 
+		if(TaskManagerForSave.saveTaskIsForceKilled()) {
+			// force kill process
+			TaskManagerForSave.startSaveTask(getApplicationContext());
+			KyoroApplication.showMessageAndNotification("spmode process is killed");
+		}
 	}
 
 	@Override

@@ -1,10 +1,12 @@
 package info.kyorohiro.helloworld.logcat.tasks;
 
+import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.tasks.SaveCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
 import android.content.Context;
+import android.os.Environment;
 
-public class KyoroLogcatTaskManagerForSave {
+public class TaskManagerForSave {
 	private static  SaveCurrentLogTask sSaveTask = null;
 
 	public static boolean saveTaskIsAlive() {
@@ -15,6 +17,24 @@ public class KyoroLogcatTaskManagerForSave {
 		}
 	}
 
+	public static boolean saveTaskIsForceKilled() {
+		boolean isAliveFromPreference = false;
+		boolean isAliveFromHeap = saveTaskIsAlive();
+		if(KyoroLogcatSetting.getSaveTaskState().equals(
+				KyoroLogcatSetting.SAVE_TASK_IS_STARTED)){
+			isAliveFromPreference = true;
+		}
+		else {
+			isAliveFromPreference = false;
+		}
+		if(isAliveFromHeap== false&&isAliveFromPreference==true){
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
 	public static void startSaveTask(Context context) {
 		try {
 			if(saveTaskIsAlive()){

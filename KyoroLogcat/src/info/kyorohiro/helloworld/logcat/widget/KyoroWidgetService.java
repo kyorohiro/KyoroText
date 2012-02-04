@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
-import info.kyorohiro.helloworld.logcat.tasks.KyoroLogcatTaskManagerForSave;
+import info.kyorohiro.helloworld.logcat.KyoroApplication;
+import info.kyorohiro.helloworld.logcat.KyoroLogcatActivity;
+import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import android.app.Service;
 import android.content.Context;
@@ -39,7 +41,7 @@ public class KyoroWidgetService extends Service {
 		if(KyoroSaveWidget.TYPE.equals(""+intent.getType())) {
 			 if (KyoroWidgetService.ACTION_SET.equals(action)){
 					KyoroSaveWidget.set(this);	            
-					if(KyoroLogcatTaskManagerForSave.saveTaskIsAlive()){
+					if(TaskManagerForSave.saveTaskIsAlive()){
 						KyoroSaveWidget.setStopImage(getApplicationContext());
 					}
 					else {
@@ -47,11 +49,11 @@ public class KyoroWidgetService extends Service {
 					}			
 				}
 			 else if(KyoroWidgetService.ACTION_CHANGE.equals(action)){
-				if(KyoroLogcatTaskManagerForSave.saveTaskIsAlive()){
-					KyoroLogcatTaskManagerForSave.stopSaveTask(getApplicationContext());
+				if(TaskManagerForSave.saveTaskIsAlive()){
+					TaskManagerForSave.stopSaveTask(getApplicationContext());
 				}
 				else {
-					KyoroLogcatTaskManagerForSave.startSaveTask(getApplicationContext());
+					TaskManagerForSave.startSaveTask(getApplicationContext());
 				}
 			}
 		}
@@ -63,6 +65,15 @@ public class KyoroWidgetService extends Service {
 			else if(KyoroWidgetService.ACTION_CHANGE.equals(action)){
 				SendCurrentLogTask task = new SendCurrentLogTask(this.getApplicationContext());
 				task.start();
+			}
+		}
+		else if(KyoroFolderWidget.TYPE.equals(""+intent.getType())) {
+			KyoroMailWidget.setSendMailImage(getApplicationContext());
+			if(KyoroWidgetService.ACTION_SET.equals(action)){
+				KyoroFolderWidget.set(this);	            
+			}
+			else if(KyoroWidgetService.ACTION_CHANGE.equals(action)){
+				KyoroLogcatActivity.startActivityFormFolder(this);
 			}
 		}
 	}

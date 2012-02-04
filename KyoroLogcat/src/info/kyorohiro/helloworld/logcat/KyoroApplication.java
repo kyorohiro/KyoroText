@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.logcat;
 
+import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
 import android.app.Application;
 import android.app.Notification;
@@ -21,8 +22,16 @@ public class KyoroApplication extends Application {
 		sInstance = this;
 		mHandler = new Handler();
 		KyoroLogcatService.cancelForgroundNotificationAfterProcessKill(this);
+		if(TaskManagerForSave.saveTaskIsForceKilled()) {
+			// force kill process
+			TaskManagerForSave.startSaveTask(getApplicationContext());
+			KyoroApplication.showMessageAndNotification("spmode process is killed");
+		}
 	}
 
+	public static KyoroApplication getKyoroApplication() {
+		return sInstance;
+	}
 	public static void shortcutToStartKyoroLogcatService() throws NullPointerException {
 		KyoroLogcatService.startLogcatService(sInstance);
 		KyoroSaveWidget.setStopImage(sInstance);

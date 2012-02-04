@@ -58,6 +58,16 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".widget.KyoroFolderWidget" android:label="open logcat log">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_folder" />
+
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+        </receiver>
+            
     </application>
 
     <instrumentation

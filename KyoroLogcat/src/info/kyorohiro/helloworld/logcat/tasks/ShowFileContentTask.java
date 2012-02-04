@@ -33,6 +33,7 @@ public class ShowFileContentTask extends Thread {
 	@Override
 	public void run() {
 		try {
+			mData.clear();
 			while(true) {
 				if(mLineData.isEOF()){
 					break;

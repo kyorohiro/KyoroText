@@ -11,11 +11,16 @@ import info.kyorohiro.helloworld.display.widget.CyclingFlowingLineData;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
-import info.kyorohiro.helloworld.logcat.tasks.KyoroLogcatTaskManagerForSave;
+import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowFileContentTask;
+import info.kyorohiro.helloworld.util.IntentActionDialog;
 import info.kyorohiro.helloworld.util.SimpleFileExplorer;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,6 +36,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_START_SHOW_LOG = "Start show log";
@@ -39,7 +45,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_STOP_SAVE_AT_BGGROUND = "Stop Save at bg";
 	public static final String MENU_START_SAVE_AT_BGGROUND = "Start Save at bg";
 	public static final String MENU_SEND_MAIL = "send logcat(-d) log mail";
-	public static final String MENU_CLEAR_LOG = "clear log";
+	public static final String MENU_CLEAR_LOG = "clear logcat(-c) log";
 
 	private LogcatViewer mLogcatViewer = new LogcatViewer(3000);
 	private CyclingFlowingLineData mLogcatOutput = mLogcatViewer.getCyclingStringList();
@@ -49,6 +55,14 @@ public class KyoroLogcatActivity extends TestActivity {
 	private ShowCurrentLogTask mShowTask = null;
 
 
+	public static void startActivityFormFolder(Context context){
+		Intent intent = new Intent(context, KyoroLogcatActivity.class);
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		intent.setAction(Intent.ACTION_MAIN);
+		intent.putExtra("action", "folder");
+		intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
 
 	private boolean showTaskIsAlive() {
 		if(mShowTask == null || !mShowTask.isAlive()){
@@ -98,6 +112,25 @@ public class KyoroLogcatActivity extends TestActivity {
 	}
 
 	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		Intent intent = getIntent();
+		if(intent == null){
+			return;
+		}
+		Bundle extras = intent.getExtras();
+		if(extras == null){
+			return;
+		}
+		String action = extras.getString("action");
+		if(action != null && action.equals("folder")){
+			startFolder();
+			Toast.makeText(this, "tap and long tap", Toast.LENGTH_LONG);
+		}
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 		if (mStage != null) {
@@ -144,7 +177,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			menu.add(MENU_START_SHOW_LOG).setIcon(R.drawable.ic_start);
 		}
 
-		if (KyoroLogcatTaskManagerForSave.saveTaskIsAlive()) {
+		if (TaskManagerForSave.saveTaskIsAlive()) {
 			menu.add(MENU_STOP_SAVE_AT_BGGROUND).setIcon(
 					R.drawable.ic_stop_save);
 		} else {
@@ -154,7 +187,10 @@ public class KyoroLogcatActivity extends TestActivity {
 
 		menu.add(MENU_SEND_MAIL).setIcon(R.drawable.ic_send_mail);
 		menu.add(MENU_CLEAR_LOG).setIcon(R.drawable.ic_clear_log);
-		menu.add(MENU_START_SHOW_LOG_FROM_FILE);
+		
+		if (!showTaskIsAlive()) {
+			menu.add(MENU_START_SHOW_LOG_FROM_FILE).setIcon(R.drawable.ic_folder);
+		}
 
 		return true;
 	}
@@ -172,10 +208,10 @@ public class KyoroLogcatActivity extends TestActivity {
 
 		boolean myResult = false;
 		if (MENU_START_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
-			KyoroLogcatTaskManagerForSave.startSaveTask(this.getApplicationContext());
+			TaskManagerForSave.startSaveTask(this.getApplicationContext());
 			myResult = true;
 		} else if (MENU_STOP_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
-			KyoroLogcatTaskManagerForSave.stopSaveTask(this.getApplicationContext());
+			TaskManagerForSave.stopSaveTask(this.getApplicationContext());
 			myResult = true;
 		} else if (MENU_START_SHOW_LOG.equals(selectedItemTitle)) {
 			if(mShowTask == null || !mShowTask.isAlive()){
@@ -184,14 +220,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			}
 			myResult = true;
 		} else if(MENU_START_SHOW_LOG_FROM_FILE.equals(selectedItemTitle)) {
-			runOnUiThread(new Runnable() {				
-				public void run() {
-					SimpleFileExplorer dialog = 
-						SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, Environment.getExternalStorageDirectory());
-					dialog.show();
-					dialog.setOnSelectedFileAction(new FileSelectedAction());
-				}
-			});
+			startFolder();
 		}
 		else if (MENU_STOP_SHOW_LOG.equals(selectedItemTitle)) {
 			if(mShowTask != null || mShowTask.isAlive()){
@@ -209,7 +238,16 @@ public class KyoroLogcatActivity extends TestActivity {
 		return myResult;
 	}
 
-
+	private void startFolder() {
+		runOnUiThread(new Runnable() {				
+			public void run() {
+				SimpleFileExplorer dialog = 
+					SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, Environment.getExternalStorageDirectory());
+				dialog.show();
+				dialog.setOnSelectedFileAction(new FileSelectedAction());
+			}
+		});
+	}
 	public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
@@ -220,10 +258,20 @@ public class KyoroLogcatActivity extends TestActivity {
 	}
 
 	public class FileSelectedAction implements SimpleFileExplorer.SelectedFileAction {
-		public boolean onSelectedFile(File file) {
+		public boolean onSelectedFile(final File file, String action) {
 			try {
 				if(file == null||!file.exists()||file.isDirectory()) {
 					return false;
+				}
+				
+				if(SimpleFileExplorer.SelectedFileAction.LONG_CLICK.equals(action)) {
+					KyoroLogcatActivity.this.runOnUiThread(new Runnable(){public void run(){
+					IntentActionDialog dialog = new IntentActionDialog(
+							KyoroLogcatActivity.this,
+							KyoroLogcatActivity.this, file);
+					dialog.show();
+					}});
+					return true;
 				}
 				else {
 					ShowFileContentTask task = new ShowFileContentTask(mLogcatOutput, file);
@@ -236,7 +284,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			}
 		}
 	}
-	
+
 	public class FilterSettingAction implements TextView.OnEditorActionListener {
 		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 			// All IME Application take that actionId become imeoption's value.

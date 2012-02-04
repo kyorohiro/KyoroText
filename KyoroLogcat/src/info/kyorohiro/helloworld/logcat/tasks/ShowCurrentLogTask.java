@@ -30,7 +30,9 @@ public class ShowCurrentLogTask extends Thread {
 	}
 
 	public void run() {
+
 		mLogcat.start(mOption);
+		mData.clear();
 		try {
 			InputStream stream = mLogcat.getInputStream();
 //			DataInputStream input  = new DataInputStream(stream);
