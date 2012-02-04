@@ -21,7 +21,6 @@ public class KyoroApplication extends Application {
 		super.onCreate();
 		sInstance = this;
 		mHandler = new Handler();
-		//KyoroLogcatService.cancelForgroundNotificationAfterProcessKill(this);
 		if(TaskManagerForSave.saveTaskIsForceKilled()) {
 			// pf force kill process
 			TaskManagerForSave.startSaveTask(getApplicationContext());

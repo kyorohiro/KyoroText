@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 public class KyoroLogcatSetting {
 
+
 	public static String SAVE_TASK_TAG = "save task";
 	public static String SAVE_TASK_IS_STARTED = "started";
 	public static String SAVE_TASK_IS_STOPPED= "stopped";

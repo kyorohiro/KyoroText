@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -54,13 +55,14 @@ public class KyoroLogcatActivity extends TestActivity {
 	private AutoCompleteTextView mInputForLogFilter = null; 
 	private ShowCurrentLogTask mShowTask = null;
 
-
+	public static String EXTRA_PROPERTY_ACTION = "info.kyorohiro.helloworld.logcat.Action";
+	public static String EXTRA_PROPERTY_ACTION_VALUE_FOLDER = "info.kyorohiro.helloworld.logcat.Folder";
+	
 	public static void startActivityFormFolder(Context context){
-		Intent intent = new Intent(context, KyoroLogcatActivity.class);
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setAction(Intent.ACTION_MAIN);
-		intent.putExtra("action", "folder");
-		intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK);
+		Intent intent = new Intent();
+		intent.setClassName(KyoroLogcatActivity.class.getPackage().getName(), KyoroLogcatActivity.class.getName());
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		KyoroLogcatCash.startTaskToShowFolder();
 		context.startActivity(intent);
 	}
 
@@ -110,32 +112,21 @@ public class KyoroLogcatActivity extends TestActivity {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 		setContentView(rootLayout);
 	}
-
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
-		Intent intent = getIntent();
-		if(intent == null){
-			return;
-		}
-		Bundle extras = intent.getExtras();
-		if(extras == null){
-			return;
-		}
-		String action = extras.getString("action");
-		if(action != null && action.equals("folder")){
-			startFolder();
-		}
 	}
-
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if (mStage != null) {
 			mStage.start();
 		}
-
+		if(KyoroLogcatCash.startTaskIsShowFolder()){
+			startFolder(300);
+			KyoroLogcatCash.startTaskToNone();
+		}
 	}
 
 	@Override
@@ -238,7 +229,22 @@ public class KyoroLogcatActivity extends TestActivity {
 	}
 
 	private void startFolder() {
-		runOnUiThread(new Runnable() {				
+		runOnUiThread(new ShowFolderDialogTask());
+	}
+
+	Handler handler = null;
+	private void startFolder(final int delay) {
+		runOnUiThread(new ShowFolderDialogTask());
+
+//		runOnUiThread(new Runnable(){
+//			public void run() {
+//				handler = new Handler();
+//				handler.postDelayed(new ShowFolderDialogTask(), delay);
+//			}
+//		});
+	}
+
+	public class ShowFolderDialogTask implements Runnable {
 			public void run() {
 				Toast.makeText(KyoroLogcatActivity.this, "tap and long tap", Toast.LENGTH_LONG).show();
 
@@ -247,7 +253,6 @@ public class KyoroLogcatActivity extends TestActivity {
 				dialog.show();
 				dialog.setOnSelectedFileAction(new FileSelectedAction());
 			}
-		});
 	}
 	public class Layout extends SimpleDisplayObject {
 		@Override
