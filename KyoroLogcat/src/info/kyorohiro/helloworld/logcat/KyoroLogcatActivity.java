@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,7 +49,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_SEND_MAIL = "send logcat(-d) log mail";
 	public static final String MENU_CLEAR_LOG = "clear logcat(-c) log";
 
-	private LogcatViewer mLogcatViewer = new LogcatViewer(3000);
+	private LogcatViewer mLogcatViewer = new LogcatViewer();
 	private CyclingFlowingLineData mLogcatOutput = mLogcatViewer.getCyclingStringList();
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
@@ -79,9 +80,28 @@ public class KyoroLogcatActivity extends TestActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.changeTitle(this, "kyoro logcat", Color.parseColor("#cc795514"), Color.parseColor("#e5cf2a"));
-		this.changeMenuBgColor(this, Color.parseColor("#e5cf2a"));
+
+		changeTitle(this, "kyoro logcat", Color.parseColor("#cc795514"), Color.parseColor("#e5cf2a"));
+		changeMenuBgColor(this, Color.parseColor("#e5cf2a"));
 		mCircleController.setEventListener(mLogcatViewer.getCircleControllerAction());
+
+		int deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
+		int deviceHeight = getWindowManager().getDefaultDisplay().getHeight();
+		DisplayMetrics metric = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metric);
+		float xdpi = metric.xdpi;
+		int radius = (int)(xdpi/1.6);
+		int deviceMinEdge = deviceWidth;
+		if(deviceWidth < deviceHeight){
+			deviceMinEdge = deviceWidth;
+		} else {
+			deviceMinEdge = deviceHeight;
+		}
+		if(radius > deviceMinEdge/1.5) {
+			radius = (int)(deviceMinEdge/1.5);
+		}
+
+		mCircleController.setRadius(radius);
 		mStage = new SimpleStage(this.getApplicationContext());
 		mStage.getRoot().addChild(new Layout());
 		mStage.getRoot().addChild(mLogcatViewer);
@@ -257,8 +277,8 @@ public class KyoroLogcatActivity extends TestActivity {
 	public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			int x = graphics.getWidth() - mCircleController.getWidth();
-			int y = graphics.getHeight() - mCircleController.getHeight();
+			int x = graphics.getWidth() - mCircleController.getWidth()/2;
+			int y = graphics.getHeight() - mCircleController.getHeight()/2;
 			KyoroLogcatActivity.this.mCircleController.setPoint(x, y);
 		}
 	}

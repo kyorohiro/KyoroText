@@ -96,15 +96,28 @@ public class SimpleStage extends SurfaceView {
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {
-		if(event.getY()>0){
-			getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_DOWN);
-			getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_DOWN);			
+		float y = event.getY();
+		float x = event.getX();
+	/*	if(x*x < y*y){
+			if(event.getY() > 0){
+				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_DOWN);
+				getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_DOWN);
+			}
+			else if(event.getY() < 0) {
+				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_UP);
+				getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_UP);
+			}			
 		}
-		else if(event.getY()<0){
-			getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_UP);
-			getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_UP);
-		}
-
+		else {*/
+			if(event.getX() > 0){
+				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_DOWN);
+				getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_DOWN);
+			}
+			else if(event.getX() < 0) {
+				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_UP);
+				getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_UP);
+			}
+//		}
 		return super.onTrackballEvent(event);
 	}
 

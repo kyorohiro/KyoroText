@@ -18,12 +18,17 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		this.addChild(bg);
 	}
 
+	public void setRadius(int radius) {
+		mMaxRadius = radius;
+		mMinRadius = mMaxRadius/2;
+	}
+	
 	public int getWidth(){
-		return mMaxRadius;
+		return mMaxRadius*2;
 	}
 
 	public int getHeight(){
-		return mMaxRadius;
+		return mMaxRadius*2;
 	}
 
 	public void setEventListener(CircleControllerAction event) {
@@ -39,10 +44,12 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		switch(keycode){
 		case KeyEvent.KEYCODE_DPAD_UP:
 		case KeyEvent.KEYCODE_VOLUME_UP:
+		case KeyEvent.KEYCODE_DPAD_LEFT:
 			mEvent.upButton(CircleControllerAction.ACTION_PRESSED);
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
+		case KeyEvent.KEYCODE_DPAD_RIGHT:
 			mEvent.downButton(CircleControllerAction.ACTION_PRESSED);
 			break;
 		}
@@ -78,11 +85,11 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 			graphics.setStyle(SimpleGraphics.STYLE_STROKE);
 			graphics.setStrokeWidth(4);
 
-			int interSpace = (mMaxRadius-mMinRadius)/10;
+			double interSpace = (mMaxRadius-mMinRadius)/10.0;
 			int centerRadius = mMinRadius +(mMaxRadius-mMinRadius)/2;
 
 			for (int i = 0; i < 10; i++) {
-				graphics.drawCircle(0, 0, mMaxRadius - i * interSpace);
+				graphics.drawCircle(0, 0, (int)(mMaxRadius-i*interSpace));
 			}
 			graphics.setStrokeWidth(6);
 			graphics.setColor(Color.parseColor("#99ffff86"));
@@ -134,7 +141,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 					break;
 				case MotionEvent.ACTION_MOVE:
 					if(isTouched){
-					a = CircleControllerAction.ACTION_MOVE;
+						a = CircleControllerAction.ACTION_MOVE;
 					}
 					else {
 						a = CircleControllerAction.ACTION_IN;
