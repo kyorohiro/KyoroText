@@ -32,11 +32,11 @@ public class FlowingLineViewer extends SimpleDisplayObjectContainer {
 		return mInputtedText;
 	}
 
-	public synchronized void setPosition(int position) {
+	public void setPosition(int position) {
 		mPosition = position;
 	}
 
-	public synchronized int getPosition() {
+	public int getPosition() {
 		return mPosition;
 	}
 
@@ -129,7 +129,7 @@ public class FlowingLineViewer extends SimpleDisplayObjectContainer {
 
 		public int blank(CyclingListInter<FlowingLineData> showingText) {
 			int numOfStackedString = showingText.getNumberOfStockedElement();
-			int referPoint = numOfStackedString - ( + mNumOfLine);
+			int referPoint = numOfStackedString - ( mPosition+ mNumOfLine);
 			int blank = 0;
 			boolean uppserSideBlankisViewed = (referPoint) < 0;
 			if (uppserSideBlankisViewed) {
