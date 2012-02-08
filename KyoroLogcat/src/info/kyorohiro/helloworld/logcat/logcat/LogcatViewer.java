@@ -1,12 +1,12 @@
 package info.kyorohiro.helloworld.logcat.logcat;
 
 
-import info.kyorohiro.helloworld.display.widget.FlowingLineViewer;
+import info.kyorohiro.helloworld.display.widget.FlowingLineViewWithFilter;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 
 
-public class LogcatViewer extends FlowingLineViewer {
+public class LogcatViewer extends FlowingLineViewWithFilter {
 
 	private MyCircleControllerEvent mCircleControllerAction = null;
 

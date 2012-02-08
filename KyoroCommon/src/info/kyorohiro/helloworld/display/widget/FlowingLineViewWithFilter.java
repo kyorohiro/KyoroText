@@ -9,18 +9,18 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 
-public class FlowingLineViewer extends SimpleDisplayObjectContainer {
+public class FlowingLineViewWithFilter extends SimpleDisplayObjectContainer {
 
-	private CyclingFlowingLineData mInputtedText = null;
-	private LineViewer mViewer = null;
+	private FlowingLineData mInputtedText = null;
+	private FlowingLineView mViewer = null;
 	private int mTextSize = 14;
 
-	public FlowingLineViewer(CyclingFlowingLineData lineData) {
+	public FlowingLineViewWithFilter(FlowingLineData lineData) {
 		mInputtedText = lineData;
 		if (mInputtedText == null) {
-			mInputtedText = new CyclingFlowingLineData(3000, 1000, mTextSize);
+			mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
 		}
-		mViewer = new LineViewer(mInputtedText);
+		mViewer = new FlowingLineView(mInputtedText);
 		addChild(mViewer);
 		addChild(new Layout());
 	}
@@ -28,14 +28,14 @@ public class FlowingLineViewer extends SimpleDisplayObjectContainer {
 	public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			FlowingLineViewer.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
+			FlowingLineViewWithFilter.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
 		}
 	}
-	public CyclingFlowingLineData getCyclingStringList() {
+	public FlowingLineData getCyclingStringList() {
 		return mInputtedText;
 	}
 
-	public CyclingFlowingLineData getCyclingFlowingLineData() {
+	public FlowingLineData getCyclingFlowingLineData() {
 		return mInputtedText;
 	}
 
@@ -83,14 +83,4 @@ public class FlowingLineViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	/**
-	 * 			FlowingLineViewer.this.mInputtedText.setWidth(mWidth - margine);
-			CyclingListInter<FlowingLineData> showingText = null;
-			if (mInputtedText.taskIsAlive()) {
-				showingText = mInputtedText.getDuplicatingList();
-			} else {
-				showingText = mInputtedText;
-			}
-
-	 */
 }

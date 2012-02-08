@@ -7,7 +7,7 @@ import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.widget.CyclingFlowingLineData;
+import info.kyorohiro.helloworld.display.widget.FlowingLineData;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
@@ -50,7 +50,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_CLEAR_LOG = "clear logcat(-c) log";
 
 	private LogcatViewer mLogcatViewer = new LogcatViewer();
-	private CyclingFlowingLineData mLogcatOutput = mLogcatViewer.getCyclingStringList();
+	private FlowingLineData mLogcatOutput = mLogcatViewer.getCyclingStringList();
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
 	private AutoCompleteTextView mInputForLogFilter = null; 

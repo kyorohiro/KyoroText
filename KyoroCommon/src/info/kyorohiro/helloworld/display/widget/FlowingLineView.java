@@ -5,40 +5,40 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 
-public class LineViewer extends SimpleDisplayObject {
+public class FlowingLineView extends SimpleDisplayObject {
 	private int mWidth = 0;
 	private int mHeight = 0;
 	private int mNumOfLine = 100;
-	private CyclingListInter<FlowingLineData> mInputtedText = null;
+	private CyclingListInter<FlowingLineDatam> mInputtedText = null;
 	private int mPosition = 0;
 	private int mTextSize = 14;
 
-	public LineViewer(CyclingListInter<FlowingLineData> inputtedText) {
+	public FlowingLineView(CyclingListInter<FlowingLineDatam> inputtedText) {
 		mInputtedText = inputtedText;
 	}
 
-	public void setCyclingList(CyclingListInter<FlowingLineData> inputtedText) {
+	public void setCyclingList(CyclingListInter<FlowingLineDatam> inputtedText) {
 		mInputtedText = inputtedText;
 	}
 
-	public CyclingListInter<FlowingLineData> setCyclingList() {
+	public CyclingListInter<FlowingLineDatam> setCyclingList() {
 		return mInputtedText;
 	}
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-		CyclingListInter<FlowingLineData> showingText = mInputtedText;
+		CyclingListInter<FlowingLineDatam> showingText = mInputtedText;
 		updateStatus(graphics, showingText);
 		drawBG(graphics);
 		int start = start(showingText);
 		int end = end(showingText);
 		int blank = blank(showingText);
 
-		FlowingLineData[] list = null;
+		FlowingLineDatam[] list = null;
 		if (start > end) {
-			list = new FlowingLineData[0];
+			list = new FlowingLineDatam[0];
 		} else {
-			list = new FlowingLineData[end - start];
+			list = new FlowingLineDatam[end - start];
 			list = showingText.getElements(list, start, end);
 		}
 
@@ -47,7 +47,7 @@ public class LineViewer extends SimpleDisplayObject {
 				showingText.getNumberOfStockedElement());
 	}
 
-	public int start(CyclingListInter<FlowingLineData> showingText) {
+	public int start(CyclingListInter<FlowingLineDatam> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int start = referPoint;
@@ -57,7 +57,7 @@ public class LineViewer extends SimpleDisplayObject {
 		return start;
 	}
 
-	public int end(CyclingListInter<FlowingLineData> showingText) {
+	public int end(CyclingListInter<FlowingLineDatam> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int end = referPoint + mNumOfLine;
@@ -70,7 +70,7 @@ public class LineViewer extends SimpleDisplayObject {
 		return end;
 	}
 
-	public int blank(CyclingListInter<FlowingLineData> showingText) {
+	public int blank(CyclingListInter<FlowingLineDatam> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - ( mPosition+ mNumOfLine);
 		int blank = 0;
@@ -108,14 +108,14 @@ public class LineViewer extends SimpleDisplayObject {
 	}
 
 	private void showLineDate(SimpleGraphics graphics,
-			FlowingLineData[] list, int blank) {
+			FlowingLineDatam[] list, int blank) {
 		for (int i = 0; i < list.length; i++) {
 			if (list[i] == null) {
 				continue;
 			}
 			graphics.setColor(list[i].getColor());
 			int startStopY = graphics.getTextSize() * (blank + i + 1);
-			if (list[i].getStatus() == FlowingLineData.INCLUDE_END_OF_LINE) {
+			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
 				graphics.drawLine(10, startStopY, graphics.getWidth() - 10,
 						startStopY);
 			}
@@ -129,7 +129,7 @@ public class LineViewer extends SimpleDisplayObject {
 		graphics.setColor(Color.parseColor("#ccc9f486"));
 	}
 
-	private void updateStatus(SimpleGraphics graphics, CyclingListInter<FlowingLineData> showingText) {
+	private void updateStatus(SimpleGraphics graphics, CyclingListInter<FlowingLineDatam> showingText) {
 		mWidth = (int) graphics.getWidth();
 		mHeight = (int) graphics.getHeight();
 		mNumOfLine = mHeight / mTextSize;

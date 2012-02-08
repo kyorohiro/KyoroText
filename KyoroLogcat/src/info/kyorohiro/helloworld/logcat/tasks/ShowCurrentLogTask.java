@@ -6,16 +6,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import info.kyorohiro.helloworld.display.widget.CyclingFlowingLineData;
+import info.kyorohiro.helloworld.display.widget.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 
 public class ShowCurrentLogTask extends Thread {
 	private final Logcat mLogcat = new Logcat();
-	private CyclingFlowingLineData mData;
+	private FlowingLineData mData;
 	private String mOption = "-n";
 
-	public ShowCurrentLogTask(CyclingFlowingLineData data, String option) {
+	public ShowCurrentLogTask(FlowingLineData data, String option) {
 		mData = data;
 		if(option != null) {
 			mOption = option;

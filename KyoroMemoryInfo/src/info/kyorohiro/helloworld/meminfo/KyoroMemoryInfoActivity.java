@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.meminfo;
 
 import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.widget.FlowingLineViewer;
+import info.kyorohiro.helloworld.display.widget.FlowingLineViewWithFilter;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleLineChart;
 import info.kyorohiro.helloworld.meminfo.tasks.ShowMemoryInfoTask;
@@ -17,7 +17,7 @@ import android.view.WindowManager;
 public class KyoroMemoryInfoActivity extends TestActivity {
 	private SimpleStage mStage = null;
 	private SimpleLineChart mChart = null;
-	private FlowingLineViewer mList = null;
+	private FlowingLineViewWithFilter mList = null;
 
 	private SimpleCircleController mCircle = null;
     /** Called when the activity is first created. */
@@ -27,7 +27,7 @@ public class KyoroMemoryInfoActivity extends TestActivity {
         mStage = new SimpleStage(getApplicationContext());
         mCircle = new SimpleCircleController();
         mChart = new SimpleLineChart();
-        mList  = new FlowingLineViewer(null);
+        mList  = new FlowingLineViewWithFilter(null);
         mStage.getRoot().addChild(mList);
         mStage.getRoot().addChild(mChart);
         mStage.getRoot().addChild(mCircle);

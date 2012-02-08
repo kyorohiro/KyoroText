@@ -1,9 +1,8 @@
-package info.kyorohiro.helloworld.logcat.tasks;
+package info.kyorohiro.helloworld.memo.task;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import info.kyorohiro.helloworld.display.widget.FlowingLineData;
 import info.kyorohiro.helloworld.util.BigLineData;
 
@@ -14,9 +13,8 @@ public class ShowFileContentTask extends Thread {
 	public ShowFileContentTask(FlowingLineData data, File file) throws FileNotFoundException {
 		super();
 		mData = data;
-		 mLineData = new BigLineData(file);
+		mLineData = new BigLineData(file);
 	}
-
 
 	public void terminate() {
 		try {
@@ -32,6 +30,7 @@ public class ShowFileContentTask extends Thread {
 
 	@Override
 	public void run() {
+
 		try {
 			mData.clear();
 			while(true) {

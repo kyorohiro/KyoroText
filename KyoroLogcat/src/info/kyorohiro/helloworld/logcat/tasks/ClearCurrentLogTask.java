@@ -4,16 +4,16 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import info.kyorohiro.helloworld.display.widget.CyclingFlowingLineData;
+import info.kyorohiro.helloworld.display.widget.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 
 public class ClearCurrentLogTask extends Thread {
 	private final Logcat mLogcat = new Logcat();
-	private CyclingFlowingLineData mData;
+	private FlowingLineData mData;
 	private String mOption = "-c";
 
-	public ClearCurrentLogTask(CyclingFlowingLineData data) {
+	public ClearCurrentLogTask(FlowingLineData data) {
 		mData = data;
 	}
 
