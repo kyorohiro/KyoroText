@@ -67,6 +67,22 @@ public class SimpleLineChart extends SimpleDisplayObjectContainer {
 		}
 	}
 	
+	static public class ChartDatas  {
+		private CyclingList<ChartData> chartData = null;
+
+		public ChartDatas(int listSize) {
+			chartData = new CyclingList<ChartData>(listSize);			
+		}
+
+		public void add(CharDatam datam) {
+			
+		}
+		
+		public ChartData getCharData(String tag){
+			return null;
+		}
+		
+	}
 
 	static public class CharDatam {
 		private String mTag = "";

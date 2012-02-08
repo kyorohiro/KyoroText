@@ -5,6 +5,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.FlowingLineViewer;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleLineChart;
+import info.kyorohiro.helloworld.meminfo.tasks.ShowMemoryInfoTask;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
