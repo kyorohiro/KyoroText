@@ -21,7 +21,7 @@ public class FlowingLineView extends SimpleDisplayObject {
 		mInputtedText = inputtedText;
 	}
 
-	public CyclingListInter<FlowingLineDatam> setCyclingList() {
+	public CyclingListInter<FlowingLineDatam> getCyclingList() {
 		return mInputtedText;
 	}
 

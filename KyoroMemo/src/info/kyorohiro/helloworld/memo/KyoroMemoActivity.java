@@ -7,6 +7,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.FlowingLineViewWithFile;
 import info.kyorohiro.helloworld.display.widget.FlowingLineViewWithFilter;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
@@ -24,7 +25,7 @@ public class KyoroMemoActivity extends Activity {
 	public static final String MENU_LABEL_OPEN_FILE = "open file";
 
 	private SimpleStage mStage = null;
-	private FlowingLineViewWithFilter mViewer = null;
+	private FlowingLineViewWithFile mViewer = null;
 	private SimpleCircleController mCircle = null;
 	private FlowingLineData mInputtedText = new FlowingLineData(
 			1000, 1000, 14);
@@ -33,7 +34,7 @@ public class KyoroMemoActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mStage = new SimpleStage(this);
-		mViewer = new FlowingLineViewWithFilter(mInputtedText);
+		mViewer = new FlowingLineViewWithFile();
 		mCircle = new SimpleCircleController();
 
 		mStage.getRoot().addChild(new Layout());
@@ -83,9 +84,7 @@ public class KyoroMemoActivity extends Activity {
 						}
 						ShowFileContentTask task;
 						try {
-							task = new ShowFileContentTask(mViewer
-									.getCyclingFlowingLineData(), file);
-							task.start();
+							mViewer.start(file);
 							return true;
 						} catch (FileNotFoundException e) {
 							e.printStackTrace();

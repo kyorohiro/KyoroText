@@ -47,8 +47,10 @@ public class BigLineData {
 
 	
 	public void moveLinePer1000(int index) throws IOException {
-		long filePointer = mPositionPer1000Line.get(index);
-		mReader.seek(filePointer);
+		// todo
+		//long filePointer = mPositionPer1000Line.get(index);
+		//mReader.seek(filePointer);
+		mReader.seek(0);
 	}
 
 	public boolean isEOF() {
