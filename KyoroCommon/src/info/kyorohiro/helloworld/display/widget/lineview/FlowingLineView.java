@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget;
+package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -12,6 +12,8 @@ public class FlowingLineView extends SimpleDisplayObject {
 	private CyclingListInter<FlowingLineDatam> mInputtedText = null;
 	private int mPosition = 0;
 	private int mTextSize = 14;
+	private int mCursolPositionX = 0;
+	private int mCursolPositionY = 0;
 
 	public FlowingLineView(CyclingListInter<FlowingLineDatam> inputtedText) {
 		mInputtedText = inputtedText;
@@ -72,7 +74,7 @@ public class FlowingLineView extends SimpleDisplayObject {
 
 	public int blank(CyclingListInter<FlowingLineDatam> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - ( mPosition+ mNumOfLine);
+		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int blank = 0;
 		boolean uppserSideBlankisViewed = (referPoint) < 0;
 		if (uppserSideBlankisViewed) {
@@ -81,8 +83,7 @@ public class FlowingLineView extends SimpleDisplayObject {
 		return blank;
 	}
 
-	private void showScrollBar(SimpleGraphics graphics, int start, int end,
-			int size) {
+	private void showScrollBar(SimpleGraphics graphics, int start, int end, int size) {
 		int w = mWidth;
 		int h = mHeight;
 		int sp = start;
@@ -93,22 +94,16 @@ public class FlowingLineView extends SimpleDisplayObject {
 		}
 		int barWidth = mWidth / 20;
 		double barHeigh = mHeight / (double) s;
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w,
-				(int) (barHeigh * sp));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * ep), w,
-				(int) (barHeigh * ep));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp),
-				w - barWidth, (int) (barHeigh * ep));
-		graphics.drawLine(w, (int) (barHeigh * ep), w,
-				(int) (barHeigh * sp));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w,
-				(int) (barHeigh * ep));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * ep), w,
-				(int) (barHeigh * sp));
+		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w, (int) (barHeigh * sp));
+		graphics.drawLine(w - barWidth, (int) (barHeigh * ep), w, (int) (barHeigh * ep));
+		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w - barWidth, (int) (barHeigh * ep));
+		graphics.drawLine(w, (int) (barHeigh * ep), w, (int) (barHeigh * sp));
+		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w, (int) (barHeigh * ep));
+		graphics.drawLine(w - barWidth, (int) (barHeigh * ep), w, (int) (barHeigh * sp));
 	}
 
-	private void showLineDate(SimpleGraphics graphics,
-			FlowingLineDatam[] list, int blank) {
+	private void showLineDate(SimpleGraphics graphics, FlowingLineDatam[] list,
+			int blank) {
 		for (int i = 0; i < list.length; i++) {
 			if (list[i] == null) {
 				continue;
@@ -119,8 +114,12 @@ public class FlowingLineView extends SimpleDisplayObject {
 				graphics.drawLine(10, startStopY, graphics.getWidth() - 10,
 						startStopY);
 			}
-			graphics.drawText("" + list[i], mWidth / 20,
-					graphics.getTextSize() * (blank + i + 1));
+			if (i == mCursolPositionY) {
+				graphics.drawLine(10, startStopY, 10,
+						startStopY - graphics.getTextSize());
+			}
+			graphics.drawText("" + list[i], mWidth / 20, graphics.getTextSize()
+					* (blank + i + 1));
 		}
 	}
 
@@ -129,7 +128,8 @@ public class FlowingLineView extends SimpleDisplayObject {
 		graphics.setColor(Color.parseColor("#ccc9f486"));
 	}
 
-	private void updateStatus(SimpleGraphics graphics, CyclingListInter<FlowingLineDatam> showingText) {
+	private void updateStatus(SimpleGraphics graphics,
+			CyclingListInter<FlowingLineDatam> showingText) {
 		mWidth = (int) graphics.getWidth();
 		mHeight = (int) graphics.getHeight();
 		mNumOfLine = mHeight / mTextSize;
@@ -138,14 +138,14 @@ public class FlowingLineView extends SimpleDisplayObject {
 		int margine = mWidth / 10;
 
 		if (mPosition < -(mNumOfLine - blankSpace)) {
-			setPosition( -(mNumOfLine - blankSpace)-1);
+			setPosition(-(mNumOfLine - blankSpace) - 1);
 		} else if (mPosition > (showingText.getNumberOfStockedElement() - blankSpace)) {
-			setPosition( showingText.getNumberOfStockedElement()- blankSpace);
+			setPosition(showingText.getNumberOfStockedElement() - blankSpace);
 		}
 
 		graphics.setTextSize(mTextSize);
 	}
-	
+
 	public void setPosition(int position) {
 		mPosition = position;
 	}
@@ -154,4 +154,3 @@ public class FlowingLineView extends SimpleDisplayObject {
 		return mPosition;
 	}
 }
-

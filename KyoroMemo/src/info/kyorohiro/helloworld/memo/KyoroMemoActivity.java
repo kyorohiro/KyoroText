@@ -3,14 +3,16 @@ package info.kyorohiro.helloworld.memo;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import info.kyorohiro.helloworld.android.todo.TODOSimpleEditText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleEditText;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.widget.FlowingLineData;
-import info.kyorohiro.helloworld.display.widget.FlowingLineViewWithFile;
-import info.kyorohiro.helloworld.display.widget.FlowingLineViewWithFilter;
+import info.kyorohiro.helloworld.display.widget.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineViewWithFile;
 import info.kyorohiro.helloworld.memo.task.ShowFileContentTask;
 import info.kyorohiro.helloworld.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.util.SimpleFileExplorer.SelectedFileAction;
@@ -19,13 +21,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 public class KyoroMemoActivity extends Activity {
 
 	public static final String MENU_LABEL_OPEN_FILE = "open file";
 
 	private SimpleStage mStage = null;
-	private FlowingLineViewWithFile mViewer = null;
+	private SimpleEditText mViewer = null;
 	private SimpleCircleController mCircle = null;
 	private FlowingLineData mInputtedText = new FlowingLineData(
 			1000, 1000, 14);
@@ -34,14 +37,13 @@ public class KyoroMemoActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mStage = new SimpleStage(this);
-		mViewer = new FlowingLineViewWithFile();
+		mViewer = new SimpleEditText(mStage);
 		mCircle = new SimpleCircleController();
 
 		mStage.getRoot().addChild(new Layout());
 		mStage.getRoot().addChild(mViewer);
 		mStage.getRoot().addChild(mCircle);
 		mCircle.setEventListener(new MyCircleControllerEvent());
-
 		setContentView(mStage);
 	}
 

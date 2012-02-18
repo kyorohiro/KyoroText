@@ -10,7 +10,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class SimpleStage extends SurfaceView {
+public class SimpleStage extends EditableSurfaceView {
+//SurfaceView {
 	private InitialCallBack mInitialCallBack = null;
 	private Thread mCurrentThread = null;
 	private SimpleDisplayObjectContainer mRoot = new  SimpleDisplayObjectContainer();

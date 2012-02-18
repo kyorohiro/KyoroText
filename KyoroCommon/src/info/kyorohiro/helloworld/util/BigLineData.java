@@ -31,6 +31,9 @@ public class BigLineData {
 	private String mCharset = "utf8";
 	private RandomAccessFile mReader = null;
 
+	private long mCurrentPosition = 0;
+	private long mLastPosition = 0;
+	private long mLinePosition = 0;
 	private ArrayList<Long> mPositionPer1000Line = new ArrayList<Long>();
 
 	public BigLineData(File path) throws FileNotFoundException {
@@ -45,12 +48,24 @@ public class BigLineData {
 		mReader = new RandomAccessFile(mPath, "r");
 	}
 
+	public boolean stackedLinePosition() {
+		if(mLastPosition >= getDataSize()){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
-	public void moveLinePer1000(int index) throws IOException {
-		// todo
-		//long filePointer = mPositionPer1000Line.get(index);
-		//mReader.seek(filePointer);
-		mReader.seek(0);
+	public boolean moveLinePer1000(int index) throws IOException {
+		if(index < mPositionPer1000Line.size()) {
+			long filePointer = mPositionPer1000Line.get(index);
+			mReader.seek(filePointer);
+			mReader.seek(0);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public boolean isEOF() {
@@ -66,14 +81,34 @@ public class BigLineData {
 		return false;
 	}
 
-	public String readLine() throws IOException {
+	public long getDataSize() {
+		return mPath.length();
+	}
+
+	public CharSequence readLine() throws IOException {
 		String tmp = "";
 		try {
 			tmp = decode(Charset.forName(mCharset));
+			mCurrentPosition = mReader.getFilePointer();
+			mLinePosition += 1;
+			if (mLinePosition%1000 == 0) {
+				int index = mPositionPer1000Line.size()-1;
+				long stackedPosition = 0;
+				if(index>0){
+					stackedPosition = mPositionPer1000Line.get(mPositionPer1000Line.size()-1);
+				}
+				if(stackedPosition < mCurrentPosition) {
+					mPositionPer1000Line.add(mCurrentPosition);
+				}
+			}
+			if(mLastPosition < mCurrentPosition){
+				mLastPosition = mCurrentPosition;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
 		}
-		return tmp;
+		return new LineWithPosition(tmp, mCurrentPosition);
 	}
 
 	public void close() throws IOException {
@@ -168,5 +203,40 @@ public class BigLineData {
 			e.printStackTrace();
 		}
 	}
+	public static class LineWithPosition implements CharSequence{
+		private CharSequence mLine = "";
+		private long mPosition = 0;
 
+		public LineWithPosition(CharSequence line, long position) {
+			// todo add endposition startposition                  
+			mLine = line;
+			mPosition = position;
+		}
+
+		public char charAt(int index) {
+			return mLine.charAt(index);
+		}
+
+		public int length() {
+			return mLine.length();
+		}
+
+		public CharSequence subSequence(int start, int end) {
+			return new LineWithPosition(
+					mLine.subSequence(start, end), mPosition);
+		}
+
+		@Override
+		public String toString() {
+			if(mLine == null){
+				return "";
+			}
+			return mLine.toString();
+		}
+
+		public long getColor() {
+			return mPosition;
+		}
+
+	}
 }

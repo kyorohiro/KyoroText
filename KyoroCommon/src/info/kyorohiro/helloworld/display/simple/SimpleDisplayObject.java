@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.display.simple;
 
-public abstract class SimpleDisplayObject {
+public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 	private int mX=0;
 	private int mY=0;
 
@@ -15,6 +15,14 @@ public abstract class SimpleDisplayObject {
 	public void setPoint(int x, int y){
 		mX = x;
 		mY = y;
+	}
+	
+	public int getWidth() {
+		return 0;
+	}
+
+	public int getHeight() {
+		return 0;
 	}
 
 	public abstract void paint(SimpleGraphics graphics);

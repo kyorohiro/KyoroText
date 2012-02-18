@@ -71,4 +71,36 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		mMyChildren.add(child);
 	}
 
+	@Override
+	public int getWidth() {
+		int[] bound = getBound();
+		return bound[1]-bound[0];
+	}
+
+	@Override
+	public int getHeight() {
+		int[] bound = getBound();
+		return bound[3]-bound[2];
+	}
+
+	private int[] getBound(){
+		int[] bound = new int[]{-1,-1,-1,-1};
+		int[] tmp = new int[4];
+
+		for(SimpleDisplayObject child: mMyChildren){
+			if(child != null) {
+				tmp[0] = child.getX();
+				tmp[1] = child.getX() + child.getWidth();
+				tmp[2] = child.getY();
+				tmp[3] = child.getY() + child.getHeight();
+
+				for(int i=0;i<4;i++) {
+					if(bound[i]< 0 || tmp[i] < bound[i]){
+						bound[i] = tmp[i];
+					}
+				}
+			}
+		}
+		return bound;
+	}
 }

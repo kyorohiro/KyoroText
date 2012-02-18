@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import info.kyorohiro.helloworld.display.widget.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 

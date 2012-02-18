@@ -189,6 +189,16 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 			return rate;
 		}
 		private int mPrevDegree = -999;
+
+		@Override
+		public int getWidth() {
+			return 0;
+		}
+
+		@Override
+		public int getHeight() {
+			return 0;
+		}
 	}
 
 

@@ -1,14 +1,14 @@
-package info.kyorohiro.helloworld.display.widget;
+package info.kyorohiro.helloworld.display.widget.lineview;
 
 public class FlowingLineDatam implements CharSequence{
 	public static int INCLUDE_END_OF_LINE = 1;
 	public static int EXCLUDE_END_OF_LINE = 0;
 
-	private String mLine = "";
+	private CharSequence mLine = "";
 	private int mColor = 0;
 	private int mStatus = 0;
 
-	public FlowingLineDatam(String line, int color, int status) {
+	public FlowingLineDatam(CharSequence line, int color, int status) {
 		mLine = line;
 		mColor = color;
 		mStatus = status;
@@ -31,7 +31,7 @@ public class FlowingLineDatam implements CharSequence{
 		if(mLine == null){
 			return "";
 		}
-		return mLine;
+		return mLine.toString();
 	}
 
 	public int getColor() {

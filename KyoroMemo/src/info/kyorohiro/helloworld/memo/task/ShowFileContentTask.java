@@ -3,7 +3,8 @@ package info.kyorohiro.helloworld.memo.task;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import info.kyorohiro.helloworld.display.widget.FlowingLineData;
+
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.util.BigLineData;
 
 public class ShowFileContentTask extends Thread {
@@ -37,7 +38,7 @@ public class ShowFileContentTask extends Thread {
 				if(mLineData.isEOF()){
 					break;
 				}
-				String line = mLineData.readLine();
+				CharSequence line = mLineData.readLine();
 				mData.addLinePerBreakText(line);
 				Thread.sleep(0);
 			}

@@ -5,17 +5,17 @@ import android.graphics.Color;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
-import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineView;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 
-public class FlowingLineViewWithFilter extends SimpleDisplayObjectContainer {
+public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
 	private FlowingLineData mInputtedText = null;
 	private FlowingLineView mViewer = null;
 	private int mTextSize = 14;
 
-	public FlowingLineViewWithFilter(FlowingLineData lineData) {
+	public SimpleFilterableLineView(FlowingLineData lineData) {
 		mInputtedText = lineData;
 		if (mInputtedText == null) {
 			mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
@@ -28,7 +28,7 @@ public class FlowingLineViewWithFilter extends SimpleDisplayObjectContainer {
 	public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			FlowingLineViewWithFilter.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
+			SimpleFilterableLineView.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
 		}
 	}
 	public FlowingLineData getCyclingStringList() {

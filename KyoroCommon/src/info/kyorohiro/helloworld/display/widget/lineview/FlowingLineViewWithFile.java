@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget;
+package info.kyorohiro.helloworld.display.widget.lineview;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,7 +16,6 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 	private FlowingLineView mViewer = null;
 	private int mTextSize = 14;
 	private BigLineData mLineData = null;
-	private int mCurrentCashPosition = 0;
 	private Thread mTaskManager = null;
 	private int mPosition = 0;
 
@@ -84,7 +83,7 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 		public void run() {
 			try {
 				mLineData.moveLinePer1000(mPoint/1000);
-				String[] tmp = new String[100];
+				CharSequence[] tmp = new CharSequence[1000];
 				for(int i=0;i<1000;i++) {
 					tmp[i] = mLineData.readLine();
 					Thread.sleep(0);
@@ -113,9 +112,9 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 		@Override
 		public void run() {
 			try {
-				mLineData.moveLinePer1000(mPoint/100);
-				for(int i=0;i<100;i++) {
-					String line =  mLineData.readLine();
+				mLineData.moveLinePer1000(mPoint/1000);
+				for(int i=0;i<1000;i++) {
+					CharSequence line =  mLineData.readLine();
 					///mInputtedText.addLinePerBreakText(line);
 					mInputtedText.add(new FlowingLineDatam(line,
 							Color.parseColor("#FFFFFF"),
@@ -135,4 +134,6 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 			}
 		}
 	}
+	
+
 }

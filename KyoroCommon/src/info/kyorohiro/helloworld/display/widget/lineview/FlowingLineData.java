@@ -1,10 +1,10 @@
-package info.kyorohiro.helloworld.display.widget;
+package info.kyorohiro.helloworld.display.widget.lineview;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import info.kyorohiro.helloworld.display.widget.FlowingLineDatam;
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
 import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
@@ -41,12 +41,12 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 		return mFilter;
 	}
 
-	public synchronized void addLineToHead(String line) {
+	public synchronized void addLineToHead(CharSequence line) {
 		this.head(new FlowingLineDatam(line, mCurrentColor,
 						FlowingLineDatam.INCLUDE_END_OF_LINE));
 	}
 
-	public synchronized void addLinePerBreakText(String line) {
+	public synchronized void addLinePerBreakText(CharSequence line) {
 		setColorPerLine(line);
 
 		if (line == null) {
@@ -60,9 +60,10 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 						FlowingLineDatam.INCLUDE_END_OF_LINE));
 				break;
 			} else {
-				add(new FlowingLineDatam(line.substring(0, len), mCurrentColor,
+				add(new FlowingLineDatam(line.subSequence(0, len), mCurrentColor,
 						FlowingLineDatam.EXCLUDE_END_OF_LINE));
-				line = line.substring(len, line.length());
+				line = line.subSequence(len, len+line.length()-len);
+				// kiyo
 			}
 		}
 	}
@@ -89,7 +90,7 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 	}
 
 	private int mCurrentColor = Color.parseColor("#ccc9f486");
-	private void setColorPerLine(String line) {
+	private void setColorPerLine(CharSequence line) {
 		try {
 			Matcher m = mPatternForFontColorPerLine.matcher(line);
 			if (m == null) {
