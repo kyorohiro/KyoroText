@@ -14,7 +14,6 @@ public class ScrollBar extends SimpleDisplayObject {
 		mTargetObject = target;
 	}
 
-	
 	@Override
 	public int getX() {
 //		return super.getX();

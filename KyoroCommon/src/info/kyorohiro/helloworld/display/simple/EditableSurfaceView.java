@@ -36,16 +36,16 @@ public class EditableSurfaceView extends SurfaceView {
 	
 	@Override
 	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-         mManager.showSoftInput(this, 0);
+//         mManager.showSoftInput(this, 0);
 		return new MyInputConnection(this, true);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		mManager.showSoftInput(this,
-				InputMethodManager.SHOW_IMPLICIT);
+//		mManager.showSoftInput(this,
+//				InputMethodManager.SHOW_IMPLICIT);
 //				InputMethodManager.RESULT_SHOWN);
-		
+//		
 		return super.onTouchEvent(event);
 	}
 	

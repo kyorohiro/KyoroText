@@ -21,8 +21,8 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 			mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
 		}
 		mViewer = new FlowingLineView(mInputtedText);
-		addChild(mViewer);
 		addChild(new Layout());
+		addChild(mViewer);
 	}
 
 	public class Layout extends SimpleDisplayObject {

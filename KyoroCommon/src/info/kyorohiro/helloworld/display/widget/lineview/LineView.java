@@ -4,19 +4,19 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
+import android.graphics.Paint;
 
-public class FlowingLineObject extends SimpleDisplayObject {
-
-	private int mWidth = 0;
-	private int mHeight = 0;
+public class LineView extends SimpleDisplayObject {
 	private int mNumOfLine = 100;
 	private CyclingListInter<FlowingLineDatam> mInputtedText = null;
 	private int mPosition = 0;
 	private int mTextSize = 14;
-	private int mCursolPositionX = 0;
-	private int mCursolPositionY = 0;
+	private int mShowingTextStartPosition = 0;
+	private int mShowingTextEndPosition = 0;
+	private int mTouchX = 0;
+	private int mTouchY = 0;
 
-	public FlowingLineObject(CyclingListInter<FlowingLineDatam> inputtedText) {
+	public LineView(CyclingListInter<FlowingLineDatam> inputtedText) {
 		mInputtedText = inputtedText;
 	}
 
@@ -26,6 +26,14 @@ public class FlowingLineObject extends SimpleDisplayObject {
 
 	public CyclingListInter<FlowingLineDatam> getCyclingList() {
 		return mInputtedText;
+	}
+
+	public int getShowingTextStartPosition() {
+		return mShowingTextStartPosition;
+	}
+
+	public int getShowingTextEndPosition() {
+		return mShowingTextEndPosition;
 	}
 
 	@Override
@@ -46,8 +54,8 @@ public class FlowingLineObject extends SimpleDisplayObject {
 		}
 
 		showLineDate(graphics, list, blank);
-		showScrollBar(graphics, start, end,
-				showingText.getNumberOfStockedElement());
+		mShowingTextStartPosition = start;
+		mShowingTextStartPosition = end;
 	}
 
 	public int start(CyclingListInter<FlowingLineDatam> showingText) {
@@ -84,44 +92,40 @@ public class FlowingLineObject extends SimpleDisplayObject {
 		return blank;
 	}
 
-	private void showScrollBar(SimpleGraphics graphics, int start, int end, int size) {
-		int w = mWidth;
-		int h = mHeight;
-		int sp = start;
-		int ep = end;
-		int s = size;
-		if (s == 0) {
-			s = 1;
-		}
-		int barWidth = mWidth / 20;
-		double barHeigh = mHeight / (double) s;
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w, (int) (barHeigh * sp));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * ep), w, (int) (barHeigh * ep));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w - barWidth, (int) (barHeigh * ep));
-		graphics.drawLine(w, (int) (barHeigh * ep), w, (int) (barHeigh * sp));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w, (int) (barHeigh * ep));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * ep), w, (int) (barHeigh * sp));
-	}
-
-	private void showLineDate(SimpleGraphics graphics, FlowingLineDatam[] list,
-			int blank) {
+	private void showLineDate(SimpleGraphics graphics, FlowingLineDatam[] list, int blank) {
 		for (int i = 0; i < list.length; i++) {
 			if (list[i] == null) {
 				continue;
 			}
+
+			// drawLine
 			graphics.setColor(list[i].getColor());
 			int startStopY = graphics.getTextSize() * (blank + i + 1);
 			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
 				graphics.drawLine(10, startStopY, graphics.getWidth() - 10,
 						startStopY);
 			}
-			if (i == mCursolPositionY) {
-				graphics.drawLine(10, startStopY, 10,
-						startStopY - graphics.getTextSize());
+			int x = getWidth()/20;
+			int y = graphics.getTextSize()*(blank+i+1);
+			graphics.drawText("" + list[i], x, y);
+			
+			// touchEvent
+			if(mTouchY>0){
+				if(y<mTouchY&& mTouchY<(y+mTextSize)){
+					searchX(list[i], mTouchX);
+					mTouchX = -999;
+					mTouchY = -999;
+				}
 			}
-			graphics.drawText("" + list[i], mWidth / 20, graphics.getTextSize()
-					* (blank + i + 1));
 		}
+	}
+
+	private void searchX(FlowingLineDatam datam, int x) {
+		String line = datam.toString();
+		Paint paint = new Paint();
+		paint.setTextSize(mTextSize);
+		int p = paint.breakText(line.toCharArray(), 0, line.length(), x, null);
+		datam.insert("™", p);
 	}
 
 	private void drawBG(SimpleGraphics graphics) {
@@ -130,7 +134,7 @@ public class FlowingLineObject extends SimpleDisplayObject {
 	}
 
 	private void updateStatus(SimpleGraphics graphics, CyclingListInter<FlowingLineDatam> showingText) {
-		mNumOfLine = mHeight / mTextSize;
+		mNumOfLine = getHeight() / mTextSize;
 		int blankSpace = mNumOfLine / 2;
 		if (mPosition < -(mNumOfLine - blankSpace)) {
 			setPosition(-(mNumOfLine - blankSpace) - 1);
@@ -146,5 +150,12 @@ public class FlowingLineObject extends SimpleDisplayObject {
 
 	public int getPosition() {
 		return mPosition;
+	}
+
+	@Override
+	public boolean onTouchTest(int x, int y, int action) {
+		mTouchX = x;
+		mTouchY = y;
+		return true;
 	}
 }
