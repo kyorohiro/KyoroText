@@ -53,7 +53,12 @@ public class KyoroWidgetService extends Service {
 					TaskManagerForSave.stopSaveTask(getApplicationContext());
 				}
 				else {
-					TaskManagerForSave.startSaveTask(getApplicationContext());
+					if(TaskManagerForSave.saveTaskIsForceKilled()){
+						KyoroLogcatActivity.startActivityFormStartSaveDialog(getApplicationContext());
+					}
+					else {
+						TaskManagerForSave.startSaveTask(getApplicationContext());
+					}
 				}
 			}
 		}

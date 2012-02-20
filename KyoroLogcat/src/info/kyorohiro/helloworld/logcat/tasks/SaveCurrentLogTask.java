@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.logcat.tasks;
 
 import info.kyorohiro.helloworld.logcat.KyoroApplication;
+import info.kyorohiro.helloworld.logcat.KyoroLogcatBroadcast;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
@@ -24,6 +25,7 @@ public class SaveCurrentLogTask extends Thread {
 	private boolean mExternalStorageWriteable = false;
 	private Logcat mLogcat = null;
 	private String mOption = "";
+	private boolean calledTerminateFunction = false;
 
 
 	public SaveCurrentLogTask(String option) {
@@ -46,24 +48,26 @@ public class SaveCurrentLogTask extends Thread {
 	}
 
 	public void terminate() {
+		calledTerminateFunction = true;
 		if(mLogcat != null){
 			mLogcat.terminate();
 		}
 		interrupt();
 		KyoroApplication.shortcutToStopKyoroLogcatService();
+		KyoroLogcatSetting.saveTaskStateIsStop();
 	}
 
 	public void run() {
-		if(mExternalStorageWriteable == false){
-			KyoroApplication.showMessageAndNotification("failed by external storage is not writeable.\n  check if sdcatd is mounted!!");
-			return;
-		}
-
 		FileOutputStream output = null;
 		InputStream input = null;
 		File saveFile = null;
 		try {
 			KyoroLogcatSetting.saveTaskStateIsStart();
+			KyoroLogcatBroadcast.startTimer();
+			if(mExternalStorageWriteable == false){
+				KyoroApplication.showMessageAndNotification("failed by external storage is not writeable.\n  check if sdcatd is mounted!!");
+				return;
+			}
 			Date date = new Date();
 			date.setTime(System.currentTimeMillis());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss",Locale.getDefault());
@@ -99,7 +103,6 @@ public class SaveCurrentLogTask extends Thread {
 			KyoroApplication.showMessageAndNotification("failed to throw unexcepted error.\n  please restart this application!!");			
 		}
 		finally {
-			KyoroLogcatSetting.saveTaskStateIsStop();
 			if(output != null){
 				try {
 					output.close();
@@ -118,8 +121,13 @@ public class SaveCurrentLogTask extends Thread {
 				mLogcat.terminate();
 			}
 
-			KyoroApplication.shortcutToStopKyoroLogcatService();
-			KyoroApplication.showMessage("end to save logcat log :" + saveFile.getPath());
+			if (calledTerminateFunction == true){
+				KyoroApplication.shortcutToStopKyoroLogcatService();
+				KyoroApplication.showMessage("end to save logcat log :" + saveFile.getPath());
+			} else {
+				KyoroApplication.shortcutToStartKyoroLogcatService("rescheduling now to save log in sdcard. try to save log per 180 sec ", false);	
+			}
+			
 		}
 	}
 }

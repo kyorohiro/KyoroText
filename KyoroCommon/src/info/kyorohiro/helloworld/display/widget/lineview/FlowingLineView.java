@@ -9,7 +9,7 @@ import android.graphics.Color;
 public class FlowingLineView extends SimpleDisplayObjectContainer {
 	private ScrollBar scrollBar = null;
 	private LineView viewer = null;
-	
+
 	public FlowingLineView(CyclingListInter<FlowingLineDatam> inputtedText) {
 		scrollBar = new ScrollBar(this);
 		viewer = new LineView(inputtedText);

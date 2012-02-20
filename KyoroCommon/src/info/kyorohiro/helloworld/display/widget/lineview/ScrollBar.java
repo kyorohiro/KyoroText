@@ -16,13 +16,11 @@ public class ScrollBar extends SimpleDisplayObject {
 
 	@Override
 	public int getX() {
-//		return super.getX();
 		return mTargetObject.getX();
 	}
 
 	@Override
 	public int getY() {
-//		return super.getY();
 		return mTargetObject.getY();
 	}
 
@@ -38,6 +36,11 @@ public class ScrollBar extends SimpleDisplayObject {
 	}
 
 	private void showScrollBar(SimpleGraphics graphics) {
+		// set scrollbar color
+		graphics.setStrokeWidth(3);
+		graphics.setColor(0xAAFFFF00);
+
+		// 
 		int w = mTargetObject.getWidth();
 		int h = mTargetObject.getHeight();
 		int sp = mStart;
@@ -46,13 +49,23 @@ public class ScrollBar extends SimpleDisplayObject {
 		if (s == 0) {
 			s = 1;
 		}
+
+		// calc scrollbar rect
 		int barWidth = w / 20;
 		double barHeigh = h / (double) s;
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w, (int) (barHeigh * sp));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * ep), w, (int) (barHeigh * ep));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w - barWidth, (int) (barHeigh * ep));
-		graphics.drawLine(w, (int) (barHeigh * ep), w, (int) (barHeigh * sp));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * sp), w, (int) (barHeigh * ep));
-		graphics.drawLine(w - barWidth, (int) (barHeigh * ep), w, (int) (barHeigh * sp));
+		int barStartY = (int) (barHeigh * sp);
+		int barEndY = (int) (barHeigh * ep);
+		int barStartX = w - barWidth;
+		int barEndX = w;
+
+		// draw scrollbar
+		graphics.drawLine(barStartX, barStartY, barEndX, barStartY);
+		graphics.drawLine(barStartX, barEndY, barEndX, barEndY);
+
+		graphics.drawLine(barStartX, barStartY , barStartX, barEndY);
+		graphics.drawLine(barEndX, barStartY, barEndX, barEndY);
+
+		graphics.drawLine(barStartX, barStartY , barEndX, barEndY);
+		graphics.drawLine(barEndX, barStartY, barStartX, barEndY);
 	}
 }

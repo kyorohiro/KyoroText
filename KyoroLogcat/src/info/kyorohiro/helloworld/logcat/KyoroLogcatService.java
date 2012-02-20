@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 
 import info.kyorohiro.helloworld.android.base.TestService;
@@ -28,8 +29,11 @@ public class KyoroLogcatService extends TestService {
 		}
 	}
 
-	public static Intent startLogcatService(Context context) {
+	public static Intent startLogcatService(Context context, String message) {
 		Intent startIntent = new Intent(context, KyoroLogcatService.class);
+	    if(message != null){
+	    	startIntent.putExtra("message", message);
+	    }
 	    context.startService(startIntent);
 	    return startIntent;
 	}
@@ -71,9 +75,13 @@ public class KyoroLogcatService extends TestService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
+		String message = "run background to save log";
+		if(intent != null && intent.getExtras() != null && intent.getExtras().getString("message") != null){
+			message = intent.getExtras().getString("message");
+		}
 		Notification n = new Notification(R.drawable.ic_launcher, "kyorologcat", System.currentTimeMillis());
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, KyoroLogcatActivity.class), 0);
-		n.setLatestEventInfo(this, "kyoro logcat", "run background to save log", contentIntent);
+		n.setLatestEventInfo(this, "kyoro logcat", message, contentIntent);
 		n.flags = Notification.FLAG_ONGOING_EVENT;
 		startForegroundCompat(n);
 	}

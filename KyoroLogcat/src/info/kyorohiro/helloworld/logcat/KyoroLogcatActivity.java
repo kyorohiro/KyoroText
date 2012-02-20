@@ -20,6 +20,7 @@ import info.kyorohiro.helloworld.util.SimpleFileExplorer;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -67,6 +68,14 @@ public class KyoroLogcatActivity extends TestActivity {
 		context.startActivity(intent);
 	}
 
+	public static void startActivityFormStartSaveDialog(Context context){
+		Intent intent = new Intent();
+		intent.setClassName(KyoroLogcatActivity.class.getPackage().getName(), KyoroLogcatActivity.class.getName());
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		KyoroLogcatCash.startTaskToStartSaveTask();
+		context.startActivity(intent);
+	}
+
 	private boolean showTaskIsAlive() {
 		if(mShowTask == null || !mShowTask.isAlive()){
 			return false;
@@ -90,7 +99,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		float xdpi = metric.xdpi;
-		int radius = (int)(xdpi/1.6);
+		int radius = (int)(xdpi/2);
 		int deviceMinEdge = deviceWidth;
 		if(deviceWidth < deviceHeight){
 			deviceMinEdge = deviceWidth;
@@ -145,6 +154,10 @@ public class KyoroLogcatActivity extends TestActivity {
 		}
 		if(KyoroLogcatCash.startTaskIsShowFolder()){
 			startFolder(300);
+			KyoroLogcatCash.startTaskToNone();
+		}
+		else if(KyoroLogcatCash.startTaskIsStartSave()){
+			startShowLog();
 			KyoroLogcatCash.startTaskToNone();
 		}
 	}
@@ -218,7 +231,8 @@ public class KyoroLogcatActivity extends TestActivity {
 
 		boolean myResult = false;
 		if (MENU_START_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
-			TaskManagerForSave.startSaveTask(this.getApplicationContext());
+			startShowLog();
+//			TaskManagerForSave.startSaveTask(this.getApplicationContext());
 			myResult = true;
 		} else if (MENU_STOP_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
 			TaskManagerForSave.stopSaveTask(this.getApplicationContext());
@@ -248,6 +262,33 @@ public class KyoroLogcatActivity extends TestActivity {
 		return myResult;
 	}
 
+	private  void startShowLog() {
+		runOnUiThread(new StartSaveTask());
+	}
+
+	private class StartSaveTask implements Runnable{
+		public void run(){
+			if(!TaskManagerForSave.saveTaskIsForceKilled()) {
+				TaskManagerForSave.startSaveTask(KyoroApplication.getKyoroApplication().getApplicationContext());
+				return;
+			}
+
+			String[] items = {"restart to save log task","end to save log task"};
+			AlertDialog.Builder alert = new AlertDialog.Builder(KyoroLogcatActivity.this);  
+			//alert.setTitle("Title");  
+			alert.setItems(items, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface arg0, int arg1) {
+					if(arg1 == 0){
+						TaskManagerForSave.startSaveTask(KyoroApplication.getKyoroApplication().getApplicationContext());
+					} else {
+						TaskManagerForSave.stopSaveTask(KyoroApplication.getKyoroApplication().getApplicationContext());
+					}
+				}  
+			});
+
+			alert.show();  
+		}
+	}
 	private void startFolder() {
 		runOnUiThread(new ShowFolderDialogTask());
 	}

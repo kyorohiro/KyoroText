@@ -31,9 +31,19 @@ public class KyoroApplication extends Application {
 	public static KyoroApplication getKyoroApplication() {
 		return sInstance;
 	}
+
 	public static void shortcutToStartKyoroLogcatService() throws NullPointerException {
-		KyoroLogcatService.startLogcatService(sInstance);
+		KyoroLogcatService.startLogcatService(sInstance, null);
 		KyoroSaveWidget.setStopImage(sInstance);
+	}
+
+	public static void shortcutToStartKyoroLogcatService(String message, boolean iconStateIsStop) throws NullPointerException {
+		KyoroLogcatService.startLogcatService(sInstance, message);
+		if(iconStateIsStop == true) {
+			KyoroSaveWidget.setStopImage(sInstance);
+		} else {
+			KyoroSaveWidget.setSaveImage(sInstance);			
+		}
 	}
 
 	public static void shortcutToStopKyoroLogcatService() throws NullPointerException {
@@ -42,15 +52,18 @@ public class KyoroApplication extends Application {
 	}
 
 	public static void showMessageAndNotification(String message) {
+		showMessageAndNotification(message, 0); 
+	}
+
+	public static void showMessageAndNotification(String message, int id) {
 		try {
 			showMessage(message);
-
 			Notification n = new Notification(R.drawable.ic_notification, "kyorologcat", System.currentTimeMillis());
 			PendingIntent contentIntent = PendingIntent.getActivity(sInstance, 0, new Intent(sInstance, KyoroLogcatActivity.class), 0);
 			n.setLatestEventInfo(sInstance, "kyoro logcat", ""+message, contentIntent);
 			n.flags = Notification.FLAG_ONLY_ALERT_ONCE;
 			NotificationManager mNM = (NotificationManager)sInstance.getSystemService(NOTIFICATION_SERVICE);
-			mNM.notify(R.drawable.ic_notification, n);
+			mNM.notify(R.drawable.ic_notification+id, n);
 		} catch(Throwable e){
 			e.printStackTrace();
 		}		

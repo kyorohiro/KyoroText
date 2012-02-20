@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.logcat.tasks;
 
+import info.kyorohiro.helloworld.logcat.KyoroApplication;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.tasks.SaveCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
@@ -49,6 +50,9 @@ public class TaskManagerForSave {
 
 	public static void stopSaveTask(Context context) {
 		if(!saveTaskIsAlive()){
+			// todo 常時起動の部分の状態繊維の記述が汚いので、修正する。
+			KyoroApplication.shortcutToStopKyoroLogcatService();
+			KyoroLogcatSetting.saveTaskStateIsStop();
 			return;
 		}
 		sSaveTask.terminate();
