@@ -58,18 +58,18 @@ public class EditableSurfaceView extends SurfaceView {
 
 		public MyInputConnection(View targetView, boolean fullEditor) {
 			super(targetView, fullEditor);
-			android.util.Log.v("kiyo", "new MyInputConnection");
+//			android.util.Log.v("kiyo", "new MyInputConnection");
 		}
 		
 		@Override
 		protected void finalize() throws Throwable {
-			android.util.Log.v("kiyo", "finalize()");
+//			android.util.Log.v("kiyo", "finalize()");
 			super.finalize();
 		}
 
 		@Override
 		public boolean finishComposingText() {
-			android.util.Log.v("kiyo", "finishComposingText");
+//			android.util.Log.v("kiyo", "finishComposingText");
 			return super.finishComposingText();
 		}
 
@@ -77,7 +77,7 @@ public class EditableSurfaceView extends SurfaceView {
 			null;
 		@Override
 		public Editable getEditable() {
-			android.util.Log.v("kiyo", "getEditable");
+//			android.util.Log.v("kiyo", "getEditable");
 			//Editable e = null; 
 			//return super.getEditable();
 			if(mBuilder == null){
@@ -89,25 +89,25 @@ public class EditableSurfaceView extends SurfaceView {
 
 		@Override
 		public boolean setComposingText(CharSequence text, int newCursorPosition) {
-			android.util.Log.v("kiyo", "compositionText="+text+","+newCursorPosition);
+//			android.util.Log.v("kiyo", "compositionText="+text+","+newCursorPosition);
 			return super.setComposingText(text, newCursorPosition);
 		}
 
 		@Override
 		public boolean setSelection(int start, int end) {
-			android.util.Log.v("kiyo", "selection s="+start+",e="+end);			
+//			android.util.Log.v("kiyo", "selection s="+start+",e="+end);			
 			return super.setSelection(start, end);
 		}
 
 		@Override
 		public boolean commitCompletion(CompletionInfo text) {
-			android.util.Log.v("kiyo", "completion="+text);
+//			android.util.Log.v("kiyo", "completion="+text);
 			return super.commitCompletion(text);
 		}
 		
 		@Override
 		public boolean commitText(CharSequence text, int newCursorPosition) {
-			android.util.Log.v("kiyo", "text="+text);
+//			android.util.Log.v("kiyo", "text="+text);
 			return super.commitText(text, newCursorPosition);
 		}
 	}

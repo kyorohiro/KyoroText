@@ -177,9 +177,9 @@ public class BigLineData {
 			String[] prob = detector.getProbableCharsets();
 
 			if (prob != null) {
-				for (String s : prob) {
-					android.util.Log.v("kiyo", "prob=" + s);
-				}
+//				for (String s : prob) {
+//					android.util.Log.v("kiyo", "prob=" + s);
+//				}
 				OUT: {
 					for (String s : prob) {
 						SortedMap<String, Charset> m = Charset
@@ -188,10 +188,10 @@ public class BigLineData {
 							// エイリアス
 							if (c.isSupported(s)) {
 								mCharset = s;
-								android.util.Log.v("kiyo", "charset="
-										+ mCharset);
-								android.util.Log.v("kiyo",
-										"===============================");
+//								android.util.Log.v("kiyo", "charset="
+//										+ mCharset);
+//								android.util.Log.v("kiyo",
+//										"===============================");
 								return;
 							}
 						}
