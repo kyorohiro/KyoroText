@@ -87,6 +87,9 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		int[] bound = new int[]{-1,-1,-1,-1};
 		int[] tmp = new int[4];
 
+		int[] pa1 = {0,2};  
+		int[] pa2 = {1,3};  
+
 		for(SimpleDisplayObject child: mMyChildren){
 			if(child != null) {
 				tmp[0] = child.getX();
@@ -94,11 +97,18 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 				tmp[2] = child.getY();
 				tmp[3] = child.getY() + child.getHeight();
 
-				for(int i=0;i<4;i++) {
+				for(int i:pa1) {
 					if(bound[i]< 0 || tmp[i] < bound[i]){
 						bound[i] = tmp[i];
 					}
 				}
+				
+				for(int i:pa2) {
+					if(bound[i]< 0 || tmp[i] > bound[i]){
+						bound[i] = tmp[i];
+					}
+				}
+				
 			}
 		}
 		return bound;

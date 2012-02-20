@@ -12,7 +12,7 @@ public class FlowingLineDatam implements CharSequence{
 	private int mStatus = 0;
 
 	public FlowingLineDatam(CharSequence line, int color, int status) {
-		mLine = new ArrayList<CharSequence>();
+		mLine = new ArrayList<CharSequence>(1);
 		mLine.add(line);
 		mColor = color;
 		mStatus = status;
@@ -47,11 +47,6 @@ public class FlowingLineDatam implements CharSequence{
 
 	// kiyohiro add but not support filter now;
 	public synchronized void insert(CharSequence insted, int position){
-		android.util.Log.v("mo","p="+position+",l="+length());
-		for(CharSequence s: mLine){
-			android.util.Log.v("mo",""+s.toString());
-		}
-		android.util.Log.v("mo","====");
 		ArrayList<CharSequence> next = new ArrayList<CharSequence>();
 		next.add(subSequence(0, position));
 		next.add(insted);
@@ -60,13 +55,6 @@ public class FlowingLineDatam implements CharSequence{
 		mLine = next;
 		tmp.clear();
 		tmp = null;
-
-		android.util.Log.v("mo","p="+position+",l="+length());
-		for(CharSequence s: mLine){
-			android.util.Log.v("mo",""+s.toString());
-		}
-		android.util.Log.v("mo","----");
-
 	}
 
 	public synchronized CharSequence subSequence(int start, int end) {
