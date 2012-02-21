@@ -200,7 +200,11 @@ public class KyoroLogcatActivity extends TestActivity {
 			menu.add(MENU_START_SHOW_LOG).setIcon(R.drawable.ic_start);
 		}
 
-		if (TaskManagerForSave.saveTaskIsAlive()) {
+		// todo Ç»ÇÒÇ©âòÇ¢ÅAwidget Ç∆ã§í Ç…Ç∑ÇÈ
+		if (TaskManagerForSave.saveTaskIsForceKilled()) {
+			menu.add(MENU_START_SAVE_AT_BGGROUND).setIcon(
+					R.drawable.ic_retry_save);			
+		} else if (TaskManagerForSave.saveTaskIsAlive()) {
 			menu.add(MENU_STOP_SAVE_AT_BGGROUND).setIcon(
 					R.drawable.ic_stop_save);
 		} else {
@@ -273,7 +277,7 @@ public class KyoroLogcatActivity extends TestActivity {
 				return;
 			}
 
-			String[] items = {"restart to save log task","end to save log task"};
+			String[] items = {"retry save task","fin save task"};
 			AlertDialog.Builder alert = new AlertDialog.Builder(KyoroLogcatActivity.this);  
 			//alert.setTitle("Title");  
 			alert.setItems(items, new DialogInterface.OnClickListener(){

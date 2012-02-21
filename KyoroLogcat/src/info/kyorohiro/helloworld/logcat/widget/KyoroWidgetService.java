@@ -40,20 +40,15 @@ public class KyoroWidgetService extends Service {
 		// 
 		if(KyoroSaveWidget.TYPE.equals(""+intent.getType())) {
 			 if (KyoroWidgetService.ACTION_SET.equals(action)){
-					KyoroSaveWidget.set(this);	            
-					if(TaskManagerForSave.saveTaskIsAlive()){
-						KyoroSaveWidget.setStopImage(getApplicationContext());
-					}
-					else {
-						KyoroSaveWidget.setSaveImage(getApplicationContext());
-					}			
+					KyoroSaveWidget.set(this);
+					KyoroSaveWidget.setImageAtAutoDetect(getApplicationContext());
 				}
 			 else if(KyoroWidgetService.ACTION_CHANGE.equals(action)){
 				if(TaskManagerForSave.saveTaskIsAlive()){
 					TaskManagerForSave.stopSaveTask(getApplicationContext());
 				}
 				else {
-					if(TaskManagerForSave.saveTaskIsForceKilled()){
+					if(TaskManagerForSave.saveTaskIsForceKilled()) {
 						KyoroLogcatActivity.startActivityFormStartSaveDialog(getApplicationContext());
 					}
 					else {

@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
 import info.kyorohiro.helloworld.logcat.R;
+import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -27,6 +28,21 @@ public class KyoroSaveWidget extends AppWidgetProvider {
 		chagneImage(context, R.drawable.ic_stop_save);
 	}
 
+	public static void setRetryImage(Context context){
+		chagneImage(context, R.drawable.ic_retry_save);
+	}
+	
+	public static void setImageAtAutoDetect(Context context) {
+		if(TaskManagerForSave.saveTaskIsForceKilled()) {
+			KyoroSaveWidget.setRetryImage(context);
+		}
+		else if(TaskManagerForSave.saveTaskIsAlive()){
+			KyoroSaveWidget.setStopImage(context);
+		}
+		else {
+			KyoroSaveWidget.setSaveImage(context);
+		}	
+	}
 	protected static void chagneImage(Context context, int id) {
 		Intent intentForClickAction = KyoroWidgetService.getIntentToStartButtonAction(context, TYPE);
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_save);

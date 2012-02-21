@@ -24,7 +24,7 @@ public class KyoroApplication extends Application {
 		if(TaskManagerForSave.saveTaskIsForceKilled()) {
 			// pf force kill process
 			TaskManagerForSave.startSaveTask(getApplicationContext());
-			KyoroApplication.showMessageAndNotification("spmode process is killed");
+			KyoroApplication.showMessageAndNotification("process is killed");
 		}
 	}
 
@@ -42,7 +42,7 @@ public class KyoroApplication extends Application {
 		if(iconStateIsStop == true) {
 			KyoroSaveWidget.setStopImage(sInstance);
 		} else {
-			KyoroSaveWidget.setSaveImage(sInstance);			
+			KyoroSaveWidget.setRetryImage(sInstance);
 		}
 	}
 
