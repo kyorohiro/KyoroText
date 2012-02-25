@@ -12,8 +12,6 @@ public class LineView extends SimpleDisplayObject {
 	private int mTextSize = 14;
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
-//	private int mTouchX = 0;
-//	private int mTouchY = 0;
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText) {
 		mInputtedText = inputtedText;
@@ -34,6 +32,7 @@ public class LineView extends SimpleDisplayObject {
 	public int getShowingTextEndPosition() {
 		return mShowingTextEndPosition;
 	}
+
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
@@ -57,6 +56,7 @@ public class LineView extends SimpleDisplayObject {
 		mShowingTextEndPosition = end;
 	}
 
+
 	public int start(CyclingListInter<FlowingLineDatam> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
@@ -66,6 +66,7 @@ public class LineView extends SimpleDisplayObject {
 		}
 		return start;
 	}
+
 
 	public int end(CyclingListInter<FlowingLineDatam> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
@@ -91,7 +92,8 @@ public class LineView extends SimpleDisplayObject {
 		return blank;
 	}
 
-	private void showLineDate(SimpleGraphics graphics, FlowingLineDatam[] list, int blank) {
+	private void showLineDate(SimpleGraphics graphics, FlowingLineDatam[] list,
+			int blank) {
 		for (int i = 0; i < list.length; i++) {
 			if (list[i] == null) {
 				continue;
@@ -104,18 +106,9 @@ public class LineView extends SimpleDisplayObject {
 				graphics.drawLine(10, startStopY, graphics.getWidth() - 10,
 						startStopY);
 			}
-			int x = getWidth()/20;
-			int y = graphics.getTextSize()*(blank+i+1);
+			int x = getWidth() / 20;
+			int y = graphics.getTextSize() * (blank + i + 1);
 			graphics.drawText("" + list[i], x, y);
-
-			// touchEvent
-//			if(mTouchY>0){
-//				if(y<mTouchY&& mTouchY<(y+mTextSize)){
-//					//searchX(list[i], mTouchX);
-//					mTouchX = -999;
-//					mTouchY = -999;
-//				}
-//			}
 		}
 	}
 
@@ -124,7 +117,8 @@ public class LineView extends SimpleDisplayObject {
 		graphics.setColor(Color.parseColor("#ccc9f486"));
 	}
 
-	private void updateStatus(SimpleGraphics graphics, CyclingListInter<FlowingLineDatam> showingText) {
+	private void updateStatus(SimpleGraphics graphics,
+			CyclingListInter<FlowingLineDatam> showingText) {
 		mNumOfLine = getHeight() / mTextSize;
 		int blankSpace = mNumOfLine / 2;
 		if (mPosition < -(mNumOfLine - blankSpace)) {
@@ -142,21 +136,4 @@ public class LineView extends SimpleDisplayObject {
 	public int getPosition() {
 		return mPosition;
 	}
-
-	/*
-	@Override
-	public boolean onTouchTest(int x, int y, int action) {
-		mTouchX = x;
-		mTouchY = y;
-		return true;
-	}
-
-	private void searchX(FlowingLineDatam datam, int x) {
-		String line = datam.toString();
-		Paint paint = new Paint();
-		paint.setTextSize(mTextSize);
-		int p = paint.breakText(line.toCharArray(), 0, line.length(), x, null);
-		datam.insert("™", p);
-	}
-	 */
 }

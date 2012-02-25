@@ -74,7 +74,8 @@ public class CyclingList<X> implements CyclingListInter<X> {
 		}
 
 		for (int i = 0; i < end - start; i++) {
-			ret[i] = get(i + start);
+//			android.util.Log.v("kiyohiro","k="+i+",l="+mList.size()+"r="+ret.length);
+			ret[i] = (X)get(i + start);
 		}
 		return ret;
 	}

@@ -7,13 +7,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import info.kyorohiro.helloworld.android.base.ForegroundService;
 import info.kyorohiro.helloworld.android.base.TestService;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 
 /**
  * change a permanent process to use this class.
  */
-public class KyoroLogcatService extends TestService {
+public class KyoroLogcatService extends ForegroundService  {
 
 	private static KyoroLogcatService instance = null;
 	public static KyoroLogcatService getCurrentInstance() {
@@ -68,7 +69,7 @@ public class KyoroLogcatService extends TestService {
 		if(TaskManagerForSave.saveTaskIsForceKilled()) {
 			// force kill process
 			TaskManagerForSave.startSaveTask(getApplicationContext());
-			KyoroApplication.showMessageAndNotification("spmode process is killed");
+			KyoroApplication.showMessageAndNotification("process is killed");
 		}
 	}
 
@@ -79,11 +80,10 @@ public class KyoroLogcatService extends TestService {
 		if(intent != null && intent.getExtras() != null && intent.getExtras().getString("message") != null){
 			message = intent.getExtras().getString("message");
 		}
-		Notification n = new Notification(R.drawable.ic_launcher, "kyorologcat", System.currentTimeMillis());
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, KyoroLogcatActivity.class), 0);
-		n.setLatestEventInfo(this, "kyoro logcat", message, contentIntent);
-		n.flags = Notification.FLAG_ONGOING_EVENT;
-		startForegroundCompat(n);
+		int resId = R.drawable.ic_launcher;
+		String title = "kyorologcat";
+		startForground(resId, title, message, contentIntent);
 	}
 
 	@Override

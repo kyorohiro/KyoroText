@@ -6,6 +6,10 @@ public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 	private int mW=0;
 	private int mH=0;
 
+	public void dispose() {
+		
+	};
+
 	public int getX() {
 		return mX;
 	}

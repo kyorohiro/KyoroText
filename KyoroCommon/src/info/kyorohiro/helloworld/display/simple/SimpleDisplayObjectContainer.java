@@ -56,10 +56,17 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 
 	public boolean onTouchTest(int x, int y, int action) {
 		boolean  touched = false;
-		for(SimpleDisplayObject child: mMyChildren){
+	//	for(SimpleDisplayObject child: mMyChildren){
+		if(mMyChildren == null){
+			return touched;
+		}
+		int len = mMyChildren.size();
+		for(int i = len-1;i>=0;i--){
+			SimpleDisplayObject child = mMyChildren.get(i);
 			if(child != null) {
 				touched = child.onTouchTest(x-child.getX(), y-child.getY(), action);
 				if(touched == true){
+					break;
 					//break; todo 
 				}
 			}

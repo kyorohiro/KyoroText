@@ -1,6 +1,9 @@
 package info.kyorohiro.helloworld.android.adapter;
 
+import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
@@ -53,7 +56,7 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	}
 
 	public void drawText(String text, int x, int y) {
-		mCanvas.drawText(text, x, y, mPaint);
+		mCanvas.drawText(text, x+mGlobalX, y+mGlobalY, mPaint);
 	}
 
 	public int getTextSize(){
@@ -114,6 +117,13 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 			margine += w[i];
 		}
 		return (int)margine;
+	}
+
+	@Override
+	public SimpleDisplayObject createImage(byte[] data, int offset, int length) {
+		Bitmap bitmap = BitmapFactory.decodeByteArray(data, offset, length);
+		
+		return null;
 	}
 
 }
