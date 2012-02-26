@@ -11,7 +11,7 @@ public class KyoroSetting {
 		setData(KyoroApplication.getKyoroApplication(), property, value);
 	}
 	
-	public static String getSaveTaskState(String property) {
+	public static String getData(String property) {
 		return getData(KyoroApplication.getKyoroApplication(), property);
 	}
 

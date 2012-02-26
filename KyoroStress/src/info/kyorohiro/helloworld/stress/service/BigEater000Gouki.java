@@ -1,21 +1,17 @@
 package info.kyorohiro.helloworld.stress.service;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.widget.Toast;
 
-public class BigEater001Gouki extends KyoroStressService {
+public class BigEater000Gouki extends KyoroStressService {
 
-	public BigEater001Gouki() {
-		super(101);
+	public BigEater000Gouki() {
+		super(100);
 	}
 
 	public static Intent startService(Context context, String message) {
-		Intent startIntent = new Intent(context, BigEater001Gouki.class);
+		Intent startIntent = new Intent(context, BigEater000Gouki.class);
 	    if(message != null){
 	    	startIntent.putExtra("message", message);
 	    }
@@ -23,17 +19,17 @@ public class BigEater001Gouki extends KyoroStressService {
 	    return startIntent;
 	}
 
-	public static int getColor() {
-		return Color.GREEN;
+	public static String getNickName() {
+		return "No00 JavaHeapEater";
 	}
 
-	public static String getNickName() {
-		return "No01 JavaHeapEater";
+	public static int getColor() {
+		return Color.YELLOW;
 	}
 
 	@Override
 	public String getProperty() {
-		return KyoroStressService.ID_01;
+		return KyoroStressService.ID_00;
 	}
 
 

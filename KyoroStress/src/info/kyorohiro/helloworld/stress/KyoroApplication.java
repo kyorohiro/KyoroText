@@ -21,7 +21,6 @@ public class KyoroApplication extends Application {
 		return sInstance;
 	}
 
-
 	public static void showMessage(String message) {
 		try {
 			sInstance.mHandler.post(new ToastMessage(sInstance, message));

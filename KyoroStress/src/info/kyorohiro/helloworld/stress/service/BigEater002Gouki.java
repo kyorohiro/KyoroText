@@ -8,14 +8,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
-public class BigEater001Gouki extends KyoroStressService {
+public class BigEater002Gouki extends KyoroStressService {
 
-	public BigEater001Gouki() {
-		super(101);
+	public BigEater002Gouki() {
+		super(102);
 	}
 
 	public static Intent startService(Context context, String message) {
-		Intent startIntent = new Intent(context, BigEater001Gouki.class);
+		Intent startIntent = new Intent(context, BigEater002Gouki.class);
 	    if(message != null){
 	    	startIntent.putExtra("message", message);
 	    }
@@ -23,17 +23,17 @@ public class BigEater001Gouki extends KyoroStressService {
 	    return startIntent;
 	}
 
-	public static int getColor() {
-		return Color.GREEN;
+	public static String getNickName() {
+		return "No02 JavaHeapEater";
 	}
 
-	public static String getNickName() {
-		return "No01 JavaHeapEater";
+	public static int getColor() {
+		return Color.RED;
 	}
 
 	@Override
 	public String getProperty() {
-		return KyoroStressService.ID_01;
+		return KyoroStressService.ID_02;
 	}
 
 
