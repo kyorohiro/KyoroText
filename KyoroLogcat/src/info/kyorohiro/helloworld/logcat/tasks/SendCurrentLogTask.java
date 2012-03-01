@@ -13,7 +13,7 @@ import info.kyorohiro.helloworld.logcat.KyoroApplication;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.util.CyclingList;
 
-public class SendCurrentLogTask extends Thread {
+public class SendCurrentLogTask extends Thread implements TaskInter {
 
 	private final Logcat mLogcat = new Logcat();
 	private String mOption = "-d -v time";

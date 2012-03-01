@@ -69,7 +69,7 @@ public class KyoroLogcatService extends ForegroundService  {
 		if(TaskManagerForSave.saveTaskIsForceKilled()) {
 			// force kill process
 			TaskManagerForSave.startSaveTask(getApplicationContext());
-			KyoroApplication.showMessageAndNotification("process is killed");
+			KyoroApplication.showNotification("process is killed");
 		}
 	}
 

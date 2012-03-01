@@ -11,6 +11,7 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
+import info.kyorohiro.helloworld.logcat.tasks.TaskInter;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowCurrentLogTask;
@@ -55,7 +56,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
 	private AutoCompleteTextView mInputForLogFilter = null; 
-	private ShowCurrentLogTask mShowTask = null;
+	private TaskInter mShowTask = null;
 
 	public static String EXTRA_PROPERTY_ACTION = "info.kyorohiro.helloworld.logcat.Action";
 	public static String EXTRA_PROPERTY_ACTION_VALUE_FOLDER = "info.kyorohiro.helloworld.logcat.Folder";
@@ -345,8 +346,10 @@ public class KyoroLogcatActivity extends TestActivity {
 					return true;
 				}
 				else {
-					ShowFileContentTask task = new ShowFileContentTask(mLogcatOutput, file);
-					task.start();
+					if(mShowTask == null || !mShowTask.isAlive()){
+						mShowTask= new ShowFileContentTask(mLogcatOutput, file);
+						mShowTask.start();
+					}
 					return true;
 				}
 			} catch(Throwable t) {
@@ -368,7 +371,7 @@ public class KyoroLogcatActivity extends TestActivity {
 				Pattern filter = Pattern.compile(filterText);
 				mLogcatViewer.startFilter(filter);
 			} catch(Throwable t) {
-				KyoroApplication.showMessageAndNotification("Failed to filter logcat log from input text.");
+				KyoroApplication.showNotification("Failed to filter logcat log from input text.");
 			}
 			return false;
 		}

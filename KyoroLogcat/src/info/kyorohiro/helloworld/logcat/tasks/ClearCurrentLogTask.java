@@ -8,7 +8,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 
-public class ClearCurrentLogTask extends Thread {
+public class ClearCurrentLogTask extends Thread implements TaskInter {
 	private final Logcat mLogcat = new Logcat();
 	private FlowingLineData mData;
 	private String mOption = "-c";

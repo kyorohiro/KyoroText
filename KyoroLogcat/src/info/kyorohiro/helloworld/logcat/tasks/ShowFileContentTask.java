@@ -7,7 +7,7 @@ import java.io.IOException;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.util.BigLineData;
 
-public class ShowFileContentTask extends Thread {
+public class ShowFileContentTask extends Thread implements TaskInter {
 	private FlowingLineData mData;
 	private BigLineData mLineData = null;
 	

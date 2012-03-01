@@ -24,7 +24,7 @@ public class KyoroApplication extends Application {
 		if(TaskManagerForSave.saveTaskIsForceKilled()) {
 			// pf force kill process
 			TaskManagerForSave.startSaveTask(getApplicationContext());
-			KyoroApplication.showMessageAndNotification("process is killed");
+			KyoroApplication.showNotification("process is killed");
 		}
 	}
 
@@ -51,13 +51,13 @@ public class KyoroApplication extends Application {
 		KyoroSaveWidget.setSaveImage(sInstance);
 	}
 
-	public static void showMessageAndNotification(String message) {
-		showMessageAndNotification(message, 0); 
+	public static void showNotification(String message) {
+		showNotification(message, 0); 
 	}
 
-	public static void showMessageAndNotification(String message, int id) {
+	public static void showNotification(String message, int id) {
 		try {
-			showMessage(message);
+			//showMessage(message);
 			Notification n = new Notification(R.drawable.ic_notification, "kyorologcat", System.currentTimeMillis());
 			PendingIntent contentIntent = PendingIntent.getActivity(sInstance, 0, new Intent(sInstance, KyoroLogcatActivity.class), 0);
 			n.setLatestEventInfo(sInstance, "kyoro logcat", ""+message, contentIntent);

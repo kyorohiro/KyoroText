@@ -17,7 +17,7 @@ import java.util.Locale;
 
 import android.os.Environment;
 
-public class SaveCurrentLogTask extends Thread {
+public class SaveCurrentLogTask extends Thread implements TaskInter {
 
 	private File mSavedDirectory = null;
 	@SuppressWarnings("unused")
@@ -65,7 +65,7 @@ public class SaveCurrentLogTask extends Thread {
 			KyoroLogcatSetting.saveTaskStateIsStart();
 			KyoroLogcatBroadcast.startTimer();
 			if(mExternalStorageWriteable == false){
-				KyoroApplication.showMessageAndNotification("failed by external storage is not writeable.\n  check if sdcatd is mounted!!");
+				KyoroApplication.showNotification("failed by external storage is not writeable.\n  check if sdcatd is mounted!!");
 				return;
 			}
 			Date date = new Date();
@@ -94,13 +94,13 @@ public class SaveCurrentLogTask extends Thread {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			KyoroApplication.showMessageAndNotification("failed to throw io exception.\n  please check sdcatd!!");
+			KyoroApplication.showNotification("failed to throw io exception.\n  please check sdcatd!!");
 		} catch(LogcatException e) {
 			e.printStackTrace();
-			KyoroApplication.showMessageAndNotification("failed by framework error.\n  please restart this application!!");
+			KyoroApplication.showNotification("failed by framework error.\n  please restart this application!!");
 		} catch(Throwable e) {
 			e.printStackTrace();
-			KyoroApplication.showMessageAndNotification("failed to throw unexcepted error.\n  please restart this application!!");			
+			KyoroApplication.showNotification("failed to throw unexcepted error.\n  please restart this application!!");			
 		}
 		finally {
 			if(output != null){
