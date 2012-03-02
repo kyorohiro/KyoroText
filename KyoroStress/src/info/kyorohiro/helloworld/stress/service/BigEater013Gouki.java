@@ -23,6 +23,12 @@ public class BigEater013Gouki extends KyoroStressService {
 	    return startIntent;
 	}
 
+	public static Intent stopService(Context context) {
+		Intent startIntent = new Intent(context, BigEater013Gouki.class);
+	    context.stopService(startIntent);
+	    return startIntent;
+	}
+
 	public static int getColor() {
 		return Color.WHITE;
 	}

@@ -35,7 +35,6 @@ public class ShowCurrentLogTask extends Thread implements TaskInter {
 		mData.clear();
 		try {
 			InputStream stream = mLogcat.getInputStream();
-//			DataInputStream input  = new DataInputStream(stream);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			while(true) {
 				if(!reader.ready()){

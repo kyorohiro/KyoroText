@@ -32,13 +32,14 @@ public class ShowFileContentTask extends Thread implements TaskInter {
 
 	@Override
 	public void run() {
+		BigLineData lineData = mLineData; 
 		try {
 			mData.clear();
-			while(true) {
-				if(mLineData.isEOF()){
+			while(mLineData!=null) {
+				if(lineData.isEOF()){
 					break;
 				}
-				CharSequence line = mLineData.readLine();
+				CharSequence line = lineData.readLine();
 				mData.addLinePerBreakText(line);
 				Thread.sleep(0);
 			}
@@ -47,7 +48,7 @@ public class ShowFileContentTask extends Thread implements TaskInter {
 		} catch (InterruptedException e) {
 		} finally {
 			try {
-				mLineData.close();
+				lineData.close();
 			} catch(Throwable t){
 				t.printStackTrace();
 			}

@@ -182,7 +182,8 @@ public abstract class KyoroStressService extends ForegroundService {
 			}
 		}
 	}
-    public static void startService(Class clazz, Context context, String message) {
+
+	public static void startService(Class clazz, Context context, String message) {
     	Method method;
     	try {
     		method = clazz.getMethod("startService", new Class[]{ Context.class, String.class });
@@ -205,5 +206,27 @@ public abstract class KyoroStressService extends ForegroundService {
     	}
     }
 
+	public static void stopService(Class clazz, Context context) {
+    	Method method;
+    	try {
+    		method = clazz.getMethod("stopService", new Class[]{ Context.class });
+    	} catch (SecurityException e) {
+    		throw new RuntimeException(e);
+    	} catch (NoSuchMethodException e) {
+    		throw new RuntimeException(e);
+    	}
+
+    	Object ret; //戻り値
+    	try {
+    		ret = method.invoke(clazz, new Object[]{ context});
+    		//  = object.メソッド((int)1); と同じ
+    	} catch (IllegalArgumentException e) {
+    		e.printStackTrace();
+    	} catch (IllegalAccessException e) {
+    		e.printStackTrace();
+    	} catch (InvocationTargetException e) {
+    		e.printStackTrace();
+    	}
+    }
 
 }

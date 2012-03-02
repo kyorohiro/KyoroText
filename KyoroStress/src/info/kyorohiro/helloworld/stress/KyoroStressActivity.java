@@ -10,30 +10,13 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.lineview.LineList;
-import info.kyorohiro.helloworld.stress.service.BigEater000Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater001Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater002Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater003Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater004Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater005Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater006Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater007Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater008Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater009Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater010Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater011Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater012Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater013Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater014Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater015Gouki;
-import info.kyorohiro.helloworld.stress.service.BigEater016Gouki;
 import info.kyorohiro.helloworld.stress.service.KilledProcessStarter;
 import info.kyorohiro.helloworld.stress.service.KyoroStressService;
+import info.kyorohiro.helloworld.stress.task.DeadOrAliveTask;
 import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.KyoroMemoryInfo;
 import android.app.Activity;
 import android.app.ActivityManager.RunningAppProcessInfo;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -70,14 +53,17 @@ public class KyoroStressActivity extends Activity {
 
         //
         setController();
-
         //         
+    	if(mKilledProcessManager == null || !mKilledProcessManager.isAlive()) {
+    		mKilledProcessManager = new Thread(new ProcessStatusChecker());
+    		mKilledProcessManager.start();
+    	}
     }
 
     @Override
     protected void onStart() {
     	super.onStart();
-    	if(mKilledProcessManager == null) {
+    	if(mKilledProcessManager == null || !mKilledProcessManager.isAlive()) {
     		mKilledProcessManager = new Thread(new ProcessStatusChecker());
     		mKilledProcessManager.start();
     	}
@@ -159,7 +145,7 @@ public class KyoroStressActivity extends Activity {
     protected void onResume() {
     	super.onResume();
     	mStage.start();
-    	if(mKilledProcessManager == null) {
+    	if(mKilledProcessManager == null || !mKilledProcessManager.isAlive()) {
     		mKilledProcessManager = new Thread(new ProcessStatusChecker());
     	}
     }    
@@ -170,6 +156,7 @@ public class KyoroStressActivity extends Activity {
     	mStage.stop();
     	if(mKilledProcessManager != null) {
     		mKilledProcessManager.interrupt();
+    		mKilledProcessManager = null;
     	}
     }
 
@@ -314,7 +301,6 @@ public class KyoroStressActivity extends Activity {
 					datam.mMessage = "task is alive";
 				} else {
 					datam.mMessage = "kill task now..";
-					KyoroStressService.startService(clazz, KyoroApplication.getKyoroApplication(), "end");
 				}
 
 				return;
@@ -329,17 +315,23 @@ public class KyoroStressActivity extends Activity {
 	}
 
 	public class ProcessStatusChecker implements Runnable {
-		KilledProcessStarter task = new KilledProcessStarter();
+		KilledProcessStarter task1 = new KilledProcessStarter();
+		DeadOrAliveTask task2 = new DeadOrAliveTask(KyoroStressActivity.this);
 		public void run() {
 			try {
 				while(true){
+					android.util.Log.v("kiyohiro","------task");
 					updateStatus();
-					Thread.sleep(200);
-					task.run();
-					Thread.sleep(400);
+					Thread.sleep(100);
+					task1.run();
+					Thread.sleep(100);
+					task2.run();
+					Thread.sleep(100);
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			} finally {
+				android.util.Log.v("kiyohiro","------task e");
 			}
 
 		}

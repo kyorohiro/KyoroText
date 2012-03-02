@@ -19,6 +19,12 @@ public class BigEater000Gouki extends KyoroStressService {
 	    return startIntent;
 	}
 
+	public static Intent stopService(Context context) {
+		Intent startIntent = new Intent(context, BigEater000Gouki.class);
+	    context.stopService(startIntent);
+	    return startIntent;
+	}
+
 	public static String getNickName() {
 		return "No00 JavaHeapEater";
 	}
