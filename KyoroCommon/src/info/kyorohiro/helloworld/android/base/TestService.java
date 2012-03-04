@@ -100,12 +100,12 @@ public abstract class TestService extends Service {
 		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		try {
 			// http://code.google.com/p/android/issues/detail?id=20035
-			if(Build.VERSION.SDK_INT >= 8) {
+			//if(Build.VERSION.SDK_INT >= 8) {
 				mStartForeground = getClass().getMethod("startForeground",
 						mStartForegroundSignature);
 				mStopForeground = getClass().getMethod("stopForeground",
 						mStopForegroundSignature);
-			}
+			//}
 		} catch (NoSuchMethodException e) {
 			mStartForeground = mStopForeground = null;
 		}

@@ -61,8 +61,8 @@ public class KyoroStressActivity extends Activity {
         setController();
         //         
     	if(mKilledProcessManager == null || !mKilledProcessManager.isAlive()) {
-    		mKilledProcessManager = new Thread(new ProcessStatusChecker());
-    		mKilledProcessManager.start();
+    	//	mKilledProcessManager = new Thread(new ProcessStatusChecker());
+    	//	mKilledProcessManager.start();
     	}
     }
 
