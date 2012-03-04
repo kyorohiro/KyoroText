@@ -9,10 +9,14 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".KyoroApplication" >
+        android:name=".KyoroApplication">
         <activity
             android:label="@string/app_name"
-            android:name=".KyoroStressActivity" >
+            android:name=".KyoroStressActivity" 
+            android:process=":master"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 

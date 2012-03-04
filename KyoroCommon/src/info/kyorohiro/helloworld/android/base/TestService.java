@@ -56,13 +56,18 @@ public abstract class TestService extends Service {
 			mStartForegroundArgs[0] = Integer.valueOf(id);
 			mStartForegroundArgs[1] = notification;
 			invokeMethod(mStartForeground, mStartForegroundArgs);
+			//if(Build.VERSION.SDK_INT < 8){
+			//	mNM.notify(id, notification);
+			//}
 			return;
 		}
 
 		// Fall back on the old API.
-		mSetForegroundArgs[0] = Boolean.TRUE;
-		invokeMethod(mSetForeground, mSetForegroundArgs);
-		mNM.notify(id, notification);
+		if(mSetForeground != null){
+			mSetForegroundArgs[0] = Boolean.TRUE;
+			invokeMethod(mSetForeground, mSetForegroundArgs);
+			mNM.notify(id, notification);
+		}
 	}
 
 	/**
@@ -75,45 +80,43 @@ public abstract class TestService extends Service {
 		if (mStopForeground != null) {
 			mStopForegroundArgs[0] = Boolean.TRUE;
 			invokeMethod(mStopForeground, mStopForegroundArgs);
+			//if(Build.VERSION.SDK_INT < 8){
+			//	mNM.cancel(id);
+			//}
 			return;
 		}
 
 		// Fall back on the old API.  Note to cancel BEFORE changing the
 		// foreground state, since we could be killed at that point.
-		mNM.cancel(id);
-		mSetForegroundArgs[0] = Boolean.FALSE;
-		invokeMethod(mSetForeground, mSetForegroundArgs);
-	}
-
-	
-	public static void cancelForgroundNotificationAfterProcessKill(Context context) {
-		try {
-			NotificationManager mNM = (NotificationManager)context.getSystemService(NOTIFICATION_SERVICE);
-			mNM.cancel(1);
-		} catch(Exception e) {
+		if(mSetForeground != null){
+			mSetForegroundArgs[0] = Boolean.FALSE;
+			invokeMethod(mSetForeground, mSetForegroundArgs);
+			mNM.cancel(id);
 		}
 	}
 
 	@Override
 	public void onCreate() {
 		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		if(Build.VERSION.SDK_INT > 7){
-			try {
+		try {
+			// http://code.google.com/p/android/issues/detail?id=20035
+			if(Build.VERSION.SDK_INT >= 8) {
 				mStartForeground = getClass().getMethod("startForeground",
 						mStartForegroundSignature);
 				mStopForeground = getClass().getMethod("stopForeground",
 						mStopForegroundSignature);
-				return;
-			} catch (NoSuchMethodException e) {
-				mStartForeground = mStopForeground = null;
 			}
+		} catch (NoSuchMethodException e) {
+			mStartForeground = mStopForeground = null;
 		}
+
 		try {
 			mSetForeground = getClass().getMethod("setForeground",
 					mSetForegroundSignature);
 		} catch (NoSuchMethodException e) {
-			throw new IllegalStateException(
-					"OS doesn't have Service.startForeground OR Service.setForeground!");
+			//throw new IllegalStateException(
+			//		"OS doesn't have Service.startForeground OR Service.setForeground!");
+			e.printStackTrace();
 		}
 	}
 

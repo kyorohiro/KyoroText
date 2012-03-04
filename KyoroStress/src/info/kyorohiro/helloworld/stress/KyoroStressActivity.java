@@ -20,7 +20,10 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public class KyoroStressActivity extends Activity {
 
@@ -29,6 +32,9 @@ public class KyoroStressActivity extends Activity {
 	private CyclingList<Object> mData = new CyclingList<Object>(100);
 	private SimpleCircleController mController = new SimpleCircleController();
 	private Thread mKilledProcessManager = null;
+	private Thread mStopThread = null;
+	public final static String MENU_STOP = "stop";
+	public final static String MENU_START = "start";
 
 	
     @Override
@@ -233,15 +239,11 @@ public class KyoroStressActivity extends Activity {
 						mDatamPrevDown.mMessage = "tap";
 						// action
 						//------------------
-						android.util.Log.v("kiyohiro", "===id="+mDatamPrevDown.mID);
+						android.util.Log.v("kiyohiro", "==tapped="+mDatamPrevDown.mID);
 						if(!KyoroStressService.START_SERVICE.equals(KyoroSetting.getData(mDatamPrevDown.mID))){
-							KyoroSetting.setData(mDatamPrevDown.mID, KyoroStressService.START_SERVICE);
-							KyoroStressService.startService(mDatamPrevDown.mClazz, KyoroApplication.getKyoroApplication(), "start");
-							mDatamPrevDown.mMessage = "start";
+							start(mDatamPrevDown);
 						} else {
-							KyoroSetting.setData(mDatamPrevDown.mID, KyoroStressService.STOP_SERVICE);
-							KyoroStressService.startService(mDatamPrevDown.mClazz, KyoroApplication.getKyoroApplication(), "end");
-							mDatamPrevDown.mMessage = "end";
+							stop(mDatamPrevDown);
 						}
 					}
 				}
@@ -249,16 +251,6 @@ public class KyoroStressActivity extends Activity {
 					if(mDatamPrevDown != obj) {
 						mDatamPrevDown = null;
 					}					
-				}
-				
-				// test
-				KyoroMemoryInfo m = new KyoroMemoryInfo();
-				List<RunningAppProcessInfo> a = m.getRunningAppList(KyoroStressActivity.this);
-				for(RunningAppProcessInfo b : a) {
-					String p = b.processName;
-					if(p.matches(".*kyorohiro.*")){
-						android.util.Log.v("kiyohiro.info","p="+p);
-					}
 				}
 			}
 		}    	
@@ -301,8 +293,8 @@ public class KyoroStressActivity extends Activity {
 					datam.mMessage = "task is alive";
 				} else {
 					datam.mMessage = "kill task now..";
+					//android.os.Process.killProcess(i.pid);
 				}
-
 				return;
 			}
 		}
@@ -315,12 +307,12 @@ public class KyoroStressActivity extends Activity {
 	}
 
 	public class ProcessStatusChecker implements Runnable {
-		KilledProcessStarter task1 = new KilledProcessStarter();
+		KilledProcessStarter task1 = new KilledProcessStarter(null);
 		DeadOrAliveTask task2 = new DeadOrAliveTask(KyoroStressActivity.this);
 		public void run() {
 			try {
 				while(true){
-					android.util.Log.v("kiyohiro","------task");
+					android.util.Log.v("kiyohiro","---task");
 					updateStatus();
 					Thread.sleep(100);
 					task1.run();
@@ -335,5 +327,79 @@ public class KyoroStressActivity extends Activity {
 			}
 
 		}
+	}
+
+	private void startAll() {
+		int num = mData.getNumberOfStockedElement();
+		Object[] obj = new Object[num];
+		mData.getElements(obj, 0, num);
+		for(int i=0;i<num;i++) {
+			if(obj[i] instanceof MyListDatam) {
+				start((MyListDatam)obj[i]);  
+			}
+		}
+	}
+
+	private void stopAll() {
+		int num = mData.getNumberOfStockedElement();
+		Object[] obj = new Object[num];
+		mData.getElements(obj, 0, num);
+		for(int i=0;i<num;i++) {
+			if(obj[i] instanceof MyListDatam) {
+				stop((MyListDatam)obj[i]);  
+			}
+		}
+	}
+
+	private void start(MyListDatam datam) {
+		if(datam == null){
+			return;
+		}
+		KyoroSetting.setData(datam.mID, KyoroStressService.START_SERVICE);
+		KyoroStressService.startService(datam.mClazz, KyoroApplication.getKyoroApplication(), "start");
+		datam.mMessage = "start";
+	}
+	
+	private void stop(MyListDatam datam) {
+		if(datam == null){
+			return;
+		}
+		KyoroSetting.setData(datam.mID, KyoroStressService.STOP_SERVICE);
+		KyoroStressService.startService(datam.mClazz, KyoroApplication.getKyoroApplication(), "end");
+		//KyoroStressService.stopService(datam.mClazz, KyoroApplication.getKyoroApplication());
+		datam.mMessage = "end";
+	}
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		if(mStopThread == null || !mStopThread.isAlive()){
+			menu.add(KyoroStressActivity.MENU_START);
+			menu.add(KyoroStressActivity.MENU_STOP);
+			Toast.makeText(KyoroStressActivity.this, "now working..", Toast.LENGTH_LONG);
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		if(item !=null && KyoroStressActivity.MENU_STOP.equals(item.getTitle())) {
+			mStopThread = new Thread() {
+				public void run() {
+					stopAll();
+				}
+			};
+			mStopThread.start();
+			return true;
+		}
+		else if(item !=null && KyoroStressActivity.MENU_START.equals(item.getTitle())){
+			mStopThread = new Thread() {
+				public void run() {
+					startAll();
+				}
+			};
+			mStopThread.start();
+			return true;			
+		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 }

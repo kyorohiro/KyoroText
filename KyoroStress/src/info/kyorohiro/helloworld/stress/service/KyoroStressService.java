@@ -12,11 +12,15 @@ import info.kyorohiro.helloworld.stress.task.EatUpJavaHeapTask;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 
 public abstract class KyoroStressService extends ForegroundService {
 
 	private LinkedList<byte[]> mBuffer = new LinkedList<byte[]>();
+	private Thread mTask = null;
+	private long startTime = System.currentTimeMillis();
+
 	public static final String START_SERVICE = "start";
 	public static final String STOP_SERVICE = "stop";
 
@@ -89,10 +93,11 @@ public abstract class KyoroStressService extends ForegroundService {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		stopForegroundCompat();
 		mBuffer = new LinkedList<byte[]>(); 
 		if (START_SERVICE.equals(""+KyoroSetting.getData(getProperty()))) {
 			startInternal("restart");
-		}
+		} 
 	}
 
 	@Override
@@ -102,24 +107,54 @@ public abstract class KyoroStressService extends ForegroundService {
 		if(intent !=null && null != intent.getExtras()){
 		    message = intent.getExtras().getString("message");
 		}
-		if(message != null && message.equals("restart")){
-			// Restart •s—v
-			if (!START_SERVICE.equals(""+KyoroSetting.getData(getProperty()))) {
-				stopSelf();
-				return;
-			}
-		}
 
 		if(message != null && message.equals("end")){
-			stopSelf();
+			// when still cant not showed notificartion
+			long endTime = System.currentTimeMillis();
+			long waitTime = (endTime-startTime);
+			Handler h = new Handler();
+			if(waitTime<2000){
+				waitTime = 2000;
+			}
+			h.postDelayed(new DelayAndStop(),waitTime);
 			return;
 		}
 
+		if (!START_SERVICE.equals(""+KyoroSetting.getData(getProperty()))) {
+			Handler h = new Handler();
+			h.postDelayed(new DelayAndStop(),100);
+			return;
+		}
 
-		//KyoroSetting.setData(getProperty(), START_SERVICE);
 		startInternal(message);
+		if(mTask == null || !mTask.isAlive()){
+			mTask = new KillAndStartProcessThread (this);
+			mTask.start();
+		}
 	}
 
+	private class DelayAndStop implements Runnable{
+		@Override
+		public void run() {
+			stopForegroundCompat();
+			stopSelf();	
+		}
+	}
+
+	private static class KillAndStartProcessThread extends Thread {
+		private KilledProcessStarter mTask = null;
+		public KillAndStartProcessThread(Object obj) {
+			 mTask = new KilledProcessStarter(obj);
+		}
+
+		@Override
+		public void run() {
+			super.run();
+			while(!Thread.interrupted()){
+				mTask.run();
+			}
+		}
+	}
 	private void startInternal(String message) {
 		if(startTask()){
 			startForground(message);
@@ -127,16 +162,22 @@ public abstract class KyoroStressService extends ForegroundService {
 	}
 
 	public void startForground(String messagePlus) {
+		startTime = System.currentTimeMillis();
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, KyoroStressActivity.class), 0);
 		int resId = R.drawable.ic_launcher;
 		String title = getLabel()+":"+ getProperty();
 		String message = getMessage()+":"+messagePlus;
-		startForground(resId, title, message, contentIntent);
+		startForgroundAtOnGoing(resId, title, message, contentIntent);
 	}
 
 	@Override
 	public void onDestroy() {
+		android.util.Log.v("kiyohiro","onDestry()"+getClass().getName());
 		super.onDestroy();
+		if(mTask != null){
+			mTask.interrupt();
+			mTask = null;
+		}
 		endTask();
 	}
 

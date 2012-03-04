@@ -83,7 +83,7 @@ public class KyoroLogcatService extends ForegroundService  {
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, KyoroLogcatActivity.class), 0);
 		int resId = R.drawable.ic_launcher;
 		String title = "kyorologcat";
-		startForground(resId, title, message, contentIntent);
+		startForgroundAtOnGoing(resId, title, message, contentIntent);
 	}
 
 	@Override

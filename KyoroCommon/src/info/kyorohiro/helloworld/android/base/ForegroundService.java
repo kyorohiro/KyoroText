@@ -9,10 +9,12 @@ public abstract class ForegroundService extends TestService {
 
 	public ForegroundService(int IdOfStartForeground) {
 		super(IdOfStartForeground);
-		// TODO Auto-generated constructor stub
 	}
 
-	public void startForground(int resId, String title, String message, PendingIntent contentIntent) {
+/*	public void startForground(int resId, String title, String message, PendingIntent contentIntent) {
+		
+}*/
+	public void startForgroundAtOnGoing(int resId, String title, String message, PendingIntent contentIntent) {
 		// forground
 		Notification n = new Notification(resId, title, System.currentTimeMillis());
 		n.setLatestEventInfo(this, title, message, contentIntent);
