@@ -1,7 +1,8 @@
-package info.kyorohiro.helloworld.stress.service;
+package info.kyorohiro.helloworld.stress.task;
 
 import info.kyorohiro.helloworld.stress.KyoroApplication;
 import info.kyorohiro.helloworld.stress.KyoroSetting;
+import info.kyorohiro.helloworld.stress.service.KyoroStressService;
 import info.kyorohiro.helloworld.util.KyoroMemoryInfo;
 
 import java.lang.ref.WeakReference;

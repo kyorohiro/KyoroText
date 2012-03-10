@@ -58,6 +58,38 @@
         </service>
         <service android:name=".service.BigEater016Gouki" android:process=":no16">
         </service>
+        <service android:name=".service.BigEater017Gouki" android:process=":no17">
+        </service>
+        <service android:name=".service.BigEater018Gouki" android:process=":no18">
+        </service>
+        <service android:name=".service.BigEater019Gouki" android:process=":no19">
+        </service>
+        <service android:name=".service.BigEater020Gouki" android:process=":no20">
+        </service>
+        <service android:name=".service.BigEater021Gouki" android:process=":no21">
+        </service>
+        <service android:name=".service.BigEater022Gouki" android:process=":no22">
+        </service>
+        <service android:name=".service.BigEater023Gouki" android:process=":no23">
+        </service>
+        <service android:name=".service.BigEater024Gouki" android:process=":no24">
+        </service>
+        <service android:name=".service.BigEater025Gouki" android:process=":no25">
+        </service>
+        <service android:name=".service.BigEater026Gouki" android:process=":no26">
+        </service>
+        <service android:name=".service.BigEater027Gouki" android:process=":no27">
+        </service>
+        <service android:name=".service.BigEater028Gouki" android:process=":no28">
+        </service>
+        <service android:name=".service.BigEater029Gouki" android:process=":no29">
+        </service>
+        <service android:name=".service.BigEater030Gouki" android:process=":no30">
+        </service>
+        <service android:name=".service.BigEater031Gouki" android:process=":no31">
+        </service>
+        <service android:name=".service.BigEater032Gouki" android:process=":no32">
+        </service>
     </application>
 
 </manifest>

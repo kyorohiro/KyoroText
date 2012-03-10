@@ -9,6 +9,7 @@ import info.kyorohiro.helloworld.stress.KyoroSetting;
 import info.kyorohiro.helloworld.stress.KyoroStressActivity;
 import info.kyorohiro.helloworld.stress.R;
 import info.kyorohiro.helloworld.stress.task.EatUpJavaHeapTask;
+import info.kyorohiro.helloworld.stress.task.KilledProcessStarter;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +43,22 @@ public abstract class KyoroStressService extends ForegroundService {
 	public static String ID_14 = "no14";
 	public static String ID_15 = "no15";
 	public static String ID_16 = "no16";
+	public static String ID_17 = "no17";
+	public static String ID_18 = "no18";
+	public static String ID_19 = "no19";
+	public static String ID_20 = "no20";
+	public static String ID_21 = "no21";
+	public static String ID_22 = "no22";
+	public static String ID_23 = "no23";
+	public static String ID_24 = "no24";
+	public static String ID_25 = "no25";
+	public static String ID_26 = "no26";
+	public static String ID_27 = "no27";
+	public static String ID_28 = "no28";
+	public static String ID_29 = "no29";
+	public static String ID_30 = "no30";
+	public static String ID_31 = "no31";
+	public static String ID_32 = "no32";
 	
 	private String mCurrentDisplayMessage = "";
 
@@ -50,7 +67,11 @@ public abstract class KyoroStressService extends ForegroundService {
 		ID_04,ID_05, ID_06, ID_07,
 		ID_08,ID_09, ID_10, ID_11,
 		ID_12,ID_13, ID_14, ID_15,
-		ID_16			
+		ID_16,ID_17, ID_18, ID_19,
+		ID_20,ID_21, ID_22, ID_23,
+		ID_24,ID_25, ID_26, ID_27,
+		ID_28,ID_29, ID_30, ID_31,
+		ID_32,
 	};
 
 	public final static Class JavaHeapEater[] = new Class[] {
@@ -71,6 +92,22 @@ public abstract class KyoroStressService extends ForegroundService {
 		BigEater014Gouki.class,
 		BigEater015Gouki.class,
 		BigEater016Gouki.class,
+		BigEater017Gouki.class,
+		BigEater018Gouki.class, 
+		BigEater019Gouki.class,
+		BigEater020Gouki.class,
+		BigEater021Gouki.class,
+		BigEater022Gouki.class,
+		BigEater023Gouki.class,
+		BigEater024Gouki.class,
+		BigEater025Gouki.class,
+		BigEater026Gouki.class,
+		BigEater027Gouki.class,
+		BigEater028Gouki.class, 
+		BigEater029Gouki.class,
+		BigEater030Gouki.class,
+		BigEater031Gouki.class,
+		BigEater032Gouki.class,
 	};
 
 		

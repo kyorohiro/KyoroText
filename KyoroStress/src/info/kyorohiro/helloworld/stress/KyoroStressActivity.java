@@ -1,7 +1,5 @@
 package info.kyorohiro.helloworld.stress;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
@@ -10,9 +8,10 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.lineview.LineList;
-import info.kyorohiro.helloworld.stress.service.KilledProcessStarter;
 import info.kyorohiro.helloworld.stress.service.KyoroStressService;
 import info.kyorohiro.helloworld.stress.task.DeadOrAliveTask;
+import info.kyorohiro.helloworld.stress.task.KilledProcessStarter;
+import info.kyorohiro.helloworld.stress.uiparts.Button;
 import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.KyoroMemoryInfo;
 import android.app.Activity;
@@ -31,6 +30,9 @@ public class KyoroStressActivity extends Activity {
 	private LineList mList = null;
 	private CyclingList<Object> mData = new CyclingList<Object>(100);
 	private SimpleCircleController mController = new SimpleCircleController();
+	private Button mStartButton = new Button("start all");
+	private Button mStopButton = new Button("stop all");
+	
 	private Thread mKilledProcessManager = null;
 	private Thread mStopThread = null;
 	public final static String MENU_STOP = "stop";
@@ -45,6 +47,11 @@ public class KyoroStressActivity extends Activity {
         mStage.getRoot().addChild(new Layout());
         mStage.getRoot().addChild(mList);
         mStage.getRoot().addChild(mController);
+        mStage.getRoot().addChild(mStartButton);
+        mStage.getRoot().addChild(mStopButton);
+        mStartButton.setCircleButtonListener(new MyStartButtonEvent());
+        mStopButton.setCircleButtonListener(new MyStopButtonEvent());
+
         setContentView(mStage);
  
         int len = KyoroStressService.JavaHeapEater.length;
@@ -76,7 +83,6 @@ public class KyoroStressActivity extends Activity {
 
     }
     
-
 
 
     private void setController() {
@@ -123,10 +129,18 @@ public class KyoroStressActivity extends Activity {
     public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
+			int w = mController.getWidth()/2;
+			int h = mController.getHeight()/2;
+
+			int p = graphics.getWidth();
 			mList.setRect(graphics.getWidth(), graphics.getHeight());
-	    	mController.setPoint(graphics.getWidth()-mController.getWidth()/2,
-	    			graphics.getHeight()-mController.getHeight()/2);
-			graphics.drawBackGround(0xAAAAFF);
+	    	mController.setPoint(3*p/3-w,
+	    			graphics.getHeight()-h);
+	    	mStartButton.setPoint(w,
+	    			graphics.getHeight()-h*3);
+	    	mStopButton.setPoint(w,
+	    			graphics.getHeight()-h);
+			graphics.drawBackGround(0xAAFFFF);
 		}    	
     }
 
@@ -209,6 +223,28 @@ public class KyoroStressActivity extends Activity {
 			}
 		}    	
     }
+    private class MyStartButtonEvent implements Button.CircleButtonListener {
+		@Override
+		public void clicked(Button btn) {
+			Thread th = new Thread() {
+				public void run(){
+					startAll();
+				}
+			};
+			th.start();
+		}
+    }
+
+    private class MyStopButtonEvent implements Button.CircleButtonListener {
+		@Override
+		public void clicked(Button btn) {
+			Thread th = new Thread() {
+				public void run(){
+					stopAll();
+				}
+			};
+			th.start();		}
+    }
 
 	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
 		public void moveCircle(int action, int degree, int rateDegree) {
@@ -266,7 +302,7 @@ public class KyoroStressActivity extends Activity {
 		public void run() {
 			try {
 				while(true){
-					android.util.Log.v("kiyohiro","---task");
+					//android.util.Log.v("kiyohiro","---task");
 					updateStatus();
 					Thread.sleep(100);
 					task1.run();
@@ -277,7 +313,7 @@ public class KyoroStressActivity extends Activity {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} finally {
-				android.util.Log.v("kiyohiro","------task e");
+				//android.util.Log.v("kiyohiro","------task e");
 			}
 
 		}
@@ -287,10 +323,16 @@ public class KyoroStressActivity extends Activity {
 		int num = mData.getNumberOfStockedElement();
 		Object[] obj = new Object[num];
 		mData.getElements(obj, 0, num);
-		for(int i=0;i<num;i++) {
-			if(obj[i] instanceof MyListDatam) {
-				start((MyListDatam)obj[i]);  
+		try {
+			for(int i=0;i<num;i++) {
+				if(obj[i] instanceof MyListDatam) {
+					start((MyListDatam)obj[i]); 
+					Thread.sleep(100);
+					Thread.yield();
+				}
 			}
+		} catch(Exception e){
+			
 		}
 	}
 
@@ -298,11 +340,18 @@ public class KyoroStressActivity extends Activity {
 		int num = mData.getNumberOfStockedElement();
 		Object[] obj = new Object[num];
 		mData.getElements(obj, 0, num);
-		for(int i=0;i<num;i++) {
-			if(obj[i] instanceof MyListDatam) {
-				stop((MyListDatam)obj[i]);  
+		try {
+			for(int i=0;i<num;i++) {
+				if(obj[i] instanceof MyListDatam) {
+					stop((MyListDatam)obj[i]); 
+					Thread.sleep(100);
+					Thread.yield();
+				}
 			}
+		} catch(Exception e){
+
 		}
+
 	}
 
 	private void start(MyListDatam datam) {
@@ -319,8 +368,8 @@ public class KyoroStressActivity extends Activity {
 			return;
 		}
 		KyoroSetting.setData(datam.mID, KyoroStressService.STOP_SERVICE);
-		KyoroStressService.startService(datam.mClazz, KyoroApplication.getKyoroApplication(), "end");
-		//KyoroStressService.stopService(datam.mClazz, KyoroApplication.getKyoroApplication());
+		//KyoroStressService.startService(datam.mClazz, KyoroApplication.getKyoroApplication(), "end");
+		KyoroStressService.stopService(datam.mClazz, KyoroApplication.getKyoroApplication());
 		datam.mMessage = "end";
 	}
 	@Override

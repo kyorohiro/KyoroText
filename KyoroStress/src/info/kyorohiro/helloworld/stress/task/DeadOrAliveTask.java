@@ -24,7 +24,7 @@ public class DeadOrAliveTask  implements Runnable {
 			int len = KyoroStressService.JavaHeapEater.length;
 			for (int i=0;i<len;i++) {
 				task(KyoroStressService.JavaHeapEater[i],KyoroStressService.ServiceProcessName[i]);
-				Thread.sleep(100);
+				Thread.sleep(10);
 				Thread.yield();
 			}
 		} catch (InterruptedException e) {
