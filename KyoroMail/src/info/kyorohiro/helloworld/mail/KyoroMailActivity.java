@@ -46,8 +46,8 @@ public class KyoroMailActivity extends Activity {
     
     private String mHost = "imap.gmail.com";
     private int mPort = 993;
-    private String mUser = "kyorohiro@gmail.com";
-    private String mPassword = "miraigan";
+    private String mUser = "***";
+    private String mPassword = "***";
 
     public class GetListTask implements Runnable {
 		@Override
