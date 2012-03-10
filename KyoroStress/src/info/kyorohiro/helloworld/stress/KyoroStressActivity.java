@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public class KyoroStressActivity extends Activity {
@@ -52,6 +53,7 @@ public class KyoroStressActivity extends Activity {
         mStartButton.setCircleButtonListener(new MyStartButtonEvent());
         mStopButton.setCircleButtonListener(new MyStopButtonEvent());
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(mStage);
  
         int len = KyoroStressService.JavaHeapEater.length;
