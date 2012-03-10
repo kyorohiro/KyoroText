@@ -12,6 +12,7 @@ import info.kyorohiro.helloworld.stress.task.EatUpJavaHeapTask;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.IBinder;
 
@@ -41,6 +42,8 @@ public abstract class KyoroStressService extends ForegroundService {
 	public static String ID_14 = "no14";
 	public static String ID_15 = "no15";
 	public static String ID_16 = "no16";
+	
+	private String mCurrentDisplayMessage = "";
 
 	public final static String ServiceProcessName[] = new String[]{
 		ID_00,ID_01, ID_02, ID_03,
@@ -70,13 +73,27 @@ public abstract class KyoroStressService extends ForegroundService {
 		BigEater016Gouki.class,
 	};
 
+		
+	public static Intent startService(Class clazz, Context context, String message) {
+		Intent startIntent = new Intent(context, clazz);
+	    if(message != null){
+	    	startIntent.putExtra("message", message);
+	    }
+	    context.startService(startIntent);
+	    return startIntent;
+	}
 
-	
-	public KyoroStressService(int IdOfStartForeground) {
-		super(IdOfStartForeground);
+	public static Intent stopService(Class clazz, Context context) {
+		Intent startIntent = new Intent(context, clazz);
+	    context.stopService(startIntent);
+	    return startIntent;
 	}
 
 	public abstract String getProperty();
+
+	public KyoroStressService(int IdOfStartForeground) {
+		super(IdOfStartForeground);
+	}	
 	
 	public String getLabel() {
 		return "KyoroStress";
@@ -86,9 +103,6 @@ public abstract class KyoroStressService extends ForegroundService {
 		return "eatup java heap";
 	}
 	
-	public String getAction() {
-		return "info.kyorohiro.helloworld.stress.ACTION";
-	}
 
 	@Override
 	public void onCreate() {
@@ -96,7 +110,7 @@ public abstract class KyoroStressService extends ForegroundService {
 		stopForegroundCompat();
 		mBuffer = new LinkedList<byte[]>(); 
 		if (START_SERVICE.equals(""+KyoroSetting.getData(getProperty()))) {
-			startInternal("restart");
+			startForground("restart");
 		} 
 	}
 
@@ -126,10 +140,8 @@ public abstract class KyoroStressService extends ForegroundService {
 			return;
 		}
 
-		startInternal(message);
-		if(mTask == null || !mTask.isAlive()){
-			mTask = new KillAndStartProcessThread (this);
-			mTask.start();
+		if(startTask()){
+			startForground(message);
 		}
 	}
 
@@ -141,33 +153,15 @@ public abstract class KyoroStressService extends ForegroundService {
 		}
 	}
 
-	private static class KillAndStartProcessThread extends Thread {
-		private KilledProcessStarter mTask = null;
-		public KillAndStartProcessThread(Object obj) {
-			 mTask = new KilledProcessStarter(obj);
-		}
-
-		@Override
-		public void run() {
-			super.run();
-			while(!Thread.interrupted()){
-				mTask.run();
-			}
-		}
-	}
-	private void startInternal(String message) {
-		if(startTask()){
-			startForground(message);
-		}		
-	}
 
 	public void startForground(String messagePlus) {
-		startTime = System.currentTimeMillis();
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, KyoroStressActivity.class), 0);
-		int resId = R.drawable.ic_launcher;
-		String title = getLabel()+":"+ getProperty();
-		String message = getMessage()+":"+messagePlus;
-		startForgroundAtOnGoing(resId, title, message, contentIntent);
+			mCurrentDisplayMessage = messagePlus;
+			startTime = System.currentTimeMillis();
+			PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, KyoroStressActivity.class), 0);
+			int resId = R.drawable.ic_launcher;
+			String title = getLabel()+":"+ getProperty();
+			String message = getMessage()+":"+messagePlus;
+			startForgroundAtOnGoing(resId, title, message, contentIntent);
 	}
 
 	@Override
@@ -191,7 +185,7 @@ public abstract class KyoroStressService extends ForegroundService {
 	private Thread mTh = null;
 
 	public boolean startTask() {
-		if(mTh == null || !mTh.isAlive()) {
+		if(mTh == null /*|| !mTh.isAlive()*/) {
 			mTh = new MyStarter(new EatUpJavaHeapTask(mBuffer));
 			mTh.start();
 			return true;
@@ -209,6 +203,7 @@ public abstract class KyoroStressService extends ForegroundService {
 	}
 
 	public class MyStarter extends Thread {
+		private KilledProcessStarter mTask = new KilledProcessStarter();
 		public MyStarter(Runnable runnable) {
 			super(runnable);
 		}
@@ -217,57 +212,11 @@ public abstract class KyoroStressService extends ForegroundService {
 		public void run() {
 			try {
 				super.run();
-				startForground(":size="+mBuffer.size()*EatUpJavaHeapTask.mAtomSize);
+				startForground("eatuped");
+				mTask.run();
 			} finally {
 
 			}
 		}
 	}
-
-	public static void startService(Class clazz, Context context, String message) {
-    	Method method;
-    	try {
-    		method = clazz.getMethod("startService", new Class[]{ Context.class, String.class });
-    	} catch (SecurityException e) {
-    		throw new RuntimeException(e);
-    	} catch (NoSuchMethodException e) {
-    		throw new RuntimeException(e);
-    	}
-
-    	Object ret; //戻り値
-    	try {
-    		ret = method.invoke(clazz, new Object[]{ context, message });
-    		//  = object.メソッド((int)1); と同じ
-    	} catch (IllegalArgumentException e) {
-    		e.printStackTrace();
-    	} catch (IllegalAccessException e) {
-    		e.printStackTrace();
-    	} catch (InvocationTargetException e) {
-    		e.printStackTrace();
-    	}
-    }
-
-	public static void stopService(Class clazz, Context context) {
-    	Method method;
-    	try {
-    		method = clazz.getMethod("stopService", new Class[]{ Context.class });
-    	} catch (SecurityException e) {
-    		throw new RuntimeException(e);
-    	} catch (NoSuchMethodException e) {
-    		throw new RuntimeException(e);
-    	}
-
-    	Object ret; //戻り値
-    	try {
-    		ret = method.invoke(clazz, new Object[]{ context});
-    		//  = object.メソッド((int)1); と同じ
-    	} catch (IllegalArgumentException e) {
-    		e.printStackTrace();
-    	} catch (IllegalAccessException e) {
-    		e.printStackTrace();
-    	} catch (InvocationTargetException e) {
-    		e.printStackTrace();
-    	}
-    }
-
 }

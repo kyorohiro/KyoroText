@@ -30,6 +30,11 @@ public class KyoroLogcatService extends ForegroundService  {
 		}
 	}
 
+	@Override
+	protected int getVersionForStartFuorground() {
+		return 8;
+	}
+
 	public static Intent startLogcatService(Context context, String message) {
 		Intent startIntent = new Intent(context, KyoroLogcatService.class);
 	    if(message != null){

@@ -32,6 +32,7 @@ public class KyoroApplication extends Application {
 	public Handler getHanler(){
 		return sInstance.mHandler;
 	}
+
 	private static class ToastMessage implements Runnable {
 		private Context mContext = null;
 		private String mMessage = null;

@@ -51,7 +51,7 @@ public class KyoroStressActivity extends Activity {
         for(int i=0;i<len;i++){
         	Class clazz = KyoroStressService.JavaHeapEater[i];
         	String id = KyoroStressService.ServiceProcessName[i];
-            mData.add(new MyListDatam(clazz, id, getNickName(clazz),"--initilize---", getColor(clazz)));	
+            mData.add(new MyListDatam(clazz, id, "BigEater No."+id, "initilize..", Color.parseColor("#FFAAAA")));	
         }
  
         mList.setTemplate(new MyListTemplate());
@@ -76,52 +76,6 @@ public class KyoroStressActivity extends Activity {
 
     }
     
-    public String getNickName(Class clazz) {
-    	Method method;
-    	try {
-    		method = clazz.getMethod("getNickName", null);
-    	} catch (SecurityException e) {
-    		throw new RuntimeException(e);
-    	} catch (NoSuchMethodException e) {
-    		throw new RuntimeException(e);
-    	}
-
-    	String ret=""; 
-    	try {
-    		ret = (String)method.invoke(clazz, null);
-    	} catch (IllegalArgumentException e) {
-    		e.printStackTrace();
-    	} catch (IllegalAccessException e) {
-    		e.printStackTrace();
-    	} catch (InvocationTargetException e) {
-    		e.printStackTrace();
-    	}
-    	return ret;
-    }
-
-
-    public Integer getColor(Class clazz) {
-    	Method method;
-    	try {
-    		method = clazz.getMethod("getColor", null);
-    	} catch (SecurityException e) {
-    		throw new RuntimeException(e);
-    	} catch (NoSuchMethodException e) {
-    		throw new RuntimeException(e);
-    	}
-
-    	Integer ret= Color.WHITE; 
-    	try {
-    		ret = (Integer)method.invoke(clazz, null);
-    	} catch (IllegalArgumentException e) {
-    		e.printStackTrace();
-    	} catch (IllegalAccessException e) {
-    		e.printStackTrace();
-    	} catch (InvocationTargetException e) {
-    		e.printStackTrace();
-    	}
-    	return ret;
-    }
 
 
 
@@ -307,7 +261,7 @@ public class KyoroStressActivity extends Activity {
 	}
 
 	public class ProcessStatusChecker implements Runnable {
-		KilledProcessStarter task1 = new KilledProcessStarter(null);
+		KilledProcessStarter task1 = new KilledProcessStarter();
 		DeadOrAliveTask task2 = new DeadOrAliveTask(KyoroStressActivity.this);
 		public void run() {
 			try {

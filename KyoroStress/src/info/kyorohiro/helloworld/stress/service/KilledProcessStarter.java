@@ -12,16 +12,12 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 
 public class KilledProcessStarter implements Runnable {
-	private WeakReference<Object> mParent = null;
 	private KyoroMemoryInfo mInfos = new KyoroMemoryInfo();
-
-	public KilledProcessStarter(Object obj) {
-		mParent = new WeakReference<Object>(obj);
-	}
 
 	public void run() {
 		int len = KyoroStressService.JavaHeapEater.length;
-		List<RunningAppProcessInfo> list = mInfos.getRunningAppList(KyoroApplication.getKyoroApplication());
+		
+		List<RunningAppProcessInfo> list = getRunningAppList();
 
 		for (int i=0;i<len;i++) {
 			task(KyoroStressService.JavaHeapEater[i],KyoroStressService.ServiceProcessName[i],list, i);
@@ -32,13 +28,18 @@ public class KilledProcessStarter implements Runnable {
 		}		
 	}
 
+	private List<RunningAppProcessInfo> getRunningAppList() {
+		List<RunningAppProcessInfo> list = mInfos.getRunningAppList(KyoroApplication.getKyoroApplication());
+		return list;
+	}
+
 	private void task(Class clazz, String processName,	List<RunningAppProcessInfo> list, int id) {
 		String c = KyoroApplication.getKyoroApplication().getApplicationContext().getPackageName()+":"+processName;
 		for(RunningAppProcessInfo i : list) {
 			if(i.equals(c)){
 				if(!KyoroStressService.START_SERVICE.equals(KyoroSetting.getData(processName))){
-					KyoroStressService.startService(clazz, KyoroApplication.getKyoroApplication(),"end");
-					//KyoroStressService.stopService(clazz, KyoroApplication.getKyoroApplication());
+					//KyoroStressService.startService(clazz, KyoroApplication.getKyoroApplication(),"end");
+					KyoroStressService.stopService(clazz, KyoroApplication.getKyoroApplication());
 					Thread.yield();
 				}
 				return;

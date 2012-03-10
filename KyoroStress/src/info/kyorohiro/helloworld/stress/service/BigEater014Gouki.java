@@ -14,38 +14,9 @@ public class BigEater014Gouki extends KyoroStressService {
 		super(114);
 	}
 
-	public static Intent startService(Context context, String message) {
-		Intent startIntent = new Intent(context, BigEater014Gouki.class);
-	    if(message != null){
-	    	startIntent.putExtra("message", message);
-	    }
-	    context.startService(startIntent);
-	    return startIntent;
-	}
-
-	public static Intent stopService(Context context) {
-		Intent startIntent = new Intent(context, BigEater014Gouki.class);
-	    context.stopService(startIntent);
-	    return startIntent;
-	}
-
-	public static int getColor() {
-		return Color.WHITE;
-	}
-
-	public static String getNickName() {
-		return "No14 JavaHeapEater";
-	}
-
 	@Override
 	public String getProperty() {
 		return KyoroStressService.ID_14;
-	}
-
-
-	@Override
-	public void onCreate() {
-		super.onCreate();
 	}
 
 }

@@ -27,6 +27,10 @@ public abstract class TestService extends Service {
 	private Object[] mStopForegroundArgs = new Object[1];
 	private int mIdOfStartForeground = 1;
 
+	protected int getVersionForStartFuorground(){
+		return 0;
+	}
+
 	public TestService(int IdOfStartForeground) {
 		super();
 		mIdOfStartForeground = IdOfStartForeground;
@@ -100,12 +104,13 @@ public abstract class TestService extends Service {
 		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		try {
 			// http://code.google.com/p/android/issues/detail?id=20035
-			//if(Build.VERSION.SDK_INT >= 8) {
+			if(Build.VERSION.SDK_INT >= getVersionForStartFuorground()) {
 				mStartForeground = getClass().getMethod("startForeground",
 						mStartForegroundSignature);
 				mStopForeground = getClass().getMethod("stopForeground",
 						mStopForegroundSignature);
-			//}
+				return;
+			}
 		} catch (NoSuchMethodException e) {
 			mStartForeground = mStopForeground = null;
 		}
