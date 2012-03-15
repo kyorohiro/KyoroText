@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.logcat.logcat;
+package info.kyorohiro.helloworld.logcat.util;
 
 
 import info.kyorohiro.helloworld.display.widget.SimpleFilterableLineView;

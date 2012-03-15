@@ -21,7 +21,8 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:name=".KyoroLogcatActivity">
+            android:name=".KyoroLogcatActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
 
             <!-- android:theme="@android:style/Theme.Translucent" -->
             <intent-filter >
@@ -76,6 +77,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
                 <action android:name="android.intent.action.MEDIA_UNMOUNTED"/>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
                 <data android:scheme="file" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

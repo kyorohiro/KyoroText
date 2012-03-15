@@ -22,8 +22,14 @@ public class KyoroLogcatBroadcast extends BroadcastReceiver {
 			 startTimer();
 		}
 	}
-	
+
+	private static long sLastStarted = -1;
 	public static void startTimer(){
+		long currentTime = System.currentTimeMillis();
+		if(sLastStarted != -1 && (currentTime-sLastStarted) < 180){
+			return;
+		}
+		sLastStarted = currentTime;
 		Context appContext = KyoroApplication.getKyoroApplication().getApplicationContext();
 		Intent i = new Intent(appContext, KyoroLogcatBroadcast.class);
 		PendingIntent sender = PendingIntent.getBroadcast(appContext, 0, i, 0);

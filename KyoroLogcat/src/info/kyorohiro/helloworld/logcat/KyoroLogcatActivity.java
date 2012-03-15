@@ -9,7 +9,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
-import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
+import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.TaskInter;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
@@ -86,12 +86,13 @@ public class KyoroLogcatActivity extends TestActivity {
 		}
 	}
 
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		changeTitle(this, "kyoro logcat", Color.parseColor("#cc795514"), Color.parseColor("#e5cf2a"));
+		//changeTitle(this, "kyoro logcat", Color.parseColor("#cc795514"), Color.parseColor("#e5cf2a"));
 		changeMenuBgColor(this, Color.parseColor("#e5cf2a"));
 		mCircleController.setEventListener(mLogcatViewer.getCircleControllerAction());
 
@@ -315,7 +316,7 @@ public class KyoroLogcatActivity extends TestActivity {
 				Toast.makeText(KyoroLogcatActivity.this, "tap and long tap", Toast.LENGTH_LONG).show();
 
 				SimpleFileExplorer dialog = 
-					SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, Environment.getExternalStorageDirectory());
+					SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, KyoroLogcatSetting.getHomeDirInSDCard());
 				dialog.show();
 				dialog.setOnSelectedFileAction(new FileSelectedAction());
 			}

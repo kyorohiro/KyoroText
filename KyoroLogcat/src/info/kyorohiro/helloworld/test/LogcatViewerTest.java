@@ -1,11 +1,11 @@
-package info.kyorohiro.helloworld.logcat.test.testcase;
+package info.kyorohiro.helloworld.test;
 
 import android.os.Bundle;
 import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.android.base.TestResult;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
-import info.kyorohiro.helloworld.logcat.logcat.LogcatViewer;
+import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
 
 public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCase2<LogcatViewerTest.LogcatViewerTestActivity>{
 

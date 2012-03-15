@@ -1,6 +1,10 @@
 package info.kyorohiro.helloworld.logcat.tasks;
 
+import java.io.File;
+
 import info.kyorohiro.helloworld.logcat.KyoroApplication;
+import info.kyorohiro.helloworld.logcat.KyoroLogcatBroadcast;
+import info.kyorohiro.helloworld.logcat.KyoroLogcatService;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.tasks.SaveCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
@@ -43,6 +47,7 @@ public class TaskManagerForSave {
 			}
 			sSaveTask = new SaveCurrentLogTask("-v time");
 			sSaveTask.start();
+			KyoroLogcatBroadcast.startTimer();
 		} catch (Throwable t) {
 			sSaveTask = null;
 		}

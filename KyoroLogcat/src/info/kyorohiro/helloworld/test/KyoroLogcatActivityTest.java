@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.logcat.test.testcase;
+package info.kyorohiro.helloworld.test;
 
 import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.android.base.TestResult;

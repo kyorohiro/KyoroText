@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.logcat.test.testcase;
+package info.kyorohiro.helloworld.test;
 
 import java.io.DataInputStream;
 import java.io.IOException;

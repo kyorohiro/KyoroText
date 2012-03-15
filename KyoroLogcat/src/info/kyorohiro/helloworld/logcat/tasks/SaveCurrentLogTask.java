@@ -21,6 +21,7 @@ public class SaveCurrentLogTask extends Thread implements TaskInter {
 
 	private File mSavedDirectory = null;
 	@SuppressWarnings("unused")
+
 	private boolean mExternalStorageAvailable = false;
 	private boolean mExternalStorageWriteable = false;
 	private Logcat mLogcat = null;
@@ -44,7 +45,8 @@ public class SaveCurrentLogTask extends Thread implements TaskInter {
 	    	mExternalStorageAvailable = mExternalStorageWriteable = false;
 	    }
 	    
-		mSavedDirectory = Environment.getExternalStorageDirectory();
+		mSavedDirectory = KyoroLogcatSetting.getHomeDirInSDCard();
+			//Environment.getExternalStorageDirectory();
 	}
 
 	public void terminate() {
