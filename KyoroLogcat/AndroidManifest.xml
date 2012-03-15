@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.kyorohiro.helloworld.logcat"
-    android:versionCode="124"
-    android:versionName="124" >
+    android:versionCode="125"
+    android:versionName="125" >
 
     <uses-sdk android:minSdkVersion="4" />
 
@@ -76,6 +76,7 @@
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED"/>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
                 <data android:scheme="file" />
                 <category android:name="android.intent.category.DEFAULT" />
