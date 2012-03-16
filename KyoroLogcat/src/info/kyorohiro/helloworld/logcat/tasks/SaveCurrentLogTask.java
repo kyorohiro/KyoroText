@@ -115,7 +115,10 @@ public class SaveCurrentLogTask extends Thread implements TaskInter {
 		} catch(LogcatException e) {
 			e.printStackTrace();
 			KyoroApplication.showNotification("failed by framework error.\n  please restart this application!!");
-		} catch(Throwable e) {
+		} catch(InterruptedException e) {
+			//
+		}
+		catch(Throwable e) {
 			e.printStackTrace();
 			KyoroApplication.showNotification("failed to throw unexcepted error.\n  please restart this application!!");			
 		}
