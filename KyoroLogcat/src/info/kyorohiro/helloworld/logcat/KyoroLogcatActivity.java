@@ -93,7 +93,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		super.onCreate(savedInstanceState);
 
 		//changeTitle(this, "kyoro logcat", Color.parseColor("#cc795514"), Color.parseColor("#e5cf2a"));
-		changeMenuBgColor(this, Color.parseColor("#e5cf2a"));
+		//changeMenuBgColor(this, Color.parseColor("#e5cf2a"));
 		mCircleController.setEventListener(mLogcatViewer.getCircleControllerAction());
 
 		int deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
