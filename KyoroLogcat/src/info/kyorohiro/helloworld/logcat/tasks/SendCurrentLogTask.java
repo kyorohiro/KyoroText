@@ -21,7 +21,7 @@ public class SendCurrentLogTask extends Thread implements TaskInter {
 
 	public SendCurrentLogTask(Context context, String option){
 		mContext = context;
-		mOption = option;
+		mOption = "-d "+option ;
 	}
 
 	public void terminate() {
