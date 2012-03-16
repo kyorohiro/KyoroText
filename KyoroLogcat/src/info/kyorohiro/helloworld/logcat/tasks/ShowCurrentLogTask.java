@@ -34,20 +34,31 @@ public class ShowCurrentLogTask extends Thread implements TaskInter {
 		mLogcat.start(mOption);
 		mData.clear();
 		try {
-			InputStream stream = mLogcat.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			InputStream output = mLogcat.getInputStream();
+			InputStream error = mLogcat.getErrorStream();
+
+			BufferedReader outputReader = new BufferedReader(new InputStreamReader(output));
+			BufferedReader errorReader = new BufferedReader(new InputStreamReader(error));
 			while(true) {
-				if(!reader.ready()){
+				if(!outputReader.ready()&&!errorReader.ready()){
 					if(!mLogcat.isAlive()){
 						break;
 					}
-					Thread.sleep(200);
-				}
-				else {
-					mData.addLinePerBreakText(reader.readLine());
+					Thread.sleep(400);
 					Thread.yield();
 				}
+				else {
+					if(outputReader.ready()){
+						mData.addLinePerBreakText(outputReader.readLine());
+						Thread.yield();
+					}
+					if(errorReader.ready()){
+						mData.addLinePerBreakText(errorReader.readLine());
+						Thread.yield();
+					}
+				}
 			}
+			
 		} catch (LogcatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

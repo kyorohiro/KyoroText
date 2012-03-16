@@ -15,7 +15,7 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 	private int mWidth = 1000;
 	private Pattern mFilter = null;
 	private Pattern mPatternForFontColorPerLine = 
-		Pattern.compile(":[\\t\\s0-9\\-:.,]*[\\t\\s]([VDIWEFS]{1})/");
+		Pattern.compile("[\\t\\s0-9\\-:.,]*[\\t\\s]*([VDIWEFS]{1})/");
 
 	public FlowingLineData(int listSize, int width, int textSize) {
 		super(new CyclingList<FlowingLineDatam>(listSize),listSize);

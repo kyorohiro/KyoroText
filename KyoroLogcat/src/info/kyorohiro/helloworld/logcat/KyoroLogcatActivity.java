@@ -10,6 +10,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
+import info.kyorohiro.helloworld.logcat.preference.PreferenceDialog;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.TaskInter;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
@@ -17,7 +18,7 @@ import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowFileContentTask;
 import info.kyorohiro.helloworld.util.IntentActionDialog;
-import info.kyorohiro.helloworld.util.SimpleFileExplorer;
+import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -220,6 +221,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		if (!showTaskIsAlive()) {
 			menu.add(MENU_START_SHOW_LOG_FROM_FILE).setIcon(R.drawable.ic_folder);
 		}
+		menu.add("setting").setIcon(android.R.drawable.ic_menu_preferences);
 
 		return true;
 	}
@@ -245,7 +247,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			myResult = true;
 		} else if (MENU_START_SHOW_LOG.equals(selectedItemTitle)) {
 			if(mShowTask == null || !mShowTask.isAlive()){
-				mShowTask = new ShowCurrentLogTask(mLogcatOutput, "-v time");
+				mShowTask = new ShowCurrentLogTask(mLogcatOutput, KyoroLogcatSetting.getLogcatOption());
 				mShowTask.start();
 			}
 			myResult = true;
@@ -259,11 +261,13 @@ public class KyoroLogcatActivity extends TestActivity {
 			mShowTask = null;
 			myResult = true;
 		} else if(MENU_SEND_MAIL.equals(selectedItemTitle)){
-			SendCurrentLogTask task = new SendCurrentLogTask(this);
+			SendCurrentLogTask task = new SendCurrentLogTask(this, KyoroLogcatSetting.getLogcatOption());
 			task.start();
 		} else if(MENU_CLEAR_LOG.equals(selectedItemTitle)){
 			ClearCurrentLogTask task = new ClearCurrentLogTask(mLogcatOutput);
 			task.start();
+		} else if("setting".equals(selectedItemTitle)) {
+			PreferenceDialog.createDialog(this).show();
 		}
 		return myResult;
 	}

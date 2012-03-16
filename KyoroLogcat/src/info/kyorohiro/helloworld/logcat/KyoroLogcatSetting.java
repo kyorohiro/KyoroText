@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.logcat;
 
 import java.io.File;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -13,6 +14,8 @@ public class KyoroLogcatSetting {
 	public static String SAVE_TASK_TAG = "save task";
 	public static String SAVE_TASK_IS_STARTED = "started";
 	public static String SAVE_TASK_IS_STOPPED= "stopped";
+	public static String OPTION_TAG = "-v -time";
+	public static String OPTION_DEFAULT = "-v -time";
 
 	public static final String SAVEDDIR = "KyoroLogcat";
 
@@ -26,6 +29,22 @@ public class KyoroLogcatSetting {
 			return fsys;
 		}
 		return savedDir;
+	}
+
+	public static String getLogcatOption() {
+		String option = getData(KyoroApplication.getKyoroApplication(), OPTION_TAG);
+		if(option == null || option.equals("none")){
+			option = OPTION_DEFAULT;
+		}
+		return option;
+	}
+
+	public static void setDefaultLogcatOption() {
+		setData(KyoroApplication.getKyoroApplication(),OPTION_TAG, "none");		
+	}
+
+	public static void setLogcatOption(String option) {
+		setData(KyoroApplication.getKyoroApplication(),OPTION_TAG, option);		
 	}
 
 	public static void saveTaskStateIsStart() {

@@ -101,25 +101,26 @@ public class LineView extends SimpleDisplayObject {
 
 			// drawLine
 			graphics.setColor(list[i].getColor());
-			int startStopY = graphics.getTextSize() * (blank + i + 1);
+			int startStopY = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
 			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
 				graphics.drawLine(10, startStopY, graphics.getWidth() - 10,
 						startStopY);
 			}
 			int x = getWidth() / 20;
-			int y = graphics.getTextSize() * (blank + i + 1);
+			int y = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
 			graphics.drawText("" + list[i], x, y);
 		}
 	}
 
 	private void drawBG(SimpleGraphics graphics) {
-		graphics.drawBackGround(Color.parseColor("#cc795514"));
-		graphics.setColor(Color.parseColor("#ccc9f486"));
+		graphics.drawBackGround(Color.parseColor("#FF777788"));
+		//graphics.drawBackGround(Color.parseColor("#cc795514"));
+		//graphics.setColor(Color.parseColor("#ccc9f486"));
 	}
 
 	private void updateStatus(SimpleGraphics graphics,
 			CyclingListInter<FlowingLineDatam> showingText) {
-		mNumOfLine = getHeight() / mTextSize;
+		mNumOfLine = (int)(getHeight() / (mTextSize*1.2));
 		int blankSpace = mNumOfLine / 2;
 		if (mPosition < -(mNumOfLine - blankSpace)) {
 			setPosition(-(mNumOfLine - blankSpace) - 1);

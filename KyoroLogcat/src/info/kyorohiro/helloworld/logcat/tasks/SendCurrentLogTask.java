@@ -19,8 +19,9 @@ public class SendCurrentLogTask extends Thread implements TaskInter {
 	private String mOption = "-d -v time";
 	private Context mContext = null;
 
-	public SendCurrentLogTask(Context context){
+	public SendCurrentLogTask(Context context, String option){
 		mContext = context;
+		mOption = option;
 	}
 
 	public void terminate() {
@@ -34,12 +35,14 @@ public class SendCurrentLogTask extends Thread implements TaskInter {
 		mLogcat.start(mOption);
 		CyclingList<String> temp = new CyclingList<String>(400);
 		try {
+
 			showMessage("start to collect log.");
-			InputStream stream = mLogcat.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			InputStream output = mLogcat.getInputStream();
+			InputStream error = mLogcat.getErrorStream();
+			BufferedReader outputReader = new BufferedReader(new InputStreamReader(output));
+			BufferedReader errorReader = new BufferedReader(new InputStreamReader(error));
 			while(true) {
-				if(!reader.ready()){
-					//				if(0<input.available()){
+				if(!outputReader.ready()&&!errorReader.ready()){
 					if(!mLogcat.isAlive()){
 						break;
 					}
@@ -47,9 +50,15 @@ public class SendCurrentLogTask extends Thread implements TaskInter {
 						Thread.sleep(100);
 					}
 				} else {
-					temp.add(reader.readLine()+"\r\n");
-					Thread.yield();
-				}
+						if(outputReader.ready()){
+							temp.add(outputReader.readLine());
+							Thread.yield();
+						}
+						if(errorReader.ready()){
+							temp.add(errorReader.readLine());
+							Thread.yield();
+						}
+					}
 			}
 			showMessage("successed to collect log. and start to ticket for sending mail.");
 			StringBuilder builder = new StringBuilder();

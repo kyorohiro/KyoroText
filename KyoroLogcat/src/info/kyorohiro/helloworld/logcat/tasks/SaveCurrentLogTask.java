@@ -62,6 +62,8 @@ public class SaveCurrentLogTask extends Thread implements TaskInter {
 	public void run() {
 		FileOutputStream output = null;
 		InputStream input = null;
+		InputStream error = null;
+
 		File saveFile = null;
 		try {
 			KyoroLogcatSetting.saveTaskStateIsStart();
@@ -86,13 +88,26 @@ public class SaveCurrentLogTask extends Thread implements TaskInter {
 			}
 			output = new FileOutputStream(saveFile,true);
 			input = mLogcat.getInputStream();
-			while(mLogcat.isAlive()) {
-				byte[] buffer = new byte[1024]; 
-				int size = input.read(buffer);
-				if(size == -1){
-					continue;
+			error = mLogcat.getErrorStream();
+			while(mLogcat.isAlive()||input.available()>0|| error.available()>0) {
+				if(input.available()>0){
+					byte[] buffer = new byte[1024]; 
+					int size = input.read(buffer);
+					if(size != -1){
+						output.write(buffer, 0, size);
+					}
 				}
-				output.write(buffer, 0, size);
+				if(error.available()>0){
+					byte[] buffer = new byte[1024]; 
+					int size = error.read(buffer);
+					if(size != -1){
+						output.write(buffer, 0, size);
+					}
+				}
+				if(input.available()<=0 && error.available()<=0){
+					Thread.sleep(400);
+					Thread.yield();
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

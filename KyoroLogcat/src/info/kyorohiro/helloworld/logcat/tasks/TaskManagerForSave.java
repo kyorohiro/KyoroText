@@ -45,7 +45,8 @@ public class TaskManagerForSave {
 			if(saveTaskIsAlive()){
 				return;
 			}
-			sSaveTask = new SaveCurrentLogTask("-v time");
+			
+			sSaveTask = new SaveCurrentLogTask(KyoroLogcatSetting.getLogcatOption());
 			sSaveTask.start();
 			KyoroLogcatBroadcast.startTimer();
 		} catch (Throwable t) {

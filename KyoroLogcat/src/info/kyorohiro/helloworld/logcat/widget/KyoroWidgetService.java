@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.logcat.widget;
 
 import info.kyorohiro.helloworld.logcat.KyoroApplication;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatActivity;
+import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import android.app.Service;
@@ -63,7 +64,7 @@ public class KyoroWidgetService extends Service {
 				KyoroSaveWidget.set(this);	            
 			}
 			else if(KyoroWidgetService.ACTION_CHANGE.equals(action)){
-				SendCurrentLogTask task = new SendCurrentLogTask(this.getApplicationContext());
+				SendCurrentLogTask task = new SendCurrentLogTask(this.getApplicationContext(), KyoroLogcatSetting.getLogcatOption());
 				task.start();
 			}
 		}
