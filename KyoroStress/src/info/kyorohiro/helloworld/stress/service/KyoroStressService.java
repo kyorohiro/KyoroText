@@ -1,19 +1,17 @@
 package info.kyorohiro.helloworld.stress.service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+
 import java.util.LinkedList;
 
 import info.kyorohiro.helloworld.android.base.ForegroundService;
 import info.kyorohiro.helloworld.stress.KyoroSetting;
 import info.kyorohiro.helloworld.stress.KyoroStressActivity;
 import info.kyorohiro.helloworld.stress.R;
+import info.kyorohiro.helloworld.stress.task.DeadOrAliveTask;
 import info.kyorohiro.helloworld.stress.task.EatUpJavaHeapTask;
-import info.kyorohiro.helloworld.stress.task.KilledProcessStarter;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.IBinder;
 
@@ -240,7 +238,6 @@ public abstract class KyoroStressService extends ForegroundService {
 	}
 
 	public class MyStarter extends Thread {
-		private KilledProcessStarter mTask = new KilledProcessStarter();
 		public MyStarter(Runnable runnable) {
 			super(runnable);
 		}
@@ -250,7 +247,8 @@ public abstract class KyoroStressService extends ForegroundService {
 			try {
 				super.run();
 				startForground("eatuped");
-				mTask.run();
+				DeadOrAliveTask task = new DeadOrAliveTask(KyoroStressService.this);
+				task.run();
 			} finally {
 
 			}

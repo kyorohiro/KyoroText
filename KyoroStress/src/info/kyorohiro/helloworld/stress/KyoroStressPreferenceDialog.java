@@ -1,6 +1,5 @@
-package info.kyorohiro.helloworld.logcat.appparts;
+package info.kyorohiro.helloworld.stress;
 
-import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import android.app.Activity;
 import android.app.Dialog;
 import android.text.InputType;
@@ -13,9 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PreferenceDialog extends Dialog {
+public class KyoroStressPreferenceDialog extends Dialog {
 
-	private Activity mOwnerActivity =  null; 
 	private AutoCompleteTextView mEdit = null;
 	private Button mOK = null;
 	private LinearLayout mLayout = null;
@@ -23,27 +21,25 @@ public class PreferenceDialog extends Dialog {
 		new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-	public PreferenceDialog(Activity owner) {
+	public KyoroStressPreferenceDialog(Activity owner) {
 		super(owner);
-		mOwnerActivity = owner;
 		mLayout = new LinearLayout(getContext());
 		setEditText();
 		TextView label = new TextView(getContext());
-		label.setText("--option-------------------");
+		label.setText("--eatup java heap size(kb) per one BigEater--");
 		mLayout.setOrientation(LinearLayout.VERTICAL);
 		mLayout.addView(label, mParams);
 		mLayout.addView(mEdit, mParams);
-		mEdit.setText(KyoroLogcatSetting.getLogcatOption());
+		mEdit.setText(""+KyoroSetting.getEatupHeapSize());
 		TextView memo = new TextView(getContext());
 		memo.setText(
+				" you should stop all and start all-----------"+"\n" +
+				" "+"\n" +
+				" " + "\n" +
 				"--example)"+"\n" +
-				"-v time" + "\n" +
-				"-v time -b main" + "\n" +
-				"-v time -b events" + "\n" +
-				"-v time -b radio" + "\n" +
-				"=following device dependent=" + "\n" +
-				"-v time -b system" + "\n" +
-				"-v time -b main -b events -b radio -b system" + "\n"
+				"  100000"+"\n" +
+				" 1000000"+"\n" +
+				" 2000000"+"\n"
 				);
 		mOK = new Button(getContext());
 		mOK.setText("Update");
@@ -54,13 +50,13 @@ public class PreferenceDialog extends Dialog {
 				}
 				String text = mEdit.getText().toString();
 				if(text == null){
-					KyoroLogcatSetting.setDefaultLogcatOption();
+					KyoroSetting.setEatupHeadSize(""+KyoroSetting.MEMSIZE_DEFAULT_VALUE);
 				}
-				KyoroLogcatSetting.setLogcatOption(text.replace("-d|-c", " "));
-			    PreferenceDialog.this.dismiss();
+				KyoroSetting.setEatupHeadSize(text);
+			    KyoroStressPreferenceDialog.this.dismiss();
 			}
 		});
-		mLayout.addView(mOK);
+		mLayout.addView(mOK, mParams);
 		mLayout.addView(memo);
 		setContentView(mLayout, mParams);
 	}
@@ -69,25 +65,24 @@ public class PreferenceDialog extends Dialog {
 		mEdit = new AutoCompleteTextView(getContext());
 		mEdit.setSelected(false);
 		mEdit.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		mEdit.setHint("Filter regex(find)");
+		mEdit.setHint("kbyte");
 		mEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+		mEdit.setInputType(InputType.TYPE_CLASS_NUMBER);
         ArrayAdapter<String> automatedStrage = 
         	new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,
         		new String[]{
-        		"-v time -b main",
-        		"-v time -b events",
-        		"-v time -b radio",
-        		"-v time -b system",
-        		"-v time -b main -b events",
-        		"-v time -b main -b events -b radio",
-        		"-v time -b main -b events -b radio -b system" 
+        		"10240",
+        		"20560",
+        		"40000",
+        		"80000",
+        		"160000" 
         		});
         mEdit.setAdapter(automatedStrage);
         mEdit.setThreshold(1);
 	}
 
-	public static PreferenceDialog createDialog(Activity owner) {
-		return new PreferenceDialog(owner);		
+	public static KyoroStressPreferenceDialog createDialog(Activity owner) {
+		return new KyoroStressPreferenceDialog(owner);		
 	}
 
 

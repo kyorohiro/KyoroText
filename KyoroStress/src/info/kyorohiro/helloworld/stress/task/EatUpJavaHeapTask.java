@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.stress.task;
 
 
+import info.kyorohiro.helloworld.stress.KyoroSetting;
+
 import java.util.LinkedList;
 
 public class EatUpJavaHeapTask implements Runnable {
@@ -9,6 +11,11 @@ public class EatUpJavaHeapTask implements Runnable {
 	public static int mAtomSize = 1024*4;
 
 	public EatUpJavaHeapTask(LinkedList<byte[]> buffer) {
+		try {
+			mEatUpSize = KyoroSetting.getEatupHeapSize() * 1024;
+		} catch(Throwable t) {
+			t.printStackTrace();
+		}
 		mBuffer = buffer;
 	}
 

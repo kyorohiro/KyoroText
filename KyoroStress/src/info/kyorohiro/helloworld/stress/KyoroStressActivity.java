@@ -10,7 +10,6 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleCon
 import info.kyorohiro.helloworld.display.widget.lineview.LineList;
 import info.kyorohiro.helloworld.stress.service.KyoroStressService;
 import info.kyorohiro.helloworld.stress.task.DeadOrAliveTask;
-import info.kyorohiro.helloworld.stress.task.KilledProcessStarter;
 import info.kyorohiro.helloworld.stress.uiparts.Button;
 import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.KyoroMemoryInfo;
@@ -38,6 +37,7 @@ public class KyoroStressActivity extends Activity {
 	private Thread mStopThread = null;
 	public final static String MENU_STOP = "stop";
 	public final static String MENU_START = "start";
+	public final static String MENU_SETTING = "setting";
 
 	
     @Override
@@ -299,17 +299,13 @@ public class KyoroStressActivity extends Activity {
 	}
 
 	public class ProcessStatusChecker implements Runnable {
-		KilledProcessStarter task1 = new KilledProcessStarter();
-		DeadOrAliveTask task2 = new DeadOrAliveTask(KyoroStressActivity.this);
+		DeadOrAliveTask task = new DeadOrAliveTask(KyoroStressActivity.this);
 		public void run() {
 			try {
-				while(true){
-					//android.util.Log.v("kiyohiro","---task");
+				while(true){;
 					updateStatus();
 					Thread.sleep(100);
-					task1.run();
-					Thread.sleep(100);
-					task2.run();
+					task.run();
 					Thread.sleep(100);
 				}
 			} catch (InterruptedException e) {
@@ -380,6 +376,7 @@ public class KyoroStressActivity extends Activity {
 		if(mStopThread == null || !mStopThread.isAlive()){
 			menu.add(KyoroStressActivity.MENU_START);
 			menu.add(KyoroStressActivity.MENU_STOP);
+			menu.add(KyoroStressActivity.MENU_SETTING);
 			Toast.makeText(KyoroStressActivity.this, "now working..", Toast.LENGTH_LONG);
 		}
 		return super.onPrepareOptionsMenu(menu);
@@ -404,6 +401,9 @@ public class KyoroStressActivity extends Activity {
 			};
 			mStopThread.start();
 			return true;			
+		}
+		else if(item !=null && KyoroStressActivity.MENU_SETTING.equals(item.getTitle())){
+			KyoroStressPreferenceDialog.createDialog(KyoroStressActivity.this).show();
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}

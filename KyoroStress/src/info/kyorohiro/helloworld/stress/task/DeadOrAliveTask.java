@@ -16,7 +16,6 @@ public class DeadOrAliveTask  implements Runnable {
 
 	public DeadOrAliveTask(Context context) {
 		mRef = new WeakReference<Context>(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void run() {

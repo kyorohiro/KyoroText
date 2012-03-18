@@ -145,6 +145,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		b.setOnClickListener(f);
 		b.setImageResource(android.R.drawable.ic_search_category_default);
 		mInputForLogFilter.setHeight(b.getHeight());
+
 		LinearLayout h = new LinearLayout(this);
 		h.setOrientation(LinearLayout.HORIZONTAL);
 		h.addView(b);
