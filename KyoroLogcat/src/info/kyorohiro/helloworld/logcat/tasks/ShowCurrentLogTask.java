@@ -1,7 +1,6 @@
 package info.kyorohiro.helloworld.logcat.tasks;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,10 +39,10 @@ public class ShowCurrentLogTask extends Thread implements TaskInter {
 			BufferedReader outputReader = new BufferedReader(new InputStreamReader(output));
 			BufferedReader errorReader = new BufferedReader(new InputStreamReader(error));
 			while(true) {
-				if(!outputReader.ready()&&!errorReader.ready()){
-					if(!mLogcat.isAlive()){
-						break;
-					}
+				if(!mLogcat.isAlive()){
+					break;
+				}
+				else if(!outputReader.ready()&&!errorReader.ready()){
 					Thread.sleep(400);
 					Thread.yield();
 				}

@@ -11,6 +11,8 @@ import android.content.Intent;
 
 public class KyoroLogcatBroadcast extends BroadcastReceiver {
 
+	private static long sLastStarted = -1;
+
 	@Override
 	public void onReceive(Context arg0, Intent arg1) {
 		Context appContext = KyoroApplication.getKyoroApplication().getApplicationContext();
@@ -19,11 +21,10 @@ public class KyoroLogcatBroadcast extends BroadcastReceiver {
 			TaskManagerForSave.startSaveTask(appContext);
 		}
 		if(TaskManagerForSave.saveTaskIsAlive() || TaskManagerForSave.saveTaskIsForceKilled()) {
-			 startTimer();
+			startTimer();
 		}
 	}
 
-	private static long sLastStarted = -1;
 	public static void startTimer(){
 		long currentTime = System.currentTimeMillis();
 		if(sLastStarted != -1 && (currentTime-sLastStarted) < 180){

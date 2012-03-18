@@ -2,10 +2,6 @@ package info.kyorohiro.helloworld.logcat;
 
 import java.util.HashMap;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 public class KyoroLogcatCash {
 
 	private static HashMap<String, String> mCash = new HashMap<String, String>(); 

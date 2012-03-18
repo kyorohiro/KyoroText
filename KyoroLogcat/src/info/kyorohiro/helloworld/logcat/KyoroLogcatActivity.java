@@ -10,7 +10,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
-import info.kyorohiro.helloworld.logcat.preference.PreferenceDialog;
+import info.kyorohiro.helloworld.logcat.appparts.PreferenceDialog;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.TaskInter;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
@@ -20,13 +20,10 @@ import info.kyorohiro.helloworld.logcat.tasks.ShowFileContentTask;
 import info.kyorohiro.helloworld.util.IntentActionDialog;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -38,7 +35,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -171,8 +167,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			mStage.stop();
 		}
 		if (mShowTask != null) {
-			mShowTask.terminate();
-			mShowTask = null;
+			stopShowLog();
 		}
 		super.onStop();
 	}
@@ -184,8 +179,7 @@ public class KyoroLogcatActivity extends TestActivity {
 				mStage.stop();
 			}
 			if (mShowTask != null) {
-				mShowTask.terminate();
-				mShowTask = null;
+				stopShowLog();
 			}
 		} finally {
 			super.onDestroy();
@@ -253,29 +247,36 @@ public class KyoroLogcatActivity extends TestActivity {
 			myResult = true;
 		} else if(MENU_START_SHOW_LOG_FROM_FILE.equals(selectedItemTitle)) {
 			startFolder();
-		}
-		else if (MENU_STOP_SHOW_LOG.equals(selectedItemTitle)) {
-			if(mShowTask != null || mShowTask.isAlive()){
-				mShowTask.terminate();
-			}
-			mShowTask = null;
+			myResult = true;
+		} else if (MENU_STOP_SHOW_LOG.equals(selectedItemTitle)) {
+			stopShowLog();
 			myResult = true;
 		} else if(MENU_SEND_MAIL.equals(selectedItemTitle)){
 			SendCurrentLogTask task = new SendCurrentLogTask(this, KyoroLogcatSetting.getLogcatOption());
 			task.start();
+			myResult = true;
 		} else if(MENU_CLEAR_LOG.equals(selectedItemTitle)){
 			ClearCurrentLogTask task = new ClearCurrentLogTask(mLogcatOutput);
 			task.start();
+			myResult = true;
 		} else if("setting".equals(selectedItemTitle)) {
 			PreferenceDialog.createDialog(this).show();
+			stopShowLog();
+			myResult = true;
 		}
 		return myResult;
 	}
 
-	private  void startShowLog() {
+	private synchronized void startShowLog() {
 		runOnUiThread(new StartSaveTask());
 	}
 
+	private synchronized void stopShowLog() {
+		if(mShowTask != null && mShowTask.isAlive()){
+			mShowTask.terminate();
+		}
+		mShowTask = null;
+	}
 	private class StartSaveTask implements Runnable{
 		public void run(){
 			if(!TaskManagerForSave.saveTaskIsForceKilled()) {

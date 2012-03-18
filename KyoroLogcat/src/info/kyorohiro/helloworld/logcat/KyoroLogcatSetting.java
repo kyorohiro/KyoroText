@@ -14,8 +14,11 @@ public class KyoroLogcatSetting {
 	public static String SAVE_TASK_TAG = "save task";
 	public static String SAVE_TASK_IS_STARTED = "started";
 	public static String SAVE_TASK_IS_STOPPED= "stopped";
+
+	// following tag is mistak. but released so. 
+	// could not change.
 	public static String OPTION_TAG = "-v -time";
-	public static String OPTION_DEFAULT = "-v -time";
+	public static String OPTION_DEFAULT = "-v time";
 
 	public static final String SAVEDDIR = "KyoroLogcat";
 

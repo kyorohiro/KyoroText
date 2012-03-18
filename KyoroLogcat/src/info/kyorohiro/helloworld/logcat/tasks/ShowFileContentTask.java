@@ -42,6 +42,7 @@ public class ShowFileContentTask extends Thread implements TaskInter {
 				CharSequence line = lineData.readLine();
 				mData.addLinePerBreakText(line);
 				Thread.sleep(0);
+				Thread.yield();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
