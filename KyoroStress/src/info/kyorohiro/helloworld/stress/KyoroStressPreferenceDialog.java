@@ -33,13 +33,11 @@ public class KyoroStressPreferenceDialog extends Dialog {
 		mEdit.setText(""+KyoroSetting.getEatupHeapSize());
 		TextView memo = new TextView(getContext());
 		memo.setText(
-				" you should stop all and start all-----------"+"\n" +
-				" "+"\n" +
-				" " + "\n" +
-				"--example)"+"\n" +
-				"  100000"+"\n" +
-				" 1000000"+"\n" +
-				" 2000000"+"\n"
+				" 1. set eatup heap size"+"\n" +
+				" 2. push update button"+"\n" +
+				" 3. push stopall"+"\n" +
+				" 4. push BigEater<num> or startall"+"\n" +
+				" "+"\n"
 				);
 		mOK = new Button(getContext());
 		mOK.setText("Update");
