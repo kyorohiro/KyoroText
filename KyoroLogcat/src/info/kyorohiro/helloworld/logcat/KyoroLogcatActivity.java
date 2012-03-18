@@ -30,11 +30,14 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,113 +52,137 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_CLEAR_LOG = "clear logcat(-c) log";
 
 	private LogcatViewer mLogcatViewer = new LogcatViewer();
-	private FlowingLineData mLogcatOutput = mLogcatViewer.getCyclingStringList();
+	private FlowingLineData mLogcatOutput = mLogcatViewer
+			.getCyclingStringList();
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
-	private AutoCompleteTextView mInputForLogFilter = null; 
+	private AutoCompleteTextView mInputForLogFilter = null;
 	private TaskInter mShowTask = null;
 
 	public static String EXTRA_PROPERTY_ACTION = "info.kyorohiro.helloworld.logcat.Action";
 	public static String EXTRA_PROPERTY_ACTION_VALUE_FOLDER = "info.kyorohiro.helloworld.logcat.Folder";
-	
-	public static void startActivityFormFolder(Context context){
+
+	public static void startActivityFormFolder(Context context) {
 		Intent intent = new Intent();
-		intent.setClassName(KyoroLogcatActivity.class.getPackage().getName(), KyoroLogcatActivity.class.getName());
+		intent.setClassName(KyoroLogcatActivity.class.getPackage().getName(),
+				KyoroLogcatActivity.class.getName());
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		KyoroLogcatCash.startTaskToShowFolder();
 		context.startActivity(intent);
 	}
 
-	public static void startActivityFormStartSaveDialog(Context context){
+	public static void startActivityFormStartSaveDialog(Context context) {
 		Intent intent = new Intent();
-		intent.setClassName(KyoroLogcatActivity.class.getPackage().getName(), KyoroLogcatActivity.class.getName());
+		intent.setClassName(KyoroLogcatActivity.class.getPackage().getName(),
+				KyoroLogcatActivity.class.getName());
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		KyoroLogcatCash.startTaskToStartSaveTask();
 		context.startActivity(intent);
 	}
 
 	private boolean showTaskIsAlive() {
-		if(mShowTask == null || !mShowTask.isAlive()){
+		if (mShowTask == null || !mShowTask.isAlive()) {
 			return false;
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
 
-	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//changeTitle(this, "kyoro logcat", Color.parseColor("#cc795514"), Color.parseColor("#e5cf2a"));
-		//changeMenuBgColor(this, Color.parseColor("#e5cf2a"));
-		mCircleController.setEventListener(mLogcatViewer.getCircleControllerAction());
-
+		//
+		// circle controller
 		int deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
 		int deviceHeight = getWindowManager().getDefaultDisplay().getHeight();
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		float xdpi = metric.xdpi;
-		int radius = (int)(xdpi/2);
+		int radius = (int) (xdpi / 2);
 		int deviceMinEdge = deviceWidth;
-		if(deviceWidth < deviceHeight){
+		if (deviceWidth < deviceHeight) {
 			deviceMinEdge = deviceWidth;
 		} else {
 			deviceMinEdge = deviceHeight;
 		}
-		if(radius > deviceMinEdge/1.5) {
-			radius = (int)(deviceMinEdge/1.5);
+		if (radius > deviceMinEdge / 1.5) {
+			radius = (int) (deviceMinEdge / 1.5);
 		}
-
+		mCircleController.setEventListener(mLogcatViewer
+				.getCircleControllerAction());
 		mCircleController.setRadius(radius);
+
+
+		//
+		// simple stage
 		mStage = new SimpleStage(this.getApplicationContext());
 		mStage.getRoot().addChild(new Layout());
 		mStage.getRoot().addChild(mLogcatViewer);
 		mStage.getRoot().addChild(mCircleController);
 		mStage.start();
-		
+
+
+		// 
+		// edit text
 		mInputForLogFilter = new AutoCompleteTextView(this);
 		mInputForLogFilter.setSelected(false);
 		mInputForLogFilter.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		mInputForLogFilter.setHint("Filter regex(find)");
 		mInputForLogFilter.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-		mInputForLogFilter.setOnEditorActionListener(new FilterSettingAction());
-        ArrayAdapter<String> automatedStrage = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,
-        		new String[]{
-        		"[DIVWEFS]/"," [DIVWEFS]/", ".[DIVWEFS]/",
-        		" D/"," I/"," V/"," W/"," E/"," F/"," S/",
-        		"D/","I/","V/","W/","E/","F/","S/",
-        		"[DIV]/","[IVW]/","[VWE]/","[WEF]/","[EFS]/"
-        		});
-        mInputForLogFilter.setAdapter(automatedStrage);
-        mInputForLogFilter.setThreshold(1);
+		FilterSettingAction f = new FilterSettingAction();
+		mInputForLogFilter.setOnEditorActionListener(f);
+		ArrayAdapter<String> automatedStrage = new ArrayAdapter<String>(this,
+				android.R.layout.simple_dropdown_item_1line, new String[] {
+						"[DIVWEFS]/", " [DIVWEFS]/", ".[DIVWEFS]/", " D/",
+						" I/", " V/", " W/", " E/", " F/", " S/", "D/", "I/",
+						"V/", "W/", "E/", "F/", "S/", "[DIV]/", "[IVW]/",
+						"[VWE]/", "[WEF]/", "[EFS]/" });
+		mInputForLogFilter.setAdapter(automatedStrage);
+		mInputForLogFilter.setThreshold(1);
+		ImageButton b = new ImageButton(this);
+		b.setOnClickListener(f);
+		b.setImageResource(android.R.drawable.ic_search_category_default);
+		mInputForLogFilter.setHeight(b.getHeight());
+		LinearLayout h = new LinearLayout(this);
+		h.setOrientation(LinearLayout.HORIZONTAL);
+		h.addView(b);
+		h.addView(mInputForLogFilter,new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.WRAP_CONTENT));
+
+		//
+		// set layout
 		LinearLayout rootLayout = new LinearLayout(this);
 		rootLayout.setOrientation(LinearLayout.VERTICAL);
-		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		rootLayout.addView(mInputForLogFilter,params);
+		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.WRAP_CONTENT);
+//		rootLayout.addView(mInputForLogFilter, params);
+		rootLayout.addView(h, params);
 		rootLayout.addView(mStage);
 
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
+
+		// set content
+		getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(rootLayout);
 	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if (mStage != null) {
 			mStage.start();
 		}
-		if(KyoroLogcatCash.startTaskIsShowFolder()){
+		if (KyoroLogcatCash.startTaskIsShowFolder()) {
 			startFolder(300);
 			KyoroLogcatCash.startTaskToNone();
-		}
-		else if(KyoroLogcatCash.startTaskIsStartSave()){
+		} else if (KyoroLogcatCash.startTaskIsStartSave()) {
 			startShowLog();
 			KyoroLogcatCash.startTaskToNone();
 		}
@@ -186,21 +213,19 @@ public class KyoroLogcatActivity extends TestActivity {
 		}
 	}
 
-
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		if(showTaskIsAlive() == true){
+		if (showTaskIsAlive() == true) {
 			menu.add(MENU_STOP_SHOW_LOG).setIcon(R.drawable.ic_stop);
-		}
-		else {
+		} else {
 			menu.add(MENU_START_SHOW_LOG).setIcon(R.drawable.ic_start);
 		}
 
 		// todo Ç»ÇÒÇ©âòÇ¢ÅAwidget Ç∆ã§í Ç…Ç∑ÇÈ
 		if (TaskManagerForSave.saveTaskIsForceKilled()) {
 			menu.add(MENU_START_SAVE_AT_BGGROUND).setIcon(
-					R.drawable.ic_retry_save);			
+					R.drawable.ic_retry_save);
 		} else if (TaskManagerForSave.saveTaskIsAlive()) {
 			menu.add(MENU_STOP_SAVE_AT_BGGROUND).setIcon(
 					R.drawable.ic_stop_save);
@@ -211,9 +236,10 @@ public class KyoroLogcatActivity extends TestActivity {
 
 		menu.add(MENU_SEND_MAIL).setIcon(R.drawable.ic_send_mail);
 		menu.add(MENU_CLEAR_LOG).setIcon(R.drawable.ic_clear_log);
-		
+
 		if (!showTaskIsAlive()) {
-			menu.add(MENU_START_SHOW_LOG_FROM_FILE).setIcon(R.drawable.ic_folder);
+			menu.add(MENU_START_SHOW_LOG_FROM_FILE).setIcon(
+					R.drawable.ic_folder);
 		}
 		menu.add("setting").setIcon(android.R.drawable.ic_menu_preferences);
 
@@ -234,32 +260,34 @@ public class KyoroLogcatActivity extends TestActivity {
 		boolean myResult = false;
 		if (MENU_START_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
 			startShowLog();
-//			TaskManagerForSave.startSaveTask(this.getApplicationContext());
+			// TaskManagerForSave.startSaveTask(this.getApplicationContext());
 			myResult = true;
 		} else if (MENU_STOP_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
 			TaskManagerForSave.stopSaveTask(this.getApplicationContext());
 			myResult = true;
 		} else if (MENU_START_SHOW_LOG.equals(selectedItemTitle)) {
-			if(mShowTask == null || !mShowTask.isAlive()){
-				mShowTask = new ShowCurrentLogTask(mLogcatOutput, KyoroLogcatSetting.getLogcatOption());
+			if (mShowTask == null || !mShowTask.isAlive()) {
+				mShowTask = new ShowCurrentLogTask(mLogcatOutput,
+						KyoroLogcatSetting.getLogcatOption());
 				mShowTask.start();
 			}
 			myResult = true;
-		} else if(MENU_START_SHOW_LOG_FROM_FILE.equals(selectedItemTitle)) {
+		} else if (MENU_START_SHOW_LOG_FROM_FILE.equals(selectedItemTitle)) {
 			startFolder();
 			myResult = true;
 		} else if (MENU_STOP_SHOW_LOG.equals(selectedItemTitle)) {
 			stopShowLog();
 			myResult = true;
-		} else if(MENU_SEND_MAIL.equals(selectedItemTitle)){
-			SendCurrentLogTask task = new SendCurrentLogTask(this, KyoroLogcatSetting.getLogcatOption());
+		} else if (MENU_SEND_MAIL.equals(selectedItemTitle)) {
+			SendCurrentLogTask task = new SendCurrentLogTask(this,
+					KyoroLogcatSetting.getLogcatOption());
 			task.start();
 			myResult = true;
-		} else if(MENU_CLEAR_LOG.equals(selectedItemTitle)){
+		} else if (MENU_CLEAR_LOG.equals(selectedItemTitle)) {
 			ClearCurrentLogTask task = new ClearCurrentLogTask(mLogcatOutput);
 			task.start();
 			myResult = true;
-		} else if("setting".equals(selectedItemTitle)) {
+		} else if ("setting".equals(selectedItemTitle)) {
 			PreferenceDialog.createDialog(this).show();
 			stopShowLog();
 			myResult = true;
@@ -272,114 +300,137 @@ public class KyoroLogcatActivity extends TestActivity {
 	}
 
 	private synchronized void stopShowLog() {
-		if(mShowTask != null && mShowTask.isAlive()){
+		if (mShowTask != null && mShowTask.isAlive()) {
 			mShowTask.terminate();
 		}
 		mShowTask = null;
 	}
-	private class StartSaveTask implements Runnable{
-		public void run(){
-			if(!TaskManagerForSave.saveTaskIsForceKilled()) {
-				TaskManagerForSave.startSaveTask(KyoroApplication.getKyoroApplication().getApplicationContext());
+
+	private class StartSaveTask implements Runnable {
+		public void run() {
+			if (!TaskManagerForSave.saveTaskIsForceKilled()) {
+				TaskManagerForSave.startSaveTask(KyoroApplication
+						.getKyoroApplication().getApplicationContext());
 				return;
 			}
 
-			String[] items = {"retry save task","fin save task"};
-			AlertDialog.Builder alert = new AlertDialog.Builder(KyoroLogcatActivity.this);  
-			//alert.setTitle("Title");  
-			alert.setItems(items, new DialogInterface.OnClickListener(){
+			String[] items = { "retry save task", "fin save task" };
+			AlertDialog.Builder alert = new AlertDialog.Builder(
+					KyoroLogcatActivity.this);
+			// alert.setTitle("Title");
+			alert.setItems(items, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface arg0, int arg1) {
-					if(arg1 == 0){
-						TaskManagerForSave.startSaveTask(KyoroApplication.getKyoroApplication().getApplicationContext());
+					if (arg1 == 0) {
+						TaskManagerForSave.startSaveTask(KyoroApplication
+								.getKyoroApplication().getApplicationContext());
 					} else {
-						TaskManagerForSave.stopSaveTask(KyoroApplication.getKyoroApplication().getApplicationContext());
+						TaskManagerForSave.stopSaveTask(KyoroApplication
+								.getKyoroApplication().getApplicationContext());
 					}
-				}  
+				}
 			});
 
-			alert.show();  
+			alert.show();
 		}
 	}
+
 	private void startFolder() {
 		runOnUiThread(new ShowFolderDialogTask());
 	}
 
 	Handler handler = null;
+
 	private void startFolder(final int delay) {
 		runOnUiThread(new ShowFolderDialogTask());
 
-//		runOnUiThread(new Runnable(){
-//			public void run() {
-//				handler = new Handler();
-//				handler.postDelayed(new ShowFolderDialogTask(), delay);
-//			}
-//		});
+		// runOnUiThread(new Runnable(){
+		// public void run() {
+		// handler = new Handler();
+		// handler.postDelayed(new ShowFolderDialogTask(), delay);
+		// }
+		// });
 	}
 
 	public class ShowFolderDialogTask implements Runnable {
-			public void run() {
-				Toast.makeText(KyoroLogcatActivity.this, "tap and long tap", Toast.LENGTH_LONG).show();
+		public void run() {
+			Toast.makeText(KyoroLogcatActivity.this, "tap and long tap",
+					Toast.LENGTH_LONG).show();
 
-				SimpleFileExplorer dialog = 
-					SimpleFileExplorer.createDialog(KyoroLogcatActivity.this, KyoroLogcatSetting.getHomeDirInSDCard());
-				dialog.show();
-				dialog.setOnSelectedFileAction(new FileSelectedAction());
-			}
+			SimpleFileExplorer dialog = SimpleFileExplorer.createDialog(
+					KyoroLogcatActivity.this,
+					KyoroLogcatSetting.getHomeDirInSDCard());
+			dialog.show();
+			dialog.setOnSelectedFileAction(new FileSelectedAction());
+		}
 	}
+
 	public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			int x = graphics.getWidth() - mCircleController.getWidth()/2;
-			int y = graphics.getHeight() - mCircleController.getHeight()/2;
+			int x = graphics.getWidth() - mCircleController.getWidth() / 2;
+			int y = graphics.getHeight() - mCircleController.getHeight() / 2;
 			KyoroLogcatActivity.this.mCircleController.setPoint(x, y);
 		}
 	}
 
-	public class FileSelectedAction implements SimpleFileExplorer.SelectedFileAction {
+	public class FileSelectedAction implements
+			SimpleFileExplorer.SelectedFileAction {
 		public boolean onSelectedFile(final File file, String action) {
 			try {
-				if(file == null||!file.exists()||file.isDirectory()) {
+				if (file == null || !file.exists() || file.isDirectory()) {
 					return false;
 				}
-				
-				if(SimpleFileExplorer.SelectedFileAction.LONG_CLICK.equals(action)) {
-					KyoroLogcatActivity.this.runOnUiThread(new Runnable(){public void run(){
-					IntentActionDialog dialog = new IntentActionDialog(
-							KyoroLogcatActivity.this,
-							KyoroLogcatActivity.this, file);
-					dialog.show();
-					}});
+
+				if (SimpleFileExplorer.SelectedFileAction.LONG_CLICK
+						.equals(action)) {
+					KyoroLogcatActivity.this.runOnUiThread(new Runnable() {
+						public void run() {
+							IntentActionDialog dialog = new IntentActionDialog(
+									KyoroLogcatActivity.this,
+									KyoroLogcatActivity.this, file);
+							dialog.show();
+						}
+					});
 					return true;
-				}
-				else {
-					if(mShowTask == null || !mShowTask.isAlive()){
-						mShowTask= new ShowFileContentTask(mLogcatOutput, file);
+				} else {
+					if (mShowTask == null || !mShowTask.isAlive()) {
+						mShowTask = new ShowFileContentTask(mLogcatOutput, file);
 						mShowTask.start();
 					}
 					return true;
 				}
-			} catch(Throwable t) {
+			} catch (Throwable t) {
 				t.printStackTrace();
 				return false;
 			}
 		}
 	}
 
-	public class FilterSettingAction implements TextView.OnEditorActionListener {
+	public class FilterSettingAction implements 
+	TextView.OnEditorActionListener, View.OnClickListener {
 		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 			// All IME Application take that actionId become imeoption's value.
+			update();
+			return true;
+		}
+
+		public void onClick(View v) {
+			update();
+		}
+
+		private void update(){
 			try {
 				CharSequence mUserInputedText = mInputForLogFilter.getText();
 				String filterText = "";
-				if(mUserInputedText != null){
+				if (mUserInputedText != null) {
 					filterText = mUserInputedText.toString();
 				}
 				Pattern filter = Pattern.compile(filterText);
 				mLogcatViewer.startFilter(filter);
-			} catch(Throwable t) {
-				KyoroApplication.showNotification("Failed to filter logcat log from input text.");
+			} catch (Throwable t) {
+				KyoroApplication
+						.showNotification("Failed to filter logcat log from input text.");
 			}
-			return false;
 		}
 	}
 }
