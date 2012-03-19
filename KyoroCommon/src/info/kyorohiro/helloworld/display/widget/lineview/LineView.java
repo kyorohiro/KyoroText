@@ -9,12 +9,17 @@ public class LineView extends SimpleDisplayObject {
 	private int mNumOfLine = 100;
 	private CyclingListInter<FlowingLineDatam> mInputtedText = null;
 	private int mPosition = 0;
-	private int mTextSize = 14;
+	private int mTextSize = 16;
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
 
-	public LineView(CyclingListInter<FlowingLineDatam> inputtedText) {
+	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
+		mTextSize = textSize;
+	}
+
+	public int getTextSize() {
+		return mTextSize;
 	}
 
 	public void setCyclingList(CyclingListInter<FlowingLineDatam> inputtedText) {
@@ -37,6 +42,10 @@ public class LineView extends SimpleDisplayObject {
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		CyclingListInter<FlowingLineDatam> showingText = mInputtedText;
+		if(mPosition > 1) {
+			mPosition += showingText.getNumOfAdd();
+		}
+		showingText.clearNumOfAdd();
 		updateStatus(graphics, showingText);
 		drawBG(graphics);
 		int start = start(showingText);
@@ -113,7 +122,7 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 	private void drawBG(SimpleGraphics graphics) {
-		graphics.drawBackGround(Color.parseColor("#FF777788"));
+		graphics.drawBackGround(Color.parseColor("#FF000022"));//#FF777788"));
 		//graphics.drawBackGround(Color.parseColor("#cc795514"));
 		//graphics.setColor(Color.parseColor("#ccc9f486"));
 	}

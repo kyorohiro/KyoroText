@@ -13,6 +13,7 @@ import android.graphics.Paint;
 public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDatam> {
 	private Paint mPaint = null;
 	private int mWidth = 1000;
+	private int mNumOfLineAdded = 0;
 	private Pattern mFilter = null;
 	private Pattern mPatternForFontColorPerLine = 
 		Pattern.compile("[\\t\\s0-9\\-:.,]*[\\t\\s]*([VDIWEFS]{1})/");
@@ -24,6 +25,12 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 		mPaint.setTextSize(textSize);
 	}
 
+
+	public synchronized int getNumOfLineAdded() {
+		int t = mNumOfLineAdded;
+		t = 0;
+		return t;
+	}
 
 	public void setWidth(int w) {
 		mWidth = w;
@@ -56,10 +63,12 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 		while (true) {
 			len = mPaint.breakText(line.toString(), true, mWidth, null);
 			if (len == line.length()) {
+				mNumOfLineAdded++;
 				add(new FlowingLineDatam(line, mCurrentColor,
 						FlowingLineDatam.INCLUDE_END_OF_LINE));
 				break;
 			} else {
+				mNumOfLineAdded++;
 				add(new FlowingLineDatam(line.subSequence(0, len), mCurrentColor,
 						FlowingLineDatam.EXCLUDE_END_OF_LINE));
 				line = line.subSequence(len, len+line.length()-len);

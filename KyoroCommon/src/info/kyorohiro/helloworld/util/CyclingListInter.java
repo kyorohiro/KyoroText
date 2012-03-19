@@ -2,6 +2,8 @@ package info.kyorohiro.helloworld.util;
 
 public interface CyclingListInter<N> {
 	public N get(int i);
+	public int getNumOfAdd();
+	public void clearNumOfAdd();
 	public void add(N element);
 	public int getNumberOfStockedElement();
 	public void head(N element);

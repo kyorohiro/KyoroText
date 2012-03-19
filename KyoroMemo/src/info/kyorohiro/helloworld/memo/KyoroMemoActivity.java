@@ -2,8 +2,9 @@ package info.kyorohiro.helloworld.memo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-
-import info.kyorohiro.helloworld.android.todo.TODOSimpleEditText;
+ 
+import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
+import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleEditText;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -14,8 +15,6 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleCon
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineViewWithFile;
 import info.kyorohiro.helloworld.memo.task.ShowFileContentTask;
-import info.kyorohiro.helloworld.util.SimpleFileExplorer;
-import info.kyorohiro.helloworld.util.SimpleFileExplorer.SelectedFileAction;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;

@@ -7,7 +7,8 @@ public class CyclingList<X> implements CyclingListInter<X> {
 	private final ArrayList<X> mList;
 	private final int mMaxOfStackedElement;
 	private int mNextAddedPoint = 0;
-	private boolean mListIsFull = false;//
+	private boolean mListIsFull = false;
+	private int mNumOfAdd = 0;
 
 	public CyclingList(int listSize) {
 		mMaxOfStackedElement = listSize;
@@ -19,14 +20,17 @@ public class CyclingList<X> implements CyclingListInter<X> {
 
 	public synchronized void clear() {
 		mNextAddedPoint = 0;
+		mNumOfAdd = 0;
 		mListIsFull = false;//
 	}
 
 	public synchronized void head(X element) {
+		mNumOfAdd--;
 		mList.add(0, element);
 	}
 
 	public synchronized void add(X element) {
+		mNumOfAdd++;
 		mList.set(mNextAddedPoint, element);
 		mNextAddedPoint = mNextAddedPoint + 1;
 
@@ -96,5 +100,15 @@ public class CyclingList<X> implements CyclingListInter<X> {
 		} else {
 			return mMaxOfStackedElement;
 		}
+	}
+
+	@Override
+	public int getNumOfAdd() {
+		return mNumOfAdd;
+	}
+
+	@Override
+	public void clearNumOfAdd() {
+		mNumOfAdd = 0;
 	}
 }

@@ -21,7 +21,7 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 
 	public FlowingLineViewWithFile() {
 		mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
-		mViewer = new FlowingLineView(mInputtedText);
+		mViewer = new FlowingLineView(mInputtedText,14);
 		addChild(new Layout());
 		addChild(mViewer);
 	}

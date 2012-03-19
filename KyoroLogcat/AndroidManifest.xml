@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.kyorohiro.helloworld.logcat"
-    android:versionCode="136"
-    android:versionName="0.7008" >
+    android:versionCode="141"
+    android:versionName="0.7013" >
 
     <uses-sdk android:minSdkVersion="4" />
 
@@ -23,6 +23,7 @@
             android:launchMode="singleTask"
             android:name=".KyoroLogcatActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="stateVisible|adjustResize"
 			>
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

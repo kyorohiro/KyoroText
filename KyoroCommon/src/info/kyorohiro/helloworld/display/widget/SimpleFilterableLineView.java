@@ -11,14 +11,15 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
 	private FlowingLineData mInputtedText = null;
 	private FlowingLineView mViewer = null;
-	private int mTextSize = 14;
+	private int mTextSize = 16;
 
 	public SimpleFilterableLineView(FlowingLineData lineData) {
 		mInputtedText = lineData;
 		if (mInputtedText == null) {
 			mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
 		}
-		mViewer = new FlowingLineView(mInputtedText);
+		mViewer = new FlowingLineView(mInputtedText, mTextSize);
+		
 		addChild(new Layout());
 		addChild(mViewer);
 	}

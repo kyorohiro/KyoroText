@@ -143,7 +143,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		mInputForLogFilter.setThreshold(1);
 		ImageButton b = new ImageButton(this);
 		b.setOnClickListener(f);
-		b.setImageResource(android.R.drawable.ic_search_category_default);
+		b.setImageResource(android.R.drawable.ic_media_play);
 		mInputForLogFilter.setHeight(b.getHeight());
 
 		LinearLayout h = new LinearLayout(this);
@@ -165,7 +165,7 @@ public class KyoroLogcatActivity extends TestActivity {
 
 		// set content
 		getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(rootLayout);
 	}
 

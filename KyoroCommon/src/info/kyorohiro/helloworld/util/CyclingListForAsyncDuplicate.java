@@ -12,6 +12,7 @@ public class CyclingListForAsyncDuplicate<T> implements CyclingListInter<T> {
 	private boolean mTaskStatus = false;
 	private int mBufferSize = 0;
 	private int mIndexForNextCopy = 0;
+	private int mNumOfAdd = 0;
 
 	public CyclingListForAsyncDuplicate(CyclingList<T> base, int copyDataBuffer) {
 		mBase = base;
@@ -133,5 +134,17 @@ public class CyclingListForAsyncDuplicate<T> implements CyclingListInter<T> {
 		mBase.head(element);
 		mCopy.head(element);
 		mIndexForNextCopy++;
+	}
+
+
+	@Override
+	public int getNumOfAdd() {
+		return mCopy.getNumOfAdd();
+	}
+
+
+	@Override
+	public void clearNumOfAdd() {
+		mCopy.clearNumOfAdd();
 	}
 }
