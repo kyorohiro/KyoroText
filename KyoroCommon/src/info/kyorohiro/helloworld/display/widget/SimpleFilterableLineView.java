@@ -30,12 +30,17 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 			SimpleFilterableLineView.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
 		}
 	}
+
 	public FlowingLineData getCyclingStringList() {
 		return mInputtedText;
 	}
 
 	public FlowingLineData getCyclingFlowingLineData() {
 		return mInputtedText;
+	}
+
+	public void setTextSize(int textSize) {
+		mViewer.setTextSize(textSize);
 	}
 
 	public void setPosition(int position) {

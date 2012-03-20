@@ -22,6 +22,10 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 		return viewer.getTextSize();
 	}
 
+	public void setTextSize(int textSize) {
+		viewer.setTextSize(textSize);
+	}
+
 	public void setPosition(int position) {
 		viewer.setPosition(position);
 	}

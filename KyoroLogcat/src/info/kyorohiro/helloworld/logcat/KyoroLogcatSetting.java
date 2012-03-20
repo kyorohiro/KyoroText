@@ -19,7 +19,10 @@ public class KyoroLogcatSetting {
 	// could not change.
 	public static String OPTION_TAG = "-v -time";
 	public static String OPTION_DEFAULT = "-v time";
+	public static String OPTION_FONT_SIZE = "option_fontsize";
+	public static int OPTION_FONT_SIZE_DEFAULT = 16;
 
+	
 	public static final String SAVEDDIR = "KyoroLogcat";
 
 	public static File getHomeDirInSDCard() {
@@ -32,6 +35,24 @@ public class KyoroLogcatSetting {
 			return fsys;
 		}
 		return savedDir;
+	}
+
+	public static int getFontSize() {
+		String optionAsString = getData(KyoroApplication.getKyoroApplication(), OPTION_FONT_SIZE);
+		int fontSize = OPTION_FONT_SIZE_DEFAULT;
+
+		try {
+			if(optionAsString != null && !optionAsString.equals("none")){
+				fontSize = Integer.parseInt(optionAsString);
+			}
+		} catch(Throwable t) {
+			
+		}
+		return fontSize;		
+	}
+
+	public static void setFontSize(String size) {
+		setData(KyoroApplication.getKyoroApplication(), OPTION_FONT_SIZE, ""+size);
 	}
 
 	public static String getLogcatOption() {

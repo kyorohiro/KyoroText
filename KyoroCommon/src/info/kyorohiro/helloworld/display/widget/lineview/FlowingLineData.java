@@ -26,6 +26,10 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 	}
 
 
+	public void setTextSize(int height) {
+		mPaint.setTextSize(height);
+	}
+
 	public synchronized int getNumOfLineAdded() {
 		int t = mNumOfLineAdded;
 		t = 0;

@@ -19,7 +19,7 @@ public class LogcatViewer extends SimpleFilterableLineView {
 		return mCircleControllerAction;
 	}
 
-
+	
 
 	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
 		public void moveCircle(int action, int degree, int rateDegree) {

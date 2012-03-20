@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PreferenceDialog extends Dialog {
+public class PreferenceLogcatOptionDialog extends Dialog {
 
 	private Activity mOwnerActivity =  null; 
 	private AutoCompleteTextView mEdit = null;
@@ -23,7 +23,7 @@ public class PreferenceDialog extends Dialog {
 		new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-	public PreferenceDialog(Activity owner) {
+	public PreferenceLogcatOptionDialog(Activity owner) {
 		super(owner);
 		mOwnerActivity = owner;
 		mLayout = new LinearLayout(getContext());
@@ -57,7 +57,7 @@ public class PreferenceDialog extends Dialog {
 					KyoroLogcatSetting.setDefaultLogcatOption();
 				}
 				KyoroLogcatSetting.setLogcatOption(text.replace("-d|-c", " "));
-			    PreferenceDialog.this.dismiss();
+			    PreferenceLogcatOptionDialog.this.dismiss();
 			}
 		});
 		mLayout.addView(mOK);
@@ -70,7 +70,6 @@ public class PreferenceDialog extends Dialog {
 		mEdit.setSelected(false);
 		mEdit.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		mEdit.setHint("Filter regex(find)");
-		mEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         ArrayAdapter<String> automatedStrage = 
         	new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,
         		new String[]{
@@ -86,8 +85,8 @@ public class PreferenceDialog extends Dialog {
         mEdit.setThreshold(1);
 	}
 
-	public static PreferenceDialog createDialog(Activity owner) {
-		return new PreferenceDialog(owner);		
+	public static PreferenceLogcatOptionDialog createDialog(Activity owner) {
+		return new PreferenceLogcatOptionDialog(owner);		
 	}
 
 

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
+import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 

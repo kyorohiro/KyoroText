@@ -10,7 +10,8 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
-import info.kyorohiro.helloworld.logcat.appparts.PreferenceDialog;
+import info.kyorohiro.helloworld.logcat.appparts.PreferenceFontSizeDialog;
+import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatOptionDialog;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.TaskInter;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
@@ -30,6 +31,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
@@ -50,6 +52,11 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_START_SAVE_AT_BGGROUND = "Start Save at bg";
 	public static final String MENU_SEND_MAIL = "send logcat(-d) log mail";
 	public static final String MENU_CLEAR_LOG = "clear logcat(-c) log";
+	public static final String MENU_SETTING = "setting";
+	public static final String MENU_SETTING_LOGCAT_OPTION = "logcat option";
+	public static final String MENU_SETTING_FONT_SIZE = "font size";
+	
+	
 
 	private LogcatViewer mLogcatViewer = new LogcatViewer();
 	private FlowingLineData mLogcatOutput = mLogcatViewer
@@ -184,7 +191,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			startFolder(300);
 			KyoroLogcatCash.startTaskToNone();
 		} else if (KyoroLogcatCash.startTaskIsStartSave()) {
-			startShowLog();
+			startSaveLog();
 			KyoroLogcatCash.startTaskToNone();
 		}
 	}
@@ -242,7 +249,13 @@ public class KyoroLogcatActivity extends TestActivity {
 			menu.add(MENU_START_SHOW_LOG_FROM_FILE).setIcon(
 					R.drawable.ic_folder);
 		}
-		menu.add("setting").setIcon(android.R.drawable.ic_menu_preferences);
+		{
+			SubMenu menuSetting = 
+				menu.addSubMenu(MENU_SETTING);
+			menuSetting.setIcon(android.R.drawable.ic_menu_preferences);
+			menuSetting.add(MENU_SETTING_LOGCAT_OPTION);
+			menuSetting.add(MENU_SETTING_FONT_SIZE);
+		}
 
 		return true;
 	}
@@ -260,7 +273,7 @@ public class KyoroLogcatActivity extends TestActivity {
 
 		boolean myResult = false;
 		if (MENU_START_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
-			startShowLog();
+			startSaveLog();
 			// TaskManagerForSave.startSaveTask(this.getApplicationContext());
 			myResult = true;
 		} else if (MENU_STOP_SAVE_AT_BGGROUND.equals(selectedItemTitle)) {
@@ -268,6 +281,10 @@ public class KyoroLogcatActivity extends TestActivity {
 			myResult = true;
 		} else if (MENU_START_SHOW_LOG.equals(selectedItemTitle)) {
 			if (mShowTask == null || !mShowTask.isAlive()) {
+				//KyoroLogcatSetting.f
+				//mLogcatViewer.setFontSize(KyoroLogcatSetting.getFontSize());
+				mLogcatOutput.setTextSize(KyoroLogcatSetting.getFontSize());
+				mLogcatViewer.setTextSize(KyoroLogcatSetting.getFontSize());
 				mShowTask = new ShowCurrentLogTask(mLogcatOutput,
 						KyoroLogcatSetting.getLogcatOption());
 				mShowTask.start();
@@ -288,15 +305,19 @@ public class KyoroLogcatActivity extends TestActivity {
 			ClearCurrentLogTask task = new ClearCurrentLogTask(mLogcatOutput);
 			task.start();
 			myResult = true;
-		} else if ("setting".equals(selectedItemTitle)) {
-			PreferenceDialog.createDialog(this).show();
+		} else if (MENU_SETTING_LOGCAT_OPTION.equals(selectedItemTitle)) {
+			PreferenceLogcatOptionDialog.createDialog(this).show();
+			stopShowLog();
+			myResult = true;
+		} else if (MENU_SETTING_FONT_SIZE.equals(selectedItemTitle)) {
+			PreferenceFontSizeDialog.createDialog(this).show();
 			stopShowLog();
 			myResult = true;
 		}
 		return myResult;
 	}
 
-	private synchronized void startShowLog() {
+	private synchronized void startSaveLog() {
 		runOnUiThread(new StartSaveTask());
 	}
 

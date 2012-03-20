@@ -18,6 +18,10 @@ public class LineView extends SimpleDisplayObject {
 		mTextSize = textSize;
 	}
 
+	public void setTextSize(int textSize) {
+		mTextSize = textSize;
+	}
+
 	public int getTextSize() {
 		return mTextSize;
 	}
