@@ -87,7 +87,8 @@ public class SendCurrentLogTask extends Thread implements TaskInter {
 	public void sendMail(String subject, String address, StringBuilder body){
 		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 		emailIntent .setType("plain/text");
-		emailIntent .putExtra(android.content.Intent.EXTRA_EMAIL,  new String[]{address});
+//		emailIntent .putExtra(android.content.Intent.EXTRA_EMAIL,  new String[]{address});
+		emailIntent .putExtra(android.content.Intent.EXTRA_EMAIL,  new String[]{""});
 		emailIntent .putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
 		emailIntent .putExtra(android.content.Intent.EXTRA_TEXT, body.toString());
 		emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
