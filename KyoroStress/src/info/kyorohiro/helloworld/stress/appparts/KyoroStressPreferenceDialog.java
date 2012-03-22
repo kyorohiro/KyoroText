@@ -1,5 +1,6 @@
-package info.kyorohiro.helloworld.stress;
+package info.kyorohiro.helloworld.stress.appparts;
 
+import info.kyorohiro.helloworld.stress.KyoroSetting;
 import android.app.Activity;
 import android.app.Dialog;
 import android.text.InputType;
