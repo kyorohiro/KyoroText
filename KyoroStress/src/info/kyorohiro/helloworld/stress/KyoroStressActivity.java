@@ -29,45 +29,81 @@ import android.widget.Toast;
 
 public class KyoroStressActivity extends Activity {
 
-	private SimpleStage mStage = null;
-	private LineList mList = null;
-	private CyclingList<Object> mData = new CyclingList<Object>(100);
-	private SimpleCircleController mController = new SimpleCircleController();
-	private Button mStartButton = new Button("start all");
-	private Button mStopButton = new Button("stop all");
-	private Thread mKilledProcessManager = null;
-	private Thread mStartStopThread = null;
 	public final static String MENU_STOP = "stop all";
 	public final static String MENU_START = "start all";
 	public final static String MENU_SETTING = "setting";
 	public final static String MENU_SETTING_EATUP_JAVA_HEAP_SIZE = "eatup java heap size";
 	public final static String MENU_SETTING_BIGEATER_NUM = "num of bigeater";
 
+
+	private SimpleStage mStage = null;
+	private LineList mBigEaterListView = null;
+	private SimpleCircleController mControllerView = new SimpleCircleController();
+	private Button mStartButton = new Button("start all");
+	private Button mStopButton = new Button("stop all");
+
+	private CyclingList<Object> mBigEaterList = new CyclingList<Object>(100);
+	private Thread mKilledProcessManager = null;
+	private Thread mStartStopThread = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mStage = new SimpleStage(this);
-		mList = new LineList(mData, 50);
+		mBigEaterListView = new LineList(mBigEaterList, 50);
 		mStage.getRoot().addChild(new Layout());
-		mStage.getRoot().addChild(mList);
-		mStage.getRoot().addChild(mController);
+		mStage.getRoot().addChild(mBigEaterListView);
+		mStage.getRoot().addChild(mControllerView);
 		mStage.getRoot().addChild(mStartButton);
 		mStage.getRoot().addChild(mStopButton);
 		mStartButton.setCircleButtonListener(new MyStartButtonEvent());
 		mStopButton.setCircleButtonListener(new MyStopButtonEvent());
 		resetBigEater(KyoroSetting.getNumOfBigEater());
-		getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(mStage);
 
-		mList.setTemplate(new MyListTemplate());
-		mList.setOnListItemUIEvent(new MyListItemUIEvent());
+		mBigEaterListView.setTemplate(new MyListTemplate());
+		mBigEaterListView.setOnListItemUIEvent(new MyListItemUIEvent());
 
 		setController();
 	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		startKilledProcessManager();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mStage.start();
+		startKilledProcessManager();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mStage.stop();
+		stopKilledProcessManager();
+	}
+
+	public class Layout extends SimpleDisplayObject {
+		@Override
+		public void paint(SimpleGraphics graphics) {
+			int w = mControllerView.getWidth() / 2;
+			int h = mControllerView.getHeight() / 2;
+			int p = graphics.getWidth();
+			mBigEaterListView.setRect(graphics.getWidth(), graphics.getHeight());
+			mControllerView.setPoint(3 * p / 3 - w, graphics.getHeight() - h);
+			mStartButton.setPoint(w, graphics.getHeight() - h * 4);
+			mStopButton.setPoint(w, graphics.getHeight() - h);
+			graphics.drawBackGround(0xAAFFFF);
+		}
+	}
+
 	public void resetBigEater(int numOfBigEater) {
-		mData.clear();
+		mBigEaterList.clear();
 		int len = KyoroStressService.JavaHeapEater.length;
 		if (numOfBigEater < len) {
 			len = numOfBigEater;
@@ -75,23 +111,26 @@ public class KyoroStressActivity extends Activity {
 		for (int i = 0; i < len; i++) {
 			Class clazz = KyoroStressService.JavaHeapEater[i];
 			String id = KyoroStressService.ServiceProcessName[i];
-			mData.add(new MyListDatam(clazz, id, "BigEater No." + id,
+			mBigEaterList.add(new MyListDatam(clazz, id, "BigEater No." + id,
 					"initilize..", Color.parseColor("#FFAAAA")));
 		}
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
+	private void startKilledProcessManager() {
 		if (mKilledProcessManager == null || !mKilledProcessManager.isAlive()) {
 			mKilledProcessManager = new Thread(new ProcessStatusChecker());
 			mKilledProcessManager.start();
-		}
-
+		}		
 	}
 
+	private void stopKilledProcessManager() {
+		if (mKilledProcessManager != null) {
+			mKilledProcessManager.interrupt();
+			mKilledProcessManager = null;
+		}
+	}
 	private void setController() {
-		mController.setEventListener(new MyCircleControllerEvent());
+		mControllerView.setEventListener(new MyCircleControllerEvent());
 
 		int deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
 		int deviceHeight = getWindowManager().getDefaultDisplay().getHeight();
@@ -109,46 +148,7 @@ public class KyoroStressActivity extends Activity {
 			radius = (int) (deviceMinEdge / 1.5);
 		}
 
-		mController.setRadius(radius);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		mStage.start();
-		if (mKilledProcessManager == null || !mKilledProcessManager.isAlive()) {
-			mKilledProcessManager = new Thread(new ProcessStatusChecker());
-		}
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		mStage.stop();
-		if (mKilledProcessManager != null) {
-			mKilledProcessManager.interrupt();
-			mKilledProcessManager = null;
-		}
-
-	}
-
-	public class Layout extends SimpleDisplayObject {
-		@Override
-		public void paint(SimpleGraphics graphics) {
-			//
-			//
-			int w = mController.getWidth() / 2;
-			int h = mController.getHeight() / 2;
-			int p = graphics.getWidth();
-			mList.setRect(graphics.getWidth(), graphics.getHeight());
-			mController.setPoint(3 * p / 3 - w, graphics.getHeight() - h);
-			mStartButton.setPoint(w, graphics.getHeight() - h * 4);
-			mStopButton.setPoint(w, graphics.getHeight() - h);
-			graphics.drawBackGround(0xAAFFFF);
-			//
-			//
-
-		}
+		mControllerView.setRadius(radius);
 	}
 
 	public static class MyListDatam extends Object {
@@ -219,9 +219,9 @@ public class KyoroStressActivity extends Activity {
 						if (!KyoroStressService.START_SERVICE
 								.equals(KyoroSetting
 										.getData(mDatamPrevDown.mID))) {
-							start(mDatamPrevDown);
+							startBigEater(mDatamPrevDown);
 						} else {
-							stop(mDatamPrevDown);
+							stopBigEater(mDatamPrevDown);
 						}
 					}
 				} else {
@@ -261,26 +261,26 @@ public class KyoroStressActivity extends Activity {
 			SimpleCircleController.CircleControllerAction {
 		public void moveCircle(int action, int degree, int rateDegree) {
 			if (action == CircleControllerAction.ACTION_MOVE) {
-				mList.setPosition(mList.getPosition() + rateDegree / 2);
+				mBigEaterListView.setPosition(mBigEaterListView.getPosition() + rateDegree / 4);
 			}
 		}
 
 		public void upButton(int action) {
-			mList.setPosition(mList.getPosition() + 1);
+			mBigEaterListView.setPosition(mBigEaterListView.getPosition() + 1);
 		}
 
 		public void downButton(int action) {
-			mList.setPosition(mList.getPosition() - 1);
+			mBigEaterListView.setPosition(mBigEaterListView.getPosition() - 1);
 		}
 	}
 
 	public void updateStatus() throws InterruptedException {
-		int len = mData.getNumberOfStockedElement();
+		int len = mBigEaterList.getNumberOfStockedElement();
 		List<RunningAppProcessInfo> list = null;
 		KyoroMemoryInfo infos = new KyoroMemoryInfo();
 		list = infos.getRunningAppList(KyoroApplication.getKyoroApplication());
 		for (int i = 0; i < len; i++) {
-			task((MyListDatam) mData.get(i),
+			task((MyListDatam) mBigEaterList.get(i),
 					KyoroStressService.JavaHeapEater[i],
 					KyoroStressService.ServiceProcessName[i], list);
 			Thread.sleep(10);
@@ -340,13 +340,13 @@ public class KyoroStressActivity extends Activity {
 	}
 
 	private void startAll() {
-		int num = mData.getNumberOfStockedElement();
+		int num = mBigEaterList.getNumberOfStockedElement();
 		Object[] obj = new Object[num];
-		mData.getElements(obj, 0, num);
+		mBigEaterList.getElements(obj, 0, num);
 		try {
 			for (int i = 0; i < num; i++) {
 				if (obj[i] instanceof MyListDatam) {
-					start((MyListDatam) obj[i]);
+					startBigEater((MyListDatam) obj[i]);
 					Thread.sleep(100);
 					Thread.yield();
 				}
@@ -357,13 +357,13 @@ public class KyoroStressActivity extends Activity {
 	}
 
 	private void stopAll() {
-		int num = mData.getNumberOfStockedElement();
+		int num = mBigEaterList.getNumberOfStockedElement();
 		Object[] obj = new Object[num];
-		mData.getElements(obj, 0, num);
+		mBigEaterList.getElements(obj, 0, num);
 		try {
 			for (int i = 0; i < num; i++) {
 				if (obj[i] instanceof MyListDatam) {
-					stop((MyListDatam) obj[i]);
+					stopBigEater((MyListDatam) obj[i]);
 					Thread.sleep(100);
 					Thread.yield();
 				}
@@ -374,7 +374,7 @@ public class KyoroStressActivity extends Activity {
 
 	}
 
-	private void start(MyListDatam datam) {
+	private void startBigEater(MyListDatam datam) {
 		if (datam == null) {
 			return;
 		}
@@ -384,7 +384,7 @@ public class KyoroStressActivity extends Activity {
 		datam.mMessage = "start";
 	}
 
-	private void stop(MyListDatam datam) {
+	private void stopBigEater(MyListDatam datam) {
 		if (datam == null) {
 			return;
 		}
