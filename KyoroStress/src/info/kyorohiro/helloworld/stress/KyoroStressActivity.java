@@ -413,11 +413,11 @@ public class KyoroStressActivity extends Activity {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		if (item != null
 				&& KyoroStressActivity.MENU_STOP.equals(item.getTitle())) {
-			startAllTask();
+			stopAllTask();
 			return true;
 		} else if (item != null
 				&& KyoroStressActivity.MENU_START.equals(item.getTitle())) {
-			stopAllTask();
+			startAllTask();
 			return true;
 		} else if (item != null
 				&& KyoroStressActivity.MENU_SETTING_EATUP_JAVA_HEAP_SIZE
