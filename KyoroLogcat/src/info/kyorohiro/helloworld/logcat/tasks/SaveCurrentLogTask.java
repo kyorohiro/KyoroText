@@ -74,8 +74,10 @@ public class SaveCurrentLogTask extends Thread implements TaskInter {
 			}
 			Date date = new Date();
 			date.setTime(System.currentTimeMillis());
-			SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss",Locale.getDefault());
-			String filename = "log_"+format.format(date)+".txt";
+			String fname = KyoroLogcatSetting.getFilename();
+			SimpleDateFormat format = new SimpleDateFormat(
+					"yyyy'Y'_MM'M'dd'D'_HH'h'mm'm'_ss's'", Locale.getDefault());
+			String filename = ""+fname + format.format(date) + ".txt";
 			saveFile = new File(mSavedDirectory, filename);
 			KyoroApplication.showMessage("start logcat log in "+saveFile.getPath());
 

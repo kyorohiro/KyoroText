@@ -11,8 +11,11 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceFontSizeDialog;
+import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatFilenameDialog;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatOptionDialog;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
+import info.kyorohiro.helloworld.logcat.tasks.DumpCurrentLogTask;
+import info.kyorohiro.helloworld.logcat.tasks.SaveCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.TaskInter;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
@@ -54,9 +57,9 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_CLEAR_LOG = "clear logcat(-c) log";
 	public static final String MENU_SETTING = "setting";
 	public static final String MENU_SETTING_LOGCAT_OPTION = "logcat option";
+	public static final String MENU_SETTING_LOGCAT_FILENAME = "file name";
 	public static final String MENU_SETTING_FONT_SIZE = "font size";
-	
-	
+	public static final String MENU_SAVE = "save logcat(-d)";
 
 	private LogcatViewer mLogcatViewer = new LogcatViewer();
 	private FlowingLineData mLogcatOutput = mLogcatViewer
@@ -121,7 +124,6 @@ public class KyoroLogcatActivity extends TestActivity {
 				.getCircleControllerAction());
 		mCircleController.setRadius(radius);
 
-
 		//
 		// simple stage
 		mStage = new SimpleStage(this.getApplicationContext());
@@ -130,8 +132,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		mStage.getRoot().addChild(mCircleController);
 		mStage.start();
 
-
-		// 
+		//
 		// edit text
 		mInputForLogFilter = new AutoCompleteTextView(this);
 		mInputForLogFilter.setSelected(false);
@@ -156,8 +157,8 @@ public class KyoroLogcatActivity extends TestActivity {
 		LinearLayout h = new LinearLayout(this);
 		h.setOrientation(LinearLayout.HORIZONTAL);
 		h.addView(b);
-		h.addView(mInputForLogFilter,new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		h.addView(mInputForLogFilter, new LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 		//
 		// set layout
@@ -165,14 +166,15 @@ public class KyoroLogcatActivity extends TestActivity {
 		rootLayout.setOrientation(LinearLayout.VERTICAL);
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
-//		rootLayout.addView(mInputForLogFilter, params);
+		// rootLayout.addView(mInputForLogFilter, params);
 		rootLayout.addView(h, params);
 		rootLayout.addView(mStage);
 
-
 		// set content
-		getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		getWindow()
+				.setSoftInputMode(
+						WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+								| WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(rootLayout);
 	}
 
@@ -250,13 +252,14 @@ public class KyoroLogcatActivity extends TestActivity {
 					R.drawable.ic_folder);
 		}
 		{
-			SubMenu menuSetting = 
-				menu.addSubMenu(MENU_SETTING);
+			SubMenu menuSetting = menu.addSubMenu(MENU_SETTING);
 			menuSetting.setIcon(android.R.drawable.ic_menu_preferences);
 			menuSetting.add(MENU_SETTING_LOGCAT_OPTION);
 			menuSetting.add(MENU_SETTING_FONT_SIZE);
+			menuSetting.add(MENU_SETTING_LOGCAT_FILENAME);
 		}
 
+		menu.add(MENU_SAVE).setIcon(android.R.drawable.ic_menu_save);
 		return true;
 	}
 
@@ -281,8 +284,8 @@ public class KyoroLogcatActivity extends TestActivity {
 			myResult = true;
 		} else if (MENU_START_SHOW_LOG.equals(selectedItemTitle)) {
 			if (mShowTask == null || !mShowTask.isAlive()) {
-				//KyoroLogcatSetting.f
-				//mLogcatViewer.setFontSize(KyoroLogcatSetting.getFontSize());
+				// KyoroLogcatSetting.f
+				// mLogcatViewer.setFontSize(KyoroLogcatSetting.getFontSize());
 				mLogcatOutput.setTextSize(KyoroLogcatSetting.getFontSize());
 				mLogcatViewer.setTextSize(KyoroLogcatSetting.getFontSize());
 				mShowTask = new ShowCurrentLogTask(mLogcatOutput,
@@ -313,6 +316,13 @@ public class KyoroLogcatActivity extends TestActivity {
 			PreferenceFontSizeDialog.createDialog(this).show();
 			stopShowLog();
 			myResult = true;
+		} else if (MENU_SETTING_LOGCAT_FILENAME.equals(selectedItemTitle)) {
+			PreferenceLogcatFilenameDialog.createDialog(this).show();
+			myResult = true;
+		} else if (MENU_SAVE.equals(selectedItemTitle)) {
+			DumpCurrentLogTask task = new DumpCurrentLogTask(
+					KyoroLogcatSetting.getLogcatOption());
+			task.start();
 		}
 		return myResult;
 	}
@@ -428,8 +438,8 @@ public class KyoroLogcatActivity extends TestActivity {
 		}
 	}
 
-	public class FilterSettingAction implements 
-	TextView.OnEditorActionListener, View.OnClickListener {
+	public class FilterSettingAction implements
+			TextView.OnEditorActionListener, View.OnClickListener {
 		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 			// All IME Application take that actionId become imeoption's value.
 			update();
@@ -440,7 +450,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			update();
 		}
 
-		private void update(){
+		private void update() {
 			try {
 				CharSequence mUserInputedText = mInputForLogFilter.getText();
 				String filterText = "";
