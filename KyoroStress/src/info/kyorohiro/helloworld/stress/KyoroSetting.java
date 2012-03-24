@@ -38,12 +38,10 @@ public class KyoroSetting {
 
 	public static void setBigEaterState(String id, String value) {
 		setData(KyoroApplication.getKyoroApplication(), id, value, id);
-		android.util.Log.v("kiyo","s"+id+""+value);
 	}
 
 	public static String getBigEaterState(String id) {
 		String value = getData(KyoroApplication.getKyoroApplication(), id, id);
-		android.util.Log.v("kiyo","g"+id+","+value);
 		return value;
 	}
 

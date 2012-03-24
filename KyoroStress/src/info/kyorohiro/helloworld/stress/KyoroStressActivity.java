@@ -280,32 +280,35 @@ public class KyoroStressActivity extends Activity {
 		int len = mBigEaterList.getNumberOfStockedElement();
 		List<RunningAppProcessInfo> list = null;
 		KyoroMemoryInfo infos = new KyoroMemoryInfo();
+		
 		list = infos.getRunningAppList(KyoroApplication.getKyoroApplication());
 		for (int i = 0; i < len; i++) {
 			task((MyListDatam) mBigEaterList.get(i),
 					KyoroStressService.JavaHeapEater[i],
-					KyoroStressService.ServiceProcessName[i], list);
-			Thread.sleep(10);
+					KyoroStressService.ServiceProcessName[i], list,
+					infos);
+			Thread.sleep(100);
 			Thread.yield();
 		}
+		
 	}
 
 	private void task(MyListDatam datam, Class clazz, String processName,
-			List<RunningAppProcessInfo> list) {
+			List<RunningAppProcessInfo> list, KyoroMemoryInfo infos) {
 		String c = KyoroApplication.getKyoroApplication()
 				.getApplicationContext().getPackageName()
 				+ ":" + processName;
-
 		for (RunningAppProcessInfo i : list) {
 			String p = i.processName;
 			if (p.equals(c)) {
 				// ë∂ç›Ç∑ÇÈèÍçáÇÕ
 				// process kill Ç©Ç«Ç§Ç©Ç≈ï™äÚ
+				String extra = infos.memInfo(KyoroStressActivity.this, i.pid);
 				if (KyoroStressService.START_SERVICE.equals(KyoroSetting
 						.getBigEaterState(processName))) {
-					datam.mMessage = "task is alive";
+					datam.mMessage = "task is alive     " + extra;
 				} else {
-					datam.mMessage = "kill task now..";
+					datam.mMessage = "kill task now..   " + extra;
 					// android.os.Process.killProcess(i.pid);
 				}
 				return;
