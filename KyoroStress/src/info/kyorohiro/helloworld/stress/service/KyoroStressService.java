@@ -144,7 +144,7 @@ public abstract class KyoroStressService extends ForegroundService {
 		super.onCreate();
 		stopForegroundCompat();
 		mBuffer = new LinkedList<byte[]>(); 
-		if (START_SERVICE.equals(""+KyoroSetting.getData(getProperty()))) {
+		if (START_SERVICE.equals(""+KyoroSetting.getBigEaterState(getProperty()))) {
 			startForground("restart");
 		} 
 	}
@@ -169,7 +169,7 @@ public abstract class KyoroStressService extends ForegroundService {
 			return;
 		}
 
-		if (!START_SERVICE.equals(""+KyoroSetting.getData(getProperty()))) {
+		if (!START_SERVICE.equals(""+KyoroSetting.getBigEaterState(getProperty()))) {
 			Handler h = new Handler();
 			h.postDelayed(new DelayAndStop(),100);
 			return;

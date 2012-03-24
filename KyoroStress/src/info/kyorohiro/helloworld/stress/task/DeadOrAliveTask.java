@@ -47,14 +47,14 @@ public class DeadOrAliveTask  implements Runnable {
 			if(p.equals(c)){
 				// ë∂ç›Ç∑ÇÈèÍçáÇÕ
 				// process kill Ç©Ç«Ç§Ç©Ç≈ï™äÚ
-				if(!KyoroStressService.START_SERVICE.equals(KyoroSetting.getData(processName))){
+				if(!KyoroStressService.START_SERVICE.equals(KyoroSetting.getBigEaterState(processName))){
 					KyoroStressService.stopService(clazz, con);
 				}
 				return;
 			}
 		}
 
-		if(KyoroStressService.START_SERVICE.equals(KyoroSetting.getData(processName))){
+		if(KyoroStressService.START_SERVICE.equals(KyoroSetting.getBigEaterState(processName))){
 			KyoroStressService.startService(clazz, KyoroApplication.getKyoroApplication(), "restart");
 		}
 

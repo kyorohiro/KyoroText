@@ -300,7 +300,7 @@ public class KyoroStressActivity extends Activity {
 				// ë∂ç›Ç∑ÇÈèÍçáÇÕ
 				// process kill Ç©Ç«Ç§Ç©Ç≈ï™äÚ
 				if (KyoroStressService.START_SERVICE.equals(KyoroSetting
-						.getData(processName))) {
+						.getBigEaterState(processName))) {
 					datam.mMessage = "task is alive";
 				} else {
 					datam.mMessage = "kill task now..";
@@ -309,8 +309,7 @@ public class KyoroStressActivity extends Activity {
 				return;
 			}
 		}
-		if (KyoroStressService.START_SERVICE.equals(KyoroSetting
-				.getData(processName))) {
+		if (KyoroStressService.START_SERVICE.equals(KyoroSetting.getBigEaterState(processName))) {
 			datam.mMessage = "task is killed by pf";
 		} else {
 			datam.mMessage = "task is end";
@@ -378,7 +377,7 @@ public class KyoroStressActivity extends Activity {
 		if (datam == null) {
 			return;
 		}
-		KyoroSetting.setData(datam.mID, KyoroStressService.START_SERVICE);
+		KyoroSetting.setBigEaterState(datam.mID, KyoroStressService.START_SERVICE);
 		KyoroStressService.startService(datam.mClazz,
 				KyoroApplication.getKyoroApplication(), "start");
 		datam.mMessage = "start";
@@ -388,7 +387,7 @@ public class KyoroStressActivity extends Activity {
 		if (datam == null) {
 			return;
 		}
-		KyoroSetting.setData(datam.mID, KyoroStressService.STOP_SERVICE);
+		KyoroSetting.setBigEaterState(datam.mID, KyoroStressService.STOP_SERVICE);
 		KyoroStressService.stopService(datam.mClazz,
 				KyoroApplication.getKyoroApplication());
 		datam.mMessage = "end";
