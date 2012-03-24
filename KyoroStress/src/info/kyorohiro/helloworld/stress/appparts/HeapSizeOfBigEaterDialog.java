@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class KyoroStressPreferenceDialog extends Dialog {
+public class HeapSizeOfBigEaterDialog extends Dialog {
 
 	private AutoCompleteTextView mEdit = null;
 	private Button mOK = null;
@@ -22,7 +22,7 @@ public class KyoroStressPreferenceDialog extends Dialog {
 		new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-	public KyoroStressPreferenceDialog(Activity owner) {
+	public HeapSizeOfBigEaterDialog(Activity owner) {
 		super(owner);
 		mLayout = new LinearLayout(getContext());
 		setEditText();
@@ -52,7 +52,7 @@ public class KyoroStressPreferenceDialog extends Dialog {
 					KyoroSetting.setEatupHeadSize(""+KyoroSetting.MEMSIZE_DEFAULT_VALUE);
 				}
 				KyoroSetting.setEatupHeadSize(text);
-			    KyoroStressPreferenceDialog.this.dismiss();
+			    HeapSizeOfBigEaterDialog.this.dismiss();
 			}
 		});
 		mLayout.addView(mOK, mParams);
@@ -80,8 +80,8 @@ public class KyoroStressPreferenceDialog extends Dialog {
         mEdit.setThreshold(1);
 	}
 
-	public static KyoroStressPreferenceDialog createDialog(Activity owner) {
-		return new KyoroStressPreferenceDialog(owner);		
+	public static HeapSizeOfBigEaterDialog createDialog(Activity owner) {
+		return new HeapSizeOfBigEaterDialog(owner);		
 	}
 
 

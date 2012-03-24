@@ -8,8 +8,9 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.lineview.LineList;
-import info.kyorohiro.helloworld.stress.appparts.KyoroStressPreferenceDialog;
-import info.kyorohiro.helloworld.stress.appparts.PreferenceNumOfBigEaterDialog;
+import info.kyorohiro.helloworld.stress.appparts.HeapSizeOfBigEaterDialog;
+import info.kyorohiro.helloworld.stress.appparts.NumOfBigEaterDialog;
+import info.kyorohiro.helloworld.stress.appparts.RetryOfBigEaterDialog;
 import info.kyorohiro.helloworld.stress.service.KyoroStressService;
 import info.kyorohiro.helloworld.stress.task.DeadOrAliveTask;
 import info.kyorohiro.helloworld.stress.uiparts.Button;
@@ -34,6 +35,7 @@ public class KyoroStressActivity extends Activity {
 	public final static String MENU_SETTING = "setting";
 	public final static String MENU_SETTING_EATUP_JAVA_HEAP_SIZE = "eatup java heap size";
 	public final static String MENU_SETTING_BIGEATER_NUM = "num of bigeater";
+	public final static String MENU_SETTING_IS_RETRY = "is retry";
 
 
 	private SimpleStage mStage = null;
@@ -402,6 +404,7 @@ public class KyoroStressActivity extends Activity {
 			SubMenu s = menu.addSubMenu(KyoroStressActivity.MENU_SETTING);
 			s.add(MENU_SETTING_BIGEATER_NUM);
 			s.add(MENU_SETTING_EATUP_JAVA_HEAP_SIZE);
+			s.add(MENU_SETTING_IS_RETRY);
 		}
 		Toast.makeText(KyoroStressActivity.this, "now working..",
 				Toast.LENGTH_LONG);
@@ -422,14 +425,18 @@ public class KyoroStressActivity extends Activity {
 				&& KyoroStressActivity.MENU_SETTING_EATUP_JAVA_HEAP_SIZE
 						.equals(item.getTitle())) {
 			stopAllTask();
-			KyoroStressPreferenceDialog.createDialog(KyoroStressActivity.this)
+			HeapSizeOfBigEaterDialog.createDialog(KyoroStressActivity.this)
 					.show();
 		} else if (item != null
 				&& KyoroStressActivity.MENU_SETTING_BIGEATER_NUM.equals(item
 						.getTitle())) {
 			stopAllTask();
-			PreferenceNumOfBigEaterDialog
+			NumOfBigEaterDialog
 					.createDialog(KyoroStressActivity.this).show();
+		} else if(item != null
+				&& KyoroStressActivity.MENU_SETTING_IS_RETRY.equals(item.getTitle())) {
+			stopAllTask();
+			RetryOfBigEaterDialog.createDialog(KyoroStressActivity.this).show();
 		}
 
 		return super.onMenuItemSelected(featureId, item);

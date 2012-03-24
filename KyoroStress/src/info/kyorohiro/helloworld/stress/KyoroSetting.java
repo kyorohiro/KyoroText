@@ -12,6 +12,29 @@ public class KyoroSetting {
 	public static final String TAG_NUM_OF_BIGEATER = "NumOfBigEater";
 	public static final int NUM_OF_BIGEATER_DEFAULT_VALUE = 12;
 	public static final int MEMSIZE_DEFAULT_VALUE = 1024 * 10;
+	public static final String TAG_RETRY = "retry";
+	public static final String RETRY_ON = "on";
+	public static final String RETRY_OFF = "off";
+	public static final String RETRY_DEFAULT = RETRY_OFF;
+
+	public static String getRetry() {
+		String retry = RETRY_DEFAULT;
+		try {
+			String t = getData(TAG_RETRY);
+			if (t != null && !t.equals("none")) {
+				retry = t;
+			}
+		} catch (Throwable t) {
+		}
+		return retry;
+	}
+
+	public static void setRetry(String value) {
+		try {
+			setData(TAG_RETRY, value);
+		} catch (Throwable t) {
+		}
+	}
 
 	public static void setBigEaterState(String id, String value) {
 		setData(KyoroApplication.getKyoroApplication(), id, value, id);
@@ -72,17 +95,8 @@ public class KyoroSetting {
 		setData(KyoroApplication.getKyoroApplication(), property, value);
 	}
 
-	public static String getData(String property) {
-		String v = getData(KyoroApplication.getKyoroApplication(), property);
-		return v;
-	}
-
 	public static void setData(Context context, String property, String value) {
 		setData(context, property, value, null);
-	}
-
-	public static String getData(Context context, String property) {
-		return getData(context, property, null);
 	}
 
 	public static void setData(Context context, String property, String value, String tag) {
@@ -95,6 +109,14 @@ public class KyoroSetting {
 			}
 			pref.edit().putString(property, value).commit();
 		}
+	}
+
+	public static String getData(String property) {
+		return getData(KyoroApplication.getKyoroApplication(), property);
+	}
+
+	public static String getData(Context context, String property) {
+		return getData(context, property, null);
 	}
 
 	public static String getData(Context context, String property, String tag) {
