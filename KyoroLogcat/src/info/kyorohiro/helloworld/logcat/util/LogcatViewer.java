@@ -72,7 +72,7 @@ public class LogcatViewer extends SimpleFilterableLineView {
 				mPrevTime = 0;
 			}
 			else if(action == MotionEvent.ACTION_UP) {
-				mHeavy = mPower*10;
+				mHeavy = mPower*8;
 				mPrevY = -999;
 				mMovingY = 0;
 				mPrevTime = 0;
