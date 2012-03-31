@@ -326,24 +326,28 @@ public class KyoroStressActivity extends Activity {
 
 	}
 
+	public void updateMemoryInfoView() {
+		KyoroMemoryInfo info = new KyoroMemoryInfo();
+		MemoryInfo i = info.getMemoryInfo(KyoroApplication.getKyoroApplication());
+		mAvailableMemory = (int)(i.availMem/1024/1024);
+		mBoundaryLowMemory = (int)(i.threshold/1024/1024);
+		mIsLowMemory = i.lowMemory;		
+	}
+
 	public class ProcessStatusChecker implements Runnable {
 		DeadOrAliveTask task = new DeadOrAliveTask(KyoroStressActivity.this);
 
 		public void run() {
-			KyoroMemoryInfo info = new KyoroMemoryInfo();
 			try {
 				while (true) {
-					MemoryInfo i = info.getMemoryInfo(KyoroApplication.getKyoroApplication());
-					mAvailableMemory = (int)(i.availMem/1024/1024);
-					mBoundaryLowMemory = (int)(i.threshold/1024/1024);
-					mIsLowMemory = i.lowMemory;
-
 					updateStatus();
 					Thread.sleep(200);
 					Thread.yield();
+					updateMemoryInfoView();
 					task.run();
 					Thread.sleep(200);
 					Thread.yield();
+					updateMemoryInfoView();
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
