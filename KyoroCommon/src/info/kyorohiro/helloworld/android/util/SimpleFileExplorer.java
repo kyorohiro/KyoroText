@@ -163,21 +163,23 @@ public class SimpleFileExplorer extends Dialog {
 				return false;
 			}
 		});
-		
-		mSelectButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(mAction != null) {
-					if(mAction.onSelectedFile(mDir, SelectedFileAction.PUSH_SELECT)) {
-						try {
-							SimpleFileExplorer.this.dismiss();
-						} catch (Throwable e) {
-							e.printStackTrace();
+
+		if (mSelectButton != null) {
+			mSelectButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(mAction != null) {
+						if(mAction.onSelectedFile(mDir, SelectedFileAction.PUSH_SELECT)) {
+							try {
+								SimpleFileExplorer.this.dismiss();
+							} catch (Throwable e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	private Thread mTh = null;
