@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.simple;
+ package info.kyorohiro.helloworld.display.simple;
 
 import java.io.File;
 import java.io.FileNotFoundException;

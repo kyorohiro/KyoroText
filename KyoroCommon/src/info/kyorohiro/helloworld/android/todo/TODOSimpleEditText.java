@@ -1,5 +1,5 @@
 package info.kyorohiro.helloworld.android.todo;
-/*
+
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectSpec;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -159,4 +159,3 @@ public class TODOSimpleEditText extends View implements SimpleDisplayObjectSpec 
 	}
 	
 }
-*/

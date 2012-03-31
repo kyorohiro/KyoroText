@@ -21,6 +21,7 @@ public class KyoroLogcatSetting {
 	public static String OPTION_DEFAULT = "-v time";
 	public static String OPTION_FONT_SIZE = "option_fontsize";
 	public static int OPTION_FONT_SIZE_DEFAULT = 16;
+	public static String SAVEDIR_TAG = "save dir";
 
 	public static String FILENAME_TAG = "filename";
 	public static String FILENAME_DEFAULT_NAME = "log_";
@@ -42,8 +43,21 @@ public class KyoroLogcatSetting {
 	public static void setFilename(String fname) {
 		setData(KyoroApplication.getKyoroApplication(), FILENAME_TAG, fname);
 	}
-	
+
+	public static void setHomeDirInSDCard(String homeDirPath) {
+		setData(KyoroApplication.getKyoroApplication(), SAVEDDIR, homeDirPath);
+	}
+
 	public static File getHomeDirInSDCard() {
+		String path = getData(KyoroApplication.getKyoroApplication(), SAVEDDIR);
+		File savedDir = new File(path);
+		if(savedDir.exists()) {
+			return savedDir;
+		}
+		return getDefaultHomeDirInSDCard();
+	}
+
+	public static File getDefaultHomeDirInSDCard() {
 		File fsys= Environment.getExternalStorageDirectory();
 		File savedDir = new File(fsys, SAVEDDIR);
 		if(!savedDir.exists()) {

@@ -74,6 +74,10 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		return touched;
 	}
 
+	public void removeChild(SimpleDisplayObject child) {
+		mMyChildren.remove(child);
+	}
+
 	public void addChild(SimpleDisplayObject child) {
 		mMyChildren.add(child);
 	}

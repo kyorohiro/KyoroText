@@ -74,7 +74,8 @@ public class KyoroMemoActivity extends Activity {
 		if (item != null) {
 			if (MENU_LABEL_OPEN_FILE.equals("" + item.getTitle())) {
 				SimpleFileExplorer explorer = new SimpleFileExplorer(this,
-						this, Environment.getExternalStorageDirectory());
+						this, Environment.getExternalStorageDirectory(),
+						SimpleFileExplorer.MODE_FILE_SELECT);
 				explorer.show();
 				explorer.setOnSelectedFileAction(new SelectedFileAction() {
 					@Override

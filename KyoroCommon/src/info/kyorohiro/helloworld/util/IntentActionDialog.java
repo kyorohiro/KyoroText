@@ -29,7 +29,7 @@ public class IntentActionDialog extends android.app.Dialog {
 			ViewGroup.LayoutParams.WRAP_CONTENT);
 
 	public static SimpleFileExplorer createDialog(Activity owner, File dir) {
-		return new SimpleFileExplorer(owner, owner, dir);
+		return new SimpleFileExplorer(owner, owner, dir, SimpleFileExplorer.MODE_FILE_SELECT);
 	}
 
 	public IntentActionDialog(Context context, Activity owner, File file) {

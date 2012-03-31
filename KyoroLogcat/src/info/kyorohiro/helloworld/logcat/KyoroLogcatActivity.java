@@ -11,6 +11,7 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceFontSizeDialog;
+import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatDirectoryDialog;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatFilenameDialog;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatOptionDialog;
 import info.kyorohiro.helloworld.logcat.tasks.ClearCurrentLogTask;
@@ -57,8 +58,9 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_CLEAR_LOG = "clear logcat(-c) log";
 	public static final String MENU_SETTING = "setting";
 	public static final String MENU_SETTING_LOGCAT_OPTION = "logcat option";
-	public static final String MENU_SETTING_LOGCAT_FILENAME = "file name";
+	public static final String MENU_SETTING_LOGCAT_FILENAME = "filename";
 	public static final String MENU_SETTING_FONT_SIZE = "font size";
+	public static final String MENU_SETTING_SAVEDDIR = "directory";
 	public static final String MENU_SAVE = "save logcat(-d)";
 
 	private LogcatViewer mLogcatViewer = new LogcatViewer();
@@ -257,6 +259,7 @@ public class KyoroLogcatActivity extends TestActivity {
 			menuSetting.add(MENU_SETTING_LOGCAT_OPTION);
 			menuSetting.add(MENU_SETTING_FONT_SIZE);
 			menuSetting.add(MENU_SETTING_LOGCAT_FILENAME);
+			menuSetting.add(MENU_SETTING_SAVEDDIR);
 		}
 
 		menu.add(MENU_SAVE).setIcon(android.R.drawable.ic_menu_save);
@@ -319,7 +322,11 @@ public class KyoroLogcatActivity extends TestActivity {
 		} else if (MENU_SETTING_LOGCAT_FILENAME.equals(selectedItemTitle)) {
 			PreferenceLogcatFilenameDialog.createDialog(this).show();
 			myResult = true;
-		} else if (MENU_SAVE.equals(selectedItemTitle)) {
+		} else if (MENU_SETTING_SAVEDDIR.equals(selectedItemTitle)) {
+			PreferenceLogcatDirectoryDialog.createDialog(this).show();
+			myResult = true;
+		}
+		else if (MENU_SAVE.equals(selectedItemTitle)) {
 			DumpCurrentLogTask task = new DumpCurrentLogTask(
 					KyoroLogcatSetting.getLogcatOption());
 			task.start();

@@ -1,16 +1,17 @@
 package info.kyorohiro.helloworld.android.util;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 
 
 
+import android.R.color;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,29 +22,43 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SimpleFileExplorer extends Dialog {
 
+	public static final int MODE_FILE_SELECT = 0;
+	public static final int MODE_DIR_SELECT = 1;
 	private Activity mOwnerActivity =  null; 
 	private ListView mCurrentFileList = null;
 	private SelectedFileAction mAction = null;
 	private EditText mEdit = null;
+	private Button mSelectButton = null;
+	private int mModeDirectory = 0;
 	private LinearLayout mLayout = null;
 	private File mDir = null;
 	private ViewGroup.LayoutParams mParams = 
 		new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
+	private ViewGroup.LayoutParams mParams2 = 
+		new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+				ViewGroup.LayoutParams.FILL_PARENT);
+	
 
 	public static SimpleFileExplorer createDialog(Activity owner, File dir) {
-		return new SimpleFileExplorer(owner, owner,dir);		
+		return createDialog(owner, dir, MODE_FILE_SELECT);		
 	}
 
-	public SimpleFileExplorer(Context context, Activity owner, File dir) {
+	public static SimpleFileExplorer createDialog(Activity owner, File dir, int mode) {
+		return new SimpleFileExplorer(owner, owner, dir, mode);		
+	}
+
+	public SimpleFileExplorer(Context context, Activity owner, File dir, int mode) {
 		super(context);
 		mLayout =new LinearLayout(context);
 		mLayout.setOrientation(LinearLayout.VERTICAL);
@@ -51,6 +66,13 @@ public class SimpleFileExplorer extends Dialog {
 		mCurrentFileList = new ListView(context);
 		mEdit = new EditText(context);
 		mDir = dir;
+		mModeDirectory = mode;
+
+		if(mModeDirectory == MODE_DIR_SELECT) {
+			mSelectButton = new Button(getContext());		
+			mSelectButton.setText("select");
+		}
+
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 		init();
 		addContentView(mLayout, mParams);
@@ -90,6 +112,11 @@ public class SimpleFileExplorer extends Dialog {
 				android.R.layout.simple_list_item_1);
 
 		mLayout.addView(mEdit, mParams);
+		//ScrollView s = new ScrollView(getContext());
+		//s.addView(mCurrentFileList,mParams2);
+		if (mSelectButton != null) {
+			mLayout.addView(mSelectButton,mParams);
+		}
 		mLayout.addView(mCurrentFileList, mParams);
 		mCurrentFileList.setAdapter(adapter);
 		mCurrentFileList.setOnItemClickListener(new OnItemClickListener() {
@@ -124,7 +151,7 @@ public class SimpleFileExplorer extends Dialog {
 				if(f.exists() && f.isDirectory()){
 					mDir = f;
 				}
-				if(mAction == null || mAction != null) {
+				if(mAction != null) {
 					if(mAction.onSelectedFile(f,SelectedFileAction.LONG_CLICK)) {
 						try {
 							SimpleFileExplorer.this.dismiss();
@@ -134,6 +161,21 @@ public class SimpleFileExplorer extends Dialog {
 					}
 				}
 				return false;
+			}
+		});
+		
+		mSelectButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(mAction != null) {
+					if(mAction.onSelectedFile(mDir, SelectedFileAction.PUSH_SELECT)) {
+						try {
+							SimpleFileExplorer.this.dismiss();
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}
+				}
 			}
 		});
 	}
@@ -209,6 +251,9 @@ public class SimpleFileExplorer extends Dialog {
 						if(!f.exists()){
 							continue;
 						}
+						if(mModeDirectory == MODE_DIR_SELECT&&!f.isDirectory()){
+							continue;
+						}
 						if(f.isDirectory()){
 							mTmp.add(f);
 						}
@@ -263,6 +308,9 @@ public class SimpleFileExplorer extends Dialog {
 				for( File f : list) {
 					if(checkEnding()){
 						return;
+					}
+					if(mModeDirectory == MODE_DIR_SELECT&& !f.isDirectory()) {
+						continue;
 					}
 					adapter.add(new ListItemWithFile(f));
 				}
@@ -335,6 +383,7 @@ public class SimpleFileExplorer extends Dialog {
 	public static interface SelectedFileAction {
 		public static String LONG_CLICK = "long click";
 		public static String CLICK = "click";
+		public static String PUSH_SELECT = "select";
 		
 		/**
 		 * @param file is user selected file
