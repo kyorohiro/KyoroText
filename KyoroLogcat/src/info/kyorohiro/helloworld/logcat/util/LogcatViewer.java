@@ -28,33 +28,73 @@ public class LogcatViewer extends SimpleFilterableLineView {
 
 	private class MyTouchAndMove extends SimpleDisplayObject {
 		
-		private int prevY = 0;
-		private int movingY = 0;
+		private int mPrevY = 0;
+		private long mPrevTime = 0;
+		private int mMovingY = 0;
+		private int mHeavy = 0;
+		private int mPower = 0;
+		private int mPower_y = 0;
+		private long mPower_time = 0;
+
 		@Override
 		public void paint(SimpleGraphics graphics) {
+			if(mHeavy<-5||mHeavy>5) {
+				mHeavy /=2;
+				int textSize = LogcatViewer.this.getTextSize();
+				setPosition(getPosition() + mHeavy/textSize);
+			}
 		}
+
 		@Override
 		public boolean onTouchTest(int x, int y, int action) {
-			if(prevY == -999) {
-				prevY = y;
+			if(mPrevY == -999) {
+				mPrevY = y;
+				mPrevTime = System.currentTimeMillis();
 				return false;
 			}
 			if(action == MotionEvent.ACTION_MOVE) {
-				movingY += y-prevY;
-				prevY =  y;
+				mMovingY += y-mPrevY;
+				mPrevY =  y;
+				mPrevTime = System.currentTimeMillis();
+				updateMovePower(y);
 				int textSize = LogcatViewer.this.getTextSize();
-				if(movingY<textSize || textSize<movingY) {
-					int notMuchValue = movingY%textSize;
-					setPosition(getPosition() + (movingY-notMuchValue)/textSize);
-					movingY = notMuchValue;
+				if(mMovingY<textSize || textSize<mMovingY) {
+					int notMuchValue = mMovingY%textSize;
+					setPosition(getPosition() + (mMovingY-notMuchValue)/textSize);
+					mMovingY = notMuchValue;
 					return true;
 				}
 			}
-			if(action == MotionEvent.ACTION_UP) {
-				prevY = -999;
-				movingY = 0;
+			else if(action == MotionEvent.ACTION_DOWN) {
+				mHeavy = 0;
+				mMovingY = 0;
+				mPrevTime = 0;
+			}
+			else if(action == MotionEvent.ACTION_UP) {
+				//int time = (int)(System.currentTimeMillis()-mPrevTime);
+				//mHeavy =  (int)((y-mPrevY)*1000/time);
+				mHeavy = mPower*10;
+				mPrevY = -999;
+				mMovingY = 0;
+				mPrevTime = 0;
 			}
 			return false;
+		}
+
+		public void updateMovePower(int y) {
+			if(mPower_time <0) {
+				mPower_time = System.currentTimeMillis();
+				mPower_y = y;
+			} else {
+				int tmp = (int)(System.currentTimeMillis()-mPower_time);
+				if(tmp<100) {
+					return;
+				}
+				mPower_time = System.currentTimeMillis();
+				mPower_time = y;
+				mPower = y -mPower_y;
+				mPower_y = y;
+			}
 		}
 		
 	}
