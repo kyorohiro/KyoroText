@@ -39,7 +39,7 @@ public class LogcatViewer extends SimpleFilterableLineView {
 		@Override
 		public void paint(SimpleGraphics graphics) {
 			if(mHeavy<-5||mHeavy>5) {
-				mHeavy /=2;
+				mHeavy /=1.2;
 				int textSize = LogcatViewer.this.getTextSize();
 				setPosition(getPosition() + mHeavy/textSize);
 			}
@@ -53,6 +53,7 @@ public class LogcatViewer extends SimpleFilterableLineView {
 				return false;
 			}
 			if(action == MotionEvent.ACTION_MOVE) {
+				mHeavy = 0;
 				mMovingY += y-mPrevY;
 				mPrevY =  y;
 				mPrevTime = System.currentTimeMillis();
@@ -71,8 +72,6 @@ public class LogcatViewer extends SimpleFilterableLineView {
 				mPrevTime = 0;
 			}
 			else if(action == MotionEvent.ACTION_UP) {
-				//int time = (int)(System.currentTimeMillis()-mPrevTime);
-				//mHeavy =  (int)((y-mPrevY)*1000/time);
 				mHeavy = mPower*10;
 				mPrevY = -999;
 				mMovingY = 0;
