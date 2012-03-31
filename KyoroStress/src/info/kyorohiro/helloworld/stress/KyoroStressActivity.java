@@ -17,6 +17,7 @@ import info.kyorohiro.helloworld.stress.uiparts.Button;
 import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.KyoroMemoryInfo;
 import android.app.Activity;
+import android.app.ActivityManager.MemoryInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -47,7 +48,10 @@ public class KyoroStressActivity extends Activity {
 	private CyclingList<Object> mBigEaterList = new CyclingList<Object>(100);
 	private Thread mKilledProcessManager = null;
 	private Thread mStartStopThread = null;
-
+	private boolean mIsLowMemory = false;
+	private int mAvailableMemory = 0;
+	private int mBoundaryLowMemory = 0;
+  
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,6 +62,7 @@ public class KyoroStressActivity extends Activity {
 		mStage.getRoot().addChild(mControllerView);
 		mStage.getRoot().addChild(mStartButton);
 		mStage.getRoot().addChild(mStopButton);
+		mStage.getRoot().addChild(new Label());
 		mStartButton.setCircleButtonListener(new MyStartButtonEvent());
 		mStopButton.setCircleButtonListener(new MyStopButtonEvent());
 		resetBigEater(KyoroSetting.getNumOfBigEater());
@@ -218,9 +223,8 @@ public class KyoroStressActivity extends Activity {
 						// ------------------
 						android.util.Log.v("kiyohiro", "==tapped="
 								+ mDatamPrevDown.mID);
-						if (!KyoroStressService.START_SERVICE
-								.equals(KyoroSetting
-										.getData(mDatamPrevDown.mID))) {
+						if (!KyoroStressService.START_SERVICE.equals(KyoroSetting
+										.getBigEaterState(mDatamPrevDown.mID))) {
 							startBigEater(mDatamPrevDown);
 						} else {
 							stopBigEater(mDatamPrevDown);
@@ -326,8 +330,14 @@ public class KyoroStressActivity extends Activity {
 		DeadOrAliveTask task = new DeadOrAliveTask(KyoroStressActivity.this);
 
 		public void run() {
+			KyoroMemoryInfo info = new KyoroMemoryInfo();
 			try {
 				while (true) {
+					MemoryInfo i = info.getMemoryInfo(KyoroApplication.getKyoroApplication());
+					mAvailableMemory = (int)(i.availMem/1024/1024);
+					mBoundaryLowMemory = (int)(i.threshold/1024/1024);
+					mIsLowMemory = i.lowMemory;
+
 					updateStatus();
 					Thread.sleep(200);
 					Thread.yield();
@@ -471,5 +481,18 @@ public class KyoroStressActivity extends Activity {
 			}
 		};
 		mStartStopThread.start();
+	}
+	
+	private class Label extends SimpleDisplayObject {
+		@Override
+		public void paint(SimpleGraphics graphics) {
+			graphics.setColor(Color.parseColor("#AA000000"));
+			graphics.setTextSize(26);
+			graphics.drawText("avai="+mAvailableMemory+"MB", 10, 40);
+			graphics.drawText("boundary="+mBoundaryLowMemory+"MB", 10, 70);
+			if(mIsLowMemory) {
+				graphics.drawText("lowmemory now!!", 10, 100);
+			}
+		}
 	}
 }

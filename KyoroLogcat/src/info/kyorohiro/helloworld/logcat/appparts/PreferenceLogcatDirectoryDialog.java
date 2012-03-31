@@ -45,8 +45,7 @@ public class PreferenceLogcatDirectoryDialog extends Dialog {
 		mLayout.addView(mEdit, mParams);
 		mEdit.setText(KyoroLogcatSetting.getHomeDirInSDCard().getPath());
 		TextView memo = new TextView(getContext());
-		memo.setText("<filename>" + "yyyy'Y'_MM'M'dd'D'_HH'h'mm'm'_ss's'.txt"
-				+ "\n" + "" + "\n");
+		memo.setText("update: update directory path."+"and File#mkdirs");
 		mBrowse = new Button(getContext());
 		mBrowse.setText("browse");
 		mBrowse.setOnClickListener(new android.view.View.OnClickListener() {

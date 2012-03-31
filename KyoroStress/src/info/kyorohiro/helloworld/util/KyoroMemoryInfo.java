@@ -16,6 +16,13 @@ public class KyoroMemoryInfo {
 		return runningApp;
 	}
 
+	public ActivityManager.MemoryInfo getMemoryInfo(Context context) {
+	    ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+	    ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+	    activityManager.getMemoryInfo(memoryInfo);
+		return memoryInfo;
+	}
+
 	public String memInfo(Context context, int pid) {
 	    ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
 	    ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
@@ -27,22 +34,24 @@ public class KyoroMemoryInfo {
 	    	if(infos != null && infos.length >0){
 	    		android.os.Debug.MemoryInfo info = infos[0];
 	    		extra = ":"+
-	    		",dpd=" + info.dalvikPrivateDirty +
-	    		",dp=" + info.dalvikPss+ 
-	    		",dsd=" + info.dalvikSharedDirty +
-	    		",npd=" + info.nativePrivateDirty +
-	    		",np=" + info.nativePss +
-	    		",nsd=" + info.nativeSharedDirty +
-	    		",opd=" + info.otherPrivateDirty +
-	    		",op=" + info.otherPss +
-	    		",otpd=" + info.getTotalPrivateDirty()+
-	    		",tp=" + info.getTotalPss() + 
-	    		"mtsd=" + info.getTotalSharedDirty();
+	    		//",dpd=" + info.dalvikPrivateDirty +
+	    		//",dp=" + info.dalvikPss+ 
+	    		//",dsd=" + info.dalvikSharedDirty +
+	    		//",npd=" + info.nativePrivateDirty +
+	    		//",np=" + info.nativePss +
+	    		//",nsd=" + info.nativeSharedDirty +
+	    		//",opd=" + info.otherPrivateDirty +
+	    		//",op=" + info.otherPss +
+	    		",TPD=" + info.getTotalPrivateDirty()+
+	    		"kb,TPss=" + info.getTotalPss() + 
+	    		"kb,TSD=" + info.getTotalSharedDirty()+"kb";
 	    	}
 	    }
-	     return ":avail="+(int)(memoryInfo.availMem/1024/1024)+
-	     "MB,low mem boundary="+(int)memoryInfo.threshold/1024/1024+
-	     "MB,"+memoryInfo.lowMemory + extra;
+	     return 
+	     /*":avail="+(int)(memoryInfo.availMem/1024/1024)+
+	     "MB,LBV="+(int)memoryInfo.threshold/1024/1024+
+	     "MB,"+memoryInfo.lowMemory + */extra;
+
 	}
 
 	public android.os.Debug.MemoryInfo[] getMemInfoData(Context context, int[] pids) {
