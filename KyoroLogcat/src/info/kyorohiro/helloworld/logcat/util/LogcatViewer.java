@@ -1,12 +1,17 @@
 package info.kyorohiro.helloworld.logcat.util;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import android.graphics.Color;
 import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 
 
 public class LogcatViewer extends SimpleFilterableLineView {
@@ -16,7 +21,7 @@ public class LogcatViewer extends SimpleFilterableLineView {
 	
 
 	public LogcatViewer() {
-		super(null);
+		super(new LogcatViewerBuffer(3000, 1000, 16));
 		mCircleControllerAction = new MyCircleControllerEvent();
 		mTouchAndMove = new MyTouchAndMove();
 		this.addChild(mTouchAndMove);
@@ -115,4 +120,40 @@ public class LogcatViewer extends SimpleFilterableLineView {
 		}
 	}
 
+	public static class LogcatViewerBuffer extends FlowingLineData {
+		private Pattern mPatternForFontColorPerLine = 
+			Pattern.compile("[\\t\\s0-9\\-:.,]*[\\t\\s]*([VDIWEFS]{1})/");
+
+		public LogcatViewerBuffer(int listSize, int width, int textSize) {
+			super(listSize, width, textSize);
+		}
+
+		public void setColorPerLine(CharSequence line) {
+			try {
+				Matcher m = mPatternForFontColorPerLine.matcher(line);
+				if (m == null) {
+					return;
+				}
+				if (m.find()) {
+					if ("D".equals(m.group(1))) {
+						setCurrentLineColor(Color.parseColor("#cc86c9f4"));
+					} else if ("I".equals(m.group(1))) {
+						setCurrentLineColor(Color.parseColor("#cc86f4c9"));
+					} else if ("V".equals(m.group(1))) {
+						setCurrentLineColor(Color.parseColor("#ccc9f486"));
+					} else if ("W".equals(m.group(1))) {
+						setCurrentLineColor(Color.parseColor("#ccffff00"));
+					} else if ("E".equals(m.group(1))) {
+						setCurrentLineColor(Color.parseColor("#ccff2222"));
+					} else if ("F".equals(m.group(1))) {
+						setCurrentLineColor(Color.parseColor("#ccff2222"));
+					} else if ("S".equals(m.group(1))) {
+						setCurrentLineColor(Color.parseColor("#ccff2222"));
+					}
+				}
+			} catch (Throwable e) {
+
+			}
+		}
+	}
 }

@@ -3,8 +3,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineViewWithFile;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineViewWithFile.NextTask;
+import info.kyorohiro.helloworld.display.widget.FlowingLineViewWithFile;
+import info.kyorohiro.helloworld.display.widget.FlowingLineViewWithFile.NextTask;
 
 public class SimpleEditText extends SimpleDisplayObject {
 	FlowingLineViewWithFile mLineView = new FlowingLineViewWithFile();

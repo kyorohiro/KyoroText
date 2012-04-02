@@ -15,8 +15,6 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 	private int mWidth = 1000;
 	private int mNumOfLineAdded = 0;
 	private Pattern mFilter = null;
-	private Pattern mPatternForFontColorPerLine = 
-		Pattern.compile("[\\t\\s0-9\\-:.,]*[\\t\\s]*([VDIWEFS]{1})/");
 
 	public FlowingLineData(int listSize, int width, int textSize) {
 		super(new CyclingList<FlowingLineDatam>(listSize),listSize);
@@ -25,6 +23,10 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 		mPaint.setTextSize(textSize);
 	}
 
+
+	public int getTextSize() {
+		return (int)mPaint.getTextSize();
+	}
 
 	public void setTextSize(int height) {
 		mPaint.setTextSize(height);
@@ -103,32 +105,11 @@ public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDat
 	}
 
 	private int mCurrentColor = Color.parseColor("#ccc9f486");
-	private void setColorPerLine(CharSequence line) {
-		try {
-			Matcher m = mPatternForFontColorPerLine.matcher(line);
-			if (m == null) {
-				return;
-			}
-			if (m.find()) {
-				if ("D".equals(m.group(1))) {
-					mCurrentColor = Color.parseColor("#cc86c9f4");
-				} else if ("I".equals(m.group(1))) {
-					mCurrentColor = Color.parseColor("#cc86f4c9");
-				} else if ("V".equals(m.group(1))) {
-					mCurrentColor = Color.parseColor("#ccc9f486");
-				} else if ("W".equals(m.group(1))) {
-					mCurrentColor = Color.parseColor("#ccffff00");
-				} else if ("E".equals(m.group(1))) {
-					mCurrentColor = Color.parseColor("#ccff2222");
-				} else if ("F".equals(m.group(1))) {
-					mCurrentColor = Color.parseColor("#ccff2222");
-				} else if ("S".equals(m.group(1))) {
-					mCurrentColor = Color.parseColor("#ccff2222");
-				}
-			}
-		} catch (Throwable e) {
+	public void setCurrentLineColor(int color) {
+		mCurrentColor = color;
+	}
 
-		}
+	protected void setColorPerLine(CharSequence line) {
 	}
 
 	private ArrayList<FlowingLineDatam> mCashForFiltering = new ArrayList<FlowingLineDatam>();

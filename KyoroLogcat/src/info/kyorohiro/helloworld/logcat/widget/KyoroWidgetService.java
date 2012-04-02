@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
+import info.kyorohiro.helloworld.android.base.TestService;
 import info.kyorohiro.helloworld.logcat.KyoroApplication;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatActivity;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
@@ -10,7 +11,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
-public class KyoroWidgetService extends Service {
+public class KyoroWidgetService extends TestService {
+	public KyoroWidgetService() {
+		super(1004);
+	}
+
+
 	public static String ACTION_CHANGE = "ACTION_CHANGE";
 	public static String ACTION_SET = "ACTION_SET";
 
@@ -33,11 +39,14 @@ public class KyoroWidgetService extends Service {
 	    return intent;
 	}
 
+	
 	@Override
-	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
-		String action = ""+intent.getAction();
+	public void onStartHandle(Intent intent) {
+		if(intent == null) {
+			return;
+		}
 
+		String action = ""+intent.getAction();
 		// 
 		if(KyoroSaveWidget.TYPE.equals(""+intent.getType())) {
 			 if (KyoroWidgetService.ACTION_SET.equals(action)){

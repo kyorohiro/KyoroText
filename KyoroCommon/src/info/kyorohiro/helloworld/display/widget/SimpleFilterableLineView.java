@@ -18,6 +18,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		if (mInputtedText == null) {
 			mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
 		}
+		mTextSize = mInputtedText.getTextSize();
 		mViewer = new FlowingLineView(mInputtedText, mTextSize);
 		
 		addChild(new Layout());
