@@ -33,7 +33,8 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 		}*/
 		if(mHeavyY<-5||mHeavyY>5) {
 			mHeavyY /=1.2;
-			int textSize = mViewer.getTextSize();
+			int textSize = (int)(mViewer.getTextSize()*2.5f);// todo 2.5f
+			//mViewer.getTextSize();
 			mViewer.setPositionY(mViewer.getPositionY() + mHeavyY/textSize);
 		}
 	}
@@ -55,7 +56,7 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mPrevX = x;
 			mPrevTime = System.currentTimeMillis();
 			updateMovePower(x, y);
-			int textSize = mViewer.getTextSize();
+			int textSize = (int)(mViewer.getTextSize()*2.5f);// todo 2.5f
 			boolean ret = false; 
 			if(mMovingY<textSize || textSize<mMovingY) {
 				int notMuchValue = mMovingY%textSize;
