@@ -150,8 +150,7 @@ public abstract class KyoroStressService extends ForegroundService {
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
+	public void onStartHandle(Intent intent) {
 		String message = "";
 		if(intent !=null && null != intent.getExtras()){
 		    message = intent.getExtras().getString("message");

@@ -79,8 +79,7 @@ public class KyoroLogcatService extends ForegroundService  {
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
+	public void onStartHandle(Intent intent) {
 		String message = "run background to save log";
 		if(intent != null && intent.getExtras() != null && intent.getExtras().getString("message") != null){
 			message = intent.getExtras().getString("message");

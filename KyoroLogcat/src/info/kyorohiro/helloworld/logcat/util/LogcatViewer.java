@@ -52,6 +52,7 @@ public class LogcatViewer extends SimpleFilterableLineView {
 				mPrevTime = System.currentTimeMillis();
 				return false;
 			}
+
 			if(action == MotionEvent.ACTION_MOVE) {
 				mHeavy = 0;
 				mMovingY += y-mPrevY;
