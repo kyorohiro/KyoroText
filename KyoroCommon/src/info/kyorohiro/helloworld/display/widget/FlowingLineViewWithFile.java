@@ -42,7 +42,7 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 			FlowingLineViewWithFile.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
 			int numOfStackedString = mViewer.getCyclingList().getNumberOfStockedElement();
 			int referPoint = numOfStackedString - mPosition;
-			mViewer.setPosition(referPoint);
+			mViewer.setPositionY(referPoint);
 		}
 	}
 	public FlowingLineData getCyclingStringList() {

@@ -9,9 +9,11 @@ public class LineView extends SimpleDisplayObject {
 	private int mNumOfLine = 100;
 	private CyclingListInter<FlowingLineDatam> mInputtedText = null;
 	private int mPosition = 0;
+	private int mPosX = 0;//todo
 	private int mTextSize = 16;
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
+	private float mScale = 2.5f;
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
@@ -119,7 +121,13 @@ public class LineView extends SimpleDisplayObject {
 				graphics.drawLine(10, startStopY, graphics.getWidth() - 10,
 						startStopY);
 			}
-			int x = getWidth() / 20;
+			if(mPosX >0) {
+				mPosX = 0;
+			}
+			if(mPosX < -1*(getWidth()*mScale-getWidth())) {
+				mPosX = -1*(int)(getWidth()*mScale-getWidth());
+			}
+			int x = getWidth() / 20 + mPosX;//todo mPosY
 			int y = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
 			graphics.drawText("" + list[i], x, y);
 		}
@@ -133,21 +141,29 @@ public class LineView extends SimpleDisplayObject {
 
 	private void updateStatus(SimpleGraphics graphics,
 			CyclingListInter<FlowingLineDatam> showingText) {
-		mNumOfLine = (int)(getHeight() / (mTextSize*1.2));
+		mNumOfLine = (int)(getHeight() / (mTextSize*1.2*mScale));//todo mScale
 		int blankSpace = mNumOfLine / 2;
 		if (mPosition < -(mNumOfLine - blankSpace)) {
-			setPosition(-(mNumOfLine - blankSpace) - 1);
+			setPositionY(-(mNumOfLine - blankSpace) - 1);
 		} else if (mPosition > (showingText.getNumberOfStockedElement() - blankSpace)) {
-			setPosition(showingText.getNumberOfStockedElement() - blankSpace);
+			setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
 		}
-		graphics.setTextSize(mTextSize);
+		graphics.setTextSize((int)(mTextSize*mScale));//todo mScale
 	}
 
-	public void setPosition(int position) {
+	public void setPositionY(int position) {
 		mPosition = position;
 	}
 
-	public int getPosition() {
+	public void setPositionX(int x) {
+		mPosX = x;
+	}
+
+	public int getPositionY() {
 		return mPosition;
+	}
+
+	public int getPositionX() {
+		return mPosX;
 	}
 }

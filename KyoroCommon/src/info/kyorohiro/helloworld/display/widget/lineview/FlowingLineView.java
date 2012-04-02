@@ -26,12 +26,19 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 		viewer.setTextSize(textSize);
 	}
 
-	public void setPosition(int position) {
-		viewer.setPosition(position);
+	public void setPositionY(int position) {
+		viewer.setPositionY(position);
 	}
 
-	public int getPosition() {
-		return viewer.getPosition();
+	public void setPositionX(int x) {
+		viewer.setPositionX(x);
+	}
+	public int getPositionX() {
+		return viewer.getPositionX();
+	}
+
+	public int getPositionY() {
+		return viewer.getPositionY();
 	}
 
 	public void setCyclingList(CyclingListInter<FlowingLineDatam> inputtedText) {

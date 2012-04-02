@@ -48,12 +48,20 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		mViewer.setTextSize(textSize);
 	}
 
-	public void setPosition(int position) {
-		mViewer.setPosition(position);
+	
+	public void setPositionY(int position) {
+		mViewer.setPositionY(position);
 	}
 
-	public int getPosition() {
-		return mViewer.getPosition();
+	public void setPositionX(int x) {
+		mViewer.setPositionX(x);
+	}
+
+	public int getPositionX() {
+		return mViewer.getPositionX();
+	}
+	public int getPositionY() {
+		return mViewer.getPositionY();
 	}
 
 	public void startFilter(Pattern nextFilter) {
