@@ -80,6 +80,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 
 	public void addChild(SimpleDisplayObject child) {
 		mMyChildren.add(child);
+		child.setParent(this);
 	}
 
 	@Override

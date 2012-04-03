@@ -2,6 +2,8 @@ package info.kyorohiro.helloworld.logcat.util;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimplePoint;
+import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import android.view.MotionEvent;
 
 public class MyTouchAndMove extends SimpleDisplayObject {
@@ -26,21 +28,58 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-		/*if(mHeavyX<-5||mHeavyX>5) {
+		if(mHeavyX<-5||mHeavyX>5) {
 			mHeavyX /=1.2;
-			int textSize = mViewer.getTextSize();
-			mViewer.setPositionX(mViewer.getPositionX() + mHeavyX/textSize);
-		}*/
+			//int textSize = mViewer.getTextSize();
+			mViewer.setPositionX(mViewer.getPositionX() + mHeavyX/*/textSize*/);
+		}
 		if(mHeavyY<-5||mHeavyY>5) {
 			mHeavyY /=1.2;
-			int textSize = (int)(mViewer.getTextSize()*2.5f);// todo 2.5f
+			int textSize = (int)(mViewer.getTextSize()*mViewer.getScale());// todo 2.5f
 			//mViewer.getTextSize();
 			mViewer.setPositionY(mViewer.getPositionY() + mHeavyY/textSize);
 		}
+		
+		//todo
+		mY = graphics.getHeight();
 	}
+
+	private int mY = 0;
+	private float mPrevLength = 0;
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
+		
+
+		SimpleStage stage = SimpleDisplayObject.getStage(this); 
+		if(stage != null && stage.isSupportMultiTouch()) {
+			SimplePoint[] p = stage.getMultiTouchEvent();
+			//
+			// todo modify
+			if(p[0].isVisible() && p[1].isVisible()) {
+				int xx = p[0].getX()-p[1].getX();
+				int yy = p[0].getY()-p[1].getY();
+				
+				int currentLength = xx*xx + yy*yy;
+				if(mPrevLength != 0) {
+					float s = mViewer.getScale()+(currentLength-mPrevLength)/60000;
+					if(s<1.0){
+						s = 1.0f;
+					}
+					if(s>6) {
+						s =6.0f;
+					}			
+					mViewer.setScale(s);
+				}
+				mPrevLength = currentLength;
+				return true;
+			} else {
+				mPrevLength =0;
+			}
+		}
+		
+		
+		
 		if(mPrevY == -999 || mPrevX == -999) {
 			mPrevY = y;
 			mPrevX = x;
@@ -87,6 +126,7 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mMovingX = 0;
 			mPrevTime = 0;
 		}
+
 		return false;
 	}
 

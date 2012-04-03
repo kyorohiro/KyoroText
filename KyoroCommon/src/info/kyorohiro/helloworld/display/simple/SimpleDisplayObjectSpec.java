@@ -8,4 +8,5 @@ public interface SimpleDisplayObjectSpec {
 	public boolean onTouchTest(int x, int y, int action);
 	public boolean onKeyUp(int keycode);
 	public boolean onKeyDown(int keycode);
+	public Object getParent();
 }

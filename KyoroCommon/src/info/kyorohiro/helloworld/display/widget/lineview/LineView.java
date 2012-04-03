@@ -13,11 +13,19 @@ public class LineView extends SimpleDisplayObject {
 	private int mTextSize = 16;
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
-	private float mScale = 2.5f;
+	private float mScale = 1.0f;
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
+	}
+
+	public void setScale(float scale) {
+		mScale = scale;
+	}
+
+	public float getScale() {
+		return mScale;
 	}
 
 	public void setTextSize(int textSize) {
@@ -127,7 +135,7 @@ public class LineView extends SimpleDisplayObject {
 			if(mPosX < -1*(getWidth()*mScale-getWidth())) {
 				mPosX = -1*(int)(getWidth()*mScale-getWidth());
 			}
-			int x = getWidth() / 20 + mPosX;//todo mPosY
+			int x = (getWidth()) / 20 + mPosX*19/20; //todo mPosY
 			int y = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
 			graphics.drawText("" + list[i], x, y);
 		}

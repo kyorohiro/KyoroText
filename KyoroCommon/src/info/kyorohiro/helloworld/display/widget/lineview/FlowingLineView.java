@@ -17,7 +17,16 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 		this.addChild(new Layout());
 		this.addChild(scrollBar);
 	}
-	
+
+
+	public void setScale(float scale) {
+		viewer.setScale(scale);
+	}
+
+	public float getScale() {
+		return viewer.getScale();
+	}
+
 	public int getTextSize() {
 		return viewer.getTextSize();
 	}

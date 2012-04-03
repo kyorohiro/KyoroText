@@ -40,6 +40,16 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		return mInputtedText;
 	}
 
+
+	public void setScale(float scale) {
+		mViewer.setScale(scale);
+	}
+
+	public float getScale() {
+		return mViewer.getScale();
+	}
+
+
 	public int getTextSize() {
 		return mViewer.getTextSize();
 	}
