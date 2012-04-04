@@ -14,14 +14,13 @@ import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 public class LogcatViewer extends SimpleFilterableLineView {
 
 	private MyCircleControllerEvent mCircleControllerAction = null;
-	private MyTouchAndMove mTouchAndMove = null;
 	
 
 	public LogcatViewer() {
 		super(new LogcatViewerBuffer(3000, 1000, 16));
 		mCircleControllerAction = new MyCircleControllerEvent();
-		mTouchAndMove = new MyTouchAndMove(this);
-		this.addChild(mTouchAndMove);
+		this.addChild(new MyTouchAndMove(this));
+		this.addChild(new MyTouchAndZoom(this));
 	}
 
 	public CircleControllerAction getCircleControllerAction() {
