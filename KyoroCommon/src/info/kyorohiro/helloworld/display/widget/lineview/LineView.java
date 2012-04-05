@@ -14,6 +14,7 @@ public class LineView extends SimpleDisplayObject {
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
 	private float mScale = 1.0f;
+	private int mAddedPoint = 0;
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
@@ -53,13 +54,24 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 
+	// todo refactaring
+	private int cash  = 0;
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		CyclingListInter<FlowingLineDatam> showingText = mInputtedText;
 		if(mPosition > 1) {
-			mPosition += showingText.getNumOfAdd();
+			// todo refactaring
+			int a = resetAddPositionY();
+			if(a != 0){
+				cash += showingText.getNumOfAdd();
+				mPosition = cash+a;
+			} else {
+				cash = 0;
+				mPosition += showingText.getNumOfAdd();				
+			}
 		}
 		showingText.clearNumOfAdd();
+
 		updateStatus(graphics, showingText);
 		drawBG(graphics);
 		int start = start(showingText);
@@ -157,6 +169,16 @@ public class LineView extends SimpleDisplayObject {
 			setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
 		}
 		graphics.setTextSize((int)(mTextSize*mScale));//todo mScale
+	}
+
+	public synchronized void addPositionY(int position) {
+		mAddedPoint += position;
+	}
+
+	private synchronized int resetAddPositionY() {
+		int tmp = mAddedPoint;
+		mAddedPoint = 0;
+		return tmp;
 	}
 
 	public void setPositionY(int position) {

@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 
 public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
@@ -22,7 +23,12 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		mViewer = new FlowingLineView(mInputtedText, mTextSize);
 		
 		addChild(new Layout());
+		onAddViewer();
 		addChild(mViewer);
+	}
+
+	protected void onAddViewer() {
+		
 	}
 
 	public class Layout extends SimpleDisplayObject {
@@ -36,11 +42,11 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		return mInputtedText;
 	}
 
-	public FlowingLineData getCyclingFlowingLineData() {
-		return mInputtedText;
+	public LineView getLineView() {
+		return mViewer.getLineView();
 	}
 
-
+/*
 	public void setScale(float scale) {
 		mViewer.setScale(scale);
 	}
@@ -73,6 +79,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	public int getPositionY() {
 		return mViewer.getPositionY();
 	}
+	*/
 
 	public void startFilter(Pattern nextFilter) {
 		if (nextFilter == null || mInputtedText == null) {
@@ -86,9 +93,9 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 			mInputtedText.start();
 		}
 		if (mInputtedText.taskIsAlive()) {
-			mViewer.setCyclingList(mInputtedText.getDuplicatingList());
+			mViewer.getLineView().setCyclingList(mInputtedText.getDuplicatingList());
 		} else {
-			mViewer.setCyclingList(mInputtedText.getDuplicatingList());
+			mViewer.getLineView().setCyclingList(mInputtedText.getDuplicatingList());
 		}
 	}
 

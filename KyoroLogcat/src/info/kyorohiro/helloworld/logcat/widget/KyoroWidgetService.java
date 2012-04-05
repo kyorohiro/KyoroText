@@ -13,7 +13,7 @@ import android.os.IBinder;
 
 public class KyoroWidgetService extends TestService {
 	public KyoroWidgetService() {
-		super(1004);
+		super(10001);
 	}
 
 
@@ -38,8 +38,19 @@ public class KyoroWidgetService extends TestService {
         intent.setType(type);
 	    return intent;
 	}
+/*
+	@Override
+	public void onStart(Intent intent, int startId) {
+		super.onStart(intent, startId);
+		onStartHandle(intent);
+	}
 
-	
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		onStartHandle(intent);
+		return super.onStartCommand(intent, flags, startId);
+	}
+*/
 	@Override
 	public void onStartHandle(Intent intent) {
 		if(intent == null) {

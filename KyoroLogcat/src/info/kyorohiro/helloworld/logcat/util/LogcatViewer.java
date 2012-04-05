@@ -20,7 +20,12 @@ public class LogcatViewer extends SimpleFilterableLineView {
 		super(new LogcatViewerBuffer(3000, 1000, 16));
 		mCircleControllerAction = new MyCircleControllerEvent();
 		this.addChild(new MyTouchAndMove(this));
-		this.addChild(new MyTouchAndZoom(this));
+		this.addChild(new MyTouchAndZoom(this));		
+
+	}
+
+	@Override
+	protected void onAddViewer() {
 	}
 
 	public CircleControllerAction getCircleControllerAction() {
@@ -30,16 +35,16 @@ public class LogcatViewer extends SimpleFilterableLineView {
 	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
 		public void moveCircle(int action, int degree, int rateDegree) {
 			if (action == CircleControllerAction.ACTION_MOVE) {
-				setPositionY(getPositionY() + rateDegree*2);
+				getLineView().setPositionY(getLineView().getPositionY() + rateDegree*2);
 			}
 		}
 
 		public void upButton(int action) {
-			setPositionY(getPositionY() + 5);
+			getLineView().setPositionY(getLineView().getPositionY() + 5);
 		}
 
 		public void downButton(int action) {
-			setPositionY(getPositionY() - 5);
+			getLineView().setPositionY(getLineView().getPositionY() - 5);
 		}
 	}
 

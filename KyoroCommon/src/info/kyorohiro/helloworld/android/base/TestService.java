@@ -44,13 +44,11 @@ public abstract class TestService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
 	    onStartHandle(intent);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		super.onStartCommand(intent, flags, startId);
 	    onStartHandle(intent);
 	    // We want this service to continue running until it is explicitly
 	    // stopped, so return sticky.

@@ -21,7 +21,7 @@ public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCa
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			mConsole = new LogcatViewer();
-			mData = mConsole.getCyclingFlowingLineData();
+			mData = mConsole.getCyclingStringList();
 			mStage = new SimpleStage(this);
 			mStage.getRoot().addChild(mConsole);
 			setContentView(mStage);

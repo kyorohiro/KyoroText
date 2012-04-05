@@ -18,7 +18,10 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 		this.addChild(scrollBar);
 	}
 
-
+	public LineView getLineView() {
+		return viewer;
+	}
+/*
 	public void setScale(float scale) {
 		viewer.setScale(scale);
 	}
@@ -57,7 +60,7 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 	public CyclingListInter<FlowingLineDatam> getCyclingList() {
 		return viewer.getCyclingList();
 	}
-
+*/
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		super.paint(graphics);

@@ -5,12 +5,13 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
+import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 
 public class MyTouchAndZoom extends SimpleDisplayObject {
-	private LogcatViewer mViewer = null;
+	private LineView mViewer = null;
 
 	public MyTouchAndZoom(LogcatViewer viewer) {
-		mViewer = viewer;
+		mViewer = viewer.getLineView();
 	}
 
 	private boolean mStartZoom = false;
@@ -84,8 +85,8 @@ public class MyTouchAndZoom extends SimpleDisplayObject {
 		// TODO Auto-generated method stub
 		mY = mViewer.getHeight();
 		if(mStartZoom){
-		mViewer.setPositionY(mAAAAAAAAAAAA);
-		mViewer.setScale(mBBBBBBBBBBBB);
+			mViewer.addPositionY(mAAAAAAAAAAAA);
+			mViewer.setScale(mBBBBBBBBBBBB);
 		}
 	}
 	

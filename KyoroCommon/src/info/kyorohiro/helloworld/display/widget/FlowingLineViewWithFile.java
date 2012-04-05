@@ -40,9 +40,9 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 		@Override
 		public void paint(SimpleGraphics graphics) {
 			FlowingLineViewWithFile.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
-			int numOfStackedString = mViewer.getCyclingList().getNumberOfStockedElement();
+			int numOfStackedString = mViewer.getLineView().getCyclingList().getNumberOfStockedElement();
 			int referPoint = numOfStackedString - mPosition;
-			mViewer.setPositionY(referPoint);
+			mViewer.getLineView().setPositionY(referPoint);
 		}
 	}
 	public FlowingLineData getCyclingStringList() {
@@ -61,7 +61,7 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 			mPosition = 0;
 		}
 		
-		int numOfStackedString = mViewer.getCyclingList().getNumberOfStockedElement();
+		int numOfStackedString = mViewer.getLineView().getCyclingList().getNumberOfStockedElement();
 		if(mPosition > numOfStackedString) {
 			if(mTaskManager == null) {
 				mTaskManager = new Thread(new NextTask(0));

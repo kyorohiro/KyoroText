@@ -136,7 +136,7 @@ public class DumpCurrentLogTask extends Thread implements TaskInter {
 				mLogcat.terminate();
 			}
 
-			KyoroApplication.shortcutToStopKyoroLogcatService();
+			//KyoroApplication.shortcutToStopKyoroLogcatService();
 			String message = "";
 			if(saveFile != null) {
 				message = saveFile.getPath();
