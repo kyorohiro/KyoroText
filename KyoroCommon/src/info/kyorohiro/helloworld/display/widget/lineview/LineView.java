@@ -181,7 +181,7 @@ public class LineView extends SimpleDisplayObject {
 		return tmp;
 	}
 
-	public void setPositionY(int position) {
+	public synchronized void setPositionY(int position) {
 		mPosition = position;
 	}
 
@@ -189,7 +189,7 @@ public class LineView extends SimpleDisplayObject {
 		mPosX = x;
 	}
 
-	public int getPositionY() {
+	public synchronized int getPositionY() {
 		return mPosition;
 	}
 

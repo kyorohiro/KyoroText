@@ -31,6 +31,7 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mHeavyX /= 1.2;
 			// todo refactaring
 			mViewer.setPositionX(mViewer.getPositionX() + mHeavyX/* /textSize */);
+//			mViewer.addPositionY(mViewer.getPositionX() + mHeavyX/* /textSize */);
 		}
 		if (mHeavyY < -5 || mHeavyY > 5) {
 			mHeavyY /= 1.2;
@@ -40,6 +41,7 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			// android.util.Log.v("kiyohiro","r="+(mViewer.getPositionY() +"+"+
 			// mHeavyY/textSize));
 			mViewer.setPositionY(mViewer.getPositionY() + mHeavyY / textSize);
+//			mViewer.addPositionY(mViewer.getPositionY() + mHeavyY / textSize);
 
 		}
 	}
@@ -54,6 +56,9 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 		}
 
 		if (action == MotionEvent.ACTION_MOVE) {
+			mHeavyX = 0;
+			mHeavyY = 0;
+
 			mHeavyX = 0;
 			mMovingY += y - mPrevY;
 			mPrevY = y;
@@ -82,7 +87,9 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			return ret;
 		} else if (action == MotionEvent.ACTION_DOWN) {
 			mHeavyX = 0;
+			mHeavyY = 0;
 			mMovingY = 0;
+			mMovingX = 0;
 			mPrevTime = 0;
 		} else if (action == MotionEvent.ACTION_UP) {
 			//android.util.Log.v("kiyohiro", "power=" + mPower_prevY);
