@@ -59,7 +59,6 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mHeavyX = 0;
 			mHeavyY = 0;
 
-			mHeavyX = 0;
 			mMovingY += y - mPrevY;
 			mPrevY = y;
 			mMovingX += x - mPrevX;
@@ -91,6 +90,8 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mMovingY = 0;
 			mMovingX = 0;
 			mPrevTime = 0;
+			mPrevY = -999;
+			mPrevX = -999;
 		} else if (action == MotionEvent.ACTION_UP) {
 			//android.util.Log.v("kiyohiro", "power=" + mPower_prevY);
 			mHeavyX = mPowerX * 8;

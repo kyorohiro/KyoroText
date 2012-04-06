@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.graphics.Color;
+import info.kyorohiro.helloworld.android.util.SimpleLock;
 import info.kyorohiro.helloworld.display.widget.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
@@ -14,7 +15,6 @@ import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 public class LogcatViewer extends SimpleFilterableLineView {
 
 	private MyCircleControllerEvent mCircleControllerAction = null;
-	
 
 	public LogcatViewer() {
 		super(new LogcatViewerBuffer(3000, 1000, 16));

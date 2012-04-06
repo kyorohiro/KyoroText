@@ -44,7 +44,7 @@ public class ShowCurrentLogTask extends Thread implements TaskInter {
 					break;
 				}
 				else if(!outputReader.ready()&&!errorReader.ready()){
-					Thread.sleep(400);
+					Thread.sleep(100);
 					Thread.yield();
 				}
 				else {
@@ -56,6 +56,7 @@ public class ShowCurrentLogTask extends Thread implements TaskInter {
 						mData.addLinePerBreakText(errorReader.readLine());
 						Thread.yield();
 					}
+					Thread.sleep(10);
 				}
 			}
 			

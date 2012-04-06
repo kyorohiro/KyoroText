@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import info.kyorohiro.helloworld.android.util.SimpleLock;
+import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.util.CyclingListInter;
@@ -59,36 +61,48 @@ public class LineView extends SimpleDisplayObject {
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		CyclingListInter<FlowingLineDatam> showingText = mInputtedText;
-		if(mPosition > 1) {
-			// todo refactaring
-			int a = resetAddPositionY();
-			if(a != 0){
-				cash += showingText.getNumOfAdd();
-				mPosition = cash+a;
+		int start = 0;
+		int end = 0;
+		int blank = 0;
+		FlowingLineDatam[] list = null;
+		try {
+			if(showingText instanceof SimpleLockInter) {
+				((SimpleLockInter) showingText).beginLock();
+			}
+			if(mPosition > 1) {
+				// todo refactaring
+				int a = resetAddPositionY();
+				if(a != 0){
+					cash += showingText.getNumOfAdd();
+					mPosition = cash+a;
+				} else {
+					cash = 0;
+					mPosition += showingText.getNumOfAdd();				
+				}
+			}
+			showingText.clearNumOfAdd();
+
+			updateStatus(graphics, showingText);
+			drawBG(graphics);
+			start = start(showingText);
+			end = end(showingText);
+			blank = blank(showingText);
+
+			if (start > end) {
+				list = new FlowingLineDatam[0];
 			} else {
-				cash = 0;
-				mPosition += showingText.getNumOfAdd();				
+				list = new FlowingLineDatam[end - start];
+				list = showingText.getElements(list, start, end);
+			}
+		} finally {
+			if(showingText instanceof SimpleLockInter) {
+				((SimpleLockInter) showingText).endLock();
 			}
 		}
-		showingText.clearNumOfAdd();
 
-		updateStatus(graphics, showingText);
-		drawBG(graphics);
-		int start = start(showingText);
-		int end = end(showingText);
-		int blank = blank(showingText);
-
-		FlowingLineDatam[] list = null;
-		if (start > end) {
-			list = new FlowingLineDatam[0];
-		} else {
-			list = new FlowingLineDatam[end - start];
-			list = showingText.getElements(list, start, end);
-		}
-
-		showLineDate(graphics, list, blank);
-		mShowingTextStartPosition = start;
-		mShowingTextEndPosition = end;
+			showLineDate(graphics, list, blank);
+			mShowingTextStartPosition = start;
+			mShowingTextEndPosition = end;
 	}
 
 
