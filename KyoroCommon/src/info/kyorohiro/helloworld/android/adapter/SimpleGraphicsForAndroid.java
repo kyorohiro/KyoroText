@@ -31,6 +31,11 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		return new SimpleGraphicsForAndroid(mCanvas, globalX, globalY);
 	}
 
+	public void setGlobalPoint(int x, int y) {
+		mGlobalX = x;
+		mGlobalY = y;
+	}
+
 	public int getGlobalX() {
 		return mGlobalX;
 	}

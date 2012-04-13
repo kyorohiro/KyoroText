@@ -5,18 +5,27 @@ import java.util.ArrayList;
 public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 
 	private ArrayList<SimpleDisplayObject> mMyChildren = new ArrayList<SimpleDisplayObject>();
-
+	private SimpleGraphics mCashGraphics = null;
+	
 	/**
 	 * 
 	 */
 	public void paintGroup(SimpleGraphics graphics) {
 		for(SimpleDisplayObject child: mMyChildren){
 			if(child != null) {
-				SimpleGraphics childGraphics = graphics.getChildGraphics(
-						graphics,
-						child.getX()+graphics.getGlobalX(), 
-						child.getY()+graphics.getGlobalY());
-				child.paint(childGraphics);
+				if (mCashGraphics == null) {
+					//SimpleGraphics childGraphics 
+					mCashGraphics = graphics.getChildGraphics(
+							graphics,
+							child.getX()+graphics.getGlobalX(), 
+							child.getY()+graphics.getGlobalY());
+				} else {
+					mCashGraphics.setGlobalPoint(
+							child.getX()+graphics.getGlobalX()
+							,child.getY()+graphics.getGlobalY());
+				}
+//				child.paint(childGraphics);
+				child.paint(mCashGraphics);
 			}
 		}
 	}

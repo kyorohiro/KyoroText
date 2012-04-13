@@ -16,9 +16,19 @@ public class LogcatViewer extends SimpleFilterableLineView {
 
 	private MyCircleControllerEvent mCircleControllerAction = null;
 
+	public static int COLOR_BG = Color.parseColor("#FF101030");	
+	public static int COLOR_D = Color.parseColor("#ff80c9f4");
+ 	public static int COLOR_I = Color.parseColor("#ff80f4c9");
+    public static int COLOR_V = Color.parseColor("#ffc9f480");
+    public static int COLOR_W = Color.parseColor("#fff4f480");
+    public static int COLOR_E = Color.parseColor("#fff48080");
+    public static int COLOR_F = Color.parseColor("#ffff8080");
+    public static int COLOR_S = Color.parseColor("#ffff8080");
+	
 	public LogcatViewer() {
 		super(new LogcatViewerBuffer(3000, 1000, 16));
 		mCircleControllerAction = new MyCircleControllerEvent();
+		this.getLineView().setBgColor(Color.parseColor("#FF101030"));
 		this.addChild(new MyTouchAndMove(this));
 		this.addChild(new MyTouchAndZoom(this));		
 
@@ -63,20 +73,21 @@ public class LogcatViewer extends SimpleFilterableLineView {
 					return;
 				}
 				if (m.find()) {
-					if ("D".equals(m.group(1))) {
-						setCurrentLineColor(Color.parseColor("#cc86c9f4"));
-					} else if ("I".equals(m.group(1))) {
-						setCurrentLineColor(Color.parseColor("#cc86f4c9"));
-					} else if ("V".equals(m.group(1))) {
-						setCurrentLineColor(Color.parseColor("#ccc9f486"));
-					} else if ("W".equals(m.group(1))) {
-						setCurrentLineColor(Color.parseColor("#ccffff00"));
-					} else if ("E".equals(m.group(1))) {
-						setCurrentLineColor(Color.parseColor("#ccff2222"));
-					} else if ("F".equals(m.group(1))) {
-						setCurrentLineColor(Color.parseColor("#ccff2222"));
-					} else if ("S".equals(m.group(1))) {
-						setCurrentLineColor(Color.parseColor("#ccff2222"));
+					String mode = m.group(1);
+					if ("D".equals(mode)) {
+						setCurrentLineColor(COLOR_D);
+					} else if ("I".equals(mode)) {
+						setCurrentLineColor(COLOR_I);
+					} else if ("V".equals(mode)) {
+						setCurrentLineColor(COLOR_V);
+					} else if ("W".equals(mode)) {
+						setCurrentLineColor(COLOR_W);
+					} else if ("E".equals(mode)) {
+						setCurrentLineColor(COLOR_E);
+					} else if ("F".equals(mode)) {
+						setCurrentLineColor(COLOR_F);
+					} else if ("S".equals(mode)) {
+						setCurrentLineColor(COLOR_S);
 					}
 				}
 			} catch (Throwable e) {

@@ -1,6 +1,5 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import info.kyorohiro.helloworld.android.util.SimpleLock;
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -17,10 +16,19 @@ public class LineView extends SimpleDisplayObject {
 	private int mShowingTextEndPosition = 0;
 	private float mScale = 1.0f;
 	private int mAddedPoint = 0;
+	private int mBgColor = Color.parseColor("#FF000022");
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
+	}
+
+	public void setBgColor(int color) {
+		mBgColor = color;
+	}
+
+	public int getBgColor() {
+		return mBgColor;
 	}
 
 	public void setScale(float scale) {
@@ -57,7 +65,8 @@ public class LineView extends SimpleDisplayObject {
 
 
 	// todo refactaring
-	private int cash  = 0;
+	private int mCash  = 0;
+	private FlowingLineDatam[] mCashBuffer = new FlowingLineDatam[0];
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		CyclingListInter<FlowingLineDatam> showingText = mInputtedText;
@@ -65,6 +74,7 @@ public class LineView extends SimpleDisplayObject {
 		int end = 0;
 		int blank = 0;
 		FlowingLineDatam[] list = null;
+		int len = 0;
 		try {
 			if(showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).beginLock();
@@ -73,10 +83,10 @@ public class LineView extends SimpleDisplayObject {
 				// todo refactaring
 				int a = resetAddPositionY();
 				if(a != 0){
-					cash += showingText.getNumOfAdd();
-					mPosition = cash+a;
+					mCash += showingText.getNumOfAdd();
+					mPosition = mCash+a;
 				} else {
-					cash = 0;
+					mCash = 0;
 					mPosition += showingText.getNumOfAdd();				
 				}
 			}
@@ -89,20 +99,25 @@ public class LineView extends SimpleDisplayObject {
 			blank = blank(showingText);
 
 			if (start > end) {
-				list = new FlowingLineDatam[0];
+				len = 0;
 			} else {
-				list = new FlowingLineDatam[end - start];
-				list = showingText.getElements(list, start, end);
+				len = end-start;
 			}
+			if(mCashBuffer.length < len) {
+				mCashBuffer = new FlowingLineDatam[len];
+			}
+			list = mCashBuffer;
+			list = showingText.getElements(list, start, end);
+
 		} finally {
 			if(showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).endLock();
 			}
 		}
 
-			showLineDate(graphics, list, blank);
-			mShowingTextStartPosition = start;
-			mShowingTextEndPosition = end;
+		showLineDate(graphics, list, len, blank);
+		mShowingTextStartPosition = start;
+		mShowingTextEndPosition = end;
 	}
 
 
@@ -141,20 +156,20 @@ public class LineView extends SimpleDisplayObject {
 		return blank;
 	}
 
-	private void showLineDate(SimpleGraphics graphics, FlowingLineDatam[] list,
+	private void showLineDate(SimpleGraphics graphics, 
+			FlowingLineDatam[] list, int len,
 			int blank) {
-		for (int i = 0; i < list.length; i++) {
+		if(len > list.length){
+			len = list.length;
+		}
+		for (int i = 0; i < len; i++) {
 			if (list[i] == null) {
 				continue;
 			}
 
 			// drawLine
 			graphics.setColor(list[i].getColor());
-			int startStopY = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
-			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
-				graphics.drawLine(10, startStopY, graphics.getWidth() - 10,
-						startStopY);
-			}
+///			int startStopY = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
 			if(mPosX >0) {
 				mPosX = 0;
 			}
@@ -163,14 +178,23 @@ public class LineView extends SimpleDisplayObject {
 			}
 			int x = (getWidth()) / 20 + mPosX*19/20; //todo mPosY
 			int y = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
+			int yy = y + (int)(graphics.getTextSize()*0.2);
+			
 			graphics.drawText("" + list[i], x, y);
+			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
+				int c = list[i].getColor();
+				graphics.setColor(
+						Color.argb(127,Color.red(c),Color.green(c),Color.blue(c)
+								));
+				graphics.setStrokeWidth(1);
+				graphics.drawLine(10, yy, graphics.getWidth() - 10,
+						yy);
+			}
 		}
 	}
 
 	private void drawBG(SimpleGraphics graphics) {
-		graphics.drawBackGround(Color.parseColor("#FF000022"));//#FF777788"));
-		//graphics.drawBackGround(Color.parseColor("#cc795514"));
-		//graphics.setColor(Color.parseColor("#ccc9f486"));
+		graphics.drawBackGround(mBgColor);
 	}
 
 	private void updateStatus(SimpleGraphics graphics,
