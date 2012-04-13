@@ -15,7 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 
-public class EditableSurfaceView extends SurfaceView {
+public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	private Editable.Factory mEditableFactory = Editable.Factory.getInstance();
     private Spannable.Factory mSpannableFactory = Spannable.Factory.getInstance();
@@ -42,11 +42,12 @@ public class EditableSurfaceView extends SurfaceView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		boolean ret  = super.onTouchEvent(event);
 //		mManager.showSoftInput(this,
 //				InputMethodManager.SHOW_IMPLICIT);
 //				InputMethodManager.RESULT_SHOWN);
 //		
-		return super.onTouchEvent(event);
+		return ret;
 	}
 	
 	@Override

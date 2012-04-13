@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -104,7 +105,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		//Debug.waitForDebugger();
 		//
 		// circle controller
 		int deviceWidth = getWindowManager().getDefaultDisplay().getWidth();

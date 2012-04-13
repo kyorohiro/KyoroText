@@ -63,7 +63,7 @@ public abstract class TestService extends Service {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			// Should not happen.
-                    	e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 

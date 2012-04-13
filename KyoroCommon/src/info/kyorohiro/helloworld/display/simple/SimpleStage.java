@@ -75,48 +75,14 @@ public class SimpleStage extends EditableSurfaceView {
 		mRoot.paint(new SimpleGraphicsForAndroid(canvas, 0, 0));
 	}
 
-	final static int MULTI_TOUCH_MAX = 5;
-	public static SimplePoint[] mMultiTouchPoints = new SimplePoint[MULTI_TOUCH_MAX];
-	static {
-		for(int i=0;i<mMultiTouchPoints.length;i++){
-			mMultiTouchPoints[i] = new SimplePoint(0, 0, false);
-		}
-	}
-
-	public boolean isSupportMultiTouch() {
-		if(Build.VERSION.SDK_INT >= 7) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public SimplePoint [] getMultiTouchEvent() {
-		return mMultiTouchPoints;
-	}
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if(isSupportMultiTouch()) {
-			int count = event.getPointerCount();
-			for(int j=0;j<mMultiTouchPoints.length;j++){
-				mMultiTouchPoints[j].isVisible(false);
-			}
-			for(int i=0; i<count; i++) {
-				int id = event.getPointerId(i);
-				if(id<mMultiTouchPoints.length) {
-					mMultiTouchPoints[id].setPoint((int)event.getX(i), (int)event.getY(i));
-					mMultiTouchPoints[id].isVisible(true);
-					//android.util.Log.v("kiyohiro","["+id+"]="+event.getX(i)+","+event.getY());
-				}
-			}
-		}
-
+		boolean ret = super.onTouchEvent(event);
 		mRoot.onTouchTest(
 				(int) event.getX() - mRoot.getX(),
 				(int) event.getY() - mRoot.getY(),
 				event.getAction());
-		return super.onTouchEvent(event);
+		return ret;
 	}
 
 	@Override
