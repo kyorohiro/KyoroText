@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.kyorohiro.helloworld.stress"
-    android:versionCode="17"
-    android:versionName="0.1017" >
+    android:versionCode="18"
+    android:versionName="0.1018" >
 
     <uses-sdk android:minSdkVersion="4" />
 
