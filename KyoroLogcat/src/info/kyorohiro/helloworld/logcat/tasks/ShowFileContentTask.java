@@ -14,7 +14,7 @@ public class ShowFileContentTask extends Thread implements TaskInter {
 	public ShowFileContentTask(FlowingLineData data, File file) throws FileNotFoundException {
 		super();
 		mData = data;
-		 mLineData = new BigLineData(file,"utf8");
+		 mLineData = new BigLineData(file);
 	}
 
 

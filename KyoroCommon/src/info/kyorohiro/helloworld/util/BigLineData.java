@@ -1,16 +1,8 @@
 package info.kyorohiro.helloworld.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -18,18 +10,19 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 import java.util.ArrayList;
-import java.util.SortedMap;
 
-import org.mozilla.intl.chardet.nsDetector;
-import org.mozilla.intl.chardet.nsICharsetDetectionObserver;
-import org.mozilla.intl.chardet.nsPSMDetector;
+import android.graphics.Paint;
 
 public class BigLineData {
-	public static int FILE_LIME = 10;
+	public static int FILE_LIME = 30;
 
 	private File mPath;
 	private String mCharset = "utf8";
 	private RandomAccessFile mReader = null;
+	
+	// todo
+	private Paint mPaint = null;
+	private int mWidth =800;
 
 	private long mCurrentPosition = 0;
 	private long mLastPosition = 0;
@@ -38,17 +31,22 @@ public class BigLineData {
 	private ArrayList<Long> mPositionPer100Line = new ArrayList<Long>();
 
 	public BigLineData(File path) throws FileNotFoundException {
-		mPath = path;
-		mReader = new RandomAccessFile(mPath, "r");
-		mPositionPer100Line.add(0l);
-
-		//detectCharset();
+		init(path, mCharset);
 	}
 
-	public BigLineData(File path, String charset) throws FileNotFoundException {
+	public BigLineData(File path, String charset, int textSize, int screenWidth) throws FileNotFoundException {
+		init(path, charset);
+		mWidth = screenWidth;
+		mPaint = new Paint();
+		mPaint.setTextSize(12);
+		mPaint.setTextSize(textSize);
+	}
+
+	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
 		mReader = new RandomAccessFile(mPath, "r");
+		mPositionPer100Line.add(0l);
 	}
 
 	public long getLastLinePosition() {
@@ -56,33 +54,32 @@ public class BigLineData {
 	}
 
 	public boolean stackedLinePosition() {
-		if(mLastPosition >= getDataSize()){
+		if (mLastPosition >= getDataSize()) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public int getStackedLinePer100() {
 		return mPositionPer100Line.size();
 	}
 
 	public boolean moveLinePer100(int index) throws IOException {
-		if(index < mPositionPer100Line.size()) {
+		if (index < mPositionPer100Line.size()) {
 			long filePointer = mPositionPer100Line.get(index);
-			//mReader.seek(0);
+			// mReader.seek(0);
 			mReader.seek(filePointer);
-			mLinePosition = index*BigLineData.FILE_LIME;
+			mLinePosition = index * BigLineData.FILE_LIME;
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	public boolean wasEOF() {
 		try {
-			if(mReader.length() <= mLastPosition) { 
+			if (mReader.length() <= mLastPosition) {
 				return true;
 			}
 		} catch (IOException e) {
@@ -90,6 +87,7 @@ public class BigLineData {
 		}
 		return false;
 	}
+
 	public boolean isEOF() {
 		try {
 			if (mReader.length() <= mReader.getFilePointer()) {
@@ -108,51 +106,56 @@ public class BigLineData {
 	}
 
 	public CharSequence readLine() throws IOException {
-		String tmp = "";
-		int retPosition = (int)mLinePosition;
+		CharSequence tmp = new TODOCRLFString("", TODOCRLFString.MODE_INCLUDE_LF);
+		int retPosition = (int) mLinePosition;
 		try {
 
 			tmp = decode(Charset.forName(mCharset));
 			mCurrentPosition = mReader.getFilePointer();
 			mLinePosition += 1;
-			if(mLastLinePosition <= mLinePosition) {
+			if (mLastLinePosition <= mLinePosition) {
 				mLastLinePosition = mLinePosition;
 			}
-			if (mLinePosition%FILE_LIME == 0) {
-				int index = mPositionPer100Line.size()-1;
+			if (mLinePosition % FILE_LIME == 0) {
+				int index = mPositionPer100Line.size() - 1;
 				long stackedPosition = 0;
-				if(index>0){
-					stackedPosition = mPositionPer100Line.get(mPositionPer100Line.size()-1);
+				if (index > 0) {
+					stackedPosition = mPositionPer100Line
+							.get(mPositionPer100Line.size() - 1);
 				}
-				if(stackedPosition < mCurrentPosition) {
+				if (stackedPosition < mCurrentPosition) {
 					mPositionPer100Line.add(mCurrentPosition);
 				}
 			}
-			if(mLastPosition < mCurrentPosition){
+			if (mLastPosition < mCurrentPosition) {
 				mLastPosition = mCurrentPosition;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			 if(wasEOF()){
-				 //android.util.Log.v("aa","---"+tmp);
-			 }
+			if (wasEOF()) {
+				// android.util.Log.v("aa","---"+tmp);
+			}
 		}
 		// 0から始まる!! mLinePosition-1
-		return new LineWithPosition(tmp, mCurrentPosition, retPosition);
+		return new LineWithPosition(tmp, mCurrentPosition, retPosition, 
+				((TODOCRLFString)tmp).mMode);
 	}
 
 	public void close() throws IOException {
 		mReader.close();
 	}
 
-	public String decode(Charset cs) throws IOException {
+	public CharSequence decode(Charset cs) throws IOException {
 		StringBuilder b = new StringBuilder();
 		CharsetDecoder decoder = cs.newDecoder();
 		boolean end = false;
 		ByteBuffer bb = ByteBuffer.allocateDirect(32); // bbは書き込める状態
 		CharBuffer cb = CharBuffer.allocate(16); // cbは書き込める状態
 
+		//todo
+		long todoPrevPosition = mReader.getFilePointer();
+		int mode = TODOCRLFString.MODE_INCLUDE_LF;
 		do {
 			int d = mReader.read();
 			if (d >= 0) {
@@ -176,77 +179,83 @@ public class BigLineData {
 			if (c == '\n') {
 				break;
 			}
+			if(mPaint != null){
+				// todo kiyohiro
+				// unefficient coding
+				String tmp = b.toString();
+				int len =mPaint.breakText(tmp, true, mWidth, null);
+				if (len != tmp.length()) {
+					//ひとつ前で改行
+					b.deleteCharAt(b.length()-1);
+					mReader.seek(todoPrevPosition);
+					mode = TODOCRLFString.MODE_EXCLUDE_LF;
+					break;
+				} else {
+					todoPrevPosition = mReader.getFilePointer();
+				}
+			}
 			if (!added) {
 				bb.compact();
 			}
 			cb.clear(); // cbを書き込み状態に変更
 		} while (!end);
-		return b.toString();
+		return new TODOCRLFString(b.toString(), mode);
 	}
-/*
-	public void detectCharset() {
-		byte[] buffer = new byte[1000];
-		int len = 0;
-		try {
-			long fp = mReader.getFilePointer();
-			len = mReader.read(buffer);
-			mReader.seek(fp);
-			boolean isAscii = false;
-			nsDetector detector = new nsDetector(nsPSMDetector.ALL);
-			detector.Init(new nsICharsetDetectionObserver() {
-				@Override
-				public void Notify(String charset) {
 
-				}
-			});
+	
+	public static class TODOCRLFString implements CharSequence {
+		public static int MODE_INCLUDE_LF = 1;
+		public static int MODE_EXCLUDE_LF = 0;
+		public String mContent = null;
+		public int mMode = MODE_EXCLUDE_LF;
+		
+		public TODOCRLFString(String str, int mode) {
+			mContent = str;
+			mMode = mode;
+		}
 
-			isAscii = detector.isAscii(buffer, len);
-			if (!isAscii) {
-				detector.DoIt(buffer, len, false);
-			}
-			detector.DataEnd();
-			String[] prob = detector.getProbableCharsets();
+		@Override
+		public char charAt(int index) {
+			mContent.charAt(index);
+			return 0;
+		}
 
-			if (prob != null) {
-//				for (String s : prob) {
-//					android.util.Log.v("kiyo", "prob=" + s);
-//				}
-				OUT: {
-					for (String s : prob) {
-						SortedMap<String, Charset> m = Charset
-								.availableCharsets();
-						for (Charset c : m.values()) {
-							// エイリアス
-							if (c.isSupported(s)) {
-								mCharset = s;
-//								android.util.Log.v("kiyo", "charset="
-//										+ mCharset);
-//								android.util.Log.v("kiyo",
-//										"===============================");
-								return;
-							}
-						}
-					}
-				}
+		@Override
+		public int length() {
+			return mContent.length();
+		}
 
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		@Override
+		public CharSequence subSequence(int start, int end) {
+			return mContent.subSequence(start, end);
+		}
+		
+		@Override
+		public String toString() {
+			return mContent.toString();
 		}
 	}
-*/
-	public static class LineWithPosition implements CharSequence{
+
+	public static class LineWithPosition implements CharSequence {
 		private CharSequence mLine = "";
 		private long mPosition = 0;
 		private long mLinePosition = 0;
+		private int mMode = 0;
 
-		public LineWithPosition(CharSequence line, long position, long linenum) {
-			// todo add endposition startposition                  
+		public LineWithPosition(CharSequence line, long position, long linenum, int mode) {
 			mLine = line;
 			mPosition = position;
 			mLinePosition = linenum;
+			mMode = mode;
 		}
 
+		public boolean includeLF(){
+			if(mMode == TODOCRLFString.MODE_INCLUDE_LF){
+				return true;
+			} else {
+				return false;
+			}
+		}
 		public char charAt(int index) {
 			return mLine.charAt(index);
 		}
@@ -256,13 +265,13 @@ public class BigLineData {
 		}
 
 		public CharSequence subSequence(int start, int end) {
-			return new LineWithPosition(
-					mLine.subSequence(start, end), mPosition, mLinePosition);
+			return new LineWithPosition(mLine.subSequence(start, end),
+					mPosition, mLinePosition, mMode);
 		}
 
 		@Override
 		public String toString() {
-			if(mLine == null){
+			if (mLine == null) {
 				return "";
 			}
 			return mLine.toString();

@@ -6,11 +6,12 @@ import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoom;
 
 
 public class TextViewer extends SimpleDisplayObjectContainer{
-	MyBuffer mBuffer = new MyBuffer(100);
+	TextViewerBuffer mBuffer = null;
 	LineView mLineView = null;
 
-	public TextViewer() {
-		mLineView = new LineView(mBuffer, 12);
+	public TextViewer(int textSize, int screenWidth) {
+		mBuffer = new TextViewerBuffer(300, textSize, screenWidth);
+		mLineView = new LineView(mBuffer, textSize);
 		addChild(mLineView);
 		addChild(new MyTouchAndMove(mLineView));
 		addChild(new MyTouchAndZoom(mLineView));

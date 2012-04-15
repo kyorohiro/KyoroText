@@ -14,14 +14,11 @@ import android.view.WindowManager;
 
 public class KyoroTextViewerActivity extends Activity {
 	SimpleStage mStage = null;
-	TextViewer mTextViewer = new TextViewer();
+	TextViewer mTextViewer = null;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mStage = new SimpleStage(this);
-        mStage.getRoot().addChild(mTextViewer);
-        setContentView(mStage);
         {
         	WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
         	Display disp = wm.getDefaultDisplay();
@@ -29,13 +26,18 @@ public class KyoroTextViewerActivity extends Activity {
         	int height = disp.getHeight();
         	int viewerWidth = width;
         	int viewerHeight = height;
-        	if(viewerWidth<viewerHeight){
+        	if(viewerWidth>viewerHeight){
         		int t = viewerWidth;
         		viewerWidth = viewerHeight;
         		viewerHeight = t;
         	}
+            mTextViewer = new TextViewer(12, viewerWidth*9/10);
         	mTextViewer.setRect(viewerWidth, viewerHeight);
         }
+        mStage = new SimpleStage(this);
+        mStage.getRoot().addChild(mTextViewer);
+        setContentView(mStage);
+
     }
 
 	@Override

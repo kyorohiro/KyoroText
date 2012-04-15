@@ -13,7 +13,7 @@ import java.io.IOException;
 import android.graphics.Color;
 import android.os.Environment;
 
-public class MyBuffer extends CyclingList<FlowingLineDatam> {
+public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 
 	private File mTestDataPath = null;
 	private BigLineData mLineManager = null;
@@ -21,12 +21,12 @@ public class MyBuffer extends CyclingList<FlowingLineDatam> {
 	private int mCashedEnd = 0;
 
 
-	public MyBuffer(int listSize) {
+	public TextViewerBuffer(int listSize, int textSize, int screenWidth) {
 		super(listSize);
 		File testDir = Environment.getExternalStorageDirectory();
 		mTestDataPath = new File(testDir, "a.txt");
 		try {
-			mLineManager = new BigLineData(mTestDataPath);
+			mLineManager = new BigLineData(mTestDataPath, "UTF8", textSize, screenWidth);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -69,7 +69,7 @@ public class MyBuffer extends CyclingList<FlowingLineDatam> {
 //				return super.get(i);
 				FlowingLineDatam t= super.get(d);
 				if(t!=null){
-				return new FlowingLineDatam(""+d+":"+i+","+t.toString(), Color.RED, FlowingLineDatam.INCLUDE_END_OF_LINE);
+					return t;//new FlowingLineDatam(""+d+":"+i+","+t.toString(), Color.RED, t.getStatus());
 				} else {
 					return new FlowingLineDatam(""+d+":"+i+","+"null..", Color.GREEN,
 							FlowingLineDatam.INCLUDE_END_OF_LINE);
@@ -153,14 +153,18 @@ public class MyBuffer extends CyclingList<FlowingLineDatam> {
 
 					CharSequence line = mLineManager.readLine();
 					LineWithPosition lineWP = (LineWithPosition)line;
-							
+					int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
+					if(!lineWP.includeLF()) {
+						crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
+					}							
 					MyBufferDatam t = new MyBufferDatam(
-							"+----"+lineWP.getLinePosition()+"-----"+line.toString(),
+							//"+----"+lineWP.getLinePosition()+"-----"+
+							line.toString(),
 							Color.WHITE,
-							FlowingLineDatam.INCLUDE_END_OF_LINE,
+							crlf,
 							(int)((LineWithPosition)line).getLinePosition());
 					if(lineWP.getLinePosition() >mStartPosition) {
-						MyBuffer.this.add(t);
+						TextViewerBuffer.this.add(t);
 					}
 				}
 			} catch (Exception e) {
@@ -196,10 +200,15 @@ public class MyBuffer extends CyclingList<FlowingLineDatam> {
 				for (int i = 0;i<BigLineData.FILE_LIME&&!mLineManager.isEOF();i++) {
 					CharSequence line = mLineManager.readLine();
 					LineWithPosition lineWP = (LineWithPosition)line;
+					int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
+					if(!lineWP.includeLF()) {
+						crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
+					}
 					MyBufferDatam t = new MyBufferDatam(
-							"=----"+lineWP.getLinePosition()+"-----"+line.toString(),
+							//"=----"+lineWP.getLinePosition()+"-----"+
+							line.toString(),
 							Color.WHITE,
-							FlowingLineDatam.INCLUDE_END_OF_LINE,
+							crlf,
 							(int)lineWP.getLinePosition());
 					if(mCashedStartPosition>(int)lineWP.getLinePosition()){
 						builder[j++]=t;
@@ -208,7 +217,7 @@ public class MyBuffer extends CyclingList<FlowingLineDatam> {
 				}
 //				android.util.Log.v("aaa","=---- END");
 				for(int i=j-1;0<=i;i--) {
-					MyBuffer.this.head(builder[i]);					
+					TextViewerBuffer.this.head(builder[i]);					
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
