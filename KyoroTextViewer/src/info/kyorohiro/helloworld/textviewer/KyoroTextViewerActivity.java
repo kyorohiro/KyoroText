@@ -4,6 +4,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivity;
+import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.app.Activity;
@@ -18,6 +19,10 @@ import android.view.WindowManager;
 public class KyoroTextViewerActivity extends MainActivity {
 	SimpleStage mStage = null;
 	TextViewer mTextViewer = null;
+
+	public KyoroTextViewerActivity() {
+		setMenuAction(new MainActivityOpenFileAction());
+	}
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {

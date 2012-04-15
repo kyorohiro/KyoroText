@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
 		for(MainActivityMenuAction a : mMenuAction) {
 			if(a.onPrepareOptionsMenu(this, menu)){
 				break;
