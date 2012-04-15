@@ -135,7 +135,7 @@ public class BigLineData {
 			e.printStackTrace();
 		} finally {
 			 if(wasEOF()){
-				 //android.util.Log.v("aa","---"+tmp);
+				 android.util.Log.v("aa","---"+tmp);
 			 }
 		}
 		// 0‚©‚çŽn‚Ü‚é!! mLinePosition-1

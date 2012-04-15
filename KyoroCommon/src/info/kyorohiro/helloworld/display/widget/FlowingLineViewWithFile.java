@@ -85,7 +85,7 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 		@Override
 		public void run() {
 			try {
-				mLineData.moveLinePer1000(mPoint/1000);
+				mLineData.moveLinePer100(mPoint/1000);
 				CharSequence[] tmp = new CharSequence[1000];
 				for(int i=0;i<1000;i++) {
 					tmp[i] = mLineData.readLine();
@@ -115,7 +115,7 @@ public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {
 		@Override
 		public void run() {
 			try {
-				mLineData.moveLinePer1000(mPoint/1000);
+				mLineData.moveLinePer100(mPoint/1000);
 				for(int i=0;i<1000;i++) {
 					CharSequence line =  mLineData.readLine();
 					///mInputtedText.addLinePerBreakText(line);

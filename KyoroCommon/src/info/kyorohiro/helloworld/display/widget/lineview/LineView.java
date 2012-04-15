@@ -7,10 +7,10 @@ import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObject {
-	private int mNumOfLine = 100;
+	private int mNumOfLine = 300;
 	private CyclingListInter<FlowingLineDatam> mInputtedText = null;
 	private int mPosition = 0;
-	private int mPosX = 0;//todo
+	private int mPosX = 0;
 	private int mTextSize = 16;
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
@@ -63,7 +63,58 @@ public class LineView extends SimpleDisplayObject {
 		return mShowingTextEndPosition;
 	}
 
+	public synchronized void setPositionY(int position) {
+		mPosition = position;
+	}
 
+	public void setPositionX(int x) {
+		mPosX = x;
+	}
+
+	public synchronized int getPositionY() {
+		return mPosition;
+	}
+
+	public int getPositionX() {
+		return mPosX;
+	}
+
+	private void showLineDate(SimpleGraphics graphics, 
+			FlowingLineDatam[] list, int len,
+			int blank) {
+		if(len > list.length){
+			len = list.length;
+		}
+		for (int i = 0; i < len; i++) {
+			if (list[i] == null) {
+				continue;
+			}
+
+			// drawLine
+			graphics.setColor(list[i].getColor());
+			if(mPosX >0) {
+				mPosX = 0;
+			}
+			if(mPosX < -1*(getWidth()*mScale-getWidth())) {
+				mPosX = -1*(int)(getWidth()*mScale-getWidth());
+			}
+			int x = (getWidth()) / 20 + mPosX*19/20; //todo mPosY
+			int y = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
+			int yy = y + (int)(graphics.getTextSize()*0.2);
+			
+			graphics.drawText("" + list[i], x, y);
+			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
+				int c = list[i].getColor();
+				graphics.setColor(
+						Color.argb(127,Color.red(c),Color.green(c),Color.blue(c)
+								));
+				graphics.setStrokeWidth(1);
+				graphics.drawLine(10, yy, graphics.getWidth() - 10,
+						yy);
+			}
+		}
+	}
+	
 	// todo refactaring
 	private int mCash  = 0;
 	private FlowingLineDatam[] mCashBuffer = new FlowingLineDatam[0];
@@ -79,18 +130,6 @@ public class LineView extends SimpleDisplayObject {
 			if(showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).beginLock();
 			}
-			if(mPosition > 1) {
-				// todo refactaring
-				int a = resetAddPositionY();
-				if(a != 0){
-					mCash += showingText.getNumOfAdd();
-					mPosition = mCash+a;
-				} else {
-					mCash = 0;
-					mPosition += showingText.getNumOfAdd();				
-				}
-			}
-			showingText.clearNumOfAdd();
 
 			updateStatus(graphics, showingText);
 			drawBG(graphics);
@@ -156,42 +195,7 @@ public class LineView extends SimpleDisplayObject {
 		return blank;
 	}
 
-	private void showLineDate(SimpleGraphics graphics, 
-			FlowingLineDatam[] list, int len,
-			int blank) {
-		if(len > list.length){
-			len = list.length;
-		}
-		for (int i = 0; i < len; i++) {
-			if (list[i] == null) {
-				continue;
-			}
 
-			// drawLine
-			graphics.setColor(list[i].getColor());
-///			int startStopY = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
-			if(mPosX >0) {
-				mPosX = 0;
-			}
-			if(mPosX < -1*(getWidth()*mScale-getWidth())) {
-				mPosX = -1*(int)(getWidth()*mScale-getWidth());
-			}
-			int x = (getWidth()) / 20 + mPosX*19/20; //todo mPosY
-			int y = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
-			int yy = y + (int)(graphics.getTextSize()*0.2);
-			
-			graphics.drawText("" + list[i], x, y);
-			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
-				int c = list[i].getColor();
-				graphics.setColor(
-						Color.argb(127,Color.red(c),Color.green(c),Color.blue(c)
-								));
-				graphics.setStrokeWidth(1);
-				graphics.drawLine(10, yy, graphics.getWidth() - 10,
-						yy);
-			}
-		}
-	}
 
 	private void drawBG(SimpleGraphics graphics) {
 		graphics.drawBackGround(mBgColor);
@@ -200,6 +204,21 @@ public class LineView extends SimpleDisplayObject {
 	private void updateStatus(SimpleGraphics graphics,
 			CyclingListInter<FlowingLineDatam> showingText) {
 		mNumOfLine = (int)(getHeight() / (mTextSize*1.2*mScale));//todo mScale
+		{
+			// todo refactaring
+			// current Position
+			if(mPosition > 1) {
+				int a = resetAddPositionY();
+				if(a != 0){
+					mCash += showingText.getNumOfAdd();
+					mPosition = mCash+a;
+				} else {
+					mCash = 0;
+					mPosition += showingText.getNumOfAdd();				
+				}
+			}
+			showingText.clearNumOfAdd();
+		}
 		int blankSpace = mNumOfLine / 2;
 		if (mPosition < -(mNumOfLine - blankSpace)) {
 			setPositionY(-(mNumOfLine - blankSpace) - 1);
@@ -219,19 +238,4 @@ public class LineView extends SimpleDisplayObject {
 		return tmp;
 	}
 
-	public synchronized void setPositionY(int position) {
-		mPosition = position;
-	}
-
-	public void setPositionX(int x) {
-		mPosX = x;
-	}
-
-	public synchronized int getPositionY() {
-		return mPosition;
-	}
-
-	public int getPositionX() {
-		return mPosX;
-	}
 }

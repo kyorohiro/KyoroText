@@ -10,6 +10,8 @@ import info.kyorohiro.helloworld.display.widget.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndMove;
+import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoom;
 
 
 public class LogcatViewer extends SimpleFilterableLineView {
@@ -28,9 +30,9 @@ public class LogcatViewer extends SimpleFilterableLineView {
 	public LogcatViewer() {
 		super(new LogcatViewerBuffer(3000, 1000, 16));
 		mCircleControllerAction = new MyCircleControllerEvent();
-		this.getLineView().setBgColor(Color.parseColor("#FF101030"));
-		this.addChild(new MyTouchAndMove(this));
-		this.addChild(new MyTouchAndZoom(this));		
+		getLineView().setBgColor(Color.parseColor("#FF101030"));
+		addChild(new MyTouchAndMove(this.getLineView()));
+		addChild(new MyTouchAndZoom(this.getLineView()));		
 
 	}
 

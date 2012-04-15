@@ -1,17 +1,16 @@
-package info.kyorohiro.helloworld.logcat.util;
+package info.kyorohiro.helloworld.display.widget.lineview;
 
 import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 
 public class MyTouchAndZoom extends SimpleDisplayObject {
 	private LineView mViewer = null;
 
-	public MyTouchAndZoom(LogcatViewer viewer) {
-		mViewer = viewer.getLineView();
+	public MyTouchAndZoom(LineView viewer) {
+		mViewer = viewer;
 	}
 
 	private boolean mStartZoom = false;

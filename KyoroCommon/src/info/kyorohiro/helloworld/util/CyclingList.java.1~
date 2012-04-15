@@ -20,7 +20,7 @@ public class CyclingList<X> implements CyclingListInter<X> {
 
 	public synchronized void head(X element) {
 		mList.addFirst(element);
-		if(mList.size()>mMaxOfStackedElement) {
+		if(mList.size()>=mMaxOfStackedElement) {
 			mList.removeLast();
 		}
 		mNumOfAdd--;
@@ -29,7 +29,7 @@ public class CyclingList<X> implements CyclingListInter<X> {
 	public synchronized void add(X element) {
 		mNumOfAdd++;
 		mList.add(element);
-		if(mList.size() > mMaxOfStackedElement) {
+		if(mList.size() >= mMaxOfStackedElement) {
 			mList.removeFirst();
 		}
 	}
@@ -79,7 +79,7 @@ public class CyclingList<X> implements CyclingListInter<X> {
 
 	public synchronized X get(int i) {
 		int num = i % mMaxOfStackedElement;
-		//android.util.Log.v("aaa",""+num);
+		android.util.Log.v("aaa",""+num);
 		return mList.get(num);
 	}
 

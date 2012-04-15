@@ -1,8 +1,7 @@
-package info.kyorohiro.helloworld.logcat.util;
+package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import android.view.MotionEvent;
 
 public class MyTouchAndMove extends SimpleDisplayObject {
@@ -21,8 +20,8 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 	private long mPower_time = 0;
 	private LineView mViewer = null;
 
-	public MyTouchAndMove(LogcatViewer viewer) {
-		mViewer = viewer.getLineView();
+	public MyTouchAndMove(LineView viewer) {
+		mViewer = viewer;
 	}
 
 	@Override
