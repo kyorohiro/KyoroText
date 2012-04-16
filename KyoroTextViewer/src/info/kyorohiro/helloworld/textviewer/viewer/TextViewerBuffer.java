@@ -21,18 +21,22 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 	private int mCashedEnd = 0;
 
 
-	public TextViewerBuffer(int listSize, int textSize, int screenWidth) {
+	public TextViewerBuffer(int listSize, int textSize, int screenWidth,
+			File path) {
 		super(listSize);
-		File testDir = Environment.getExternalStorageDirectory();
-		mTestDataPath = new File(testDir, "a.txt");
+		mTestDataPath = path;
 		try {
 			mLineManager = new BigLineData(mTestDataPath, "UTF8", textSize, screenWidth);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-
-
+/*
+	public void startRead(File path) {
+		mTestDataPath = path;
+		startReadForward(-1);
+	}
+*/
 	public int getNumberOfStockedElement() {
 		// ファイルから読み込み済みのライン数を返す。
 		return (int) mLineManager.getLastLinePosition();
@@ -86,14 +90,14 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 					FlowingLineDatam.INCLUDE_END_OF_LINE);
 		} 
 		finally {
-			if (mCashedEnd < (i + BigLineData.FILE_LIME)) {
+			if (mCashedEnd < (i + BigLineData.FILE_LIME*3)) {
 				if(0==super.getNumberOfStockedElement()){
 					startReadForward(-1);					
 				} else {
 					startReadForward(mCashedEnd);
 				}
 			} 
-			else if (mCashedStart > (i - BigLineData.FILE_LIME)) {
+			else if (mCashedStart > (i - BigLineData.FILE_LIME*3)) {
 				int tmp = mCashedStart;
 				if(mCashedStart == 0) {
 				

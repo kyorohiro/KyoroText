@@ -17,6 +17,7 @@ public class LineView extends SimpleDisplayObject {
 	private float mScale = 1.0f;
 	private int mAddedPoint = 0;
 	private int mBgColor = Color.parseColor("#FF000022");
+	private boolean mIsTail = true;
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
@@ -71,6 +72,9 @@ public class LineView extends SimpleDisplayObject {
 		mPosX = x;
 	}
 
+	public void isTail(boolean on) {
+		mIsTail = on;
+	}
 	public synchronized int getPositionY() {
 		return mPosition;
 	}
@@ -207,7 +211,7 @@ public class LineView extends SimpleDisplayObject {
 		{
 			// todo refactaring
 			// current Position
-			if(mPosition > 1) {
+			if(!mIsTail||mPosition > 1) {
 				int a = resetAddPositionY();
 				if(a != 0){
 					mCash += showingText.getNumOfAdd();

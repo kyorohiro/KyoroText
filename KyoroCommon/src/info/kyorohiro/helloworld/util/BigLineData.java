@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import android.graphics.Paint;
 
 public class BigLineData {
-	public static int FILE_LIME = 30;
+	public static int FILE_LIME = 100;
 
 	private File mPath;
 	private String mCharset = "utf8";

@@ -21,7 +21,6 @@ public class KyoroTextViewerActivity extends MainActivity {
 	TextViewer mTextViewer = null;
 
 	public KyoroTextViewerActivity() {
-		setMenuAction(new MainActivityOpenFileAction());
 	}
 
 	@Override
@@ -45,6 +44,8 @@ public class KyoroTextViewerActivity extends MainActivity {
         mStage = new SimpleStage(this);
         mStage.getRoot().addChild(mTextViewer);
         setContentView(mStage);
+
+		setMenuAction(new MainActivityOpenFileAction(mTextViewer));
 
     }
 
