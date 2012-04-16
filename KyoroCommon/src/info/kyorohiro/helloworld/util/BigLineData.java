@@ -132,10 +132,6 @@ public class BigLineData {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			if (wasEOF()) {
-				// android.util.Log.v("aa","---"+tmp);
-			}
 		}
 		// 0‚©‚çŽn‚Ü‚é!! mLinePosition-1
 		return new LineWithPosition(tmp, mCurrentPosition, retPosition, 
@@ -216,8 +212,7 @@ public class BigLineData {
 
 		@Override
 		public char charAt(int index) {
-			mContent.charAt(index);
-			return 0;
+			return mContent.charAt(index);
 		}
 
 		@Override
@@ -271,10 +266,13 @@ public class BigLineData {
 
 		@Override
 		public String toString() {
+			
 			if (mLine == null) {
 				return "";
 			}
 			return mLine.toString();
+			
+			//return "----"+getLinePosition()+mLine.toString();
 		}
 
 		public long getColor() {
