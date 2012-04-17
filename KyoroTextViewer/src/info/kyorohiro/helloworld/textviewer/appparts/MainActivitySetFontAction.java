@@ -71,20 +71,6 @@ public class MainActivitySetFontAction extends  MainActivityMenuAction {
 	                mViewer.setCharset(item);
 	                A.this.dismiss();	            }
 	        });
-			/*
-			view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-	            @Override
-	            public void onItemSelected(AdapterView<?> parent, View view,
-	                    int position, long id) {
-	                ListView listView = (ListView) parent;
-	                String item = (String) listView.getSelectedItem();
-	                mViewer.setCharset(item);
-	                A.this.dismiss();
-	            }
-	            @Override
-	            public void onNothingSelected(AdapterView<?> parent) {
-	            }
-	        });*/
 			
 			setContentView(view);
 

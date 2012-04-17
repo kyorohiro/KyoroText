@@ -115,6 +115,10 @@ public class FlowingLineDatam implements CharSequence{
 	public int getColor() {
 		return mColor;
 	}
+	
+	public void setColor(int color) {
+		mColor = color;
+	}
 
 	public int getStatus() {
 		return mStatus;
