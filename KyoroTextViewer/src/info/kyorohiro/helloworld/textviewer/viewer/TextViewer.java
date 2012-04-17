@@ -16,6 +16,7 @@ public class TextViewer extends SimpleDisplayObjectContainer{
 	private LineView mLineView = null;
 	private int mWidth = 0;
 	private int mTextSize = 0;
+	private String mCharset = "utf8";
 
 	public TextViewer(int textSize, int screenWidth) {
 		mWidth = screenWidth;
@@ -33,9 +34,17 @@ public class TextViewer extends SimpleDisplayObjectContainer{
 		mLineView.isTail(false);
 	}
 
+	public void setCharset(String charset) {
+		if(charset == null){
+			mCharset = "utf8";
+		} else {
+			mCharset = charset;
+		}
+	}
+
 	public void readFile(File file) {
 		mBuffer = new TextViewerBuffer(1000, mTextSize
-				, mWidth, file);
+				, mWidth, file, mCharset);
 		mLineView.setCyclingList(mBuffer);
 		((TextViewerBuffer)mBuffer).startReadForward(-1);
 	}

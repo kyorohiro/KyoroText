@@ -12,6 +12,7 @@ import java.nio.charset.CoderResult;
 import java.util.ArrayList;
 
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 public class BigLineData {
 	public static int FILE_LIME = 100;
@@ -40,6 +41,7 @@ public class BigLineData {
 		mPaint = new Paint();
 		mPaint.setTextSize(12);
 		mPaint.setTextSize(textSize);
+		mPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 
 	private void init(File path, String charset) throws FileNotFoundException {

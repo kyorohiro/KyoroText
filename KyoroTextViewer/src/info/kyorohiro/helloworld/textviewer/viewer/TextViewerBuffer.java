@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.mozilla.intl.chardet.nsCP1252Verifier;
+
 import android.graphics.Color;
 import android.os.Environment;
 
@@ -19,14 +21,16 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 	private BigLineData mLineManager = null;
 	private int mCashedStart = 0;
 	private int mCashedEnd = 0;
+	private String mCharset = "utf8";
 
 
 	public TextViewerBuffer(int listSize, int textSize, int screenWidth,
-			File path) {
+			File path, String charset) {
 		super(listSize);
+		mCharset = charset;
 		mTestDataPath = path;
 		try {
-			mLineManager = new BigLineData(mTestDataPath, "UTF8", textSize, screenWidth);
+			mLineManager = new BigLineData(mTestDataPath, charset, textSize, screenWidth);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

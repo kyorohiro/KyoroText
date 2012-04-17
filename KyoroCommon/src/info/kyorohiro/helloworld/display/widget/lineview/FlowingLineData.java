@@ -11,6 +11,7 @@ import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDatam> 
 implements SimpleLockInter {
@@ -25,6 +26,7 @@ implements SimpleLockInter {
 		mWidth = width;
 		mPaint = new Paint();
 		mPaint.setTextSize(textSize);
+		//mPaint.setTypeface(Typeface.SERIF);
 	}
 
 	@Override
