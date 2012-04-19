@@ -45,8 +45,23 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 															// TextViewerBuffer(1000,
 															// textSize,
 															// screenWidth, f);
-		mBuffer.add(new FlowingLineDatam("please open file\n current charset is "+mCharset, Color.CYAN,
+		mBuffer.add(new FlowingLineDatam("Please open file", Color.CYAN,
 				FlowingLineDatam.INCLUDE_END_OF_LINE));
+		mBuffer.add(new FlowingLineDatam("Current charset is "+mCharset, Color.YELLOW,
+				FlowingLineDatam.INCLUDE_END_OF_LINE));
+		mBuffer.add(new FlowingLineDatam("..", Color.RED,
+				FlowingLineDatam.INCLUDE_END_OF_LINE));
+		mBuffer.add(new FlowingLineDatam("Sorry, this application is pre-alpha version ", Color.RED,
+				FlowingLineDatam.INCLUDE_END_OF_LINE));
+		mBuffer.add(new FlowingLineDatam("Testing and Developing.. now", Color.RED,
+				FlowingLineDatam.INCLUDE_END_OF_LINE));
+		mBuffer.add(new FlowingLineDatam("Please mail kyorohiro.android@gmail.com, ", Color.RED,
+				FlowingLineDatam.EXCLUDE_END_OF_LINE));
+		mBuffer.add(new FlowingLineDatam("If you have particular questions or comments, ", Color.RED,
+				FlowingLineDatam.EXCLUDE_END_OF_LINE));
+		mBuffer.add(new FlowingLineDatam("please don't hesitate to contact me. Thank you. ", Color.RED,
+				FlowingLineDatam.INCLUDE_END_OF_LINE));
+		
 		mLineView = new LineView(mBuffer, textSize);
 		mScrollBar = new ScrollBar(mLineView);
 		addChild(mLineView);
