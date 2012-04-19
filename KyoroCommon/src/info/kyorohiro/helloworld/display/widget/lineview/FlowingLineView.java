@@ -21,46 +21,7 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 	public LineView getLineView() {
 		return viewer;
 	}
-/*
-	public void setScale(float scale) {
-		viewer.setScale(scale);
-	}
 
-	public float getScale() {
-		return viewer.getScale();
-	}
-
-	public int getTextSize() {
-		return viewer.getTextSize();
-	}
-
-	public void setTextSize(int textSize) {
-		viewer.setTextSize(textSize);
-	}
-
-	public void setPositionY(int position) {
-		viewer.setPositionY(position);
-	}
-
-	public void setPositionX(int x) {
-		viewer.setPositionX(x);
-	}
-	public int getPositionX() {
-		return viewer.getPositionX();
-	}
-
-	public int getPositionY() {
-		return viewer.getPositionY();
-	}
-
-	public void setCyclingList(CyclingListInter<FlowingLineDatam> inputtedText) {
-		viewer.setCyclingList(inputtedText);
-	}
-
-	public CyclingListInter<FlowingLineDatam> getCyclingList() {
-		return viewer.getCyclingList();
-	}
-*/
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		super.paint(graphics);

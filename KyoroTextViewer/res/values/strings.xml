@@ -2,6 +2,6 @@
 <resources>
 
     <string name="hello">Hello World, KyoroTextViewerActivity!</string>
-    <string name="app_name">KyoroTextViewer</string>
+    <string name="app_name">KyoroText</string>
 
 </resources>

@@ -4,6 +4,7 @@ import java.io.File;
 
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
+import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.os.Environment;

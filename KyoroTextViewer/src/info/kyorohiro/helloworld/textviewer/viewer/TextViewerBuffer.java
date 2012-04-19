@@ -35,12 +35,7 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 			e.printStackTrace();
 		}
 	}
-/*
-	public void startRead(File path) {
-		mTestDataPath = path;
-		startReadForward(-1);
-	}
-*/
+
 	public int getNumberOfStockedElement() {
 		// ファイルから読み込み済みのライン数を返す。
 		return (int) mLineManager.getLastLinePosition();
@@ -69,7 +64,7 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 
 			// todo マイナスへの移動は、後で実装する。
 			if (d < 0) {
-				return new FlowingLineDatam(""+d+":"+i+","+"todo", Color.GREEN,
+				return new FlowingLineDatam(""/*+d+":"*/+i+","+"loading", Color.GREEN,
 						FlowingLineDatam.INCLUDE_END_OF_LINE);
 			}
 
@@ -79,7 +74,7 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 				if(t!=null){
 					return t;//new FlowingLineDatam(""+d+":"+i+","+t.toString(), Color.RED, t.getStatus());
 				} else {
-					return new FlowingLineDatam(""+d+":"+i+","+"null..", Color.GREEN,
+					return new FlowingLineDatam(""/*+d+":"*/+i+","+"null..", Color.GREEN,
 							FlowingLineDatam.INCLUDE_END_OF_LINE);
 				}
 			} else {

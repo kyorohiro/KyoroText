@@ -6,6 +6,7 @@ import java.util.SortedMap;
 
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
+import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -69,6 +70,9 @@ public class MainActivitySetFontAction extends  MainActivityMenuAction {
 	                ListView listView = (ListView) parent;
 	                String item = (String)listView.getItemAtPosition(position);
 	                mViewer.setCharset(item);
+	                if(item != null && !item.equals("")){
+	                	KyoroSetting.setCurrentCharset(item);
+	                }
 	                A.this.dismiss();	            }
 	        });
 			

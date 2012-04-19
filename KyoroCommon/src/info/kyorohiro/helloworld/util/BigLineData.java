@@ -152,9 +152,9 @@ public class BigLineData {
 		CharBuffer cb = CharBuffer.allocate(16); // cbは書き込める状態
 
 		//todo
-		long todoPrevPosition = mReader.getFilePointer();
 		int mode = TODOCRLFString.MODE_INCLUDE_LF;
-		do {
+		long todoPrevPosition = mReader.getFilePointer();
+		outside:do {
 			int d = mReader.read();
 			if (d >= 0) {
 				bb.put((byte) d); // bbへの書き込み
@@ -173,25 +173,25 @@ public class BigLineData {
 				bb.clear();
 				c = cb.get();
 				b.append(c);
+				if(mPaint != null){
+					// todo kiyohiro unefficient coding
+					String tmp = b.toString();
+					int len =mPaint.breakText(tmp, true, mWidth, null);
+					if (len != tmp.length()) {
+						//ひとつ前で改行
+						b.deleteCharAt(b.length()-1);
+						mReader.seek(todoPrevPosition);
+						mode = TODOCRLFString.MODE_EXCLUDE_LF;
+						break outside;
+					} else {
+						todoPrevPosition = mReader.getFilePointer();
+					}
+				}
 			}
 			if (c == '\n') {
 				break;
 			}
-			if(mPaint != null){
-				// todo kiyohiro
-				// unefficient coding
-				String tmp = b.toString();
-				int len =mPaint.breakText(tmp, true, mWidth, null);
-				if (len != tmp.length()) {
-					//ひとつ前で改行
-					b.deleteCharAt(b.length()-1);
-					mReader.seek(todoPrevPosition);
-					mode = TODOCRLFString.MODE_EXCLUDE_LF;
-					break;
-				} else {
-					todoPrevPosition = mReader.getFilePointer();
-				}
-			}
+
 			if (!added) {
 				bb.compact();
 			}
