@@ -1,36 +1,57 @@
 package info.kyorohiro.helloworld.textviewer;
 
+import java.lang.ref.WeakReference;
+
 import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
+//
+// This class make it an open possibility to easy access Context instance.
+//
 public class KyoroApplication extends Application {
 
+	private static WeakReference<KyoroApplication> sInstanceReference = null;
 	private Handler mHandler = null;
-	private static KyoroApplication sInstance = null;
+
+	public KyoroApplication() {
+		init(this);
+	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sInstance = this;
 		mHandler = new Handler();
 	}
 
-	public static KyoroApplication getKyoroApplication() {
-		return sInstance;
+	public static synchronized void init(KyoroApplication app) {
+		if(sInstanceReference != null) {
+			sInstanceReference.clear();
+		}
+		sInstanceReference = new WeakReference<KyoroApplication>(app);				
+	}
+
+	public static  synchronized KyoroApplication getKyoroApplication() {
+		KyoroApplication app = sInstanceReference.get();
+		if(app != null) {
+			return app;
+		} else {
+			// dummy
+			return new KyoroApplication();
+		}
 	}
 
 	public static void showMessage(String message) {
 		try {
-			sInstance.mHandler.post(new ToastMessage(sInstance, message));
+			getKyoroApplication().getHanler().post(new ToastMessage(getKyoroApplication(), message));
 		} catch(Throwable e){
 			e.printStackTrace();
 		}
 	}
 
-	public Handler getHanler(){
-		return sInstance.mHandler;
+	private Handler getHanler(){
+		return getKyoroApplication().mHandler;
 	}
 
 	private static class ToastMessage implements Runnable {
