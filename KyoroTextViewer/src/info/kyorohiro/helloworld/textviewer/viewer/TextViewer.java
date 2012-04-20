@@ -79,20 +79,27 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mLineView.setBgColor(COLOR_BG);
 	}
 
-	private SimpleImage mImage = null;
+	private SimpleImage mBGImage = null;
+	private SimpleImage mScrollImage = null;
 	public void start() {
 		Resources res = KyoroApplication.getKyoroApplication().getResources();
 		InputStream is =
 //			res.openRawResource(R.drawable.ic_launcher);
 //			res.openRawResource(R.drawable.tex2res2);
 		    res.openRawResource(R.drawable.tex2res4);
-		mImage = new SimpleImage(is);
-		mLineView.setBGImage(mImage);		
+		mBGImage = new SimpleImage(is);
+		mLineView.setBGImage(mBGImage);		
+		InputStream isScroll =
+//			res.openRawResource(R.drawable.ic_launcher);
+//			res.openRawResource(R.drawable.tex2res2);
+		    res.openRawResource(R.drawable.tex2res2);
+		mScrollImage = new SimpleImage(isScroll);
+		mScrollBar.setBGImage(mScrollImage);		
 	}
 	public void stop() {
 		mLineView.setBGImage(null);
-		if(mImage.getImage().isRecycled()){
-			mImage.getImage().recycle();
+		if(mBGImage.getImage().isRecycled()){
+			mBGImage.getImage().recycle();
 		}
 	}
 

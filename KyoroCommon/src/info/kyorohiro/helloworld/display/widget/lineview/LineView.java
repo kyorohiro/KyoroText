@@ -209,7 +209,7 @@ public class LineView extends SimpleDisplayObject {
 	private void drawBG(SimpleGraphics graphics) {
 		graphics.drawBackGround(mBgColor);
 		if(mImage != null) {
-			graphics.drawImageAsTile(mImage, getWidth(), getHeight());
+			graphics.drawImageAsTile(mImage, 0, 0,getWidth(), getHeight());
 		}
 	}
 

@@ -71,7 +71,8 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		mCanvas.drawText(text, x + mGlobalX, y + mGlobalY, mPaint);
 	}
 
-	public void drawImageAsTile(SimpleImage image, int w, int h) {
+	@Override
+	public void drawImageAsTile(SimpleImage image, int x, int y, int w, int h) {
 		if(image.getImage().isRecycled()){
 			return;
 		}
@@ -88,11 +89,13 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
             		srcW = w-(imgW*_w);
             	}
             	if(srcH>h-(imgH*_h)) {
-            		srcW = w-(imgW*_w);
+            		srcH = h-(imgH*_h);
             	}
             	Rect src = new Rect(0, 0, srcW, srcH);
-                Rect dst = new Rect(imgW*_w, imgH*_h, imgW*_w+srcW, imgH*_h+srcH);
-        		mCanvas.drawBitmap(bitmap, src, dst, null);
+                Rect dst = new Rect(
+                		x+imgW*_w, y+imgH*_h,
+                		x+imgW*_w+srcW, y+imgH*_h+srcH);
+        		mCanvas.drawBitmap(bitmap, src, dst, mPaint);
             }
         }
 	}
