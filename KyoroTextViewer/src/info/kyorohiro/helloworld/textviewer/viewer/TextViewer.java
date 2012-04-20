@@ -26,7 +26,8 @@ import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
-	public static int COLOR_BG = Color.parseColor("#FF101030");
+	//	public static int COLOR_BG = Color.parseColor("#FF101030");
+	public static int COLOR_BG = Color.parseColor("#FF808080");
 	public static int COLOR_FONT1 = Color.parseColor("#ff80c9f4");
 	public static int COLOR_FONT2 = Color.parseColor("#fff480c9");
 
