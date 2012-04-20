@@ -88,4 +88,12 @@ public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 	public boolean onKeyDown(int keycode) {
 		return false;
 	}
+	
+	public void start() {
+		
+	}
+
+	public void stop() {
+		
+	}
 }

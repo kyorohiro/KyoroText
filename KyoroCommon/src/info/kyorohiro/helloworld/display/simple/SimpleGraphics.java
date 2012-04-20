@@ -31,4 +31,5 @@ public abstract class SimpleGraphics {
 	public abstract void setStrokeWidth(int w);
 	public abstract int getTextWidth(String line);
 	public abstract SimpleDisplayObject createImage(byte[] data, int offset, int length);
+	public abstract void drawImageAsTile(SimpleImage image, int w, int h);
 }

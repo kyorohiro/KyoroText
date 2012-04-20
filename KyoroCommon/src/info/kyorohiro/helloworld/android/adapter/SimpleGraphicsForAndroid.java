@@ -1,11 +1,15 @@
 package info.kyorohiro.helloworld.android.adapter;
 
+import java.io.InputStream;
+
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 
 public class SimpleGraphicsForAndroid extends SimpleGraphics {
@@ -65,6 +69,32 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 
 	public void drawText(String text, int x, int y) {
 		mCanvas.drawText(text, x + mGlobalX, y + mGlobalY, mPaint);
+	}
+
+	public void drawImageAsTile(SimpleImage image, int w, int h) {
+		if(image.getImage().isRecycled()){
+			return;
+		}
+		Bitmap bitmap = image.getImage();
+        int imgW = bitmap.getWidth();
+        int imgH = bitmap.getHeight();
+        int lenW = w/imgW;
+        int lenH = h/imgH;
+        for(int _w=0;_w<=lenW;_w++) {
+            for(int _h=0;_h<=lenH;_h++) {
+            	int srcW = imgW;
+            	int srcH = imgH;
+            	if(srcW>w-(imgW*_w)) {
+            		srcW = w-(imgW*_w);
+            	}
+            	if(srcH>h-(imgH*_h)) {
+            		srcW = w-(imgW*_w);
+            	}
+            	Rect src = new Rect(0, 0, srcW, srcH);
+                Rect dst = new Rect(imgW*_w, imgH*_h, imgW*_w+srcW, imgH*_h+srcH);
+        		mCanvas.drawBitmap(bitmap, src, dst, null);
+            }
+        }
 	}
 
 	public int getTextSize() {

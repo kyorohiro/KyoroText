@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 
@@ -200,9 +201,16 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 
+	private SimpleImage mImage = null;
+	public void setBGImage(SimpleImage image) {
+		mImage = image;
+	}
 
 	private void drawBG(SimpleGraphics graphics) {
 		graphics.drawBackGround(mBgColor);
+		if(mImage != null) {
+			graphics.drawImageAsTile(mImage, getWidth(), getHeight());
+		}
 	}
 
 	private void updateStatus(SimpleGraphics graphics,

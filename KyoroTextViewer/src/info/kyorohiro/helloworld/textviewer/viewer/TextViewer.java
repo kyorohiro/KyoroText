@@ -1,13 +1,16 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Environment;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
@@ -17,6 +20,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoom;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+import info.kyorohiro.helloworld.textviewer.R;
 import info.kyorohiro.helloworld.util.BigLineData;
 import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.CyclingListInter;
@@ -75,6 +79,23 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mLineView.setBgColor(COLOR_BG);
 	}
 
+	private SimpleImage mImage = null;
+	public void start() {
+		Resources res = KyoroApplication.getKyoroApplication().getResources();
+		InputStream is =
+//			res.openRawResource(R.drawable.ic_launcher);
+//			res.openRawResource(R.drawable.tex2res2);
+		    res.openRawResource(R.drawable.tex2res4);
+		mImage = new SimpleImage(is);
+		mLineView.setBGImage(mImage);		
+	}
+	public void stop() {
+		mLineView.setBGImage(null);
+		if(mImage.getImage().isRecycled()){
+			mImage.getImage().recycle();
+		}
+	}
+
 	public void setCharset(String charset) {
 		if (charset == null) {
 			mCharset = "utf8";
@@ -84,8 +105,18 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	public void readFile(File file) {
+		if(file == null) {
+			KyoroApplication.showMessage("file can not read null file");
+			return;
+		}
+		if(!file.canRead() || !file.exists()|| !file.isFile()){
+			KyoroApplication.showMessage("file can not read " + file.toString());
+			return;
+		}
 		mBuffer = new ColorFilteredBuffer(10*BigLineData.FILE_LIME, mTextSize, mWidth, file, mCharset);
 		mLineView.setCyclingList(mBuffer);
+		mLineView.setPositionX(0);
+		mLineView.setPositionY(0);
 		((TextViewerBuffer) mBuffer).startReadForward(-1);
 		KyoroApplication.showMessage("charset="+mCharset);
 	}

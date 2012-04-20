@@ -30,6 +30,7 @@ public class SimpleStage extends EditableSurfaceView {
 	public synchronized void start() {
 		mCurrentThread = new Thread(new Animation());
 		mCurrentThread.start();
+		getRoot().start();
 	}
 
 	public SimpleDisplayObjectContainer getRoot(){
@@ -42,6 +43,7 @@ public class SimpleStage extends EditableSurfaceView {
 		if (tmp != null && tmp.isAlive()) {
 			tmp.interrupt();
 		}
+		getRoot().stop();
 	}
 
 	private class Animation implements Runnable {

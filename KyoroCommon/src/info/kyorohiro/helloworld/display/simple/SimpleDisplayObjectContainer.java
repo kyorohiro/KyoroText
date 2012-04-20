@@ -134,4 +134,24 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		}
 		return bound;
 	}
+	
+	@Override
+	public void start() {
+		super.start();
+		for(SimpleDisplayObject child: mMyChildren){
+			if(child != null) {
+				child.start();
+			}
+		}
+	}
+	
+	@Override
+	public void stop() {
+		super.stop();
+		for(SimpleDisplayObject child: mMyChildren){
+			if(child != null) {
+				child.stop();
+			}
+		}
+	}
 }
