@@ -4,104 +4,84 @@ import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
 import info.kyorohiro.helloworld.util.BigLineData;
 import info.kyorohiro.helloworld.util.BigLineData.LineWithPosition;
 import info.kyorohiro.helloworld.util.CyclingList;
-import info.kyorohiro.helloworld.util.CyclingListInter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.mozilla.intl.chardet.nsCP1252Verifier;
-
 import android.graphics.Color;
-import android.os.Environment;
 
-public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
+public class TextViewerBuffer 
+// todo following code:
+//   mod from extends to implements 
+// example)
+// >>implements CyclingList<Flow..?>
+// >> private  CyclingList<FlowingLineDatam> mCash = ...;
+//
+extends CyclingList<FlowingLineDatam> {
 
-	private File mTestDataPath = null;
-	private BigLineData mLineManager = null;
-	private int mCashedStart = 0;
-	private int mCashedEnd = 0;
-	private String mCharset = "utf8";
+	private BigLineData mLineManagerFromFile = null;
+	private int mCurrentBufferStartLinePosition = 0;
+	private int mCurrentBufferEndLinePosition = 0;
+	private FlowingLineDatam mReturnUnexpectedValue = new FlowingLineDatam("..", Color.RED, FlowingLineDatam.INCLUDE_END_OF_LINE);
+	private FlowingLineDatam mReturnLoadingValue = new FlowingLineDatam("loading..", Color.GREEN, FlowingLineDatam.INCLUDE_END_OF_LINE);
 
-
-	public TextViewerBuffer(int listSize, int textSize, int screenWidth,
-			File path, String charset) {
+	public TextViewerBuffer(int listSize, int textSize, int screenWidth, File path, String charset) {
 		super(listSize);
-		mCharset = charset;
-		mTestDataPath = path;
 		try {
-			mLineManager = new BigLineData(mTestDataPath, charset, textSize, screenWidth);
+			mLineManagerFromFile = new BigLineData(path, charset, textSize, screenWidth);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public int getNumberOfStockedElement() {
-		// ファイルから読み込み済みのライン数を返す。
-		return (int) mLineManager.getLastLinePosition();
+		return (int) mLineManagerFromFile.getLastLinePosition();
 	}
-
 
 	public FlowingLineDatam get(int i) {
 		// 読み込むホジションを調べる。
 		if(i<0){
-			return new FlowingLineDatam("0:"+i+","+"i<0", Color.GREEN,
-					FlowingLineDatam.INCLUDE_END_OF_LINE);
+			return mReturnUnexpectedValue;
 		}
-		mCashedStart = 0; 
-		mCashedEnd = 0;
-		if(0<super.getNumberOfStockedElement()){
-			CharSequence startLine = super.get(0);
-			CharSequence endLine = super.get(super.getNumberOfStockedElement()-1);
-			MyBufferDatam startLineWithPosition = (MyBufferDatam)startLine;
-			MyBufferDatam endLineWithPosition = (MyBufferDatam)endLine;
-			mCashedStart = (int)startLineWithPosition.getLinePosition();
-			mCashedEnd = (int)endLineWithPosition.getLinePosition();
-		}
-		int d = i - mCashedStart;
-
+		mCurrentBufferStartLinePosition = 0; 
+		mCurrentBufferEndLinePosition = 0;
+		
 		try {
 
-			// todo マイナスへの移動は、後で実装する。
-			if (d < 0) {
-				return new FlowingLineDatam(""/*+d+":"*/+i+","+"loading", Color.GREEN,
-						FlowingLineDatam.INCLUDE_END_OF_LINE);
+			if(0<super.getNumberOfStockedElement()){
+				CharSequence startLine = super.get(0);
+				CharSequence endLine = super.get(super.getNumberOfStockedElement()-1);
+				MyBufferDatam startLineWithPosition = (MyBufferDatam)startLine;
+				MyBufferDatam endLineWithPosition = (MyBufferDatam)endLine;
+				mCurrentBufferStartLinePosition = (int)startLineWithPosition.getLinePosition();
+				mCurrentBufferEndLinePosition = (int)endLineWithPosition.getLinePosition();
 			}
+			int d = i - mCurrentBufferStartLinePosition;
 
-			if (super.getNumberOfStockedElement() >= d) {
-//				return super.get(i);
-				FlowingLineDatam t= super.get(d);
-				if(t!=null){
-					return t;//new FlowingLineDatam(""+d+":"+i+","+t.toString(), Color.RED, t.getStatus());
-				} else {
-					return new FlowingLineDatam(""/*+d+":"*/+i+","+"null..", Color.GREEN,
-							FlowingLineDatam.INCLUDE_END_OF_LINE);
-				}
-			} else {
-				// キャッシュがないらなば、Cashの取得を開始する。
-				// とりあえず "loading..." と文字列を返す。
-				return new FlowingLineDatam(""+d+":"+i+","+"loading..", Color.GREEN,
-						FlowingLineDatam.INCLUDE_END_OF_LINE);
+			int bufferSize = super.getNumberOfStockedElement();
+			FlowingLineDatam t= super.get(d);
+			if(d < 0 || bufferSize <d){
+				return mReturnLoadingValue;
+			}else if(t == null){
+				return mReturnUnexpectedValue;				
 			}
+			return t;
 		} catch(Throwable t) {
 			t.printStackTrace();
-			return new FlowingLineDatam(""+d+":"+i+","+"error..", Color.GREEN,
-					FlowingLineDatam.INCLUDE_END_OF_LINE);
-		} 
-		finally {
-			if (mCashedEnd < (i + BigLineData.FILE_LIME*3)) {
+			return mReturnUnexpectedValue;				
+		} finally {
+			if (mCurrentBufferEndLinePosition < (i + BigLineData.FILE_LIME*3)) {
 				if(0==super.getNumberOfStockedElement()){
 					startReadForward(-1);					
 				} else {
-					startReadForward(mCashedEnd);
+					startReadForward(mCurrentBufferEndLinePosition);
 				}
 			} 
-			else if (mCashedStart > (i - BigLineData.FILE_LIME*3)) {
-				int tmp = mCashedStart;
-				if(mCashedStart == 0) {
-				
+			else if (mCurrentBufferStartLinePosition > (i - BigLineData.FILE_LIME*3)) {
+				int tmp = mCurrentBufferStartLinePosition;
+				if(mCurrentBufferStartLinePosition == 0) {
+
 				}
-				else if(tmp <0&&mCashedStart<0){
+				else if(tmp <0&&mCurrentBufferStartLinePosition<0){
 					startReadBack(0);				
 				} else if(tmp > 0) {
 					startReadBack(tmp);
@@ -121,7 +101,7 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 
 	public void startReadBack(int position) {
 		if (mTaskRunnter == null || !mTaskRunnter.isAlive()) {
-			mTaskRunnter = new Thread(new ReadBackFileTask(position,mCashedStart));
+			mTaskRunnter = new Thread(new ReadBackFileTask(position,mCurrentBufferStartLinePosition));
 			mTaskRunnter.start();
 		}
 	}
@@ -132,13 +112,13 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 			super(line, color, status);
 			mLinePosition = linePosition;
 		}
-		
+
 		public int getLinePosition() {
 			return mLinePosition;
 		}
 	}
 
-	
+
 	class ReadForwardFileTask implements Runnable {
 		private int mStartPosition = 0;
 
@@ -149,19 +129,19 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 		public void run() {
 			try {
 				int index = mStartPosition/BigLineData.FILE_LIME+1;
-				mLineManager.moveLinePer100(index);
+				mLineManagerFromFile.moveLinePer100(index);
 				for (int i = 0;
-				i<BigLineData.FILE_LIME&&!mLineManager.isEOF();
+				i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();
 				i++) {
 
-					CharSequence line = mLineManager.readLine();
+					CharSequence line = mLineManagerFromFile.readLine();
 					LineWithPosition lineWP = (LineWithPosition)line;
 					int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
 					if(!lineWP.includeLF()) {
 						crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
 					}							
 					MyBufferDatam t = new MyBufferDatam(
-//							"+----"+lineWP.getLinePosition()+"-----"+
+							//							"+----"+lineWP.getLinePosition()+"-----"+
 							line.toString(),
 							Color.WHITE,
 							crlf,
@@ -181,7 +161,7 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 		private int mCashedStartPosition = 0;
 
 		public ReadBackFileTask(int startPosition, int cashedStartPosition) {
-		//	android.util.Log.v("aaa","=---- CREATE"+startPosition+","+cashedStartPosition);
+			//	android.util.Log.v("aaa","=---- CREATE"+startPosition+","+cashedStartPosition);
 			startPosition--;
 
 			if(startPosition > 1) {
@@ -197,28 +177,28 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 				int index = mStartPosition/BigLineData.FILE_LIME;
 				// todo あまり分を計算すること
 				MyBufferDatam[] builder = new MyBufferDatam[BigLineData.FILE_LIME];
-				mLineManager.moveLinePer100(index);
+				mLineManagerFromFile.moveLinePer100(index);
 				int j=0;
-//				android.util.Log.v("aaa","=---- START");
-				for (int i = 0;i<BigLineData.FILE_LIME&&!mLineManager.isEOF();i++) {
-					CharSequence line = mLineManager.readLine();
+				//				android.util.Log.v("aaa","=---- START");
+				for (int i = 0;i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();i++) {
+					CharSequence line = mLineManagerFromFile.readLine();
 					LineWithPosition lineWP = (LineWithPosition)line;
 					int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
 					if(!lineWP.includeLF()) {
 						crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
 					}
 					MyBufferDatam t = new MyBufferDatam(
-//							"=----"+lineWP.getLinePosition()+"-----"+
+							//							"=----"+lineWP.getLinePosition()+"-----"+
 							line.toString(),
 							Color.WHITE,
 							crlf,
 							(int)lineWP.getLinePosition());
 					if(mCashedStartPosition>(int)lineWP.getLinePosition()){
 						builder[j++]=t;
-//						android.util.Log.v("aaa","=----"+lineWP.getLinePosition());
+						//						android.util.Log.v("aaa","=----"+lineWP.getLinePosition());
 					}					
 				}
-//				android.util.Log.v("aaa","=---- END");
+				//				android.util.Log.v("aaa","=---- END");
 				for(int i=j-1;0<=i;i--) {
 					TextViewerBuffer.this.head(builder[i]);					
 				}
@@ -234,18 +214,18 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 		super.head(element);
 		if(element instanceof MyBufferDatam) {
 			MyBufferDatam datam = (MyBufferDatam)element;
-				setNumOfAdd(num);
+			setNumOfAdd(num);
 		}
 	}
-	
+
 	@Override
 	public synchronized void add(FlowingLineDatam element) {
 		int num = getNumOfAdd();
 		super.add(element);
 		if(element instanceof MyBufferDatam) {
-			if(mLineManager.wasEOF()) {
+			if(mLineManagerFromFile.wasEOF()) {
 				MyBufferDatam datam = (MyBufferDatam)element;
-				if(datam.getLinePosition() <= mLineManager.getLastLinePosition() && !mLineManager.wasEOF()) {
+				if(datam.getLinePosition() <= mLineManagerFromFile.getLastLinePosition() && !mLineManagerFromFile.wasEOF()) {
 					setNumOfAdd(num);
 				}
 			}
