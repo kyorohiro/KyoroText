@@ -2,11 +2,9 @@ package info.kyorohiro.helloworld.textviewer.viewer;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.regex.Matcher;
 
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.Environment;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -27,76 +25,85 @@ import info.kyorohiro.helloworld.util.CyclingListInter;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
 	//	public static int COLOR_BG = Color.parseColor("#FF101030");
-	public static int COLOR_BG = Color.parseColor("#FF808080");
+	//	public static int COLOR_BG = Color.parseColor("#FF808080");
+	public static int COLOR_BG = Color.parseColor("#FF000000");
 	public static int COLOR_FONT1 = Color.parseColor("#ff80c9f4");
 	public static int COLOR_FONT2 = Color.parseColor("#fff480c9");
 
+	private String mCurrentCharset = "utf8";
+
 	private CyclingList<FlowingLineDatam> mBuffer = null;
 	private LineView mLineView = null;
-	private int mWidth = 0;
+	private int mBufferWidth = 0;
 	private int mTextSize = 0;
-	private String mCharset = "utf8";
 	private SimpleCircleController mCircleController = null;
 	private ScrollBar mScrollBar = null;
+	private SimpleImage mBGImage = null;
+	private SimpleImage mScrollImage = null;
 
-	public TextViewer(int textSize, int screenWidth) {
-		mWidth = screenWidth;
+	public TextViewer(int textSize, int width) {
 		mTextSize = textSize;
-		mCharset = KyoroSetting.getCurrentCharset();
-		File testDir = Environment.getExternalStorageDirectory();
-		File f = new File(testDir, "a.txt");
+		mCurrentCharset = KyoroSetting.getCurrentCharset();
+		mBuffer = getStartupMessageBuffer();
+		mBufferWidth = width;
 
-		mBuffer = new CyclingList<FlowingLineDatam>(100);// new
-															// TextViewerBuffer(1000,
-															// textSize,
-															// screenWidth, f);
-		mBuffer.add(new FlowingLineDatam("Please open file", Color.CYAN,
-				FlowingLineDatam.INCLUDE_END_OF_LINE));
-		mBuffer.add(new FlowingLineDatam("Current charset is "+mCharset, Color.YELLOW,
-				FlowingLineDatam.INCLUDE_END_OF_LINE));
-		mBuffer.add(new FlowingLineDatam("..", Color.RED,
-				FlowingLineDatam.INCLUDE_END_OF_LINE));
-		mBuffer.add(new FlowingLineDatam("Sorry, this application is pre-alpha version ", Color.RED,
-				FlowingLineDatam.INCLUDE_END_OF_LINE));
-		mBuffer.add(new FlowingLineDatam("Testing and Developing.. now", Color.RED,
-				FlowingLineDatam.INCLUDE_END_OF_LINE));
-		mBuffer.add(new FlowingLineDatam("Please mail kyorohiro.android@gmail.com, ", Color.RED,
-				FlowingLineDatam.EXCLUDE_END_OF_LINE));
-		mBuffer.add(new FlowingLineDatam("If you have particular questions or comments, ", Color.RED,
-				FlowingLineDatam.EXCLUDE_END_OF_LINE));
-		mBuffer.add(new FlowingLineDatam("please don't hesitate to contact me. Thank you. ", Color.RED,
-				FlowingLineDatam.INCLUDE_END_OF_LINE));
-		
 		mLineView = new LineView(mBuffer, textSize,10*BigLineData.FILE_LIME);
+		mLineView.isTail(false);
+		mLineView.setBgColor(COLOR_BG);
+
 		mScrollBar = new ScrollBar(mLineView);
 		addChild(mLineView);
 		addChild(new MyTouchAndMove(mLineView));
 		addChild(new MyTouchAndZoom(mLineView));
 		addChild(mCircleController = new SimpleCircleController());
-		addChild(new Layout());
+		addChild(new LayoutManager());
 		addChild(mScrollBar);
 		mCircleController.setEventListener(new MyCircleControllerEvent());
-		mLineView.isTail(false);
-		mLineView.setBgColor(COLOR_BG);
 	}
 
-	private SimpleImage mBGImage = null;
-	private SimpleImage mScrollImage = null;
+	private CyclingList<FlowingLineDatam> getStartupMessageBuffer() {
+		String[] message = {
+				"Please open file\n",
+				"Current charset is "+mCurrentCharset+"\n", 
+				"..\n",
+				"Sorry, this application is pre-alpha version",
+				"Testing and Developing.. now",
+				"Please mail kyorohiro.android@gmail.com, ", 
+				"If you have particular questions or comments, ",
+				"please don't hesitate to contact me. Thank you. \n"
+		};
+		int color[] = {
+				Color.CYAN,
+				Color.YELLOW,
+				Color.RED,
+				Color.RED,
+				Color.RED,
+				Color.RED,
+				Color.RED,
+				Color.RED,				
+		};
+		CyclingList<FlowingLineDatam> startupMessage = new CyclingList<FlowingLineDatam>(100);
+		for(int i=0;i<message.length;i++){
+			String m = message[i];
+			int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
+			if(!m.endsWith("\n")){
+				crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
+			}
+			startupMessage.add(new FlowingLineDatam(m, color[i], crlf));
+		}
+		return startupMessage;
+	}
+
 	public void start() {
 		Resources res = KyoroApplication.getKyoroApplication().getResources();
-		InputStream is =
-//			res.openRawResource(R.drawable.ic_launcher);
-//			res.openRawResource(R.drawable.tex2res2);
-		    res.openRawResource(R.drawable.tex2res4);
+		InputStream is = res.openRawResource(R.drawable.tex2res4);
 		mBGImage = new SimpleImage(is);
 		mLineView.setBGImage(mBGImage);		
-		InputStream isScroll =
-//			res.openRawResource(R.drawable.ic_launcher);
-//			res.openRawResource(R.drawable.tex2res2);
-		    res.openRawResource(R.drawable.tex2res2);
+		InputStream isScroll = res.openRawResource(R.drawable.tex2res2);
 		mScrollImage = new SimpleImage(isScroll);
-		mScrollBar.setBGImage(mScrollImage);		
+		mScrollBar.setBGImage(mScrollImage);
 	}
+
 	public void stop() {
 		mLineView.setBGImage(null);
 		if(mBGImage.getImage().isRecycled()){
@@ -106,10 +113,20 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	public void setCharset(String charset) {
 		if (charset == null) {
-			mCharset = "utf8";
+			mCurrentCharset = "utf8";
 		} else {
-			mCharset = charset;
+			mCurrentCharset = charset;
 		}
+	}
+
+	@Override
+	public void setRect(int w, int h) {
+		super.setRect(w, h);
+		mLineView.setRect(w, h);
+	}
+
+	public LineView getLineView() {
+		return mLineView;
 	}
 
 	public void readFile(File file) {
@@ -121,18 +138,60 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			KyoroApplication.showMessage("file can not read " + file.toString());
 			return;
 		}
-		mBuffer = new ColorFilteredBuffer(10*BigLineData.FILE_LIME, mTextSize, mWidth, file, mCharset);
+		mBuffer = new ColorFilteredBuffer(10*BigLineData.FILE_LIME, mTextSize, mBufferWidth, file, mCurrentCharset);
 		mLineView.setCyclingList(mBuffer);
 		mLineView.setPositionX(0);
 		mLineView.setPositionY(10);
 		((TextViewerBuffer) mBuffer).startReadForward(-1);
-		KyoroApplication.showMessage("charset="+mCharset);
+		KyoroApplication.showMessage("charset="+mCurrentCharset);
 	}
 
-	@Override
-	public void setRect(int w, int h) {
-		super.setRect(w, h);
-		mLineView.setRect(w, h);
+	private class LayoutManager extends SimpleDisplayObject {
+		@Override
+		public void paint(SimpleGraphics graphics) {
+			int x = graphics.getWidth() - mCircleController.getWidth() / 2;
+			int y = graphics.getHeight() - mCircleController.getHeight() / 2;
+			TextViewer.this.mCircleController.setPoint(x, y);
+			updateCircleControllerSize(graphics);
+			paintScroll(graphics);			
+		}
+
+		private void updateCircleControllerSize(SimpleGraphics graphics) {
+			int min = graphics.getWidth();
+			if(min>graphics.getHeight()){
+				min = graphics.getHeight();
+			}
+			min = min/2;
+			if(min<mCircleController.getWidth()){
+				mCircleController.setRadius(min/2);
+			}
+		}
+
+		public void paintScroll(SimpleGraphics graphics) {
+			CyclingListInter<?> viewerBuffer = TextViewer.this.mLineView.getCyclingList();
+			int bufferSize = viewerBuffer.getNumberOfStockedElement(); 
+			int beginPosition = TextViewer.this.mLineView.getShowingTextStartPosition();
+			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
+			mScrollBar.setStatus(
+					beginPosition,
+					endPosition, bufferSize);
+			TextViewer.this.mLineView.setRect(graphics.getWidth(), graphics.getHeight());
+		}
+	}
+
+	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
+		public void moveCircle(int action, int degree, int rateDegree) {
+			if (action == CircleControllerAction.ACTION_MOVE) {
+				getLineView().setPositionY(getLineView().getPositionY() + rateDegree*2);
+			}
+		}
+		public void upButton(int action) {
+			getLineView().setPositionY(getLineView().getPositionY() + 5);
+		}
+
+		public void downButton(int action) {
+			getLineView().setPositionY(getLineView().getPositionY() - 5);
+		}
 	}
 
 	public static class ColorFilteredBuffer extends TextViewerBuffer {
@@ -152,53 +211,5 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			element.setColor(COLOR_FONT1);
 		}
 	}
-	
-	public LineView getLineView() {
-		return mLineView;
-	}
 
-	private class Layout extends SimpleDisplayObject {
-		@Override
-		public void paint(SimpleGraphics graphics) {
-			int x = graphics.getWidth() - mCircleController.getWidth() / 2;
-			int y = graphics.getHeight() - mCircleController.getHeight() / 2;
-			TextViewer.this.mCircleController.setPoint(x, y);
-			{
-				int min = graphics.getWidth();
-				if(min>graphics.getHeight()){
-					min = graphics.getHeight();
-				}
-				min = min/2;
-				if(min<mCircleController.getWidth()){
-					mCircleController.setRadius(min/2);
-				}
-			}
-			// todo unefficient
-			paintScroll(graphics);			
-		}
-		public void paintScroll(SimpleGraphics graphics) {
-			CyclingListInter<?> list = TextViewer.this.mLineView.getCyclingList();
-			int size = list.getNumberOfStockedElement(); 
-			mScrollBar.setStatus(
-					TextViewer.this.mLineView.getShowingTextStartPosition(),
-					TextViewer.this.mLineView.getShowingTextEndPosition(), size);
-			TextViewer.this.mLineView.setRect(graphics.getWidth(), graphics.getHeight());
-		}
-	}
-
-	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
-		public void moveCircle(int action, int degree, int rateDegree) {
-			if (action == CircleControllerAction.ACTION_MOVE) {
-				getLineView().setPositionY(getLineView().getPositionY() + rateDegree*2);
-			}
-		}
-
-		public void upButton(int action) {
-			getLineView().setPositionY(getLineView().getPositionY() + 5);
-		}
-
-		public void downButton(int action) {
-			getLineView().setPositionY(getLineView().getPositionY() - 5);
-		}
-	}
 }
