@@ -68,7 +68,7 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 						FlowingLineDatam.INCLUDE_END_OF_LINE);
 			}
 
-			if (getNumberOfStockedElement() >= d) {
+			if (super.getNumberOfStockedElement() >= d) {
 //				return super.get(i);
 				FlowingLineDatam t= super.get(d);
 				if(t!=null){
@@ -161,7 +161,7 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 						crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
 					}							
 					MyBufferDatam t = new MyBufferDatam(
-							//"+----"+lineWP.getLinePosition()+"-----"+
+//							"+----"+lineWP.getLinePosition()+"-----"+
 							line.toString(),
 							Color.WHITE,
 							crlf,
@@ -208,7 +208,7 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 						crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
 					}
 					MyBufferDatam t = new MyBufferDatam(
-							//"=----"+lineWP.getLinePosition()+"-----"+
+//							"=----"+lineWP.getLinePosition()+"-----"+
 							line.toString(),
 							Color.WHITE,
 							crlf,
@@ -228,4 +228,27 @@ public class TextViewerBuffer extends CyclingList<FlowingLineDatam> {
 		}
 	}
 
+	@Override
+	public synchronized void head(FlowingLineDatam element) {
+		int num = getNumOfAdd();
+		super.head(element);
+		if(element instanceof MyBufferDatam) {
+			MyBufferDatam datam = (MyBufferDatam)element;
+				setNumOfAdd(num);
+		}
+	}
+	
+	@Override
+	public synchronized void add(FlowingLineDatam element) {
+		int num = getNumOfAdd();
+		super.add(element);
+		if(element instanceof MyBufferDatam) {
+			if(mLineManager.wasEOF()) {
+				MyBufferDatam datam = (MyBufferDatam)element;
+				if(datam.getLinePosition() <= mLineManager.getLastLinePosition() && !mLineManager.wasEOF()) {
+					setNumOfAdd(num);
+				}
+			}
+		}
+	}
 }

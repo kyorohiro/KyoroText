@@ -19,10 +19,17 @@ public class LineView extends SimpleDisplayObject {
 	private int mAddedPoint = 0;
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
+	private int mDefaultCashSize = 100;
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
+	}
+
+	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize, int cashSize) {
+		mInputtedText = inputtedText;
+		mTextSize = textSize;
+		mDefaultCashSize = cashSize;
 	}
 
 	public void setBgColor(int color) {
@@ -138,6 +145,14 @@ public class LineView extends SimpleDisplayObject {
 
 			updateStatus(graphics, showingText);
 			drawBG(graphics);
+			{
+				//test 
+				int s = graphics.getTextSize();
+				graphics.setTextSize(s*3);
+				graphics.setColor(Color.parseColor("#33FFFF00"));
+				graphics.drawText(""+mShowingTextStartPosition+":"+mShowingTextEndPosition, 30, s*4);
+				graphics.setTextSize(s);
+			}
 			start = start(showingText);
 			end = end(showingText);
 			blank = blank(showingText);
@@ -148,7 +163,11 @@ public class LineView extends SimpleDisplayObject {
 				len = end-start;
 			}
 			if(mCashBuffer.length < len) {
-				mCashBuffer = new FlowingLineDatam[len];
+				int buffeSize = len;
+				if(buffeSize<mDefaultCashSize) {
+					buffeSize = mDefaultCashSize;
+				}
+				mCashBuffer = new FlowingLineDatam[buffeSize];
 			}
 			list = mCashBuffer;
 			list = showingText.getElements(list, start, end);

@@ -92,6 +92,10 @@ public class CyclingList<X> implements CyclingListInter<X> {
 		return mNumOfAdd;
 	}
 
+	public synchronized void setNumOfAdd(int num) {
+		mNumOfAdd = num;		
+	}
+
 	@Override
 	public synchronized void clearNumOfAdd() {
 		mNumOfAdd = 0;

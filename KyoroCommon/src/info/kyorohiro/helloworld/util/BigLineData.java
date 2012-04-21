@@ -115,7 +115,7 @@ public class BigLineData {
 			tmp = decode(Charset.forName(mCharset));
 			mCurrentPosition = mReader.getFilePointer();
 			mLinePosition += 1;
-			if (mLastLinePosition <= mLinePosition) {
+			if (mLastLinePosition < mLinePosition) {
 				mLastLinePosition = mLinePosition;
 			}
 			if (mLinePosition % FILE_LIME == 0) {

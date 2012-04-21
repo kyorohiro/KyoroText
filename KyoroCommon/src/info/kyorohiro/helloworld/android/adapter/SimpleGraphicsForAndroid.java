@@ -27,6 +27,7 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
+		mPaint.setAlpha(0);
 	//	mPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 

@@ -67,7 +67,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBuffer.add(new FlowingLineDatam("please don't hesitate to contact me. Thank you. ", Color.RED,
 				FlowingLineDatam.INCLUDE_END_OF_LINE));
 		
-		mLineView = new LineView(mBuffer, textSize);
+		mLineView = new LineView(mBuffer, textSize,10*BigLineData.FILE_LIME);
 		mScrollBar = new ScrollBar(mLineView);
 		addChild(mLineView);
 		addChild(new MyTouchAndMove(mLineView));
@@ -124,7 +124,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBuffer = new ColorFilteredBuffer(10*BigLineData.FILE_LIME, mTextSize, mWidth, file, mCharset);
 		mLineView.setCyclingList(mBuffer);
 		mLineView.setPositionX(0);
-		mLineView.setPositionY(0);
+		mLineView.setPositionY(10);
 		((TextViewerBuffer) mBuffer).startReadForward(-1);
 		KyoroApplication.showMessage("charset="+mCharset);
 	}
@@ -168,9 +168,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 				if(min>graphics.getHeight()){
 					min = graphics.getHeight();
 				}
-				min = min/4;
+				min = min/2;
 				if(min<mCircleController.getWidth()){
-					mCircleController.setRect(min, min);
+					mCircleController.setRadius(min/2);
 				}
 			}
 			// todo unefficient
@@ -187,6 +187,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
+		private int prevPosition = 0;
 		public void moveCircle(int action, int degree, int rateDegree) {
 			if (action == CircleControllerAction.ACTION_MOVE) {
 				getLineView().setPositionY(getLineView().getPositionY() + rateDegree*2);
