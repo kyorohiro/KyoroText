@@ -187,7 +187,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
-		private int prevPosition = 0;
 		public void moveCircle(int action, int degree, int rateDegree) {
 			if (action == CircleControllerAction.ACTION_MOVE) {
 				getLineView().setPositionY(getLineView().getPositionY() + rateDegree*2);

@@ -1,31 +1,32 @@
- package info.kyorohiro.helloworld.textviewer;
+package info.kyorohiro.helloworld.textviewer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 public class KyoroSetting {
 
-	private static Object lock = new Object();
 	public static final String TAG_CURRENT_CHARSET = "current charset";
 	public static final String CURRENT_CHARSET_DEFAULT = "utf8";
+	public static final String VALUE_NONE = "none";
+	private static Object lock = new Object();
+
 	public static String getCurrentCharset() {
 		String retry = CURRENT_CHARSET_DEFAULT;
-		try {
+		try{
 			String t = getData(TAG_CURRENT_CHARSET);
-			if (t != null && !t.equals("none")) {
+			if(t != null && !t.equals(VALUE_NONE)){
 				retry = t;
 			}
-		} catch (Throwable t) {
+		}catch(Throwable t){
 		}
 		return retry;
 	}
 
 	public static void setCurrentCharset(String value) {
-		try {
+		try{
 			setData(TAG_CURRENT_CHARSET, value);
-		} catch (Throwable t) {
+		} catch (Throwable t){
 		}
 	}
 
@@ -40,10 +41,10 @@ public class KyoroSetting {
 
 	public static void setData(Context context, String property, String value, String tag) {
 		SharedPreferences pref = null; 
-		synchronized (lock) {
-			if (tag == null) {
+		synchronized (lock){
+			if(tag == null){
 				pref = PreferenceManager.getDefaultSharedPreferences(context);
-			} else {
+			}else{
 				pref = context.getSharedPreferences(tag, Context.MODE_WORLD_READABLE|Context.MODE_WORLD_WRITEABLE);
 			}
 			pref.edit().putString(property, value).commit();
@@ -60,13 +61,13 @@ public class KyoroSetting {
 
 	public static String getData(Context context, String property, String tag) {
 		SharedPreferences pref = null; 
-		synchronized (lock) {
-			if (tag == null) {
+		synchronized (lock){
+			if (tag == null){
 				pref = PreferenceManager.getDefaultSharedPreferences(context);
-			} else {
+			}else{
 				pref = context.getSharedPreferences(tag, Context.MODE_WORLD_READABLE);
 			}
-			return pref.getString(property, "none");
+			return pref.getString(property, VALUE_NONE);
 		}
 	}
 
