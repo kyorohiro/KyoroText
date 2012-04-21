@@ -7,12 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- * KyoroLogcatとか作ってみたところ、画面周りのソースが、特定のクラス肥大化してしまった。
- * 
- * なるたけ、機能を子ひとつにクラスに背負い込まないように、仕掛けを入れておく。
+ * This class is created for preserve from bloated activity source code.
  */
 public class MainActivity extends Activity {
-	
+
 	private LinkedList<MainActivityMenuAction> mMenuAction = new LinkedList<MainActivityMenuAction>();
 
 	public void setMenuAction(MainActivityMenuAction action) {
@@ -22,7 +20,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		for(MainActivityMenuAction a : mMenuAction) {
+		for(MainActivityMenuAction a : mMenuAction){
 			if(a.onPrepareOptionsMenu(this, menu)){
 				break;
 			}

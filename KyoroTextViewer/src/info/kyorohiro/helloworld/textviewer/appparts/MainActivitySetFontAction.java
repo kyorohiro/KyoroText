@@ -1,36 +1,27 @@
 package info.kyorohiro.helloworld.textviewer.appparts;
 
-import java.io.File;
 import java.nio.charset.Charset;
 import java.util.SortedMap;
 
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
-public class MainActivitySetFontAction extends  MainActivityMenuAction {
+public class MainActivitySetFontAction implements MainActivityMenuAction {
 
 	public static String TITLE = "charset";
-	private TextViewer mViewer = null;
+	private TextViewer mDisplayedTextViewer = null;
 
 	public MainActivitySetFontAction(TextViewer viewer) {
-		mViewer = viewer;
+		mDisplayedTextViewer = viewer;
 	}
 
 	public boolean onPrepareOptionsMenu(Activity activity, Menu menu) {
@@ -47,37 +38,38 @@ public class MainActivitySetFontAction extends  MainActivityMenuAction {
 	}
 
 	private void showDialog(Activity activity) {
-		A a = new A(activity);
-		a.show();
+		DialogForShowDeviceSupportCharset dialog = new DialogForShowDeviceSupportCharset(activity);
+		dialog.show();
 	}
-	
-	public class A extends Dialog {
-		public A(Context context) {
+
+	public class DialogForShowDeviceSupportCharset extends Dialog {
+		public DialogForShowDeviceSupportCharset(Context context) {
 			super(context);
-			ListView view = new ListView(context);
-	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
-			// 使用可能なキャラセット
-			SortedMap<String,Charset> m = Charset.availableCharsets();
-			for(String s : m.keySet()){
-		        adapter.add(""+s);				
+			ListView charsetListUIParts = new ListView(context);
+			ArrayAdapter<String> displayCharsetList = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
+			SortedMap<String,Charset> deviceSupportCharsetList = Charset.availableCharsets();
+			for(String selectedCharset : deviceSupportCharsetList.keySet()){
+				displayCharsetList.add(""+selectedCharset);				
 			}
-			view.setAdapter(adapter);
 
-			view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	            @Override
-	            public void onItemClick(AdapterView<?> parent, View view,
-	                    int position, long id) {
-	                ListView listView = (ListView) parent;
-	                String item = (String)listView.getItemAtPosition(position);
-	                mViewer.setCharset(item);
-	                if(item != null && !item.equals("")){
-	                	KyoroSetting.setCurrentCharset(item);
-	                }
-	                A.this.dismiss();	            }
-	        });
-			
-			setContentView(view);
+			charsetListUIParts.setAdapter(displayCharsetList);
+			charsetListUIParts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					ListView charsetListUIParts = (ListView) parent;
+					String selectedCharset = (String)charsetListUIParts.getItemAtPosition(position);
 
+					mDisplayedTextViewer.setCharset(selectedCharset);
+					
+					// save selected charset in setting file.
+					if(selectedCharset != null && !selectedCharset.equals("")){
+						KyoroSetting.setCurrentCharset(selectedCharset);
+					}
+
+					// 
+					DialogForShowDeviceSupportCharset.this.dismiss();	            }
+			});
+			setContentView(charsetListUIParts);
 		}
 	}
 }

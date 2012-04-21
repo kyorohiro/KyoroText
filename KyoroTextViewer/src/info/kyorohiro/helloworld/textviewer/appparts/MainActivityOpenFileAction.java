@@ -4,14 +4,13 @@ import java.io.File;
 
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
-import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivityOpenFileAction extends  MainActivityMenuAction {
+public class MainActivityOpenFileAction implements MainActivityMenuAction {
 
 	public static String TITLE = "open";
 	private TextViewer mViewer = null;
@@ -34,13 +33,14 @@ public class MainActivityOpenFileAction extends  MainActivityMenuAction {
 	}
 
 	private void showExplorer(Activity activity) {
-		File firstCandidate  = Environment.getExternalStorageDirectory();
-		File secoundCandidate = Environment.getRootDirectory();
-		File candidate = firstCandidate;
-		if(!firstCandidate.exists()||!firstCandidate.canRead()){
-			candidate = secoundCandidate;
+		File firstCandidateDirectory  = Environment.getExternalStorageDirectory();
+		File secoundCandidateDirectory = Environment.getRootDirectory();
+		File showedDirectry = firstCandidateDirectory;
+		if(!firstCandidateDirectory.exists()||!firstCandidateDirectory.canRead()){
+			showedDirectry = secoundCandidateDirectory;
 		}
-		SimpleFileExplorer dialog = SimpleFileExplorer.createDialog(activity, candidate);
+
+		SimpleFileExplorer dialog = SimpleFileExplorer.createDialog(activity, showedDirectry);
 		dialog.show();
 		dialog.setOnSelectedFileAction(new SelectedFileAction() {
 			@Override
@@ -49,7 +49,7 @@ public class MainActivityOpenFileAction extends  MainActivityMenuAction {
 					mViewer.readFile(file);
 					return true;
 				}
- 				return false;
+				return false;
 			}
 		});
 	}
