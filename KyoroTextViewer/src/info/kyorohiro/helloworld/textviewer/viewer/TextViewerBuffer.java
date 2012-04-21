@@ -23,6 +23,9 @@ extends CyclingList<FlowingLineDatam> {
 	private int mCurrentBufferEndLinePosition = 0;
 	private FlowingLineDatam mReturnUnexpectedValue = new FlowingLineDatam("..", Color.RED, FlowingLineDatam.INCLUDE_END_OF_LINE);
 	private FlowingLineDatam mReturnLoadingValue = new FlowingLineDatam("loading..", Color.GREEN, FlowingLineDatam.INCLUDE_END_OF_LINE);
+	private Thread mTaskRunnter = null;
+	public ReadBackBuilder mBackBuilder = new ReadBackBuilder(); 
+	public ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder(); 
 
 	public TextViewerBuffer(int listSize, int textSize, int screenWidth, File path, String charset) {
 		super(listSize);
@@ -62,7 +65,7 @@ extends CyclingList<FlowingLineDatam> {
 			if(d < 0 || bufferSize <d){
 				return mReturnLoadingValue;
 			}else if(t == null){
-				return mReturnUnexpectedValue;				
+				return mReturnUnexpectedValue;
 			}
 			return t;
 		} catch(Throwable t) {
@@ -90,19 +93,39 @@ extends CyclingList<FlowingLineDatam> {
 		}
 	}
 
-	Thread mTaskRunnter = null;
-
-	public void startReadForward(int position) {
+	public void startTask(Builder builder) {
 		if (mTaskRunnter == null || !mTaskRunnter.isAlive()) {
-			mTaskRunnter = new Thread(new ReadForwardFileTask(position));
+			mTaskRunnter = new Thread(builder.create());
 			mTaskRunnter.start();
 		}
 	}
 
+	public void startReadForward(int position) {
+		mForwardBuilder.position = position;
+		startTask(mForwardBuilder);
+	}
+
 	public void startReadBack(int position) {
-		if (mTaskRunnter == null || !mTaskRunnter.isAlive()) {
-			mTaskRunnter = new Thread(new ReadBackFileTask(position,mCurrentBufferStartLinePosition));
-			mTaskRunnter.start();
+		mBackBuilder.position = position;
+		mBackBuilder.cashedStartPosition = mCurrentBufferStartLinePosition;
+		startTask(mBackBuilder);
+	}
+
+	interface Builder {
+		Runnable create();
+	}
+
+	public class ReadBackBuilder implements Builder{
+		public int position = 0;
+		public int cashedStartPosition = 0;
+		public Runnable create() {
+			return new ReadBackFileTask(position, cashedStartPosition);
+		}
+	}
+	public class ReadForwardBuilder implements Builder {
+		public int position = 0;
+		public Runnable create() {
+			return new ReadForwardFileTask(position);
 		}
 	}
 
@@ -121,7 +144,6 @@ extends CyclingList<FlowingLineDatam> {
 
 	class ReadForwardFileTask implements Runnable {
 		private int mStartPosition = 0;
-
 		public ReadForwardFileTask(int startPosition) {
 			mStartPosition = startPosition;
 		}
