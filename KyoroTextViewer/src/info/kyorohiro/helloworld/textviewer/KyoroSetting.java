@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 public class KyoroSetting {
 
 	public static final String TAG_CURRENT_CHARSET = "current charset";
+	public static final String TAG_CURRENT_FILE = "current file";
 	public static final String CURRENT_CHARSET_DEFAULT = "utf8";
 	public static final String VALUE_NONE = "none";
 	private static Object lock = new Object();
@@ -29,6 +30,26 @@ public class KyoroSetting {
 		} catch (Throwable t){
 		}
 	}
+
+	public static String getCurrentFile() {
+		String retry = VALUE_NONE;
+		try{
+			String t = getData(TAG_CURRENT_FILE);
+			if(t != null && !t.equals(VALUE_NONE)){
+				retry = t;
+			}
+		}catch(Throwable t){
+		}
+		return retry;
+	}
+
+	public static void setCurrentFile(String value) {
+		try{
+			setData(TAG_CURRENT_FILE, value);
+		} catch (Throwable t){
+		}
+	}
+
 
 
 	public static void setData(String property, String value) {

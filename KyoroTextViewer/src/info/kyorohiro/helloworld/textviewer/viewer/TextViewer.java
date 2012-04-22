@@ -107,6 +107,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			KyoroApplication.showMessage("file can not read " + file.toString());
 			return;
 		}
+		KyoroSetting.setCurrentFile(file.getAbsolutePath());
 		mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mTextSize, mBufferWidth, file, mCurrentCharset);
 		CyclingListInter<FlowingLineDatam> prevBuffer = mLineView.getCyclingList();
 		mLineView.setCyclingList(mBuffer);
