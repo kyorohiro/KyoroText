@@ -24,7 +24,7 @@ extends CyclingList<FlowingLineDatam> {
 	private int mCurrentBufferEndLinePosition = 0;
 	private int mCurrentPosition = 0;
 	private FlowingLineDatam mReturnUnexpectedValue = new FlowingLineDatam("..", Color.RED, FlowingLineDatam.INCLUDE_END_OF_LINE);
-	private FlowingLineDatam mReturnLoadingValue = new FlowingLineDatam("loading..", Color.GREEN, FlowingLineDatam.INCLUDE_END_OF_LINE);
+	private FlowingLineDatam mReturnLoadingValue = new FlowingLineDatam("loading..", Color.parseColor("#33FFFF00"), FlowingLineDatam.INCLUDE_END_OF_LINE);
 	private LookAheadCaching mCashing = null;
 	
 	public TextViewerBuffer(int listSize, int textSize, int screenWidth, File path, String charset) {

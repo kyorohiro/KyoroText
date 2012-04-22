@@ -78,6 +78,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		if(mBGImage.getImage().isRecycled()){
 			mBGImage.getImage().recycle();
 		}
+		if(mScrollImage.getImage().isRecycled()){
+			mScrollImage.getImage().recycle();
+		}
 	}
 
 	@Override
