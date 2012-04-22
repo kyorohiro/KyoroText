@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import android.graphics.Color;
 
 public class TextViewerBuffer 
+
 // todo following code:
 //   mod from extends to implements 
 // example)
@@ -24,13 +25,15 @@ extends CyclingList<FlowingLineDatam> {
 	private FlowingLineDatam mReturnUnexpectedValue = new FlowingLineDatam("..", Color.RED, FlowingLineDatam.INCLUDE_END_OF_LINE);
 	private FlowingLineDatam mReturnLoadingValue = new FlowingLineDatam("loading..", Color.GREEN, FlowingLineDatam.INCLUDE_END_OF_LINE);
 	private Thread mTaskRunnter = null;
-	public ReadBackBuilder mBackBuilder = new ReadBackBuilder(); 
-	public ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder(); 
-
+	private ReadBackBuilder mBackBuilder = new ReadBackBuilder(); 
+	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder(); 
+	private LookAheadCaching mCashing = null;
+	
 	public TextViewerBuffer(int listSize, int textSize, int screenWidth, File path, String charset) {
 		super(listSize);
 		try {
 			mLineManagerFromFile = new BigLineData(path, charset, textSize, screenWidth);
+			mCashing = new LookAheadCaching(this);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -68,6 +71,10 @@ extends CyclingList<FlowingLineDatam> {
 			t.printStackTrace();
 			return mReturnUnexpectedValue;				
 		} finally {
+			if(mCashing != null) {
+				mCashing.updateBufferedStatus();
+			}
+
 			if (mCurrentBufferEndLinePosition < (i + BigLineData.FILE_LIME*3)) {
 				if(0==super.getNumberOfStockedElement()){
 					startReadForward(-1);					
