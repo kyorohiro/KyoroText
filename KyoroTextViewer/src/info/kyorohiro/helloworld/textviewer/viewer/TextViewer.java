@@ -47,7 +47,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBuffer = getStartupMessageBuffer();
 		mBufferWidth = width;
 
-		mLineView = new LineView(mBuffer, textSize,10*BigLineData.FILE_LIME);
+		mLineView = new LineView(mBuffer, textSize,200);
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
 
@@ -138,7 +138,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			KyoroApplication.showMessage("file can not read " + file.toString());
 			return;
 		}
-		mBuffer = new ColorFilteredBuffer(10*BigLineData.FILE_LIME, mTextSize, mBufferWidth, file, mCurrentCharset);
+		mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mTextSize, mBufferWidth, file, mCurrentCharset);
 		mLineView.setCyclingList(mBuffer);
 		mLineView.setPositionX(0);
 		mLineView.setPositionY(10);

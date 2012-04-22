@@ -49,25 +49,21 @@ extends CyclingList<FlowingLineDatam> {
 		mCurrentBufferEndLinePosition = 0;
 		
 		try {
-
-			if(0<super.getNumberOfStockedElement()){
-				CharSequence startLine = super.get(0);
-				CharSequence endLine = super.get(super.getNumberOfStockedElement()-1);
-				MyBufferDatam startLineWithPosition = (MyBufferDatam)startLine;
-				MyBufferDatam endLineWithPosition = (MyBufferDatam)endLine;
-				mCurrentBufferStartLinePosition = (int)startLineWithPosition.getLinePosition();
-				mCurrentBufferEndLinePosition = (int)endLineWithPosition.getLinePosition();
-			}
-			int d = i - mCurrentBufferStartLinePosition;
-
 			int bufferSize = super.getNumberOfStockedElement();
-			FlowingLineDatam t= super.get(d);
-			if(d < 0 || bufferSize <d){
+			
+			doSetCurrentBufferedPosition();
+			// must to call following code after mCurrentBufferStartLinePosition.
+			int bufferedPoaition = i - mCurrentBufferStartLinePosition;
+
+			if(bufferedPoaition < 0 || bufferSize <bufferedPoaition){
 				return mReturnLoadingValue;
-			}else if(t == null){
-				return mReturnUnexpectedValue;
+			} else {
+				FlowingLineDatam bufferedDataForReturn= super.get(bufferedPoaition);
+				if(bufferedDataForReturn == null){
+					return mReturnUnexpectedValue;
+				}
+				return bufferedDataForReturn;
 			}
-			return t;
 		} catch(Throwable t) {
 			t.printStackTrace();
 			return mReturnUnexpectedValue;				
@@ -93,6 +89,20 @@ extends CyclingList<FlowingLineDatam> {
 		}
 	}
 
+	private void doSetCurrentBufferedPosition() {
+		int bufferSize = super.getNumberOfStockedElement();
+		if(0<bufferSize){
+			CharSequence startLine = super.get(0);
+			CharSequence endLine = super.get(bufferSize-1);
+			MyBufferDatam startLineWithPosition = (MyBufferDatam)startLine;
+			MyBufferDatam endLineWithPosition = (MyBufferDatam)endLine;
+			mCurrentBufferStartLinePosition = (int)startLineWithPosition.getLinePosition();
+			mCurrentBufferEndLinePosition = (int)endLineWithPosition.getLinePosition();
+		} else {
+			mCurrentBufferStartLinePosition = 0;
+			mCurrentBufferEndLinePosition = 0;
+		}
+	}
 	public void startTask(Builder builder) {
 		if (mTaskRunnter == null || !mTaskRunnter.isAlive()) {
 			mTaskRunnter = new Thread(builder.create());

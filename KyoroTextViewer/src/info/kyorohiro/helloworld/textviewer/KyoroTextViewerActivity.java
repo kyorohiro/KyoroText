@@ -19,6 +19,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 	private TextViewer mTextViewer = null;
 	private int mViewerWidth = 100;
 	private int mViewerHeight = 100;
+	private boolean modifyIntent = false; 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,12 +38,19 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivityOpenFileAction(mTextViewer));
 		setMenuAction(new MainActivitySetFontAction(mTextViewer));
 
-		doFileOpenIntentAction();
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		modifyIntent = true;
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		doFileOpenIntentAction();
 		mStage.start();
 	}
 
@@ -69,6 +77,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 
 	private void doFileOpenIntentAction() {
 		Intent intentFromExteralApplication = getIntent();
+		modifyIntent = false;
 		try{
 			if(intentFromExteralApplication != null){
 				String action = intentFromExteralApplication.getAction();
