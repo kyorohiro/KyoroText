@@ -177,7 +177,13 @@ public class BigLineData {
 					// todo kiyohiro unefficient coding
 					String tmp = b.toString();
 					int len =mPaint.breakText(tmp, true, mWidth, null);
-					if (len != tmp.length()) {
+					if (len < tmp.length()) {
+						// todo add test case following pattern.
+						// add breakText return 2
+						// but b.length return 1
+						//  >> before modify coding if(len != tmp.length())
+						// 
+						
 						//Ç–Ç∆Ç¬ëOÇ≈â¸çs
 						b.deleteCharAt(b.length()-1);
 						mReader.seek(todoPrevPosition);
