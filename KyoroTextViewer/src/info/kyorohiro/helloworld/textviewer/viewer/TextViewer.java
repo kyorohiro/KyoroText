@@ -61,39 +61,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mCircleController.setEventListener(new MyCircleControllerEvent());
 	}
 
-	private CyclingList<FlowingLineDatam> getStartupMessageBuffer() {
-		String[] message = {
-				"Please open file\n",
-				"Current charset is "+mCurrentCharset+"\n", 
-				"..\n",
-				"Sorry, this application is pre-alpha version",
-				"Testing and Developing.. now",
-				"Please mail kyorohiro.android@gmail.com, ", 
-				"If you have particular questions or comments, ",
-				"please don't hesitate to contact me. Thank you. \n"
-		};
-		int color[] = {
-				Color.CYAN,
-				Color.YELLOW,
-				Color.RED,
-				Color.RED,
-				Color.RED,
-				Color.RED,
-				Color.RED,
-				Color.RED,				
-		};
-		CyclingList<FlowingLineDatam> startupMessage = new CyclingList<FlowingLineDatam>(100);
-		for(int i=0;i<message.length;i++){
-			String m = message[i];
-			int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
-			if(!m.endsWith("\n")){
-				crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
-			}
-			startupMessage.add(new FlowingLineDatam(m, color[i], crlf));
-		}
-		return startupMessage;
-	}
-
+	@Override
 	public void start() {
 		Resources res = KyoroApplication.getKyoroApplication().getResources();
 		InputStream is = res.openRawResource(R.drawable.tex2res4);
@@ -104,18 +72,11 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mScrollBar.setBGImage(mScrollImage);
 	}
 
+	@Override
 	public void stop() {
 		mLineView.setBGImage(null);
 		if(mBGImage.getImage().isRecycled()){
 			mBGImage.getImage().recycle();
-		}
-	}
-
-	public void setCharset(String charset) {
-		if (charset == null) {
-			mCurrentCharset = "utf8";
-		} else {
-			mCurrentCharset = charset;
 		}
 	}
 
@@ -124,6 +85,16 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		super.setRect(w, h);
 		mLineView.setRect(w, h);
 	}
+
+	public void setCharset(String charset) {
+		if(charset == null|| charset.equals("")){
+			mCurrentCharset = "utf8";
+		}else{
+			mCurrentCharset = charset;
+		}
+	}
+
+
 
 	public LineView getLineView() {
 		return mLineView;
@@ -141,7 +112,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mTextSize, mBufferWidth, file, mCurrentCharset);
 		CyclingListInter<FlowingLineDatam> prevBuffer = mLineView.getCyclingList();
 		mLineView.setCyclingList(mBuffer);
-		//mLineView.setPositionY(10);
 		prevBuffer.clear();
 		((TextViewerBuffer) mBuffer).startReadForward(-1);
 		KyoroApplication.showMessage("charset="+mCurrentCharset);
@@ -195,7 +165,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	public static class ColorFilteredBuffer extends TextViewerBuffer {
+	private static class ColorFilteredBuffer extends TextViewerBuffer {
 		public ColorFilteredBuffer(int listSize, int textSize, int screenWidth,
 				File path, String charset) {
 			super(listSize, textSize, screenWidth, path, charset);
@@ -211,6 +181,39 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			super.add(element);
 			element.setColor(COLOR_FONT1);
 		}
+	}
+
+	private CyclingList<FlowingLineDatam> getStartupMessageBuffer() {
+		String[] message = {
+				"Please open file\n",
+				"Current charset is "+mCurrentCharset+"\n", 
+				"..\n",
+				"Sorry, this application is pre-alpha version",
+				"Testing and Developing.. now",
+				"Please mail kyorohiro.android@gmail.com, ", 
+				"If you have particular questions or comments, ",
+				"please don't hesitate to contact me. Thank you. \n"
+		};
+		int color[] = {
+				Color.CYAN,
+				Color.YELLOW,
+				Color.RED,
+				Color.RED,
+				Color.RED,
+				Color.RED,
+				Color.RED,
+				Color.RED,				
+		};
+		CyclingList<FlowingLineDatam> startupMessage = new CyclingList<FlowingLineDatam>(100);
+		for(int i=0;i<message.length;i++){
+			String m = message[i];
+			int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
+			if(!m.endsWith("\n")){
+				crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
+			}
+			startupMessage.add(new FlowingLineDatam(m, color[i], crlf));
+		}
+		return startupMessage;
 	}
 
 }
