@@ -94,8 +94,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
-
-
 	public LineView getLineView() {
 		return mLineView;
 	}
@@ -113,7 +111,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		CyclingListInter<FlowingLineDatam> prevBuffer = mLineView.getCyclingList();
 		mLineView.setCyclingList(mBuffer);
 		prevBuffer.clear();
-		((TextViewerBuffer) mBuffer).startReadForward(-1);
+		((TextViewerBuffer) mBuffer).startReadFile();
 		KyoroApplication.showMessage("charset="+mCurrentCharset);
 	}
 

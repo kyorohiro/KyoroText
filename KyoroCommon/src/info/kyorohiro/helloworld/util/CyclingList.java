@@ -13,6 +13,10 @@ public class CyclingList<X> implements CyclingListInter<X> {
 		mList = new LinkedList<X>();
 	}
 
+	public int getMaxOfStackedElement() {
+		return mMaxOfStackedElement;
+	}
+
 	public synchronized void clear() {
 		mList.clear();
 		mNumOfAdd = 0;
