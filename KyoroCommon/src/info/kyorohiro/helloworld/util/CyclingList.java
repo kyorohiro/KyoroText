@@ -100,4 +100,5 @@ public class CyclingList<X> implements CyclingListInter<X> {
 	public synchronized void clearNumOfAdd() {
 		mNumOfAdd = 0;
 	}
+
 }

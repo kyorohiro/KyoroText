@@ -139,9 +139,10 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			return;
 		}
 		mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mTextSize, mBufferWidth, file, mCurrentCharset);
+		CyclingListInter<FlowingLineDatam> prevBuffer = mLineView.getCyclingList();
 		mLineView.setCyclingList(mBuffer);
-		mLineView.setPositionX(0);
-		mLineView.setPositionY(10);
+		//mLineView.setPositionY(10);
+		prevBuffer.clear();
 		((TextViewerBuffer) mBuffer).startReadForward(-1);
 		KyoroApplication.showMessage("charset="+mCurrentCharset);
 	}
