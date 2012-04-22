@@ -13,7 +13,7 @@ public class CyclingList<X> implements CyclingListInter<X> {
 		mList = new LinkedList<X>();
 	}
 
-	public int getMaxOfStackedElement() {
+	public synchronized int getMaxOfStackedElement() {
 		return mMaxOfStackedElement;
 	}
 

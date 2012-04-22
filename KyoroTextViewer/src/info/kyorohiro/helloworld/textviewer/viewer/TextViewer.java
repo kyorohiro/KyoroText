@@ -32,7 +32,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	private String mCurrentCharset = "utf8";
 
-	private CyclingList<FlowingLineDatam> mBuffer = null;
+	private CyclingListInter<FlowingLineDatam> mBuffer = null;
 	private LineView mLineView = null;
 	private int mBufferWidth = 0;
 	private int mTextSize = 0;
@@ -115,7 +115,12 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		CyclingListInter<FlowingLineDatam> prevBuffer = mLineView.getCyclingList();
 		mLineView.setCyclingList(mBuffer);
 		prevBuffer.clear();
-		((TextViewerBuffer) mBuffer).startReadFile();
+		if(mBuffer instanceof TextViewerBuffer) {
+			((TextViewerBuffer) mBuffer).startReadFile();
+		}
+		if(prevBuffer instanceof TextViewerBuffer) {
+			((TextViewerBuffer) prevBuffer).dispose();
+		}
 		KyoroApplication.showMessage("charset="+mCurrentCharset);
 	}
 

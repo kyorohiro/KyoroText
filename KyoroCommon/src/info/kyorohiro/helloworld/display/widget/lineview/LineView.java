@@ -20,6 +20,9 @@ public class LineView extends SimpleDisplayObject {
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
+	// todo refactaring
+	private int mCash  = 0;
+	private FlowingLineDatam[] mCashBuffer = new FlowingLineDatam[0];
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
@@ -56,19 +59,19 @@ public class LineView extends SimpleDisplayObject {
 		return mTextSize;
 	}
 
-	public void setCyclingList(CyclingListInter<FlowingLineDatam> inputtedText) {
+	public synchronized void setCyclingList(CyclingListInter<FlowingLineDatam> inputtedText) {
 		mInputtedText = inputtedText;
 	}
 
-	public CyclingListInter<FlowingLineDatam> getCyclingList() {
+	public synchronized CyclingListInter<FlowingLineDatam> getCyclingList() {
 		return mInputtedText;
 	}
 
-	public int getShowingTextStartPosition() {
+	public synchronized int getShowingTextStartPosition() {
 		return mShowingTextStartPosition;
 	}
 
-	public int getShowingTextEndPosition() {
+	public synchronized int getShowingTextEndPosition() {
 		return mShowingTextEndPosition;
 	}
 
@@ -127,11 +130,8 @@ public class LineView extends SimpleDisplayObject {
 		}
 	}
 	
-	// todo refactaring
-	private int mCash  = 0;
-	private FlowingLineDatam[] mCashBuffer = new FlowingLineDatam[0];
 	@Override
-	public void paint(SimpleGraphics graphics) {
+	public synchronized void paint(SimpleGraphics graphics) {
 		CyclingListInter<FlowingLineDatam> showingText = mInputtedText;
 		int start = 0;
 		int end = 0;

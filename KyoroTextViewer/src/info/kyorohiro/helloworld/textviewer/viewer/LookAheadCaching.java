@@ -43,7 +43,7 @@ public class LookAheadCaching {
 
      //   if(sp<=cp&&cp>=ep) {
         	// 
-        if(ep<(cp+chunkSize*3)){
+        if(ep<(cp+chunkSize*4)){
         	startReadForward(ep);
         } else 
         if(sp>(cp-chunkSize*3)){
