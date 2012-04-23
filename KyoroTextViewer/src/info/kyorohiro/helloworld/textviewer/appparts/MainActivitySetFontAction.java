@@ -64,6 +64,7 @@ public class MainActivitySetFontAction implements MainActivityMenuAction {
 					// save selected charset in setting file.
 					if(selectedCharset != null && !selectedCharset.equals("")){
 						KyoroSetting.setCurrentCharset(selectedCharset);
+						mDisplayedTextViewer.restart();
 					}
 
 					// 

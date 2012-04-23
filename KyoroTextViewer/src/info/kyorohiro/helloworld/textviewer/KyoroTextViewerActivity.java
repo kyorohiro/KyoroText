@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivity;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetFontAction;
+import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +38,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 
 		setMenuAction(new MainActivityOpenFileAction(mTextViewer));
 		setMenuAction(new MainActivitySetFontAction(mTextViewer));
-
+		setMenuAction(new MainActivitySetTextSizeAction(mTextViewer));
 	}
 
 	@Override
@@ -65,6 +66,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		Display disp = wm.getDefaultDisplay();
 		int width = disp.getWidth();
 		int height = disp.getHeight();
+		int textSize = KyoroSetting.getCurrentFontSize();
 		mViewerWidth = width;
 		mViewerHeight = height;
 		if(mViewerWidth>mViewerHeight){
@@ -72,7 +74,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 			mViewerWidth = mViewerHeight;
 			mViewerHeight = t;
 		}
-		return new TextViewer(12, mViewerWidth*9/10);
+		return new TextViewer(textSize, mViewerWidth*9/10);
 	}
 
 	private void doFileOpenIntentAction() {

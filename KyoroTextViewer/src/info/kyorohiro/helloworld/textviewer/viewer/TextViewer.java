@@ -35,14 +35,15 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private CyclingListInter<FlowingLineDatam> mBuffer = null;
 	private LineView mLineView = null;
 	private int mBufferWidth = 0;
-	private int mTextSize = 0;
 	private SimpleCircleController mCircleController = null;
 	private ScrollBar mScrollBar = null;
 	private SimpleImage mBGImage = null;
 	private SimpleImage mScrollImage = null;
+	private int mCurrentFontSize = KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
+	private String mCurrentPath = "";
 
 	public TextViewer(int textSize, int width) {
-		mTextSize = textSize;
+		mCurrentFontSize = textSize;
 		mCurrentCharset = KyoroSetting.getCurrentCharset();
 		mBuffer = getStartupMessageBuffer();
 		mBufferWidth = width;
@@ -89,6 +90,11 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mLineView.setRect(w, h);
 	}
 
+	public void setCurrentFontSize(int fontSize){
+		mCurrentFontSize = fontSize;
+		mLineView.setTextSize(fontSize);
+	}
+
 	public void setCharset(String charset) {
 		if(charset == null|| charset.equals("")){
 			mCurrentCharset = "utf8";
@@ -101,6 +107,11 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return mLineView;
 	}
 
+	public void restart() {
+		if(mCurrentPath != null && !mCurrentPath.equals("")){
+			readFile(new File(mCurrentPath));
+		}
+	}
 	public void readFile(File file) {
 		if(file == null) {
 			KyoroApplication.showMessage("file can not read null file");
@@ -110,8 +121,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			KyoroApplication.showMessage("file can not read " + file.toString());
 			return;
 		}
+		mCurrentPath = file.getAbsolutePath();
 		KyoroSetting.setCurrentFile(file.getAbsolutePath());
-		mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mTextSize, mBufferWidth, file, mCurrentCharset);
+		mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mCurrentFontSize, mBufferWidth, file, mCurrentCharset);
 		CyclingListInter<FlowingLineDatam> prevBuffer = mLineView.getCyclingList();
 		mLineView.setCyclingList(mBuffer);
 		prevBuffer.clear();
