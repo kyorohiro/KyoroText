@@ -146,7 +146,16 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			TextViewer.this.mCircleController.setPoint(x, y);
 			setTextViewSize(graphics);
 			updateCircleControllerSize(graphics);
-			paintScroll(graphics);			
+			paintScroll(graphics);
+/*			int textSize = graphics.getTextSize();
+			graphics.setColor(Color.parseColor("#44000000"));
+			graphics.setStrokeWidth(textSize/2);
+			graphics.drawLine(0, 0, graphics.getWidth(), 0);
+			graphics.drawLine(0, graphics.getHeight(), graphics.getWidth(), graphics.getHeight());
+			for(int i=1;i<6;i++){
+				graphics.drawLine(0, textSize/i/2, graphics.getWidth(), textSize/i/2);
+				graphics.drawLine(0, graphics.getHeight()-textSize/i/2, graphics.getWidth(), graphics.getHeight()-textSize/i/2);
+			}*/
 		}
 
 		private void setTextViewSize(SimpleGraphics graphics) {

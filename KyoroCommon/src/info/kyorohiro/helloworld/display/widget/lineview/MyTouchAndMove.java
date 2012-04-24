@@ -10,7 +10,7 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 	private int mPrevY = 0;
 	private long mPrevTime = 0;
 	private int mMovingX = 0;
-	private int mMovingY = 0;
+	private double mMovingY = 0;
 	private int mHeavyX = 0;
 	private int mHeavyY = 0;
 	private int mPowerX = 0;
@@ -30,21 +30,17 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mHeavyX /= 1.2;
 			// todo refactaring
 			mViewer.setPositionX(mViewer.getPositionX() + mHeavyX/* /textSize */);
-//			mViewer.addPositionY(mViewer.getPositionX() + mHeavyX/* /textSize */);
 		}
 		if (mHeavyY < -5 || mHeavyY > 5) {
 			mHeavyY /= 1.2;
-			int textSize = (int) (mViewer.getTextSize() * mViewer.getScale());// todo
-																				// 2.5f
+			int textSize = (int) (mViewer.getTextSize() * mViewer.getScale());// todo																				// 2.5f
 			// todo refactaring
-			// android.util.Log.v("kiyohiro","r="+(mViewer.getPositionY() +"+"+
-			// mHeavyY/textSize));
-			mViewer.setPositionY(mViewer.getPositionY() + mHeavyY / textSize);
-//			mViewer.addPositionY(mViewer.getPositionY() + mHeavyY / textSize);
-
+			mViewer.setPositionY(mViewer.getPositionY()+mHeavyY/textSize);
+			//mViewer.setTodoExtra((mViewer.getTodoExtra()+mHeavyY/textSize)%textSize);
 		}
 	}
 
+	private double mMoveYY =0;
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		if (mPrevY == -999 || mPrevX == -999) {
@@ -57,36 +53,61 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 		if (action == MotionEvent.ACTION_MOVE) {
 			mHeavyX = 0;
 			mHeavyY = 0;
-
 			mMovingY += y - mPrevY;
-			mPrevY = y;
+			mMoveYY  += y - mPrevY;
 			mMovingX += x - mPrevX;
+			int todoY = y - mPrevY;
+			mPrevY = y;
 			mPrevX = x;
+
 			mPrevTime = System.currentTimeMillis();
 			updateMovePower(x, y);
 			int textSize = (int) (mViewer.getTextSize() * mViewer.getScale());// todo
 																				// 2.5f
 			boolean ret = false;
-			if (mMovingY < textSize || textSize < mMovingY) {
-				int notMuchValue = mMovingY % textSize;
-				mViewer.setPositionY(mViewer.getPositionY()
-						+ (mMovingY - notMuchValue) / textSize);
-				mMovingY = notMuchValue;
-				ret = true;
+			{
+				//todo refactaring
+				double tS = textSize*1.2;
+				if((mMovingY/tS)>=1 || (mMovingY/tS)<=-1) {
+					mViewer.setPositionY(mViewer.getPositionY()+ (int)(mMovingY/tS));
+					mMovingY = mMovingY%(int)tS;
+					//int a = mViewer.getTodoExtra();
+//					mMoveYY +=a-(int)(mMovingY/tS);
+//					mViewer.setTodoExtra((int)((mViewer.getPositionY()+ mMoveYY)%tS));
+					//if((mMovingY/tS)>=1){
+					if(mViewer.getTodoExtra()>=0){
+						mMoveYY=(mMoveYY-tS+todoY)%tS;
+					//	mViewer.setTodoExtra((int)mMoveYY);
+//						mViewer.setTodoExtra((int)((mViewer.getTodoExtra()-tS+(todoY))%tS));
+					} else {
+						mMoveYY=(mMoveYY+tS+todoY)%tS;
+					//	mViewer.setTodoExtra((int)mMoveYY);
+//						mViewer.setTodoExtra((int)((mViewer.getTodoExtra()+tS+(todoY))%tS));						
+					}
+				} else {
+//					mViewer.setTodoExtra((int)((mViewer.getPositionY()+ mMoveYY)%tS));					
+					mMoveYY =(mMoveYY+todoY)%tS;
+					//mViewer.setTodoExtra((int)mMoveYY);
+//					mViewer.setTodoExtra((int)((mViewer.getTodoExtra()+(todoY))%tS));
+				}
+				// until here 				
 			}
 
+
 			if (mMovingX < textSize || textSize < mMovingX) {
-				int notMuchValue = mMovingY % textSize;
+				int notMuchValue = mMovingX % textSize;
 				mViewer.setPositionX(mViewer.getPositionX()
 						+ (mMovingX - notMuchValue));
 				mMovingX = notMuchValue;
 				ret = true;
 			}
+			//
 			return ret;
 		} else if (action == MotionEvent.ACTION_DOWN) {
 			mHeavyX = 0;
 			mHeavyY = 0;
-			mMovingY = 0;
+			mMovingY = mViewer.getTodoExtra();;
+			mMoveYY = mMovingY; 
 			mMovingX = 0;
 			mPrevTime = 0;
 			mPrevY = -999;

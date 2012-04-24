@@ -23,6 +23,8 @@ public class LineView extends SimpleDisplayObject {
 	// todo refactaring
 	private int mCash  = 0;
 	private FlowingLineDatam[] mCashBuffer = new FlowingLineDatam[0];
+	
+	private int mTodoExtraY = 0;
 
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
@@ -86,6 +88,13 @@ public class LineView extends SimpleDisplayObject {
 	public void isTail(boolean on) {
 		mIsTail = on;
 	}
+
+	public synchronized int getTodoExtra() {
+		return mTodoExtraY;
+	}
+	public synchronized int setTodoExtra(int extra) {
+		return mTodoExtraY = extra;
+	}
 	public synchronized int getPositionY() {
 		return mPosition;
 	}
@@ -114,7 +123,8 @@ public class LineView extends SimpleDisplayObject {
 				mPosX = -1*(int)(getWidth()*mScale-getWidth());
 			}
 			int x = (getWidth()) / 20 + mPosX*19/20; //todo mPosY
-			int y = (int)(graphics.getTextSize()*1.2) * (blank + i + 1);
+			int y = mTodoExtraY+
+			(int)(graphics.getTextSize()*1.2) * (blank + i + 1);
 			int yy = y + (int)(graphics.getTextSize()*0.2);
 			
 			graphics.drawText("" + list[i], x, y);
