@@ -41,12 +41,14 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private SimpleImage mScrollImage = null;
 	private int mCurrentFontSize = KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
 	private String mCurrentPath = "";
+	private int mMergine = 0;
 
-	public TextViewer(int textSize, int width) {
+	public TextViewer(int textSize, int width, int mergine) {
 		mCurrentFontSize = textSize;
 		mCurrentCharset = KyoroSetting.getCurrentCharset();
 		mBuffer = getStartupMessageBuffer();
-		mBufferWidth = width;
+		mBufferWidth = width-mergine*2;
+		mMergine = mergine;
 
 		mLineView = new LineView(mBuffer, textSize,200);
 		mLineView.isTail(false);
@@ -142,8 +144,16 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			int x = graphics.getWidth() - mCircleController.getWidth() / 2;
 			int y = graphics.getHeight() - mCircleController.getHeight() / 2;
 			TextViewer.this.mCircleController.setPoint(x, y);
+			setTextViewSize(graphics);
 			updateCircleControllerSize(graphics);
 			paintScroll(graphics);			
+		}
+
+		private void setTextViewSize(SimpleGraphics graphics) {
+			int textSize = TextViewer.this.mCurrentFontSize;
+			int width = TextViewer.this.mLineView.getWidth();//SimpleDisplayObject.getStage(TextViewer.this).getWidth();//graphics.getWidth();
+			int w = TextViewer.this.mBufferWidth + mMergine*2;
+			TextViewer.this.mLineView.setTextSize(textSize*width/w);
 		}
 
 		private void updateCircleControllerSize(SimpleGraphics graphics) {
