@@ -155,7 +155,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		ImageButton b = new ImageButton(this);
 		b.setOnClickListener(f);
 		b.setImageResource(android.R.drawable.ic_media_play);
-		mInputForLogFilter.setHeight(b.getHeight());
+		//mInputForLogFilter.setHeight(b.getHeight());
 
 		LinearLayout h = new LinearLayout(this);
 		h.setOrientation(LinearLayout.HORIZONTAL);

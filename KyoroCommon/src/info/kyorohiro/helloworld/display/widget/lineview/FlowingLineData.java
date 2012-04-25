@@ -19,7 +19,8 @@ implements SimpleLockInter {
 	private int mWidth = 1000;
 	private int mNumOfLineAdded = 0;
 	private Pattern mFilter = null;
-	private SimpleLock mLock = new SimpleLock();
+	private boolean locked = false;
+	private Thread cThread = null;
 
 	public FlowingLineData(int listSize, int width, int textSize) {
 		super(new CyclingList<FlowingLineDatam>(listSize),listSize);
@@ -27,17 +28,6 @@ implements SimpleLockInter {
 		mPaint = new Paint();
 		mPaint.setTextSize(textSize);
 		//mPaint.setTypeface(Typeface.SERIF);
-	}
-
-	@Override
-	public void beginLock() {
-		mLock.begin();
-	}
-
-
-	@Override
-	public void endLock() {
-		mLock.end();
 	}
 
 	public int getTextSize() {
@@ -48,15 +38,11 @@ implements SimpleLockInter {
 		mPaint.setTextSize(height);
 	}
 
-	public int getNumOfLineAdded() {
-		try {
-			mLock.begin();
-			int t = mNumOfLineAdded;
-			t = 0;
-			return t;
-		} finally {
-			mLock.end();
-		}
+	public synchronized int getNumOfLineAdded() {
+		lock();
+		int t = mNumOfLineAdded;
+		t = 0;
+		return t;
 	}
 
 	public void setWidth(int w) {
@@ -75,80 +61,58 @@ implements SimpleLockInter {
 		return mFilter;
 	}
 
-	public void addLineToHead(CharSequence line) {
-		try {
-			mLock.begin();
-			this.head(new FlowingLineDatam(line, mCurrentColor,
-					FlowingLineDatam.INCLUDE_END_OF_LINE));
-		} finally {
-			mLock.end();
+	public synchronized void addLineToHead(CharSequence line) {
+		lock();
+		this.head(new FlowingLineDatam(line, mCurrentColor,
+				FlowingLineDatam.INCLUDE_END_OF_LINE));
+	}
+
+	public synchronized void addLinePerBreakText(CharSequence line) {
+		lock();
+		setColorPerLine(line);
+
+		if (line == null) {
+			line = "";
+		}
+		int len = 0;
+		while (true) {
+			len = mPaint.breakText(line.toString(), true, mWidth, null);
+			if (len == line.length()) {
+				mNumOfLineAdded++;
+				add(new FlowingLineDatam(line, mCurrentColor,
+						FlowingLineDatam.INCLUDE_END_OF_LINE));
+				break;
+			} else {
+				mNumOfLineAdded++;
+				add(new FlowingLineDatam(line.subSequence(0, len), mCurrentColor,
+						FlowingLineDatam.EXCLUDE_END_OF_LINE));
+				line = line.subSequence(len, len+line.length()-len);
+				// kiyo
+			}
 		}
 	}
 
-	public void addLinePerBreakText(CharSequence line) {
-		try {
-			mLock.begin();
-
-			setColorPerLine(line);
-
-			if (line == null) {
-				line = "";
-			}
-			int len = 0;
-			while (true) {
-				len = mPaint.breakText(line.toString(), true, mWidth, null);
-				if (len == line.length()) {
-					mNumOfLineAdded++;
-					add(new FlowingLineDatam(line, mCurrentColor,
-							FlowingLineDatam.INCLUDE_END_OF_LINE));
-					break;
-				} else {
-					mNumOfLineAdded++;
-					add(new FlowingLineDatam(line.subSequence(0, len), mCurrentColor,
-							FlowingLineDatam.EXCLUDE_END_OF_LINE));
-					line = line.subSequence(len, len+line.length()-len);
-					// kiyo
-				}
-			}
-		} finally {
-			mLock.end();
+	public synchronized FlowingLineDatam[] getLastLines(int numberOfRetutnArrayElement) {
+		lock();
+		if (numberOfRetutnArrayElement < 0) {
+			return new FlowingLineDatam[0];
 		}
+		FlowingLineDatam[] ret = new FlowingLineDatam[numberOfRetutnArrayElement];
+		return (FlowingLineDatam[]) getLast(ret, numberOfRetutnArrayElement);
 	}
 
-	public FlowingLineDatam[] getLastLines(int numberOfRetutnArrayElement) {
-		try {
-			mLock.begin();
-			if (numberOfRetutnArrayElement < 0) {
-				return new FlowingLineDatam[0];
-			}
-			FlowingLineDatam[] ret = new FlowingLineDatam[numberOfRetutnArrayElement];
-			return (FlowingLineDatam[]) getLast(ret, numberOfRetutnArrayElement);
-		} finally {
-			mLock.end();
+	public synchronized FlowingLineDatam[] getLines(int start, int end) {
+		lock();
+		if (start > end) {
+			return new FlowingLineDatam[0];
 		}
+		FlowingLineDatam[] ret = new FlowingLineDatam[end - start];
+		return getElements(ret, start, end);
 	}
 
-	public FlowingLineDatam[] getLines(int start, int end) {
-		try {
-			mLock.begin();
-
-			if (start > end) {
-				return new FlowingLineDatam[0];
-			}
-			FlowingLineDatam[] ret = new FlowingLineDatam[end - start];
-			return getElements(ret, start, end);
-		} finally {
-			mLock.end();
-		}
-	}
-
-	public FlowingLineDatam getLine(int i) {
-		try {
-			mLock.begin();
-			return (FlowingLineDatam) super.get(i);
-		} finally {
-			mLock.end();
-		}
+	public synchronized FlowingLineDatam getLine(int i) {
+		lock();
+		return (FlowingLineDatam) super.get(i);
 	}
 
 	private int mCurrentColor = Color.parseColor("#ccc9f486");
@@ -186,5 +150,25 @@ implements SimpleLockInter {
 		// ever time return false;
 		return false;
 	}
+	@Override
+	public synchronized void beginLock() {
+		locked = true;
+		cThread = Thread.currentThread();
+	}
 
+	@Override
+	public synchronized void endLock() {
+		locked = false;
+		notifyAll();
+	}
+
+	private synchronized void lock() {
+		if(locked&&cThread !=null&& cThread != Thread.currentThread()) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
