@@ -14,12 +14,17 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 public class KyoroMemoryInfo {
+	public KyoroMemoryInfo() {
+		setMethod();
+	}
+
 	public List<RunningAppProcessInfo>  getRunningAppList(Context context) {
 		ActivityManager manager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
 		List<RunningAppProcessInfo> runningApp = manager.getRunningAppProcesses();
 		return runningApp;
 	}
 
+	
 	public ActivityManager.MemoryInfo getMemoryInfo(Context context) {
 	    ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
 	    ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
@@ -92,10 +97,10 @@ public class KyoroMemoryInfo {
 
 	public void setMethod() {
 		try {
-			mGetProcessMemoryInfo = ActivityManager.class.getMethod("getProcessMemoryInfo", null);
-			mGetTotalPrivateDirty = ActivityManager.class.getMethod("getTotalPrivateDirty", null);
-			mGetTotalPss = ActivityManager.class.getMethod("getTotalPss", null);
-			mGetTotalSharedDirty = ActivityManager.class.getMethod("getTotalSharedDirty", null);
+			mGetProcessMemoryInfo = ActivityManager.class.getMethod("getProcessMemoryInfo", mGetProcessMemoryInfoSignature);
+			mGetTotalPrivateDirty = android.os.Debug.MemoryInfo.class.getMethod("getTotalPrivateDirty", null);
+			mGetTotalPss = android.os.Debug.MemoryInfo.class.getMethod("getTotalPss", null);
+			mGetTotalSharedDirty = android.os.Debug.MemoryInfo.class.getMethod("getTotalSharedDirty", null);
 			support = true;
 		} catch (SecurityException e) {
 			e.printStackTrace();
