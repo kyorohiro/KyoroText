@@ -41,18 +41,18 @@ public class LookAheadCaching {
         int mx = buffer.getMaxOfStackedElement();
         int chunkSize = mx/10;
 
-     //   if(sp<=cp&&cp>=ep) {
+        if((sp-chunkSize)<=cp&&cp<=(ep+chunkSize)) {
         	// 
-        if(ep<(cp+chunkSize*4)){
-        	startReadForward(ep);
-        } else 
-        if(sp>(cp-chunkSize*3)){
-        	startReadBack(sp);
-        }
-      //  } else {
-        	// 
-        	
-      //  }
+        	if(ep<(cp+chunkSize*4)){
+        		startReadForward(ep);
+        	} else if(sp>(cp-chunkSize*3)){
+        		startReadBack(sp);
+        	}
+        } else {
+        	//buffer.clear();
+//        	int pos = BigLineData.FILE_LIME;
+        	startReadForwardAndClear(cp);
+       }
 	}
 	public void startTask(Builder builder) {
 		if (mTaskRunnter == null || !mTaskRunnter.isAlive()) {
@@ -61,8 +61,14 @@ public class LookAheadCaching {
 		}
 	}
 
+	public void startReadForwardAndClear(int position) {
+		mForwardBuilder.position = position;
+		mForwardBuilder.clear = true;
+		startTask(mForwardBuilder);
+	}
 	public void startReadForward(int position) {
 		mForwardBuilder.position = position;
+		mForwardBuilder.clear = false;
 		startTask(mForwardBuilder);
 	}
 
@@ -90,17 +96,17 @@ public class LookAheadCaching {
 			return new ReadBackFileTask(buffer, position, cashedStartPosition);
 		}
 	}
+
 	public class ReadForwardBuilder implements Builder {
 		public int position = 0;
+		public boolean clear;
 		public Runnable create() {
 			TextViewerBuffer buffer = mBuffer.get();
 			if(buffer== null) {
 				//todo
 				return null;
 			}
-			return new ReadForwardFileTask(
-					buffer,
-					position);
+			return new ReadForwardFileTask(buffer,position,clear);
 		}
 	}
 
@@ -166,15 +172,23 @@ public class LookAheadCaching {
 		private int mStartPosition = 0;
 		private BigLineData mLineManagerFromFile = null;
 		private TextViewerBuffer mTextViewer = null;
-
+		private boolean mClear = false;
 		public ReadForwardFileTask(TextViewerBuffer textViewer, int startPosition) {
 			mLineManagerFromFile = textViewer.getBigLineData();
 			mTextViewer = textViewer;
 			mStartPosition = startPosition;
 		}
-
+		public ReadForwardFileTask(TextViewerBuffer textViewer, int startPosition,boolean clear) {
+			mLineManagerFromFile = textViewer.getBigLineData();
+			mTextViewer = textViewer;
+			mStartPosition = startPosition;
+			mClear = clear;
+		}
 		public void run() {
 			try {
+				if(mClear){
+					mTextViewer.clear();
+				}
 				int index = mStartPosition/BigLineData.FILE_LIME+1;
 				mLineManagerFromFile.moveLinePer100(index);
 				for (int i = 0;

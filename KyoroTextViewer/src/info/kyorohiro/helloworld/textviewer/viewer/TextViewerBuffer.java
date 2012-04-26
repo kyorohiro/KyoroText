@@ -71,6 +71,10 @@ extends LockableCyclingList {
 		mCashing.startReadForward(-1);
 	}
 
+	public void startReadFile(int pos) {
+		mCashing.startReadForward(pos);
+	}
+
 	public void dispose() {
 		if (null != mLineManagerFromFile) {
 			try {
