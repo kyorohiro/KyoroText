@@ -43,9 +43,27 @@ public class LookAheadCaching {
 
         if((sp-chunkSize)<=cp&&cp<=(ep+chunkSize)) {
         	// 
+        	boolean forward = false;
+        	boolean back = false;
         	if(ep<(cp+chunkSize*4)){
+        		forward = true;
+//        		startReadForward(ep);
+        	} 
+        	if(sp>(cp-chunkSize*3)){
+        		back = true;
+//        		startReadBack(sp);
+        	}
+        	if(forward==true&&back==true){
+        		if((ep-cp)>cp-sp){
+            		startReadForward(ep);	
+        		}else {
+            		startReadBack(sp);        			
+        		}
+        	}
+        	else if(forward==true){
         		startReadForward(ep);
-        	} else if(sp>(cp-chunkSize*3)){
+        	}
+        	else {
         		startReadBack(sp);
         	}
         } else {
