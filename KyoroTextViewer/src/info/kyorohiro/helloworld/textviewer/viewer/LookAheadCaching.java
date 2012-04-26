@@ -149,7 +149,8 @@ public class LookAheadCaching {
 					if(mCashedStartPosition>(int)lineWP.getLinePosition()){
 						builder[j++]=t;
 						//						android.util.Log.v("aaa","=----"+lineWP.getLinePosition());
-					}					
+					}
+					Thread.yield();
 				}
 				//				android.util.Log.v("aaa","=---- END");
 				for(int i=j-1;0<=i;i--) {
@@ -195,6 +196,7 @@ public class LookAheadCaching {
 					if(lineWP.getLinePosition() >mStartPosition) {
 						mTextViewer.add(t);
 					}
+					Thread.yield();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

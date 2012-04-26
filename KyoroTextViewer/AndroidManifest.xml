@@ -14,6 +14,8 @@
             android:name=".KyoroTextViewerActivity"            
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="stateVisible|adjustResize"
              >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
