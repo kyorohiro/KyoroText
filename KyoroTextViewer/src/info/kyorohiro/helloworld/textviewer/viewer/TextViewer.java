@@ -86,6 +86,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	public String getCurrentPath() {
+		return mCurrentPath;
+	}
 	@Override
 	public void setRect(int w, int h) {
 		super.setRect(w, h);

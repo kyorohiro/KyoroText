@@ -1,13 +1,6 @@
 package info.kyorohiro.helloworld.display.simple;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
 public abstract class SimpleGraphics {
-	private Canvas mCanvas = null;
-	private Paint mPaint = null;
-	private int mGlobalX = 0;
-	private int mGlobalY = 0;
 	public final static int STYLE_STROKE = 1;
 	public final static int STYLE_FILL = 2;
 

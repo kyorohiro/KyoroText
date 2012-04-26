@@ -5,7 +5,8 @@ import java.io.File;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivity;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
-import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetFontAction;
+import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction;
+import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetectionAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.content.Context;
@@ -37,8 +38,9 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setContentView(mStage);
 
 		setMenuAction(new MainActivityOpenFileAction(mTextViewer));
-		setMenuAction(new MainActivitySetFontAction(mTextViewer));
+		setMenuAction(new MainActivitySetCharsetAction(mTextViewer));
 		setMenuAction(new MainActivitySetTextSizeAction(mTextViewer));
+		setMenuAction(new MainActivitySetCharsetDetectionAction(mTextViewer));
 	}
 
 	@Override
