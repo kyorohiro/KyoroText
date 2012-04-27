@@ -17,7 +17,7 @@ import android.widget.ListView;
 
 public class MainActivitySetCharsetAction implements MainActivityMenuAction {
 
-	public static String TITLE = "charset";
+	public static String TITLE = "charset all";
 	private TextViewer mDisplayedTextViewer = null;
 
 	public MainActivitySetCharsetAction(TextViewer viewer) {

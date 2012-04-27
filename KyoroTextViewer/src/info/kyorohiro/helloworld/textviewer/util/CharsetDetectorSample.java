@@ -15,8 +15,9 @@ public class CharsetDetectorSample {
 
 	LinkedList<String> foundedCharset = new LinkedList<String>();
 	public synchronized void detect(File file) {
-//		int lang = nsPSMDetector.ALL;
-		int lang = nsPSMDetector.JAPANESE;
+		foundedCharset.clear();
+		int lang = nsPSMDetector.ALL;
+//		int lang = nsPSMDetector.JAPANESE;
 		nsDetector detector = new nsDetector(lang);
 		InputStream is = null;
 		detector.Init(new Observer());
@@ -27,6 +28,7 @@ public class CharsetDetectorSample {
 			is = new BufferedInputStream(new FileInputStream(file));
 			byte[] buf = new byte[1024] ;
 			int len;
+			int num = 0;
 			while((len=is.read(buf, 0, buf.length))!=-1){
 				// Check if the stream is only ascii.
 				if (isAscii) {
@@ -39,12 +41,21 @@ public class CharsetDetectorSample {
 		 		    	android.util.Log.v("found charset","done!!");
 		 		    }
 				}
+				if(num<2){
+					num++;
+				} else {
+					break;
+				}
 			}
 			detector.DataEnd();
+			if(isAscii) {
+				foundedCharset.add("ascii");
+			}
 			android.util.Log.v("isAscii",""+isAscii);
 			String[] prob = detector.getProbableCharsets();
 			for(String p : prob) {
 				android.util.Log.v("prob",""+p);
+				foundedCharset.add(p);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -57,6 +68,16 @@ public class CharsetDetectorSample {
 				}
 			}
 		}
+	}
+
+	public String[] getResult() {
+		int size = foundedCharset.size();
+		String[] ret = {"utf8"};
+		if(size >0){
+			ret = new String[size];
+			foundedCharset.toArray(ret);
+		}
+		return ret;
 	}
 
 	class Observer implements nsICharsetDetectionObserver {
