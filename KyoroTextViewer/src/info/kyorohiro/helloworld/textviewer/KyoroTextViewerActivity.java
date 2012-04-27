@@ -40,7 +40,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivityOpenFileAction(mTextViewer));
 		setMenuAction(new MainActivitySetCharsetAction(mTextViewer));
 		setMenuAction(new MainActivitySetTextSizeAction(mTextViewer));
-		setMenuAction(new MainActivitySetCharsetDetectionAction(mTextViewer));
+		//setMenuAction(new MainActivitySetCharsetDetectionAction(mTextViewer));
 	}
 
 	@Override

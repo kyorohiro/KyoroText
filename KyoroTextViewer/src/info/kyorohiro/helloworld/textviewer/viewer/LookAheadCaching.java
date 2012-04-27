@@ -49,12 +49,12 @@ public class LookAheadCaching {
         		forward = true;
 //        		startReadForward(ep);
         	} 
-        	if(sp>(cp-chunkSize*3)){
+        	if(sp>0&&sp>(cp-chunkSize*3)){
         		back = true;
 //        		startReadBack(sp);
         	}
         	if(forward==true&&back==true){
-        		if((ep-cp)>cp-sp){
+        		if((ep-cp)<cp-sp){
             		startReadForward(ep);	
         		}else {
             		startReadBack(sp);        			
