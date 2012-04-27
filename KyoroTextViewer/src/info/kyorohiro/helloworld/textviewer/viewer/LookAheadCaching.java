@@ -41,17 +41,15 @@ public class LookAheadCaching {
         int mx = buffer.getMaxOfStackedElement();
         int chunkSize = mx/10;
 
-        if((sp-chunkSize)<=cp&&cp<=(ep+chunkSize)) {
+        if((sp-chunkSize*2)<=cp&&cp<=(ep+chunkSize*2)) {
         	// 
         	boolean forward = false;
         	boolean back = false;
-        	if(ep<(cp+chunkSize*4)){
+        	if(ep<(cp+chunkSize*3)){
         		forward = true;
-//        		startReadForward(ep);
         	} 
         	if(sp>0&&sp>(cp-chunkSize*3)){
         		back = true;
-//        		startReadBack(sp);
         	}
         	if(forward==true&&back==true){
         		if((ep-cp)<cp-sp){
