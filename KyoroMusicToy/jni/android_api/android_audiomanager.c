@@ -2,42 +2,35 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "android_api/android_api.h"
+#include "android_api/android_audiomanager.h"
 
-#ifndef H_AUDIOMANAGER_ANDROID_API
-#define H_AUDIOMANAGER_ANDROID_API
+//#ifndef H_AUDIOMANAGER_ANDROID_API
+//#define H_AUDIOMANAGER_ANDROID_API
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct {
-  jclass mainClass;
-  jfield STREAM_MUSIC;
-} AudioManager ;
-
-typedef AudioManagerClass *AudioManagerClassObject;
-
 AudioManagerClassObject newAudioManagerClass(JNIEnv *env) {
-    AudioManagerClassObject obj = (AudioManagerClassObject)malloc(sizeof(AudioManagerClass));
-    obj->mainClass = (*env)->FindClass(env, "android/media/AudioManagerClass");
-    obj->STREAM_MUSIC (*env)->GetStaticFieldID(env, obj->mainClass, "STREAM_MUSIC", "I");
-    return obj;
+	AudioManagerClassObject obj = (AudioManagerClassObject) malloc(
+			sizeof(AudioManagerClass));
+	obj->mainClass = (*env)->FindClass(env, "android/media/AudioManager");
+	obj->STREAM_MUSIC = (*env)->GetStaticFieldID(env, obj->mainClass,
+			"STREAM_MUSIC", "I");
+	return obj;
 }
 
 void destroyAudioManagerClassObject(JNIEnv *env, AudioManagerClassObject object) {
-	(*env)->DeleteGlobalRef(env, object->buffer);
-	(*env)->DeleteGlobalRef(env, object->object);
-    free(object);
+	free(object);
 }
 
 jint STREAM_MUSIC(JNIEnv *env, AudioManagerClassObject obj) {
-	jint ret = (*env)->GetStaticIntField(env, obj->mainClass, obj->STREAM_MUSIC);
+	jint ret =
+			(*env)->GetStaticIntField(env, obj->mainClass, obj->STREAM_MUSIC);
 	return ret;
 }
-
-
 
 #ifdef __cplusplus
 }
 #endif
-#endif
+//#endif
 

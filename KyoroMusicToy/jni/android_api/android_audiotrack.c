@@ -3,15 +3,13 @@
 #include <stdio.h>
 #include "android_api/android_api.h"
 
-#ifndef H_AUDIOTRACK_ANDROID_API
-#define H_AUDIOTRACK_ANDROID_API
+#ifndef H_AudioTrackClass_ANDROID_API
+#define H_AudioTrackClass_ANDROID_API
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*
 typedef struct {
-  int framerate;
   jclass mainClass;
   jmethodID constructor;
   jmethodID play;
@@ -19,16 +17,20 @@ typedef struct {
   jmethodID stop;
   jmethodID release;
   jmethodID getMinBufferSize;
-  jshortArray buffer;
-  jobject object;
-} AudioTrack ;
+} AudioTrackClass ;
+typedef AudioTrackClass *AudioTrackClassObject;
 
+typedef struct {
+  AudioTrackClass class;
+  jobject object;
+  int framerate;
+  jshortArray buffer;
+} AudioTrack;
 typedef AudioTrack *AudioTrackObject;
 
-void constructor(JNIEnv *env, AudioTrackObject object);
-AudioTrackObject newAudioTrack(JNIEnv *env) {
-    AudioTrackObject obj = (AudioTrackObject)malloc(sizeof(AudioTrack));
-    obj->framerate = 44100;
+
+void newAudioTrackClassSuper(JNIEnv *env, AudioTrackClassObject obj)
+{
     obj->mainClass = (*env)->FindClass(env, "android/media/AudioTrack");
     obj->constructor = (*env)->GetMethodID(env, obj->mainClass, "<init>", "(IIIIII)V");
     obj->play = (*env)->GetMethodID(env, obj->mainClass, "play", "()V");
@@ -36,38 +38,74 @@ AudioTrackObject newAudioTrack(JNIEnv *env) {
     obj->stop = (*env)->GetMethodID(env, obj->mainClass, "stop", "()V");
     obj->getMinBufferSize = (*env)->GetMethodID(env, obj->mainClass, "getMinBufferSize", "(III)I");
     obj->release = (*env)->GetMethodID(env, obj->mainClass, "release", "()V");
-    obj->buffer = (*env)->NewShortArray(env, 1024);
-    constructor(env, obj);
+}
+
+AudioTrackClassObject newAudioTrackClass(JNIEnv *env) {
+    AudioTrackClassObject obj = (AudioTrackClassObject)malloc(sizeof(AudioTrackClass));
+    newAudioTrackClassSuper(env, obj);
     return obj;
 }
 
-void constructor(JNIEnv *env, AudioTrackObject object) {
-	//object->object = (*env)->NewObject(env, object->constructor);
-}
-
-void destroyAudioTrackObject(JNIEnv *env, AudioTrackObject object) {
-	(*env)->DeleteGlobalRef(env, object->buffer);
-	(*env)->DeleteGlobalRef(env, object->object);
+void destroyAudioTrackClassObject(JNIEnv *env, AudioTrackClassObject object)
+{
     free(object);
 }
 
-void play(JNIEnv *env, AudioTrackObject object) {
-	(*env)->CallVoidMethod(env, object->mainClass, object->play, NULL);
+
+//
+//
+jobject constructor(JNIEnv *env, AudioTrackClassObject object,
+		jint streamType, jint sampleRateInHz, jint channelConfig,
+		jint audioFormat, jint bufferSizeInBytes, jint mode)
+{
+		jobject ret = (jobject)(*env)->NewObject(
+			env, object->mainClass, object->constructor,
+			streamType, sampleRateInHz, channelConfig,
+			audioFormat, bufferSizeInBytes, mode);
+		return ret;
 }
 
-void stop(JNIEnv *env, AudioTrackObject object) {
-	(*env)->CallVoidMethod(env, object->mainClass, object->stop, NULL);
+
+AudioTrackObject newAudioTrack(JNIEnv *env,
+		jint streamType, jint sampleRateInHz, jint channelConfig,
+		jint audioFormat, jint bufferSizeInBytes, jint mode)
+{
+    AudioTrackObject obj = (AudioTrackObject)malloc(sizeof(AudioTrack));
+    newAudioTrackClassSuper(env, &obj->class);
+    constructor(env,&obj->class,
+    		streamType, sampleRateInHz, channelConfig,
+    		audioFormat, bufferSizeInBytes, mode);
+    return obj;
 }
 
-void release(JNIEnv *env, AudioTrackObject object) {
-	(*env)->CallVoidMethod(env, object->mainClass, object->release, NULL);
+void destroyAudioTrackObject(JNIEnv *env, AudioTrackObject object)
+{
+    free(object);
 }
 
-void write(JNIEnv *env, AudioTrackObject object, short buffer, int numOfSample) {
-	(*env)->CallIntMethod(env, object->mainClass, object->write,
-			NULL, 0, numOfSample);
+void play(JNIEnv *env, AudioTrackObject object)
+{
+	(*env)->CallVoidMethod(env, object->object, ((AudioTrackClassObject)object)->play, NULL);
 }
-*/
+
+void stop(JNIEnv *env, AudioTrackObject object)
+{
+	(*env)->CallVoidMethod(env, object->object, ((AudioTrackClassObject)object)->stop, NULL);
+}
+
+void release(JNIEnv *env, AudioTrackObject object)
+{
+	(*env)->CallVoidMethod(env, object->object, ((AudioTrackClassObject)object)->release, NULL);
+}
+
+void write(JNIEnv *env, AudioTrackObject object,
+		jshortArray audioData, int offsetInShorts, int sizeInShorts)
+{
+	(*env)->CallIntMethod(env, object->object, ((AudioTrackClassObject)object)->write,
+			 audioData, offsetInShorts, sizeInShorts);
+}
+
+
 #ifdef __cplusplus
 }
 #endif

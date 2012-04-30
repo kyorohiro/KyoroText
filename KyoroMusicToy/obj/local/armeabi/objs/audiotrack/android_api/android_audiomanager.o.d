@@ -1,8 +1,6 @@
-C:/github/KyoroHelloAndroid/KyoroMusicToy/obj/local/armeabi/objs/audiotrack/info_kyorohiro_helloworld_musictoy_DynmicSoundAudioTrackJNI.o: \
- C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/info_kyorohiro_helloworld_musictoy_DynmicSoundAudioTrackJNI.c \
+C:/github/KyoroHelloAndroid/KyoroMusicToy/obj/local/armeabi/objs/audiotrack/android_api/android_audiomanager.o: \
+ C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audiomanager.c \
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/jni.h \
- C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_api.h \
- C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audioformat.h \
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/stdlib.h \
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/sys/cdefs.h \
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/sys/cdefs_elf.h \
@@ -24,14 +22,10 @@ C:/github/KyoroHelloAndroid/KyoroMusicToy/obj/local/armeabi/objs/audiotrack/info
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/sys/sysmacros.h \
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/memory.h \
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/stdio.h \
- C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audiomanager.h \
- C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_api.h
+ C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_api.h \
+ C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audiomanager.h
 
 C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/jni.h:
-
-C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_api.h:
-
-C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audioformat.h:
 
 C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/stdlib.h:
 
@@ -75,6 +69,6 @@ C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/memory.h:
 
 C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/stdio.h:
 
-C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audiomanager.h:
-
 C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_api.h:
+
+C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audiomanager.h:
