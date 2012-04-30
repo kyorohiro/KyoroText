@@ -53,11 +53,15 @@ public class KyoroMusicToyActivity extends Activity {
 		}
 
 		public void run() {
+			DynmicSoundAudioTrackJNI dsat = null;
 			try {
+				dsat = new DynmicSoundAudioTrackJNI();
+				
+				dsat.initialize();
+				dsat.start();
 				mStreamTrack.play();
 				double hz = SinWaveOscillator.toHz(60);
 				for(int i=0;i<100;i++){
-					
 					mOscillator.generateSineWave(
 							hz, 100-i, mSoundBuffer, 1024*i, 1024);
 					mStreamTrack.write(mSoundBuffer, 0, 1024);
@@ -66,6 +70,9 @@ public class KyoroMusicToyActivity extends Activity {
 			} finally {
 				mStreamTrack.stop();
 				mStreamTrack.release();
+				dsat.stop();
+				dsat.finalize();
+
 			}
 		}
 	}
