@@ -12,7 +12,7 @@ public abstract class SimpleGraphics {
 	public abstract void drawCircle(int x, int y, int radius);	
 	public abstract void drawLine(int startX, int startY, int stopX, int stopY);	
 	public abstract void drawBackGround(int color);
-	public abstract void drawText(String text, int x, int y);
+	public abstract void drawText(CharSequence text, int x, int y);
 	public abstract int getTextSize();
 	public abstract void moveTo(int x, int y);
 	public abstract void lineTo(int x, int y);

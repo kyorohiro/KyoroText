@@ -22,7 +22,8 @@ C:/github/KyoroHelloAndroid/KyoroMusicToy/obj/local/armeabi/objs/audiotrack/andr
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/sys/sysmacros.h \
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/memory.h \
  C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/stdio.h \
- C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_api.h
+ C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_api.h \
+ C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audiotrack.h
 
 C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/jni.h:
 
@@ -69,3 +70,5 @@ C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/memory.h:
 C:/tools/android-ndk-r7/platforms/android-4/arch-arm/usr/include/stdio.h:
 
 C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_api.h:
+
+C:/github/KyoroHelloAndroid/KyoroMusicToy/jni/android_api/android_audiotrack.h:

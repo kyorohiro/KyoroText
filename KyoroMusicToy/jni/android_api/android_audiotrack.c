@@ -2,32 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "android_api/android_api.h"
+#include "android_api/android_audiotrack.h"
 
-#ifndef H_AudioTrackClass_ANDROID_API
-#define H_AudioTrackClass_ANDROID_API
+//#ifndef H_AudioTrackClass_ANDROID_API
+//#define H_AudioTrackClass_ANDROID_API
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef struct {
-  jclass mainClass;
-  jmethodID constructor;
-  jmethodID play;
-  jmethodID write;
-  jmethodID stop;
-  jmethodID release;
-  jmethodID getMinBufferSize;
-} AudioTrackClass ;
-typedef AudioTrackClass *AudioTrackClassObject;
-
-typedef struct {
-  AudioTrackClass class;
-  jobject object;
-  int framerate;
-  jshortArray buffer;
-} AudioTrack;
-typedef AudioTrack *AudioTrackObject;
-
 
 void newAudioTrackClassSuper(JNIEnv *env, AudioTrackClassObject obj)
 {
@@ -36,8 +17,9 @@ void newAudioTrackClassSuper(JNIEnv *env, AudioTrackClassObject obj)
     obj->play = (*env)->GetMethodID(env, obj->mainClass, "play", "()V");
     obj->write = (*env)->GetMethodID(env, obj->mainClass, "write", "([SII)I");
     obj->stop = (*env)->GetMethodID(env, obj->mainClass, "stop", "()V");
-    obj->getMinBufferSize = (*env)->GetMethodID(env, obj->mainClass, "getMinBufferSize", "(III)I");
+    obj->getMinBufferSize = (*env)->GetStaticMethodID(env, obj->mainClass, "getMinBufferSize", "(III)I");
     obj->release = (*env)->GetMethodID(env, obj->mainClass, "release", "()V");
+	obj->MODE_STREAM = (*env)->GetStaticFieldID(env, obj->mainClass, "MODE_STREAM", "I");
 }
 
 AudioTrackClassObject newAudioTrackClass(JNIEnv *env) {
@@ -51,7 +33,10 @@ void destroyAudioTrackClassObject(JNIEnv *env, AudioTrackClassObject object)
     free(object);
 }
 
-
+jint MODE_STREAM(JNIEnv *env, AudioTrackClassObject obj){
+	jint ret = (*env)->GetStaticIntField(env, obj->mainClass, obj->MODE_STREAM);
+	return ret;
+}
 //
 //
 jobject constructor(JNIEnv *env, AudioTrackClassObject object,
@@ -71,21 +56,21 @@ AudioTrackObject newAudioTrack(JNIEnv *env,
 		jint audioFormat, jint bufferSizeInBytes, jint mode)
 {
     AudioTrackObject obj = (AudioTrackObject)malloc(sizeof(AudioTrack));
-    newAudioTrackClassSuper(env, &obj->class);
-    constructor(env,&obj->class,
+    newAudioTrackClassSuper(env, &obj->base);
+    obj->object = constructor(env,&obj->base,
     		streamType, sampleRateInHz, channelConfig,
     		audioFormat, bufferSizeInBytes, mode);
     return obj;
 }
 
-void destroyAudioTrackObject(JNIEnv *env, AudioTrackObject object)
+void destroyAudioTrack(JNIEnv *env, AudioTrackObject object)
 {
     free(object);
 }
 
 void play(JNIEnv *env, AudioTrackObject object)
 {
-	(*env)->CallVoidMethod(env, object->object, ((AudioTrackClassObject)object)->play, NULL);
+	(*env)->CallVoidMethod(env, object->object, ((AudioTrackClassObject)object)->play);
 }
 
 void stop(JNIEnv *env, AudioTrackObject object)
@@ -105,9 +90,18 @@ void write(JNIEnv *env, AudioTrackObject object,
 			 audioData, offsetInShorts, sizeInShorts);
 }
 
+jint getMinBufferSize(JNIEnv *env, AudioTrackClassObject object,
+		int sampleRateInHz, int channelConfig, int audioFormat)
+{
+	jint ret = (jint)(*env)->CallStaticObjectMethod(
+			env, ((AudioTrackClassObject)object)->mainClass,
+			((AudioTrackClassObject)object)->getMinBufferSize,
+			sampleRateInHz, channelConfig, audioFormat);
+	return ret;
+}
 
 #ifdef __cplusplus
 }
 #endif
-#endif
+//#endif
 

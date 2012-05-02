@@ -4,6 +4,7 @@ import java.io.File;
 
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivity;
+import info.kyorohiro.helloworld.textviewer.appparts.MainActivityCaptureImageAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetectionAction;
@@ -41,6 +42,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivitySetCharsetAction(mTextViewer));
 		setMenuAction(new MainActivitySetTextSizeAction(mTextViewer));
 		setMenuAction(new MainActivitySetCharsetDetectionAction(mTextViewer));
+		//setMenuAction(new MainActivityCaptureImageAction(mTextViewer));
 	}
 
 	@Override

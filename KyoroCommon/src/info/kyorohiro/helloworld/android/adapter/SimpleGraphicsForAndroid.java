@@ -7,9 +7,11 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 
 public class SimpleGraphicsForAndroid extends SimpleGraphics {
@@ -68,8 +70,8 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		mCanvas.drawColor(color);
 	}
 
-	public void drawText(String text, int x, int y) {
-		mCanvas.drawText(text, x + mGlobalX, y + mGlobalY, mPaint);
+	public void drawText(CharSequence text, int x, int y) {
+		mCanvas.drawText(text, 0, text.length(),x + mGlobalX, y + mGlobalY, mPaint);
 	}
 
 	@Override
@@ -77,6 +79,16 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		if(image.getImage().isRecycled()){
 			return;
 		}
+// todo: examine following code.
+//		Shader shader = new BitmapShader(image.getImage(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+//		Paint paint = mPaint; //new Paint();
+//		paint.setShader(shader);
+//		Rect prev = mCanvas.getClipBounds();
+//		mCanvas.clipRect(x, y, x+w, y+h);
+//		mCanvas.drawPaint(paint);
+//		mCanvas.clipRect(prev);
+//		paint.setShader(null);
+//
 		Bitmap bitmap = image.getImage();
         int imgW = bitmap.getWidth();
         int imgH = bitmap.getHeight();

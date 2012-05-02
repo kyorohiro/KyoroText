@@ -45,33 +45,34 @@ public class KyoroMusicToyActivity extends Activity {
 					AudioFormat.ENCODING_PCM_16BIT);
 		private AudioTrack mStreamTrack = null;
 		public SoundTestTask() {
-			mStreamTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-					44100, AudioFormat.CHANNEL_CONFIGURATION_MONO,
-					AudioFormat.ENCODING_PCM_16BIT,
-					mBufferSize,
-					AudioTrack.MODE_STREAM);
+//			mStreamTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+//					44100, AudioFormat.CHANNEL_CONFIGURATION_MONO,
+//					AudioFormat.ENCODING_PCM_16BIT,
+//					mBufferSize,
+//					AudioTrack.MODE_STREAM);
 		}
 
 		public void run() {
 			DynmicSoundAudioTrackJNI dsat = null;
 			try {
-				dsat = new DynmicSoundAudioTrackJNI();
-				
+//				mStreamTrack.play();
+//				double hz = SinWaveOscillator.toHz(60);
+//				for(int i=0;i<100;i++){
+//					mOscillator.generateSineWave(
+//							hz, 100-i, mSoundBuffer, 1024*i, 1024);
+//					mStreamTrack.write(mSoundBuffer, 0, 1024);
+//				}
+				dsat = new DynmicSoundAudioTrackJNI();			
+	//			for(int i=0;i<100;i++){				
 				dsat.initialize();
-				dsat.start();
-				mStreamTrack.play();
-				double hz = SinWaveOscillator.toHz(60);
-				for(int i=0;i<100;i++){
-					mOscillator.generateSineWave(
-							hz, 100-i, mSoundBuffer, 1024*i, 1024);
-					mStreamTrack.write(mSoundBuffer, 0, 1024);
-				}
+	//			}
+//				dsat.start();
+//				dsat.stop();
+//				dsat.finalize();
 				
 			} finally {
-				mStreamTrack.stop();
-				mStreamTrack.release();
-				dsat.stop();
-				dsat.finalize();
+//				mStreamTrack.stop();
+//				mStreamTrack.release();
 
 			}
 		}

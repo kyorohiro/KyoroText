@@ -8,6 +8,7 @@ import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObject {
+	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
 	private CyclingListInter<FlowingLineDatam> mInputtedText = null;
 	private int mPosition = 0;
@@ -20,12 +21,16 @@ public class LineView extends SimpleDisplayObject {
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
-	// todo refactaring
-	private int mCash  = 0;
 	private FlowingLineDatam[] mCashBuffer = new FlowingLineDatam[0];
-	
-	private int mTodoExtraY = 0;
 
+	//==========================================================
+	// todo refactaring
+	private int mTodoExtraY = 0;
+	private int mCash  = 0;
+	private int mTestTextColor = Color.parseColor("#33FFFF00");
+	//
+	//==========================================================
+	
 	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
@@ -103,17 +108,15 @@ public class LineView extends SimpleDisplayObject {
 		return mPosX;
 	}
 
-	private void showLineDate(SimpleGraphics graphics, 
-			FlowingLineDatam[] list, int len,
-			int blank) {
+	private void showLineDate(SimpleGraphics graphics, FlowingLineDatam[] list, int len, int blank) {
 		if(len > list.length){
 			len = list.length;
 		}
+
 		for (int i = 0; i < len; i++) {
 			if (list[i] == null) {
 				continue;
 			}
-
 			// drawLine
 			graphics.setColor(list[i].getColor());
 			if(mPosX >0) {
@@ -127,15 +130,12 @@ public class LineView extends SimpleDisplayObject {
 			(int)(graphics.getTextSize()*1.2) * (blank + i + 1);
 			int yy = y + (int)(graphics.getTextSize()*0.2);
 			
-			graphics.drawText("" + list[i], x, y);
+			graphics.drawText(list[i], x, y);
 			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
 				int c = list[i].getColor();
-				graphics.setColor(
-						Color.argb(127,Color.red(c),Color.green(c),Color.blue(c)
-								));
+				graphics.setColor(Color.argb(127,Color.red(c),Color.green(c),Color.blue(c)));
 				graphics.setStrokeWidth(1);
-				graphics.drawLine(10, yy, graphics.getWidth() - 10,
-						yy);
+				graphics.drawLine(10, yy, graphics.getWidth()-10, yy);
 			}
 		}
 	}
@@ -159,7 +159,7 @@ public class LineView extends SimpleDisplayObject {
 				//test 
 				int s = graphics.getTextSize();
 				graphics.setTextSize(s*3);
-				graphics.setColor(Color.parseColor("#33FFFF00"));
+				graphics.setColor(mTestTextColor);
 				graphics.drawText(""+mShowingTextStartPosition+":"+mShowingTextEndPosition, 30, s*4);
 				graphics.setTextSize(s);
 			}
@@ -230,7 +230,6 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 
-	private SimpleImage mImage = null;
 	public void setBGImage(SimpleImage image) {
 		mImage = image;
 	}
