@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import info.kyorohiro.helloworld.android.util.SimpleLock;
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
 import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 
 public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDatam> 
 implements SimpleLockInter {

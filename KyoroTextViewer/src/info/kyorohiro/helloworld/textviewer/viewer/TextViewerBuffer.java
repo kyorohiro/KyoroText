@@ -1,6 +1,5 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
-import info.kyorohiro.helloworld.android.util.SimpleLock;
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
 import info.kyorohiro.helloworld.util.BigLineData;

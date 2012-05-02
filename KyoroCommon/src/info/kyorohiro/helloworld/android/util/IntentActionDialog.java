@@ -1,6 +1,5 @@
-package info.kyorohiro.helloworld.util;
+package info.kyorohiro.helloworld.android.util;
 
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 
 import java.io.File;
 import java.util.ArrayList;

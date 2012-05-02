@@ -22,7 +22,7 @@ import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.tasks.SendCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowCurrentLogTask;
 import info.kyorohiro.helloworld.logcat.tasks.ShowFileContentTask;
-import info.kyorohiro.helloworld.util.IntentActionDialog;
+import info.kyorohiro.helloworld.android.util.IntentActionDialog;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import android.app.AlertDialog;
 import android.content.Context;
