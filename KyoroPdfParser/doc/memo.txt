@@ -1,0 +1,50 @@
+
+= ある人は、AndroidでPDFを見るのがつらい。
+携帯端末は画面が小さいから、PDFのように紙に印刷されることを
+想定されている書式だと読み難い。
+
+= そんな環境の人は、EPUBぽく読めた方が、良いのではないだろうか？
+
+
+KyoroTextViewerに、PDFをEPUBっぽく表示する機能を追加することに
+TRYします。
+
+MUST
+  = NO STRESS 
+    -->  読み込み時間をなくします。
+    -->  一瞬で起動するようにします。
+
+LOW PRIORITY
+  = DDESIGN
+    --> 今のところは、開発中的なインターフェイスな状態です。
+        一般受けは悪いと思う。しかし、私好み。
+
+
+http://d.hatena.ne.jp/hogehoge_yeah/20100924/1285301590
+
+
+
+
+○PDF reference
+http://d.hatena.ne.jp/hogehoge_yeah/20100924/1285301590
+
+○
+h3. Mapping Grammars to Recursive-Decent Recognizers
+class <Identify>extends Parser {
+  <token-type-definitions>
+  <suitable constructor>
+  <rule-method>
+}
+
+h3. LL(1)Recursive-Descent Lexer
+
+class Tokeniser {
+  Token nextToken() {
+     while(<lookahead char>) {
+       if(comment) { comment()}
+       else if(space) { consume() continue()}
+       else if(any token){return token()}
+     }
+  }
+}
+
