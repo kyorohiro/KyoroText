@@ -8,17 +8,17 @@ import info.kyorohiro.helloworld.pdfparser.Token;
 //
 //
 // todo about this class extends Token. 
-public class PdfBoolean extends Token {
+public class PdfNumber extends Token {
 
-	public PdfBoolean(int type, String text, String patterm) {
+	public PdfNumber(int type, String text, String patterm) {
 		super(type, text, patterm);
 	}
 
-	public boolean parseBoolean() {
-		if(numOfChild()!= 0&&"true".equals(getChild(0).mValue)){
-			return true;
+	public double parseDouble() {
+		if(numOfChild()!= 0){
+			return Double.parseDouble(getChild(0).mValue.toString());
 		}
-		return false;
+		return 0;
 	}
 	
 	public static PdfObjectCreator builder = new Builder();
@@ -28,8 +28,8 @@ public class PdfBoolean extends Token {
 			return value(parser);
 		}
 
-		private Token newPdfBoolean(){
-			PdfBoolean token = new PdfBoolean(999, "<boolean>", "unuse");
+		private Token newPdfNumber(){
+			PdfNumber token = new PdfNumber(999, "<boolean>", "unuse");
 			return token;
 		}
 
@@ -38,7 +38,7 @@ public class PdfBoolean extends Token {
 			}else if(value_1(parser)){
 			}else{throw new GotoException();
 			}
-			PdfBoolean t = (PdfBoolean)newPdfBoolean();
+			PdfNumber t = (PdfNumber)newPdfNumber();
 			t.add(parser.mCashForWork.pop());
 			return t;
 		}
@@ -46,7 +46,7 @@ public class PdfBoolean extends Token {
 		private boolean value_1(PdfParser parser){
 			try {
 				parser.mark();
-				parser.mCashForWork.push(parser.next(PdfLexer.SET_BOOLEAN.mType));
+				parser.mCashForWork.push(parser.next(PdfLexer.SET_NUMBER.mType));
 				return true;
 			} catch(GotoException e) {
 				parser.release();

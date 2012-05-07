@@ -5,7 +5,7 @@
 public class PdfLexer extends Lexer {
 	public static Token SET_SPACE = new Token(1, "<space>", "^\\s|^\t|^\n|^\r");
 	public static Token SET_COMMENT = new Token(2, "<comment>", "^%.*[\n\0]");
-	public static Token SET_NUMBER = new Token(3, "<number>", "^[0-9]+");
+	public static Token SET_NUMBER = new Token(3, "<number>", "^[+-]?[0-9]*[.]?[0-9]+|^[+-]?[0-9]+[.]?[0-9]*");
 	public static Token SET_INDEX_BEGIN = new Token(4, "<index_begin>", "^<<");
 	public static Token SET_INDEX_END = new Token(5, "<index_end>", "^>>");
 	public static Token SET_ARRAY_BEGIN = new Token(6, "<array_begin>", "^\\[");

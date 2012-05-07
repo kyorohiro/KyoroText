@@ -27,8 +27,8 @@ public class TestForPdfBoolean extends TestCase {
 			PdfBoolean pars2 = (PdfBoolean)PdfBoolean.builder.createToken(parser);
 			assertEquals(1, pars1.numOfChild());
 			assertEquals(1, pars2.numOfChild());
-			assertEquals(true, pars1.isTrue());
-			assertEquals(false, pars2.isTrue());
+			assertEquals(true, pars1.parseBoolean());
+			assertEquals(false, pars2.parseBoolean());
 		} catch (GotoException e) {
 			e.printStackTrace();
 			assertTrue(false);
