@@ -5,35 +5,29 @@ import info.kyorohiro.helloworld.pdfparser.PdfLexer;
 import info.kyorohiro.helloworld.pdfparser.LookaheadParser;
 import info.kyorohiro.helloworld.pdfparser.PdfParser;
 import info.kyorohiro.helloworld.pdfparser.Text;
-import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfArray;
-import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfIndex;
+import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfAscii;
+import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfName;
 import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfValue;
 import junit.framework.TestCase;
 
-public class TestForPdfArray extends TestCase {
-	public static String sTestData001 = 
-		"[ "+
-		"/Type "+
-		"0 2 R\n"+
-		"/Type "+
-		"abvde "+
-		"(abcdef) "+
-		" ]";
+public class TestForPdfName extends TestCase {
+	public static String sTestData001 = "/abcxyz \n"+"/ABCXYZ";
 
 	public void testHello() {
 		android.util.Log.v("pdfparser","hello");
 	}
 
 	public void testBasic00() {
-		PdfLexer lexer = new PdfLexer(new Text(TestForPdfArray.sTestData001));
+		PdfLexer lexer = new PdfLexer(new Text(TestForPdfName.sTestData001));
 		PdfParser parser = new PdfParser(lexer);
-		try {
-			PdfArray pars1 = (PdfArray)PdfArray.builder.createToken(parser);			
-			for(int i=0;i<pars1.numOfChild();i++){
-				android.util.Log.v("pdfparser",""+pars1.getChild(i).toString());
-			}
-			assertEquals(7, pars1.numOfChild());
-
+		try { 
+			PdfName pars1 = (PdfName)PdfName.builder.createToken(parser);
+			android.util.Log.v("pdfparser","---1--");
+			PdfName pars2 = (PdfName)PdfName.builder.createToken(parser);
+			assertEquals(1, pars1.numOfChild());
+			assertEquals(1, pars2.numOfChild());
+			assertEquals("abcxyz", pars1.parseString());
+			assertEquals("ABCXYZ", pars2.parseString());
 		} catch (GotoException e) {
 			e.printStackTrace();
 			assertTrue(false);

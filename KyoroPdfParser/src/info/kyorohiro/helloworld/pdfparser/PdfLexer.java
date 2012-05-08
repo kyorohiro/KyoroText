@@ -9,7 +9,7 @@ public class PdfLexer extends Lexer {
 	public static Token SET_INDEX_BEGIN = new Token(4, "<index_begin>", "^<<");
 	public static Token SET_INDEX_END = new Token(5, "<index_end>", "^>>");
 	public static Token SET_ARRAY_BEGIN = new Token(6, "<array_begin>", "^\\[");
-	public static Token SET_ARRAY_END = new Token(7, "<array_begin>", "^\\]");
+	public static Token SET_ARRAY_END = new Token(7, "<array_end>", "^\\]");
 	public static Token SET_ASCII_BEGIN = new Token(8, "<ascii_begin>", "^\\(");
 	public static Token SET_ASCII_CHARSET = new Token(9, "<ascii_charset>", "^[\\x00-\\x7F]+");
 	public static Token SET_ASCII_END = new Token(10, "<ascii_end>", "^\\)");

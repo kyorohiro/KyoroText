@@ -15,6 +15,14 @@ public class PdfArray extends Token {
 		super(type, text, patterm);
 	}
 
+	public int numOfPdfValue() {
+		return numOfChild()-2;
+	}
+
+	public PdfValue getPdfValue(int i) {
+		return (PdfValue)getChild(i+1);
+	}
+
 	public static class Builder implements PdfObjectCreator {
 		@Override
 		public Token createToken(PdfParser parser) throws GotoException {
@@ -22,16 +30,19 @@ public class PdfArray extends Token {
 		}
 
 		private Token newPdfArray() {
-			PdfArray token = new PdfArray(999, "<index>", "unuse");
+			PdfArray token = new PdfArray(999, "<array>", "unuse");
 			return token;
 		}
 
 		public Token value(PdfParser parser) throws GotoException {
 			try {
 				parser.mark();
+				parser.mCashForWork.mark();
 				parser.mCashForWork.push(parser.next(PdfLexer.SET_ARRAY_BEGIN.mType));
 				values_1(parser);
 				parser.mCashForWork.push(parser.next(PdfLexer.SET_ARRAY_END.mType));
+				parser.mCashForWork.testPrint();
+
 				//
 				//
 				Token t = newPdfArray();
@@ -40,6 +51,7 @@ public class PdfArray extends Token {
 				}
 				return t;
 			} finally {
+				parser.mCashForWork.release();
 				parser.release();
 			}
 		}
