@@ -7,12 +7,26 @@ import info.kyorohiro.helloworld.pdfparser.Token;
 
 //
 //
-// todo about this class extends Token. 
-public class PdfAscii extends Token {
+public class PdfString extends Token {
 	public static PdfObjectCreator builder = new Builder();
 
-	public PdfAscii(int type, String text, String patterm) {
+	public PdfString(int type, String text, String patterm) {
 		super(type, text, patterm);
+	}
+
+	public boolean isAscii(){
+		if(numOfChild()!= 0&&!getChild(0).mValue.equals("(")){
+			return false;
+		}
+		return true;
+	}
+
+	public String parseString(){
+		if(numOfChild()!= 0){
+			CharSequence c = getChild(1).mValue;
+			return c.toString();
+		}
+		return "<null>";
 	}
 
 	public static class Builder implements PdfObjectCreator {
@@ -22,13 +36,14 @@ public class PdfAscii extends Token {
 		}
 
 		private Token newPdfAscii(){
-			PdfAscii token = new PdfAscii(999, "<ascii>", "unuse");
+			PdfString token = new PdfString(999, "<string>", "unuse");
 			return token;
 		}
 
 		public Token value(PdfParser parser) throws GotoException{
 			if(false){// dummy
 			}else if(value_1(parser)){
+			}else if(value_2(parser)){
 			}else{throw new GotoException();
 			}
 			return parser.mCashForWork.pop();
@@ -51,5 +66,24 @@ public class PdfAscii extends Token {
 				return false;
 			}
 		}
+
+		private boolean value_2(PdfParser parser){
+			try {
+				parser.mark();
+				parser.mCashForWork.push(parser.next(PdfLexer.SET_NONASCII_BEGIN.mType));
+				parser.mCashForWork.push(parser.next(PdfLexer.SET_IDENTIFY.mType));
+				parser.mCashForWork.push(parser.next(PdfLexer.SET_NONASCII_END.mType));
+				Token token = newPdfAscii();
+				token.addFirst(parser.mCashForWork.pop());
+				token.addFirst(parser.mCashForWork.pop());
+				token.addFirst(parser.mCashForWork.pop());
+				parser.mCashForWork.push(token);
+				return true;
+			} catch(GotoException e) {
+				parser.release();
+				return false;
+			}
+		}
+
 	}
 }

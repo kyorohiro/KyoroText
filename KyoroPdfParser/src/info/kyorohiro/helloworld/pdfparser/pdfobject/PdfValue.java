@@ -102,7 +102,7 @@ public class PdfValue extends Token {
 
 		private boolean value_5(PdfParser parser){
 			try {
-				parser.mCashForWork.push(PdfAscii.builder.createToken(parser));
+				parser.mCashForWork.push(PdfString.builder.createToken(parser));
 				Token token = newPdfValue();
 				token.add(parser.mCashForWork.pop());
 				parser.mCashForWork.push(token);

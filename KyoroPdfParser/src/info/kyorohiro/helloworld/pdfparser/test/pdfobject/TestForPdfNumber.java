@@ -5,7 +5,7 @@ import info.kyorohiro.helloworld.pdfparser.PdfLexer;
 import info.kyorohiro.helloworld.pdfparser.LookaheadParser;
 import info.kyorohiro.helloworld.pdfparser.PdfParser;
 import info.kyorohiro.helloworld.pdfparser.Text;
-import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfAscii;
+import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfString;
 import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfBoolean;
 import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfNumber;
 import info.kyorohiro.helloworld.pdfparser.pdfobject.PdfValue;
