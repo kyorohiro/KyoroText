@@ -16,10 +16,10 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndMove;
 import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoom;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
+import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.R;
-import info.kyorohiro.helloworld.util.BigLineData;
 import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 
@@ -138,7 +138,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		if(prevBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) prevBuffer).dispose();
 		}
-		KyoroApplication.showMessage("charset="+mCurrentCharset);
+		//KyoroApplication.showMessage("charset="+mCurrentCharset);
 	}
 
 	private class LayoutManager extends SimpleDisplayObject {

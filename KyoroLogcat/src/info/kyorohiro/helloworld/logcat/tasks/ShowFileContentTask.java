@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
-import info.kyorohiro.helloworld.util.BigLineData;
+import info.kyorohiro.helloworld.io.BigLineData;
 
 public class ShowFileContentTask extends Thread implements TaskInter {
 	private FlowingLineData mData;

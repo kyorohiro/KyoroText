@@ -11,7 +11,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineView;
-import info.kyorohiro.helloworld.util.BigLineData;
+import info.kyorohiro.helloworld.io.BigLineData;
 
 
 public class FlowingLineViewWithFile extends SimpleDisplayObjectContainer {

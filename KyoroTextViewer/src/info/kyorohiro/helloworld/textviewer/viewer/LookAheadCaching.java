@@ -1,9 +1,9 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
+import info.kyorohiro.helloworld.io.BigLineData;
+import info.kyorohiro.helloworld.io.BigLineData.LineWithPosition;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewerBuffer.MyBufferDatam;
-import info.kyorohiro.helloworld.util.BigLineData;
-import info.kyorohiro.helloworld.util.BigLineData.LineWithPosition;
 
 import java.lang.ref.WeakReference;
 

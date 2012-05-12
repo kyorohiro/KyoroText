@@ -14,7 +14,6 @@ public class Lexer {
 	}
 
 	public Token nextToken() {
-		// sample implements 
 		return new Token(SET_EOF, "\0");
 	}
 

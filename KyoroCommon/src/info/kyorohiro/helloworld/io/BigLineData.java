@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.util;
+package info.kyorohiro.helloworld.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,7 +19,8 @@ public class BigLineData {
 
 	private File mPath;
 	private String mCharset = "utf8";
-	private RandomAccessFile mReader = null;
+//	private RandomAccessFile mReader = null;
+	private VirtualMemory mReader = null;
 	
 	// todo
 	private Paint mPaint = null;
@@ -47,7 +48,8 @@ public class BigLineData {
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
-		mReader = new RandomAccessFile(mPath, "r");
+//		mReader = new RandomAccessFile(mPath, "r");
+		mReader = new VirtualMemory(mPath, 512);
 		mPositionPer100Line.add(0l);
 	}
 
