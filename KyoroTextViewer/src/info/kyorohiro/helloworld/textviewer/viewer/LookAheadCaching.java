@@ -20,7 +20,6 @@ public class LookAheadCaching {
 		mBuffer = new WeakReference<TextViewerBuffer>(buffer);
 	}
 
-
 	public TextViewerBuffer getTextViewerBuffer() {
 		if(mBuffer!=null){
 			return mBuffer.get();
@@ -65,8 +64,6 @@ public class LookAheadCaching {
         		startReadBack(sp);
         	}
         } else {
-        	//buffer.clear();
-//        	int pos = BigLineData.FILE_LIME;
         	startReadForwardAndClear(cp);
        }
 	}

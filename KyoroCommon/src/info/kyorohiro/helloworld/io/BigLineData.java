@@ -3,7 +3,6 @@ package info.kyorohiro.helloworld.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -77,17 +76,6 @@ public class BigLineData {
 		} else {
 			return false;
 		}
-	}
-
-	public boolean wasEOF() {
-		try {
-			if (mReader.length() <= mLastPosition) {
-				return true;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 
 	public boolean isEOF() {
@@ -177,8 +165,8 @@ public class BigLineData {
 				b.append(c);
 				if(mPaint != null){
 					// todo kiyohiro unefficient coding
-				//	String tmp = b.toString();
-				//	int len =mPaint.breakText(tmp, true, mWidth, null);
+					//	String tmp = b.toString();
+					//	int len =mPaint.breakText(tmp, true, mWidth, null);
 					int len = mPaint.breakText(b.getAllBufferedMoji(),
 							0,b.getCurrentBufferedMojiSize(), mWidth, null);
 					if (len < b.getCurrentBufferedMojiSize()) {
