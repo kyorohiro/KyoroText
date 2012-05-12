@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget;
+package info.kyorohiro.helloworld.logcat.util;
 
 import java.util.regex.Pattern;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
@@ -6,7 +6,11 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
 import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineView.MyLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
+import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
+import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
+import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
 
 public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
@@ -17,7 +21,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	public SimpleFilterableLineView(FlowingLineData lineData) {
 		mInputtedText = lineData;
 		if (mInputtedText == null) {
-			mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
+			mInputtedText = new FlowingLineData(6000, 1000, mTextSize);
 		}
 		mTextSize = mInputtedText.getTextSize();
 		mViewer = new FlowingLineView(mInputtedText, mTextSize);
@@ -34,7 +38,18 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			SimpleFilterableLineView.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
+			double shortSide = graphics.getWidth();
+			double longSide = graphics.getHeight();
+			double fontSize = KyoroLogcatSetting.getFontSize();
+			if(shortSide>longSide){
+				double t= shortSide;
+				shortSide = longSide;
+				longSide = t;
+				fontSize = fontSize*longSide/shortSide;
+			} 
+//			SimpleFilterableLineView.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
+			SimpleFilterableLineView.this.mInputtedText.setWidth((int)(shortSide*9/10));
+			SimpleFilterableLineView.this.getLineView().setTextSize((int)(fontSize));
 		}
 	}
 
@@ -45,41 +60,6 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	public LineView getLineView() {
 		return mViewer.getLineView();
 	}
-
-/*
-	public void setScale(float scale) {
-		mViewer.setScale(scale);
-	}
-
-	public float getScale() {
-		return mViewer.getScale();
-	}
-
-
-	public int getTextSize() {
-		return mViewer.getTextSize();
-	}
-
-	public void setTextSize(int textSize) {
-		mViewer.setTextSize(textSize);
-	}
-
-	
-	public void setPositionY(int position) {
-		mViewer.setPositionY(position);
-	}
-
-	public void setPositionX(int x) {
-		mViewer.setPositionX(x);
-	}
-
-	public int getPositionX() {
-		return mViewer.getPositionX();
-	}
-	public int getPositionY() {
-		return mViewer.getPositionY();
-	}
-	*/
 
 	public void startFilter(Pattern nextFilter) {
 		if (nextFilter == null || mInputtedText == null) {

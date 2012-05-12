@@ -6,6 +6,9 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 
+//
+// for KyoroLogcat
+//
 public class FlowingLineView extends SimpleDisplayObjectContainer {
 	private ScrollBar scrollBar = null;
 	private LineView viewer = null;
@@ -32,8 +35,35 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 		public void paint(SimpleGraphics graphics) {
 			CyclingListInter<?> list = viewer.getCyclingList();
 			int size = list.getNumberOfStockedElement(); 
-			scrollBar.setStatus(viewer.getShowingTextStartPosition(), viewer.getShowingTextEndPosition(), size);
+
 			viewer.setRect(graphics.getWidth(), graphics.getHeight());
+			scrollBar.setStatus(viewer.getShowingTextStartPosition(), viewer.getShowingTextEndPosition(), size);
+
 		}
+	}
+	public class MyLineView extends LineView {
+
+		public int mBaseTextSize = 12;
+		public MyLineView(CyclingListInter<FlowingLineDatam> inputtedText,
+				int textSize) {
+			super(inputtedText, textSize);
+			mBaseTextSize = textSize;
+		}
+
+		@Override
+		public void setTextSize(int textSize) {
+			mBaseTextSize = textSize;
+			super.setTextSize(textSize);
+		}
+
+		public int getBaseTextSize() {
+			return mBaseTextSize;
+		}
+		
+		public void setInternalTextSize(int textSize) {
+			super.setTextSize(textSize);
+		}
+		
+		
 	}
 }

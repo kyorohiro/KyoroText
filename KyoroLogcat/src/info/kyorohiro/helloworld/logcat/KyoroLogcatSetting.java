@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.logcat;
 
 import java.io.File;
+import java.util.HashMap;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,6 +27,7 @@ public class KyoroLogcatSetting {
 	public static String FILENAME_TAG = "filename";
 	public static String FILENAME_DEFAULT_NAME = "log_";
 	public static final String SAVEDDIR = "KyoroLogcat";
+	public static HashMap<String, String> sCash= new HashMap<String, String>();
 
 	public static String getFilename() {
 		String fname = FILENAME_DEFAULT_NAME;
@@ -116,11 +118,15 @@ public class KyoroLogcatSetting {
 	}
 
 	public static void setData(Context context, String property, String value) {
+		sCash.put(property, value);
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 		pref.edit().putString(property, value).commit();
 	}
-	
+
 	public static String getData(Context context, String property) {
+		if(sCash.containsKey(property)){
+			return sCash.get(property);
+		}
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 		return  pref.getString(property, "none");
 	}

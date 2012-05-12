@@ -291,13 +291,14 @@ public class KyoroLogcatActivity extends TestActivity {
 				// KyoroLogcatSetting.f
 				// mLogcatViewer.setFontSize(KyoroLogcatSetting.getFontSize());
 				mLogcatOutput.setTextSize(KyoroLogcatSetting.getFontSize());
-				mLogcatViewer.getLineView().setTextSize(KyoroLogcatSetting.getFontSize());
+//				mLogcatViewer.getLineView().setTextSize(KyoroLogcatSetting.getFontSize());
 				mShowTask = new ShowCurrentLogTask(mLogcatOutput,
 						KyoroLogcatSetting.getLogcatOption());
 				mShowTask.start();
 			}
 			myResult = true;
 		} else if (MENU_START_SHOW_LOG_FROM_FILE.equals(selectedItemTitle)) {
+			mLogcatOutput.setTextSize(KyoroLogcatSetting.getFontSize());
 			startFolder();
 			myResult = true;
 		} else if (MENU_STOP_SHOW_LOG.equals(selectedItemTitle)) {
@@ -434,6 +435,8 @@ public class KyoroLogcatActivity extends TestActivity {
 					return true;
 				} else {
 					if (mShowTask == null || !mShowTask.isAlive()) {
+//						mLogcatOutput.setTextSize(KyoroLogcatSetting.getFontSize());
+//						mLogcatViewer.getLineView().setTextSize(KyoroLogcatSetting.getFontSize());
 						mShowTask = new ShowFileContentTask(mLogcatOutput, file);
 						mShowTask.start();
 					}

@@ -205,6 +205,7 @@ public class BigLineData {
 		
 		public void append(char moji){
 			if(mPointer >= mLength){
+				mLength *=2;
 				char[] tmp = new char[mLength*2];
 				for(int i=0;i<mBuffer.length;i++) {
 					 tmp[i] = mBuffer[i];
