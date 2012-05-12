@@ -19,7 +19,6 @@ public class BigLineData {
 
 	private File mPath;
 	private String mCharset = "utf8";
-//	private RandomAccessFile mReader = null;
 	private VirtualMemory mReader = null;
 	
 	// todo
@@ -48,8 +47,7 @@ public class BigLineData {
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
-//		mReader = new RandomAccessFile(mPath, "r");
-		mReader = new VirtualMemory(mPath, 512);
+		mReader = new VirtualMemory(mPath, 1024);
 		mPositionPer100Line.add(0l);
 	}
 
@@ -146,8 +144,10 @@ public class BigLineData {
 		mReader.close();
 	}
 
+	private MyBuilder b = new MyBuilder();
 	public CharSequence decode(Charset cs) throws IOException {
-		StringBuilder b = new StringBuilder();
+		//StringBuilder b = new StringBuilder();
+		b.clear();
 		CharsetDecoder decoder = cs.newDecoder();
 		boolean end = false;
 		ByteBuffer bb = ByteBuffer.allocateDirect(32); // bbÇÕèëÇ´çûÇﬂÇÈèÛë‘
@@ -177,9 +177,11 @@ public class BigLineData {
 				b.append(c);
 				if(mPaint != null){
 					// todo kiyohiro unefficient coding
-					String tmp = b.toString();
-					int len =mPaint.breakText(tmp, true, mWidth, null);
-					if (len < tmp.length()) {
+				//	String tmp = b.toString();
+				//	int len =mPaint.breakText(tmp, true, mWidth, null);
+					int len = mPaint.breakText(b.getAllBufferedMoji(),
+							0,b.getCurrentBufferedMojiSize(), mWidth, null);
+					if (len < b.getCurrentBufferedMojiSize()) {
 						// todo add test case following pattern.
 						// add breakText return 2
 						// but b.length return 1
@@ -187,7 +189,7 @@ public class BigLineData {
 						// 
 						
 						//Ç–Ç∆Ç¬ëOÇ≈â¸çs
-						b.deleteCharAt(b.length()-1);
+						b.removeLast();
 						mReader.seek(todoPrevPosition);
 						mode = TODOCRLFString.MODE_EXCLUDE_LF;
 						break outside;
@@ -208,7 +210,45 @@ public class BigLineData {
 		return new TODOCRLFString(b.toString(), mode);
 	}
 
-	
+	public static class MyBuilder {
+		private int mPointer = 0;
+		private int mLength = 512;
+		private char[] mBuffer = new char[mLength];
+		
+		public void append(char moji){
+			if(mPointer >= mLength){
+				char[] tmp = new char[mLength*2];
+				for(int i=0;i<mBuffer.length;i++) {
+					 tmp[i] = mBuffer[i];
+				}
+				mBuffer = tmp;
+			}
+			mBuffer[mPointer] = moji;
+			mPointer++;
+		}
+
+		public void clear() {
+			mPointer = 0;
+		}
+
+		public char[] getAllBufferedMoji(){
+			return mBuffer;
+		}
+
+		public int getCurrentBufferedMojiSize(){
+			return mPointer;
+		}
+		
+		public void removeLast(){
+			if(0<mPointer) {
+				mPointer--;
+			}
+		}
+
+		public String toString(){
+			return new String(mBuffer, 0, mPointer);
+		}
+	}
 	public static class TODOCRLFString implements CharSequence {
 		public static int MODE_INCLUDE_LF = 1;
 		public static int MODE_EXCLUDE_LF = 0;

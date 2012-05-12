@@ -50,7 +50,7 @@ public class KyoroApplication extends Application {
 		}
 	}
 
-	private Handler getHanler(){
+	public Handler getHanler(){
 		return getKyoroApplication().mHandler;
 	}
 

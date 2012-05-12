@@ -29,7 +29,7 @@ public class VirtualMemory {
 		try {
 			if(!mBuffer.isBuffered(mFilePointer)){
 				mFile.seek(mFilePointer);
-				byte[] b= new byte[mBufferLength/2]; 
+				byte[] b= new byte[mBufferLength/4]; 
 				int len = mFile.read(b);
 				if(len==-1){
 					return -1; 
