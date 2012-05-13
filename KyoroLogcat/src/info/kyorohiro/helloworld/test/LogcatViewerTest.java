@@ -20,7 +20,7 @@ public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCa
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			mConsole = new LogcatViewer();
+			mConsole = new LogcatViewer(1000);
 			mData = mConsole.getCyclingStringList();
 			mStage = new SimpleStage(this);
 			mStage.getRoot().addChild(mConsole);

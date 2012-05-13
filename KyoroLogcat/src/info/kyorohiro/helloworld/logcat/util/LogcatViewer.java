@@ -25,8 +25,8 @@ public class LogcatViewer extends SimpleFilterableLineView {
     public static int COLOR_F = Color.parseColor("#ffff8080");
     public static int COLOR_S = Color.parseColor("#ffff8080");
 	
-	public LogcatViewer() {
-		super(new LogcatViewerBuffer(3000, 1000, 16));
+	public LogcatViewer(int baseWidth) {
+		super(new LogcatViewerBuffer(5000, 1000, 16), baseWidth);
 		mCircleControllerAction = new MyCircleControllerEvent();
 		getLineView().setBgColor(Color.parseColor("#FF101030"));
 		addChild(new MyTouchAndMove(this.getLineView()));

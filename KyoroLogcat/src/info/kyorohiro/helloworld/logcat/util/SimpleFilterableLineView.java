@@ -17,15 +17,16 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	private FlowingLineData mInputtedText = null;
 	private FlowingLineView mViewer = null;
 	private int mTextSize = 16;
+	private int mBaseWidth = 400;
 
-	public SimpleFilterableLineView(FlowingLineData lineData) {
+	public SimpleFilterableLineView(FlowingLineData lineData, int baseWidth) {
 		mInputtedText = lineData;
 		if (mInputtedText == null) {
-			mInputtedText = new FlowingLineData(6000, 1000, mTextSize);
+			mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
 		}
 		mTextSize = mInputtedText.getTextSize();
 		mViewer = new FlowingLineView(mInputtedText, mTextSize);
-		
+		mBaseWidth = baseWidth;
 		addChild(new Layout());
 		onAddViewer();
 		addChild(mViewer);
@@ -38,17 +39,11 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	public class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			double shortSide = graphics.getWidth();
-			double longSide = graphics.getHeight();
+			double width = graphics.getWidth();
 			double fontSize = KyoroLogcatSetting.getFontSize();
-			if(shortSide>longSide){
-				double t= shortSide;
-				shortSide = longSide;
-				longSide = t;
-				fontSize = fontSize*longSide/shortSide;
-			} 
+			fontSize = fontSize*width/(double)mBaseWidth;
 //			SimpleFilterableLineView.this.mInputtedText.setWidth(graphics.getWidth()*9/10);
-			SimpleFilterableLineView.this.mInputtedText.setWidth((int)(shortSide*9/10));
+			SimpleFilterableLineView.this.mInputtedText.setWidth((int)(mBaseWidth*9/10));
 			SimpleFilterableLineView.this.getLineView().setTextSize((int)(fontSize));
 		}
 	}

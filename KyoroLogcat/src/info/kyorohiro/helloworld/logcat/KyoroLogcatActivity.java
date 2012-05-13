@@ -64,9 +64,8 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_SETTING_SAVEDDIR = "directory";
 	public static final String MENU_SAVE = "save logcat(-d)";
 
-	private LogcatViewer mLogcatViewer = new LogcatViewer();
-	private FlowingLineData mLogcatOutput = mLogcatViewer
-			.getCyclingStringList();
+	private LogcatViewer mLogcatViewer = null;
+	private FlowingLineData mLogcatOutput = null;
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
 	private AutoCompleteTextView mInputForLogFilter = null;
@@ -105,6 +104,9 @@ public class KyoroLogcatActivity extends TestActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//
+
 		//Debug.waitForDebugger();
 		//
 		// circle controller
@@ -123,6 +125,10 @@ public class KyoroLogcatActivity extends TestActivity {
 		if (radius > deviceMinEdge / 1.5) {
 			radius = (int) (deviceMinEdge / 1.5);
 		}
+
+		mLogcatViewer = new LogcatViewer(deviceMinEdge);
+		mLogcatOutput = mLogcatViewer.getCyclingStringList();
+
 		mCircleController.setEventListener(mLogcatViewer
 				.getCircleControllerAction());
 		mCircleController.setRadius(radius);
