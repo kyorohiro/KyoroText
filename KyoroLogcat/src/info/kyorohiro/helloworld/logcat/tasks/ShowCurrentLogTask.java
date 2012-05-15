@@ -5,17 +5,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 
 public class ShowCurrentLogTask extends Thread implements TaskInter {
 	private final Logcat mLogcat = new Logcat();
-	private FlowingLineData mData;
+	private FlowingLineBuffer mData;
 	private String mOption = "-n";
 
-	public ShowCurrentLogTask(FlowingLineData data, String option) {
+	public ShowCurrentLogTask(FlowingLineBuffer data, String option) {
 		mData = data;
 		if(option != null) {
 			mOption = option;

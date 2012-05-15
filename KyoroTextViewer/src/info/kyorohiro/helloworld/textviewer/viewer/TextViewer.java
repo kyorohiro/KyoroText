@@ -11,10 +11,10 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
-import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndMove;
-import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoom;
+import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoomForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
@@ -32,7 +32,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	private String mCurrentCharset = "utf8";
 
-	private CyclingListInter<FlowingLineDatam> mBuffer = null;
+	private CyclingListInter<LineViewData> mBuffer = null;
 	private LineView mLineView = null;
 	private int mBufferWidth = 0;
 	private SimpleCircleController mCircleController = null;
@@ -56,8 +56,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 		mScrollBar = new ScrollBar(mLineView);
 		addChild(mLineView);
-		addChild(new MyTouchAndMove(mLineView));
-		addChild(new MyTouchAndZoom(mLineView));
+		addChild(new TouchAndMoveActionForLineView(mLineView));
+		addChild(new MyTouchAndZoomForLineView(mLineView));
 		addChild(mCircleController = new SimpleCircleController());
 		addChild(new LayoutManager());
 		addChild(mScrollBar);
@@ -129,7 +129,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mCurrentPath = file.getAbsolutePath();
 		KyoroSetting.setCurrentFile(file.getAbsolutePath());
 		mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mCurrentFontSize, mBufferWidth, file, mCurrentCharset);
-		CyclingListInter<FlowingLineDatam> prevBuffer = mLineView.getCyclingList();
+		CyclingListInter<LineViewData> prevBuffer = mLineView.getCyclingList();
 		mLineView.setCyclingList(mBuffer);
 		prevBuffer.clear();
 		if(mBuffer instanceof TextViewerBuffer) {
@@ -213,18 +213,18 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 
 		@Override
-		public synchronized void head(FlowingLineDatam element) {
+		public synchronized void head(LineViewData element) {
 			super.head(element);
 			element.setColor(COLOR_FONT2);
 		}
 		@Override
-		public synchronized void add(FlowingLineDatam element) {
+		public synchronized void add(LineViewData element) {
 			super.add(element);
 			element.setColor(COLOR_FONT1);
 		}
 	}
 
-	private CyclingList<FlowingLineDatam> getStartupMessageBuffer() {
+	private CyclingList<LineViewData> getStartupMessageBuffer() {
 		String[] message = {
 				"Please open file\n",
 				"Current charset is "+mCurrentCharset+"\n", 
@@ -245,14 +245,14 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 				Color.RED,
 				Color.RED,				
 		};
-		CyclingList<FlowingLineDatam> startupMessage = new CyclingList<FlowingLineDatam>(100);
+		CyclingList<LineViewData> startupMessage = new CyclingList<LineViewData>(100);
 		for(int i=0;i<message.length;i++){
 			String m = message[i];
-			int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
+			int crlf = LineViewData.INCLUDE_END_OF_LINE;
 			if(!m.endsWith("\n")){
-				crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
+				crlf = LineViewData.EXCLUDE_END_OF_LINE;
 			}
-			startupMessage.add(new FlowingLineDatam(m, color[i], crlf));
+			startupMessage.add(new LineViewData(m, color[i], crlf));
 		}
 		return startupMessage;
 	}

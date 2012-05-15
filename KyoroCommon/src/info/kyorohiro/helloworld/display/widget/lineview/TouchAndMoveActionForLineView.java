@@ -4,11 +4,10 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import android.view.MotionEvent;
 
-public class MyTouchAndMove extends SimpleDisplayObject {
+public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 
 	private int mPrevX = 0;
 	private int mPrevY = 0;
-	private long mPrevTime = 0;
 	private int mMovingX = 0;
 	private double mMovingY = 0;
 	private int mHeavyX = 0;
@@ -20,7 +19,7 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 	private long mPower_time = 0;
 	private LineView mViewer = null;
 
-	public MyTouchAndMove(LineView viewer) {
+	public TouchAndMoveActionForLineView(LineView viewer) {
 		mViewer = viewer;
 	}
 
@@ -46,7 +45,6 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 		if (mPrevY == -999 || mPrevX == -999) {
 			mPrevY = y;
 			mPrevX = x;
-			mPrevTime = System.currentTimeMillis();
 			return false;
 		}
 
@@ -60,7 +58,6 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mPrevY = y;
 			mPrevX = x;
 
-			mPrevTime = System.currentTimeMillis();
 			updateMovePower(x, y);
 			int textSize = (int) (mViewer.getTextSize() * mViewer.getScale());// todo
 																				// 2.5f
@@ -109,7 +106,6 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mMovingY = mViewer.getTodoExtra();;
 			mMoveYY = mMovingY; 
 			mMovingX = 0;
-			mPrevTime = 0;
 			mPrevY = -999;
 			mPrevX = -999;
 		} else if (action == MotionEvent.ACTION_UP) {
@@ -120,7 +116,6 @@ public class MyTouchAndMove extends SimpleDisplayObject {
 			mPrevX = -999;
 			mMovingY = 0;
 			mMovingX = 0;
-			mPrevTime = 0;
 		}
 
 		return false;

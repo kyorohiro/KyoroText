@@ -8,7 +8,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceFontSizeDialog;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatDirectoryDialog;
@@ -65,7 +65,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	public static final String MENU_SAVE = "save logcat(-d)";
 
 	private LogcatViewer mLogcatViewer = null;
-	private FlowingLineData mLogcatOutput = null;
+	private FlowingLineBuffer mLogcatOutput = null;
 	private SimpleCircleController mCircleController = new SimpleCircleController();
 	private SimpleStage mStage = null;
 	private AutoCompleteTextView mInputForLogFilter = null;

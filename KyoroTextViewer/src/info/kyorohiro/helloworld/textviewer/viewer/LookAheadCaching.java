@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.io.BigLineData.LineWithPosition;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewerBuffer.MyBufferDatam;
@@ -155,9 +155,9 @@ public class LookAheadCaching {
 				for (int i = 0;i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();i++) {
 					CharSequence line = mLineManagerFromFile.readLine();
 					LineWithPosition lineWP = (LineWithPosition)line;
-					int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
+					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if(!lineWP.includeLF()) {
-						crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
+						crlf = LineViewData.EXCLUDE_END_OF_LINE;
 					}
 					MyBufferDatam t = new MyBufferDatam(
 							//							"=----"+lineWP.getLinePosition()+"-----"+
@@ -210,9 +210,9 @@ public class LookAheadCaching {
 
 					CharSequence line = mLineManagerFromFile.readLine();
 					LineWithPosition lineWP = (LineWithPosition)line;
-					int crlf = FlowingLineDatam.INCLUDE_END_OF_LINE;
+					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if(!lineWP.includeLF()) {
-						crlf = FlowingLineDatam.EXCLUDE_END_OF_LINE;
+						crlf = LineViewData.EXCLUDE_END_OF_LINE;
 					}							
 					MyBufferDatam t = new MyBufferDatam(
 							//							"+----"+lineWP.getLinePosition()+"-----"+

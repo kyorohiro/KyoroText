@@ -3,11 +3,9 @@ package info.kyorohiro.helloworld.display.simple;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import android.app.Notification;
 import android.content.Context;
 import android.os.Build;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.SurfaceView;
 
 public class MultiTouchSurfaceView extends SurfaceView {

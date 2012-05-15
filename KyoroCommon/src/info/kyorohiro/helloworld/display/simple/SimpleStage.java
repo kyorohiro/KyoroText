@@ -1,16 +1,12 @@
 package info.kyorohiro.helloworld.display.simple;
 
 import info.kyorohiro.helloworld.android.adapter.SimpleGraphicsForAndroid;
-import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
-import android.os.Build;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-
 public class SimpleStage extends EditableSurfaceView {
 //SurfaceView {
 	private InitialCallBack mInitialCallBack = null;
@@ -101,8 +97,8 @@ public class SimpleStage extends EditableSurfaceView {
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {
-		float y = event.getY();
-		float x = event.getX();
+	//	float y = event.getY();
+	//	float x = event.getX();
 	/*	if(x*x < y*y){
 			if(event.getY() > 0){
 				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_DOWN);

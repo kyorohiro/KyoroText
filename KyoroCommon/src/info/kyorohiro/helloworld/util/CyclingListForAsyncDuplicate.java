@@ -12,7 +12,6 @@ public class CyclingListForAsyncDuplicate<T> implements CyclingListInter<T> {
 	private boolean mTaskStatus = false;
 	private int mBufferSize = 0;
 	private int mIndexForNextCopy = 0;
-	private int mNumOfAdd = 0;
 
 	public CyclingListForAsyncDuplicate(CyclingList<T> base, int copyDataBuffer) {
 		mBase = base;

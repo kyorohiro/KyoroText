@@ -1,17 +1,17 @@
-package info.kyorohiro.helloworld.display.widget.lineview;
+package info.kyorohiro.helloworld.display.widget.flowinglineview;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class FlowingLineData extends CyclingListForAsyncDuplicate<FlowingLineDatam> 
+public class FlowingLineBuffer extends CyclingListForAsyncDuplicate<LineViewData> 
 implements SimpleLockInter {
 	private Paint mPaint = null;
 	private int mWidth = 1000;
@@ -20,8 +20,8 @@ implements SimpleLockInter {
 	private boolean locked = false;
 	private Thread cThread = null;
 
-	public FlowingLineData(int listSize, int width, int textSize) {
-		super(new CyclingList<FlowingLineDatam>(listSize),listSize);
+	public FlowingLineBuffer(int listSize, int width, int textSize) {
+		super(new CyclingList<LineViewData>(listSize),listSize);
 		mWidth = width;
 		mPaint = new Paint();
 		mPaint.setTextSize(textSize);
@@ -61,8 +61,8 @@ implements SimpleLockInter {
 
 	public synchronized void addLineToHead(CharSequence line) {
 		lock();
-		this.head(new FlowingLineDatam(line, mCurrentColor,
-				FlowingLineDatam.INCLUDE_END_OF_LINE));
+		this.head(new LineViewData(line, mCurrentColor,
+				LineViewData.INCLUDE_END_OF_LINE));
 	}
 
 	public synchronized void addLinePerBreakText(CharSequence line) {
@@ -77,40 +77,40 @@ implements SimpleLockInter {
 			len = mPaint.breakText(line.toString(), true, mWidth, null);
 			if (len == line.length()) {
 				mNumOfLineAdded++;
-				add(new FlowingLineDatam(line, mCurrentColor,
-						FlowingLineDatam.INCLUDE_END_OF_LINE));
+				add(new LineViewData(line, mCurrentColor,
+						LineViewData.INCLUDE_END_OF_LINE));
 				break;
 			} else {
 				mNumOfLineAdded++;
-				add(new FlowingLineDatam(line.subSequence(0, len), mCurrentColor,
-						FlowingLineDatam.EXCLUDE_END_OF_LINE));
+				add(new LineViewData(line.subSequence(0, len), mCurrentColor,
+						LineViewData.EXCLUDE_END_OF_LINE));
 				line = line.subSequence(len, len+line.length()-len);
 				// kiyo
 			}
 		}
 	}
 
-	public synchronized FlowingLineDatam[] getLastLines(int numberOfRetutnArrayElement) {
+	public synchronized LineViewData[] getLastLines(int numberOfRetutnArrayElement) {
 		lock();
 		if (numberOfRetutnArrayElement < 0) {
-			return new FlowingLineDatam[0];
+			return new LineViewData[0];
 		}
-		FlowingLineDatam[] ret = new FlowingLineDatam[numberOfRetutnArrayElement];
-		return (FlowingLineDatam[]) getLast(ret, numberOfRetutnArrayElement);
+		LineViewData[] ret = new LineViewData[numberOfRetutnArrayElement];
+		return (LineViewData[]) getLast(ret, numberOfRetutnArrayElement);
 	}
 
-	public synchronized FlowingLineDatam[] getLines(int start, int end) {
+	public synchronized LineViewData[] getLines(int start, int end) {
 		lock();
 		if (start > end) {
-			return new FlowingLineDatam[0];
+			return new LineViewData[0];
 		}
-		FlowingLineDatam[] ret = new FlowingLineDatam[end - start];
+		LineViewData[] ret = new LineViewData[end - start];
 		return getElements(ret, start, end);
 	}
 
-	public synchronized FlowingLineDatam getLine(int i) {
+	public synchronized LineViewData getLine(int i) {
 		lock();
-		return (FlowingLineDatam) super.get(i);
+		return (LineViewData) super.get(i);
 	}
 
 	private int mCurrentColor = Color.parseColor("#ccc9f486");
@@ -121,23 +121,23 @@ implements SimpleLockInter {
 	protected void setColorPerLine(CharSequence line) {
 	}
 
-	private ArrayList<FlowingLineDatam> mCashForFiltering = new ArrayList<FlowingLineDatam>();
+	private ArrayList<LineViewData> mCashForFiltering = new ArrayList<LineViewData>();
 	@Override
-	protected boolean filter(FlowingLineDatam t) {
+	protected boolean filter(LineViewData t) {
 		if(mFilter == null){
 			return true;
 		}
 		if(t != null) {
 			mCashForFiltering.add(t);
-			if(t.getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
+			if(t.getStatus() == LineViewData.INCLUDE_END_OF_LINE) {
 				StringBuilder builder = new StringBuilder("");
-				for(FlowingLineDatam d : mCashForFiltering){
+				for(LineViewData d : mCashForFiltering){
 					builder.append(d);
 				}
 				String i = builder.toString();
 				Matcher m = mFilter.matcher(i);
 				if(m.find()){
-					for(FlowingLineDatam d: mCashForFiltering) {
+					for(LineViewData d: mCashForFiltering) {
 						getDuplicatingList().add(d);
 					}
 				}

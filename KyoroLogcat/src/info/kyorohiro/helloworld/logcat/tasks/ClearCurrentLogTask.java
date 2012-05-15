@@ -4,16 +4,16 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.logcat.util.Logcat;
 import info.kyorohiro.helloworld.logcat.util.Logcat.LogcatException;
 
 public class ClearCurrentLogTask extends Thread implements TaskInter {
 	private final Logcat mLogcat = new Logcat();
-	private FlowingLineData mData;
+	private FlowingLineBuffer mData;
 	private String mOption = "-c";
 
-	public ClearCurrentLogTask(FlowingLineData data) {
+	public ClearCurrentLogTask(FlowingLineBuffer data) {
 		mData = data;
 	}
 

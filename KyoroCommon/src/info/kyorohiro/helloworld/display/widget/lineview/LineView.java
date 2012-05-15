@@ -10,7 +10,7 @@ import android.graphics.Color;
 public class LineView extends SimpleDisplayObject {
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
-	private CyclingListInter<FlowingLineDatam> mInputtedText = null;
+	private CyclingListInter<LineViewData> mInputtedText = null;
 	private int mPosition = 0;
 	private int mPosX = 0;
 	private int mTextSize = 16;
@@ -21,7 +21,7 @@ public class LineView extends SimpleDisplayObject {
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
-	private FlowingLineDatam[] mCashBuffer = new FlowingLineDatam[0];
+	private LineViewData[] mCashBuffer = new LineViewData[0];
 
 	//==========================================================
 	// todo refactaring
@@ -31,12 +31,12 @@ public class LineView extends SimpleDisplayObject {
 	//
 	//==========================================================
 	
-	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
+	public LineView(CyclingListInter<LineViewData> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 	}
 
-	public LineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize, int cashSize) {
+	public LineView(CyclingListInter<LineViewData> inputtedText, int textSize, int cashSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 		mDefaultCashSize = cashSize;
@@ -66,11 +66,11 @@ public class LineView extends SimpleDisplayObject {
 		return mTextSize;
 	}
 
-	public synchronized void setCyclingList(CyclingListInter<FlowingLineDatam> inputtedText) {
+	public synchronized void setCyclingList(CyclingListInter<LineViewData> inputtedText) {
 		mInputtedText = inputtedText;
 	}
 
-	public synchronized CyclingListInter<FlowingLineDatam> getCyclingList() {
+	public synchronized CyclingListInter<LineViewData> getCyclingList() {
 		return mInputtedText;
 	}
 
@@ -108,7 +108,7 @@ public class LineView extends SimpleDisplayObject {
 		return mPosX;
 	}
 
-	private void showLineDate(SimpleGraphics graphics, FlowingLineDatam[] list, int len, int blank) {
+	private void showLineDate(SimpleGraphics graphics, LineViewData[] list, int len, int blank) {
 		if(len > list.length){
 			len = list.length;
 		}
@@ -131,7 +131,7 @@ public class LineView extends SimpleDisplayObject {
 			int yy = y + (int)(graphics.getTextSize()*0.2);
 			
 			graphics.drawText(list[i], x, y);
-			if (list[i].getStatus() == FlowingLineDatam.INCLUDE_END_OF_LINE) {
+			if (list[i].getStatus() == LineViewData.INCLUDE_END_OF_LINE) {
 				int c = list[i].getColor();
 				graphics.setColor(Color.argb(127,Color.red(c),Color.green(c),Color.blue(c)));
 				graphics.setStrokeWidth(1);
@@ -142,11 +142,11 @@ public class LineView extends SimpleDisplayObject {
 	
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
-		CyclingListInter<FlowingLineDatam> showingText = mInputtedText;
+		CyclingListInter<LineViewData> showingText = mInputtedText;
 		int start = 0;
 		int end = 0;
 		int blank = 0;
-		FlowingLineDatam[] list = null;
+		LineViewData[] list = null;
 		int len = 0;
 		try {
 			if(showingText instanceof SimpleLockInter) {
@@ -177,7 +177,7 @@ public class LineView extends SimpleDisplayObject {
 				if(buffeSize<mDefaultCashSize) {
 					buffeSize = mDefaultCashSize;
 				}
-				mCashBuffer = new FlowingLineDatam[buffeSize];
+				mCashBuffer = new LineViewData[buffeSize];
 			}
 			list = mCashBuffer;
 			list = showingText.getElements(list, start, end);
@@ -194,7 +194,7 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 
-	public int start(CyclingListInter<FlowingLineDatam> showingText) {
+	public int start(CyclingListInter<LineViewData> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int start = referPoint;
@@ -205,7 +205,7 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 
-	public int end(CyclingListInter<FlowingLineDatam> showingText) {
+	public int end(CyclingListInter<LineViewData> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int end = referPoint + mNumOfLine;
@@ -218,7 +218,7 @@ public class LineView extends SimpleDisplayObject {
 		return end;
 	}
 
-	public int blank(CyclingListInter<FlowingLineDatam> showingText) {
+	public int blank(CyclingListInter<LineViewData> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int blank = 0;
@@ -242,7 +242,7 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 	private void updateStatus(SimpleGraphics graphics,
-			CyclingListInter<FlowingLineDatam> showingText) {
+			CyclingListInter<LineViewData> showingText) {
 		mNumOfLine = (int)(getHeight() / (mTextSize*1.2*mScale));//todo mScale
 		{
 			// todo refactaring

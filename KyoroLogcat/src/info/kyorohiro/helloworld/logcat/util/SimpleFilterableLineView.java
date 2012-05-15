@@ -4,25 +4,23 @@ import java.util.regex.Pattern;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineView.MyLineView;
+import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
+import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
-import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
 
 public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
-	private FlowingLineData mInputtedText = null;
+	private FlowingLineBuffer mInputtedText = null;
 	private FlowingLineView mViewer = null;
 	private int mTextSize = 16;
 	private int mBaseWidth = 400;
 
-	public SimpleFilterableLineView(FlowingLineData lineData, int baseWidth) {
+	public SimpleFilterableLineView(FlowingLineBuffer lineData, int baseWidth) {
 		mInputtedText = lineData;
 		if (mInputtedText == null) {
-			mInputtedText = new FlowingLineData(3000, 1000, mTextSize);
+			mInputtedText = new FlowingLineBuffer(3000, 1000, mTextSize);
 		}
 		mTextSize = mInputtedText.getTextSize();
 		mViewer = new FlowingLineView(mInputtedText, mTextSize);
@@ -48,7 +46,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	public FlowingLineData getCyclingStringList() {
+	public FlowingLineBuffer getCyclingStringList() {
 		return mInputtedText;
 	}
 

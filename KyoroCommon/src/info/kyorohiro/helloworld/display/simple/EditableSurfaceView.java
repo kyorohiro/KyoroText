@@ -2,28 +2,25 @@ package info.kyorohiro.helloworld.display.simple;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Editable;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputMethodManager;
 
 public class EditableSurfaceView extends MultiTouchSurfaceView {
 
-	private Editable.Factory mEditableFactory = Editable.Factory.getInstance();
-    private Spannable.Factory mSpannableFactory = Spannable.Factory.getInstance();
-	private InputMethodManager mManager = null;
+	
+//	private Editable.Factory mEditableFactory = Editable.Factory.getInstance();
+//  private Spannable.Factory mSpannableFactory = Spannable.Factory.getInstance();
+//	private InputMethodManager mManager = null;
 
 	public EditableSurfaceView(Context context) {
 		super(context);
-		mManager = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//		mManager = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 		//setBackgroundColor(Color.WHITE);

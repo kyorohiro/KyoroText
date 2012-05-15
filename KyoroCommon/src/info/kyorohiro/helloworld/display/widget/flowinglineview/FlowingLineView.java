@@ -1,8 +1,11 @@
-package info.kyorohiro.helloworld.display.widget.lineview;
+package info.kyorohiro.helloworld.display.widget.flowinglineview;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.widget.lineview.LineView;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
+import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 
@@ -13,7 +16,7 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 	private ScrollBar scrollBar = null;
 	private LineView viewer = null;
 
-	public FlowingLineView(CyclingListInter<FlowingLineDatam> inputtedText, int textSize) {
+	public FlowingLineView(CyclingListInter<LineViewData> inputtedText, int textSize) {
 		scrollBar = new ScrollBar(this);
 		viewer = new LineView(inputtedText, textSize);
 		this.addChild(viewer);
@@ -44,7 +47,7 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 	public class MyLineView extends LineView {
 
 		public int mBaseTextSize = 12;
-		public MyLineView(CyclingListInter<FlowingLineDatam> inputtedText,
+		public MyLineView(CyclingListInter<LineViewData> inputtedText,
 				int textSize) {
 			super(inputtedText, textSize);
 			mBaseTextSize = textSize;

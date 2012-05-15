@@ -6,17 +6,16 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 
-public class MyTouchAndZoom extends SimpleDisplayObject {
+public class MyTouchAndZoomForLineView extends SimpleDisplayObject {
 	private LineView mViewer = null;
 
-	public MyTouchAndZoom(LineView viewer) {
+	public MyTouchAndZoomForLineView(LineView viewer) {
 		mViewer = viewer;
 	}
 
 	private boolean mStartZoom = false;
 	private float mStartScale = 0;
 	private int mStartTextSize = 0;
-	private int mStartDensity = 0;
 	private int mStartPosY = 0;
 	private int mStartPos = 0;
 
@@ -42,7 +41,7 @@ public class MyTouchAndZoom extends SimpleDisplayObject {
 				if(mStartZoom == false) {
 					mStartScale = mViewer.getScale();
 					mStartTextSize = mViewer.getTextSize();
-					mPrevLength = mStartDensity = xx*xx + yy*yy;
+					mPrevLength = xx*xx + yy*yy;
 					mStartPosY = (p[0].getY()+p[1].getY())/2;
 					mStartPos = (int)(mViewer.getPositionY() + (mY-mStartPosY)/(mStartTextSize*mStartScale*1.2));
 				}

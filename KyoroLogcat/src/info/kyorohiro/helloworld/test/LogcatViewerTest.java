@@ -4,7 +4,7 @@ import android.os.Bundle;
 import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.android.base.TestResult;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
+import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
 
 public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCase2<LogcatViewerTest.LogcatViewerTestActivity>{
@@ -14,7 +14,7 @@ public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCa
 	}
 
 	public static class LogcatViewerTestActivity extends TestActivity {
-		private FlowingLineData mData = null;
+		private FlowingLineBuffer mData = null;
 		private LogcatViewer mConsole = null;
 		private SimpleStage mStage = null;
 		@Override
@@ -28,7 +28,7 @@ public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCa
 			mStage.start();
 		}
 		
-		public FlowingLineData getData() {
+		public FlowingLineBuffer getData() {
 			return mData; 
 		}
 
@@ -53,7 +53,7 @@ public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCa
 	}
 
 	class TestHello implements Runnable {
-		private  FlowingLineData mData = null;
+		private  FlowingLineBuffer mData = null;
 		private String createTestString(String text, int num){
 			StringBuilder b = new StringBuilder();
 			for(int i=0;i<num;i++){
@@ -61,7 +61,7 @@ public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCa
 			}
 			return b.toString();
 		}
-		public TestHello(FlowingLineData data){
+		public TestHello(FlowingLineBuffer data){
 			mData = data;
 		}
 

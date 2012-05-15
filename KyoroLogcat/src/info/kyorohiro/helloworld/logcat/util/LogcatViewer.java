@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 import android.graphics.Color;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineData;
-import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndMove;
-import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoom;
+import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
+import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoomForLineView;
 
 
 public class LogcatViewer extends SimpleFilterableLineView {
@@ -29,8 +29,8 @@ public class LogcatViewer extends SimpleFilterableLineView {
 		super(new LogcatViewerBuffer(5000, 1000, 16), baseWidth);
 		mCircleControllerAction = new MyCircleControllerEvent();
 		getLineView().setBgColor(Color.parseColor("#FF101030"));
-		addChild(new MyTouchAndMove(this.getLineView()));
-		addChild(new MyTouchAndZoom(this.getLineView()));		
+		addChild(new TouchAndMoveActionForLineView(this.getLineView()));
+		addChild(new MyTouchAndZoomForLineView(this.getLineView()));		
 
 	}
 
@@ -58,7 +58,7 @@ public class LogcatViewer extends SimpleFilterableLineView {
 		}
 	}
 
-	public static class LogcatViewerBuffer extends FlowingLineData {
+	public static class LogcatViewerBuffer extends FlowingLineBuffer {
 		private Pattern mPatternForFontColorPerLine = 
 			Pattern.compile("[\\t\\s0-9\\-:.,]*[\\t\\s]*([VDIWEFS]{1})/");
 

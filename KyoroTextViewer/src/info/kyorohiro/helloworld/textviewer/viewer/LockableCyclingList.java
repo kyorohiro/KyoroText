@@ -1,17 +1,17 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.util.CyclingList;
 
-public class LockableCyclingList extends CyclingList<FlowingLineDatam>
+public class LockableCyclingList extends CyclingList<LineViewData>
 implements SimpleLockInter{
 	public LockableCyclingList(int listSize) {
 		super(listSize);
 	}
 
 	@Override
-	public synchronized FlowingLineDatam get(int i) {
+	public synchronized LineViewData get(int i) {
 		lock();
 		return super.get(i);
 	}
@@ -41,7 +41,7 @@ implements SimpleLockInter{
 	}
 
 	@Override
-	public synchronized void add(FlowingLineDatam element) {
+	public synchronized void add(LineViewData element) {
 		lock();
 		super.add(element);
 	}
@@ -53,7 +53,7 @@ implements SimpleLockInter{
 	}
 
 	@Override
-	public synchronized void head(FlowingLineDatam element) {
+	public synchronized void head(LineViewData element) {
 		lock();
 		super.head(element);
 	}
@@ -65,13 +65,13 @@ implements SimpleLockInter{
 	}
 
 	@Override
-	public synchronized FlowingLineDatam[] getLast(FlowingLineDatam[] ret, int numberOfRetutnArrayElement) {
+	public synchronized LineViewData[] getLast(LineViewData[] ret, int numberOfRetutnArrayElement) {
 		lock();
 		return super.getLast(ret, numberOfRetutnArrayElement);
 	}
 
 	@Override
-	public synchronized FlowingLineDatam[] getElements(FlowingLineDatam[] ret, int start,
+	public synchronized LineViewData[] getElements(LineViewData[] ret, int start,
 			int end) {
 		try {
 			lock();

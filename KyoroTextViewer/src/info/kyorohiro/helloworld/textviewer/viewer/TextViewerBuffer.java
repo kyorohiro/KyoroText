@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
-import info.kyorohiro.helloworld.display.widget.lineview.FlowingLineDatam;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.util.CyclingList;
 
@@ -26,11 +26,11 @@ extends LockableCyclingList {
 	private int mCurrentBufferStartLinePosition = 0;
 	private int mCurrentBufferEndLinePosition = 0;
 	private int mCurrentPosition = 0;
-	private FlowingLineDatam mReturnUnexpectedValue = new FlowingLineDatam(
-			"..", Color.RED, FlowingLineDatam.INCLUDE_END_OF_LINE);
-	private FlowingLineDatam mReturnLoadingValue = new FlowingLineDatam(
+	private LineViewData mReturnUnexpectedValue = new LineViewData(
+			"..", Color.RED, LineViewData.INCLUDE_END_OF_LINE);
+	private LineViewData mReturnLoadingValue = new LineViewData(
 			"loading..", Color.parseColor("#33FFFF00"),
-			FlowingLineDatam.INCLUDE_END_OF_LINE);
+			LineViewData.INCLUDE_END_OF_LINE);
 	private LookAheadCaching mCashing = null;
 	private int mNumberOfStockedElement = 0;
 
@@ -89,7 +89,7 @@ extends LockableCyclingList {
 	}
 
 	@Override
-	public synchronized void head(FlowingLineDatam element) {
+	public synchronized void head(LineViewData element) {
 		int num = getNumOfAdd();
 		super.head(element);
 		if (element instanceof MyBufferDatam) {
@@ -98,7 +98,7 @@ extends LockableCyclingList {
 	}
 
 	@Override
-	public synchronized void add(FlowingLineDatam element) {
+	public synchronized void add(LineViewData element) {
 		int num = getNumOfAdd();
 		super.add(element);
 		if (element instanceof MyBufferDatam) {
@@ -115,7 +115,7 @@ extends LockableCyclingList {
 	}
 
 	// todo : this method is so big
-	public synchronized FlowingLineDatam get(int i) {
+	public synchronized LineViewData get(int i) {
 		// 読み込むホジションを調べる。
 		if (i < 0) {
 			return mReturnUnexpectedValue;
@@ -134,7 +134,7 @@ extends LockableCyclingList {
 			if (bufferedPoaition < 0 || bufferSize < bufferedPoaition) {
 				return mReturnLoadingValue;
 			} else {
-				FlowingLineDatam bufferedDataForReturn = super
+				LineViewData bufferedDataForReturn = super
 						.get(bufferedPoaition);
 				if (bufferedDataForReturn == null) {
 					return mReturnUnexpectedValue;
@@ -168,7 +168,7 @@ extends LockableCyclingList {
 		}
 	}
 
-	public static class MyBufferDatam extends FlowingLineDatam {
+	public static class MyBufferDatam extends LineViewData {
 		private int mLinePosition = 0;
 
 		public MyBufferDatam(CharSequence line, int color, int status,

@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import java.util.ArrayList;
 
-public class FlowingLineDatam implements CharSequence{
+public class LineViewData implements CharSequence {
 	public static int INCLUDE_END_OF_LINE = 1;
 	public static int EXCLUDE_END_OF_LINE = 0;
 
@@ -11,14 +11,14 @@ public class FlowingLineDatam implements CharSequence{
 	private int mColor = 0;
 	private int mStatus = 0;
 
-	public FlowingLineDatam(CharSequence line, int color, int status) {
+	public LineViewData(CharSequence line, int color, int status) {
 		mLine = new ArrayList<CharSequence>(1);
 		mLine.add(line);
 		mColor = color;
 		mStatus = status;
 	}
 
-	private FlowingLineDatam(ArrayList<CharSequence> line, int color, int status) {
+	private LineViewData(ArrayList<CharSequence> line, int color, int status) {
 		mLine = line;
 		mColor = color;
 		mStatus = status;	
@@ -97,7 +97,7 @@ public class FlowingLineDatam implements CharSequence{
 			}
 			prev = length;
 		}
-		return new FlowingLineDatam(next, mColor, mStatus);
+		return new LineViewData(next, mColor, mStatus);
 	}
 
 	@Override
