@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget.lineview.test;
+package info.kyorohiro.helloworld.test.display.widget.lineview;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import junit.framework.TestCase;
