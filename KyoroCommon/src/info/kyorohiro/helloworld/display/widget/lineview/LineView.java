@@ -30,7 +30,7 @@ public class LineView extends SimpleDisplayObject {
 	private int mTestTextColor = Color.parseColor("#33FFFF00");
 	//
 	//==========================================================
-	
+
 	public LineView(CyclingListInter<LineViewData> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
@@ -129,7 +129,7 @@ public class LineView extends SimpleDisplayObject {
 			int y = mTodoExtraY+
 			(int)(graphics.getTextSize()*1.2) * (blank + i + 1);
 			int yy = y + (int)(graphics.getTextSize()*0.2);
-			
+
 			graphics.drawText(list[i], x, y);
 			if (list[i].getStatus() == LineViewData.INCLUDE_END_OF_LINE) {
 				int c = list[i].getColor();
@@ -139,7 +139,8 @@ public class LineView extends SimpleDisplayObject {
 			}
 		}
 	}
-	
+
+	private DrawingPosition mDrawingPosition = new DrawingPosition();
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		CyclingListInter<LineViewData> showingText = mInputtedText;
@@ -163,10 +164,11 @@ public class LineView extends SimpleDisplayObject {
 				graphics.drawText(""+mShowingTextStartPosition+":"+mShowingTextEndPosition, 30, s*4);
 				graphics.setTextSize(s);
 			}
-			start = start(showingText);
-			end = end(showingText);
-			blank = blank(showingText);
-
+			mDrawingPosition.updateInfo(mPosition, getHeight(),
+					mTextSize, mScale, showingText);
+			start = mDrawingPosition.getStart();
+			end = mDrawingPosition.getEnd();
+			blank = mDrawingPosition.getBlank();
 			if (start > end) {
 				len = 0;
 			} else {
@@ -191,42 +193,6 @@ public class LineView extends SimpleDisplayObject {
 		showLineDate(graphics, list, len, blank);
 		mShowingTextStartPosition = start;
 		mShowingTextEndPosition = end;
-	}
-
-
-	public int start(CyclingListInter<LineViewData> showingText) {
-		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
-		int start = referPoint;
-		if (start < 0) {
-			start = 0;
-		}
-		return start;
-	}
-
-
-	public int end(CyclingListInter<LineViewData> showingText) {
-		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
-		int end = referPoint + mNumOfLine;
-		if (end < 0) {
-			end = 0;
-		}
-		if (end >= numOfStackedString) {
-			end = numOfStackedString;
-		}
-		return end;
-	}
-
-	public int blank(CyclingListInter<LineViewData> showingText) {
-		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
-		int blank = 0;
-		boolean uppserSideBlankisViewed = (referPoint) < 0;
-		if (uppserSideBlankisViewed) {
-			blank = -1 * referPoint;
-		}
-		return blank;
 	}
 
 
@@ -279,3 +245,4 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 }
+
