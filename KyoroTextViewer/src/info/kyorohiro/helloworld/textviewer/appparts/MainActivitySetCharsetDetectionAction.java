@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.SortedMap;
 
+import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction.DialogForShowDeviceSupportCharset;
 import info.kyorohiro.helloworld.textviewer.util.CharsetDetectorSample;

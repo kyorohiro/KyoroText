@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.display.simple;
 public abstract class SimpleGraphics {
 	public final static int STYLE_STROKE = 1;
 	public final static int STYLE_FILL = 2;
+	public final static int STYLE_LINE = 3;
 
 
 	public abstract int getGlobalX();
@@ -14,8 +15,10 @@ public abstract class SimpleGraphics {
 	public abstract void drawBackGround(int color);
 	public abstract void drawText(CharSequence text, int x, int y);
 	public abstract int getTextSize();
+	public abstract void startPath();
 	public abstract void moveTo(int x, int y);
 	public abstract void lineTo(int x, int y);
+	public abstract void endPath();
 	public abstract int getWidth();	
 	public abstract int getHeight();
 	public abstract void setColor(int color);

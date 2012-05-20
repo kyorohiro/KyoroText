@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.textviewer.appparts;
 import java.nio.charset.Charset;
 import java.util.SortedMap;
 
+import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;

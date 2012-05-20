@@ -2,8 +2,8 @@ package info.kyorohiro.helloworld.textviewer;
 
 import java.io.File;
 
+import info.kyorohiro.helloworld.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.textviewer.appparts.MainActivity;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityCaptureImageAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction;

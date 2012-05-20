@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.Typeface;
@@ -30,7 +31,7 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setAlpha(0);
-	//	mPaint.setTypeface(Typeface.SANS_SERIF);
+		// mPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 
 	@Override
@@ -71,46 +72,47 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	}
 
 	public void drawText(CharSequence text, int x, int y) {
-		mCanvas.drawText(text, 0, text.length(),x + mGlobalX, y + mGlobalY, mPaint);
+		mCanvas.drawText(text, 0, text.length(), x + mGlobalX, y + mGlobalY,
+				mPaint);
 	}
 
 	@Override
 	public void drawImageAsTile(SimpleImage image, int x, int y, int w, int h) {
-		if(image.getImage().isRecycled()){
+		if (image.getImage().isRecycled()) {
 			return;
 		}
-// todo: examine following code.
-//		Shader shader = new BitmapShader(image.getImage(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-//		Paint paint = mPaint; //new Paint();
-//		paint.setShader(shader);
-//		Rect prev = mCanvas.getClipBounds();
-//		mCanvas.clipRect(x, y, x+w, y+h);
-//		mCanvas.drawPaint(paint);
-//		mCanvas.clipRect(prev);
-//		paint.setShader(null);
-//
+		// todo: examine following code.
+		// Shader shader = new BitmapShader(image.getImage(),
+		// Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		// Paint paint = mPaint; //new Paint();
+		// paint.setShader(shader);
+		// Rect prev = mCanvas.getClipBounds();
+		// mCanvas.clipRect(x, y, x+w, y+h);
+		// mCanvas.drawPaint(paint);
+		// mCanvas.clipRect(prev);
+		// paint.setShader(null);
+		//
 		Bitmap bitmap = image.getImage();
-        int imgW = bitmap.getWidth();
-        int imgH = bitmap.getHeight();
-        int lenW = w/imgW;
-        int lenH = h/imgH;
-        for(int _w=0;_w<=lenW;_w++) {
-            for(int _h=0;_h<=lenH;_h++) {
-            	int srcW = imgW;
-            	int srcH = imgH;
-            	if(srcW>w-(imgW*_w)) {
-            		srcW = w-(imgW*_w);
-            	}
-            	if(srcH>h-(imgH*_h)) {
-            		srcH = h-(imgH*_h);
-            	}
-            	Rect src = new Rect(0, 0, srcW, srcH);
-                Rect dst = new Rect(
-                		x+imgW*_w, y+imgH*_h,
-                		x+imgW*_w+srcW, y+imgH*_h+srcH);
-        		mCanvas.drawBitmap(bitmap, src, dst, mPaint);
-            }
-        }
+		int imgW = bitmap.getWidth();
+		int imgH = bitmap.getHeight();
+		int lenW = w / imgW;
+		int lenH = h / imgH;
+		for (int _w = 0; _w <= lenW; _w++) {
+			for (int _h = 0; _h <= lenH; _h++) {
+				int srcW = imgW;
+				int srcH = imgH;
+				if (srcW > w - (imgW * _w)) {
+					srcW = w - (imgW * _w);
+				}
+				if (srcH > h - (imgH * _h)) {
+					srcH = h - (imgH * _h);
+				}
+				Rect src = new Rect(0, 0, srcW, srcH);
+				Rect dst = new Rect(x + imgW * _w, y + imgH * _h, x + imgW * _w
+						+ srcW, y + imgH * _h + srcH);
+				mCanvas.drawBitmap(bitmap, src, dst, mPaint);
+			}
+		}
 	}
 
 	public int getTextSize() {
@@ -122,13 +124,16 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 
 	// rewrite : now draw line only , must support fill
 	public void moveTo(int x, int y) {
-		mMoveToX = x;
-		mMoveToY = y;
+		// mCanvas.
+//		mMoveToX = x;
+//		mMoveToY = y;
+		mPath.moveTo(mGlobalX+x, mGlobalY+y);
 	}
 
 	public void lineTo(int x, int y) {
-		drawLine(mMoveToX, mMoveToY, x, y);
-		moveTo(x, y);
+//		drawLine(mMoveToX, mMoveToY, x, y);
+//		moveTo(x, y);
+		mPath.lineTo(mGlobalX+x, mGlobalY+y);
 	}
 
 	public int getWidth() {
@@ -179,6 +184,22 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		Bitmap bitmap = BitmapFactory.decodeByteArray(data, offset, length);
 
 		return null;
+	}
+
+	private Path mPath = null;
+
+	@Override
+	public void startPath() {
+		mPath = new Path();
+	}
+
+	@Override
+	public void endPath() {
+		if(mPath != null) {
+			mCanvas.drawPath(mPath, mPaint);
+			mPath.close();
+			mPath = null;
+		}
 	}
 
 }

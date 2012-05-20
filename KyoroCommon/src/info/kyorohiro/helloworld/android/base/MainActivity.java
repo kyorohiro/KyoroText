@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.textviewer.appparts;
+package info.kyorohiro.helloworld.android.base;
 
 import java.util.LinkedList;
 
