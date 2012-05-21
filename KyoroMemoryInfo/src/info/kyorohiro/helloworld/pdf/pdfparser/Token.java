@@ -6,10 +6,14 @@ public class Token {
 	private int mType = 0;
 	private byte[] mBuffer = null;
 	private LinkedList<Token> mChild = new LinkedList<Token>();
+	private long mStart = 0;
+	private long mEnd = 0;
 
-	public Token(int type, byte[] buffer) {
+	public Token(int type, byte[] buffer, long start, long end) {
 		mType = type;
 		mBuffer = buffer;
+		mStart = start;
+		mEnd = end;
 	}
 
 	@Override

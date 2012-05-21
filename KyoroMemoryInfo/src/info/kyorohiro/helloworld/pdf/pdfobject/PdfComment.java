@@ -1,50 +1,55 @@
 package info.kyorohiro.helloworld.pdf.pdfobject;
 
+import info.kyorohiro.helloworld.pdf.pdflexer.BytePattern;
+import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer;
+import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.ExcludeEOL;
+import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.Persent;
 import info.kyorohiro.helloworld.pdf.pdfparser.GotoException;
 import info.kyorohiro.helloworld.pdf.pdfparser.PdfParser;
 import info.kyorohiro.helloworld.pdf.pdfparser.Token;
 
 public class PdfComment extends Token {
 
-	public PdfComment(int type, byte[] buffer) {
-		super(type, buffer);
+	private static Persent sPatternPersent = new Persent();
+	private static ExcludeEOL sEolText = new ExcludeEOL();
+
+	public PdfComment(byte[] buffer, long start, long end) {
+		super(PdfLexer.ID_COMMENT, buffer, start, end);
 	}
 
 	public static PdfObjectCreator builder = new Builder();
+	
 	public static class Builder implements PdfObjectCreator {
 		@Override
 		public Token createToken(PdfParser parser) throws GotoException {
 			return value(parser);
 		}
 
-		private Token newPdfName(){
-			PdfComment token = new PdfComment(999, null);
-			return token;
-		}
-
-		public Token value(PdfParser parser) throws GotoException{
-			if(false){// dummy
-			}else if(value_1(parser)){
-			}else{throw new GotoException();
+		public Token value(PdfParser parser) throws GotoException {
+			if (false) {// dummy
+			} else if (pattern_a(parser)) {
+			} else {
+				throw new GotoException();
 			}
-			Token t = newPdfName();
-			t.add(parser.mCashForWork.pop());
-			return t;
+			// Token�̎�ނ𑝂₷
+			// Atom 
+			// Object
+			// Container
+			//Token t = newPdfName();
+			// t.add(parser.mCashForWork.pop());
+			// return t;
+			return null;
 		}
 
-		private boolean value_1(PdfParser parser){
+		private boolean pattern_a(PdfParser parser){
 			parser.getStack().mark();
 			try {
-				parser.push(parser.next(
-						0,
-						0xFF,
-						false
-						));
+				parser.getStack().push(parser.getLexer().nextToken(sPatternPersent, true));
+				parser.getStack().push(parser.getLexer().nextToken(sEolText, false));
 				return true;
 			} catch(GotoException e) {
+				parser.getStack().release();
 				return false;
-			} finally {
-				parser.getStack().release();				
 			}
 		}
 	}

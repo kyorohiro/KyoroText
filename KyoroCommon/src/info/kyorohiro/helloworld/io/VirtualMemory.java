@@ -19,12 +19,6 @@ public class VirtualMemory {
 	}
 
 	public int read() throws IOException {
-		/*
-		mFile.seek(mFilePointer);
-		int ret =  mFile.read();
-		mFilePointer++;
-		return ret;
-*/
 		try {
 			if(!mBuffer.isBuffered(mFilePointer)){
 				mFile.seek(mFilePointer);

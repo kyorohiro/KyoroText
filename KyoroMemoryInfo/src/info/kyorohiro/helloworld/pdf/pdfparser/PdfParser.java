@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.pdf.pdfparser;
 
+import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -21,19 +23,6 @@ public class PdfParser {
 
 	public Stack getStack() {
 		return mCashForWork;
-	}
-
-	public Token next(int id, byte b, boolean escapedWhiteSpace) throws GotoException {
-		long pointer = getLexer().getSource().getCurrentPointer();
-		Token t = getLexer().nextToken(escapedWhiteSpace);
-		try {
-			if (t.getType() == id) {
-				return t;
-			}
-		} finally {
-			getLexer().getSource().setCurrentPointer(pointer);
-		}
-		throw new GotoException();
 	}
 
 	public static class Stack {
