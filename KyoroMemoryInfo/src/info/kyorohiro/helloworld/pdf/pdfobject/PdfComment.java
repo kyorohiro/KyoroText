@@ -1,12 +1,12 @@
 package info.kyorohiro.helloworld.pdf.pdfobject;
 
 import info.kyorohiro.helloworld.pdf.pdflexer.BytePattern;
+import info.kyorohiro.helloworld.pdf.pdflexer.GotoException;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer;
+import info.kyorohiro.helloworld.pdf.pdflexer.Token;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.ExcludeEOL;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.Persent;
-import info.kyorohiro.helloworld.pdf.pdfparser.GotoException;
 import info.kyorohiro.helloworld.pdf.pdfparser.PdfParser;
-import info.kyorohiro.helloworld.pdf.pdfparser.Token;
 
 public class PdfComment extends Token {
 

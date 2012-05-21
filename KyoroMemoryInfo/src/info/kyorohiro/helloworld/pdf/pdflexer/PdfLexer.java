@@ -3,9 +3,6 @@ package info.kyorohiro.helloworld.pdf.pdflexer;
 import java.io.IOException;
 
 import info.kyorohiro.helloworld.io.VirtualMemory;
-import info.kyorohiro.helloworld.pdf.pdfparser.GotoException;
-import info.kyorohiro.helloworld.pdf.pdfparser.Source;
-import info.kyorohiro.helloworld.pdf.pdfparser.Token;
 
 // memo 
 // pdf is written at ascii character with 0-128 and byte stream.

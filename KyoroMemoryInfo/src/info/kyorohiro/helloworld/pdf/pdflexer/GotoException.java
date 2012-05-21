@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.pdf.pdfparser;
+package info.kyorohiro.helloworld.pdf.pdflexer;
 
 public class GotoException extends Exception {
 

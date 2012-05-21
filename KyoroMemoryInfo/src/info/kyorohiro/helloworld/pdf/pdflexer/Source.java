@@ -1,8 +1,7 @@
-package info.kyorohiro.helloworld.pdf.pdfparser;
+package info.kyorohiro.helloworld.pdf.pdflexer;
 
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.io.VirtualMemory;
-import info.kyorohiro.helloworld.pdf.pdflexer.SourcePattern;
 
 import java.io.File;
 import java.io.FileNotFoundException;
