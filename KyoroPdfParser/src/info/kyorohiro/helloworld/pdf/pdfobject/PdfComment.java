@@ -1,8 +1,8 @@
 package info.kyorohiro.helloworld.pdf.pdfobject;
 
-import info.kyorohiro.helloworld.pdf.pdflexer.BytePattern;
 import info.kyorohiro.helloworld.pdf.pdflexer.GotoException;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer;
+import info.kyorohiro.helloworld.pdf.pdflexer.SourcePattern;
 import info.kyorohiro.helloworld.pdf.pdflexer.Token;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.ExcludeEOL;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.Persent;
@@ -13,12 +13,24 @@ public class PdfComment extends Token {
 	private static Persent sPatternPersent = new Persent();
 	private static ExcludeEOL sEolText = new ExcludeEOL();
 
-	public PdfComment(byte[] buffer, long start, long end) {
+	public PdfComment(long start, long end) {
 		super(PdfLexer.ID_COMMENT, start, end);
 	}
 
 	public static PdfObjectCreator builder = new Builder();
-	
+	public static class Builder extends EasyPdfObjectCreator {
+		public Builder() {
+			super(new SourcePattern[]{
+					sPatternPersent, sEolText},
+					new boolean[]{true, false});
+		}
+		@Override
+		public Token newToken(long start, long end) {
+			return new PdfComment(start, end);
+		}
+	}
+//*/
+/*
 	public static class Builder implements PdfObjectCreator {
 		@Override
 		public Token createToken(PdfParser parser) throws GotoException {
@@ -40,7 +52,7 @@ public class PdfComment extends Token {
 			try {
 				parser.getStack().push(parser.getLexer().nextToken(sPatternPersent, true));
 				parser.getStack().push(parser.getLexer().nextToken(sEolText, false));
-				Token t = new PdfComment(null,0,0);
+				Token t = new PdfComment(PdfLexer.ID_COMMENT, 0, 0);
 				t.addFirst(parser.mCashForWork.pop());
 				t.addFirst(parser.mCashForWork.pop());
 				return t;
@@ -51,4 +63,5 @@ public class PdfComment extends Token {
 			}
 		}
 	}
+//*/
 }

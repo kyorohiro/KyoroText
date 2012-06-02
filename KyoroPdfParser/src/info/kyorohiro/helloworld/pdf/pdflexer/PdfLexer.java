@@ -13,6 +13,8 @@ public class PdfLexer {
 	public static int ID_COMMENT = 3;
 	public static int ID_PERSENT = 4;
 	public static int ID_EXCLUDE_EOF = 5;
+	public static int ID_BOOLEAN = 6;
+	public static int ID_INTEGER = 6;
 	public static int ID_EOF = -1;
 
 	private WhiteSpace mWhiteSpace = new WhiteSpace();
@@ -54,6 +56,27 @@ public class PdfLexer {
 		}
 	}
 
+	public static class IntegerValue extends  BytePattern {
+		public IntegerValue() {
+			super(ID_INTEGER, new byte[][]{
+					{'0'}, {'1'}, {'2'}, {'3'}, {'4'},
+					{'5'}, {'6'}, {'7'}, {'8'}, {'9'},
+					}, 
+					true,//isLine
+					false);//exclude
+		}
+	}
+
+	public static class BooleanValue extends  BytePattern {
+		public BooleanValue() {
+			super(ID_BOOLEAN, new byte[][]{
+					{'t','r','u','e'},
+					{'f','a','l','s','e'},
+					}, 
+					false,//isLine
+					false);//exclude
+		}
+	}
 	public static class ExcludeEOL extends BytePattern {
 		public ExcludeEOL() {
 			super(ID_EXCLUDE_EOF, new byte[][]{{'\n'}}, true, true);
