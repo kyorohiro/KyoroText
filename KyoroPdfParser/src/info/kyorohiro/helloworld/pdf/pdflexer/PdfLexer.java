@@ -14,7 +14,10 @@ public class PdfLexer {
 	public static int ID_PERSENT = 4;
 	public static int ID_EXCLUDE_EOF = 5;
 	public static int ID_BOOLEAN = 6;
-	public static int ID_INTEGER = 6;
+	public static int ID_INTEGER = 7;
+	public static int ID_REAL = 9;
+	public static int ID_PLUSMINUS = 8;
+	public static int ID_DOT = 10;
 	public static int ID_EOF = -1;
 
 	private WhiteSpace mWhiteSpace = new WhiteSpace();
@@ -53,6 +56,28 @@ public class PdfLexer {
 	public static class Persent extends BytePattern {
 		public Persent() {
 			super(ID_PERSENT, new byte[][]{{'%'}}, false, false);
+		}
+	}
+
+	public static class Dot extends  BytePattern {
+		public Dot() {
+			super(ID_DOT, new byte[][]{
+					{'.'},
+					}, 
+					false,//isLine
+					false);//exclude
+		}
+	}
+
+
+	public static class PlusMinus extends  BytePattern {
+		public PlusMinus() {
+			super(ID_PLUSMINUS, new byte[][]{
+					{'+'},
+					{'-'},
+					}, 
+					false,//isLine
+					false);//exclude
 		}
 	}
 
