@@ -4,13 +4,37 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class VirtualMemory {
-
 	private int mBufferLength = 1024;
 	private RandomAccessFile mFile = null;
 	private long mFilePointer = 0;
 	private CyclingByteArray mBuffer = null;
+	
+	private LinkedList<Long> mMark = new LinkedList<Long>();
+	public void pushMark() {
+		try {
+			mMark.addLast(getFilePointer());
+		} catch (IOException e) {
+			e.printStackTrace();
+			// ‚±‚±‚É‚Í‚±‚È‚¢
+		}
+	}
+
+	public void backToMark() {
+		try {
+			seek(mMark.getLast());
+		} catch (IOException e) {
+			e.printStackTrace();
+			// ‚±‚±‚É‚Í‚±‚È‚¢
+		}
+	}
+
+	public long popMark() {
+		return mMark.removeLast();
+	}
 
 	public VirtualMemory(File base, int cashSize) throws FileNotFoundException {
 		mFile = new RandomAccessFile(base, "r");

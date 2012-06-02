@@ -37,7 +37,7 @@ public class PdfLexer {
 	public Token nextToken(SourcePattern pattern, boolean escapedWhiteSpace) throws GotoException {
 		Source source = getText();
 		W: while (true) {
-			if (!escapedWhiteSpace&&source.muchHead(mWhiteSpace)) {
+			if (escapedWhiteSpace&&source.muchHead(mWhiteSpace)) {
 				continue W;
 			}
 			if (source.muchHead(pattern)) {
@@ -50,13 +50,13 @@ public class PdfLexer {
 
 	public static class Persent extends BytePattern {
 		public Persent() {
-			super(ID_PERSENT, new byte[][]{{'%'}}, true, false);
+			super(ID_PERSENT, new byte[][]{{'%'}}, false, false);
 		}
 	}
 
 	public static class ExcludeEOL extends BytePattern {
 		public ExcludeEOL() {
-			super(ID_EXCLUDE_EOF, new byte[][]{{'\n'}}, true, false);
+			super(ID_EXCLUDE_EOF, new byte[][]{{'\n'}}, true, true);
 		}
 	}
 

@@ -1,6 +1,5 @@
 package info.kyorohiro.helloworld.pdf.pdflexer;
 
-import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.io.VirtualMemory;
 
 import java.io.File;
@@ -20,12 +19,8 @@ public class Source {
 	public static Pattern sSpace = Pattern.compile("\\s");
 	Pattern regex = Pattern.compile(".");
 
-	public Source(String path) {
-		try {
-			mLineData = new VirtualMemory(new File(path), 2048);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	public Source(String path) throws FileNotFoundException {
+		mLineData = new VirtualMemory(new File(path), 2048);
 	}
 
 
@@ -66,6 +61,10 @@ public class Source {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public VirtualMemory getVirtualMemory(){
+		return mLineData;
 	}
 
 }

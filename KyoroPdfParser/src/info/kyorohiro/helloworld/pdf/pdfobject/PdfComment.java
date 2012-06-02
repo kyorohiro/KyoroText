@@ -14,7 +14,7 @@ public class PdfComment extends Token {
 	private static ExcludeEOL sEolText = new ExcludeEOL();
 
 	public PdfComment(byte[] buffer, long start, long end) {
-		super(PdfLexer.ID_COMMENT, buffer, start, end);
+		super(PdfLexer.ID_COMMENT, start, end);
 	}
 
 	public static PdfObjectCreator builder = new Builder();
@@ -26,30 +26,28 @@ public class PdfComment extends Token {
 		}
 
 		public Token value(PdfParser parser) throws GotoException {
+			Token t = null;
 			if (false) {// dummy
-			} else if (pattern_a(parser)) {
+			} else if (null !=(t=pattern_a(parser))) {
 			} else {
 				throw new GotoException();
 			}
-			// Token�̎�ނ𑝂₷
-			// Atom 
-			// Object
-			// Container
-			//Token t = newPdfName();
-			// t.add(parser.mCashForWork.pop());
-			// return t;
-			return null;
+			return t;
 		}
 
-		private boolean pattern_a(PdfParser parser){
+		private Token pattern_a(PdfParser parser){
 			parser.getStack().mark();
 			try {
 				parser.getStack().push(parser.getLexer().nextToken(sPatternPersent, true));
 				parser.getStack().push(parser.getLexer().nextToken(sEolText, false));
-				return true;
+				Token t = new PdfComment(null,0,0);
+				t.addFirst(parser.mCashForWork.pop());
+				t.addFirst(parser.mCashForWork.pop());
+				return t;
 			} catch(GotoException e) {
+				return null;
+			} finally {
 				parser.getStack().release();
-				return false;
 			}
 		}
 	}

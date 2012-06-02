@@ -25,4 +25,5 @@ public class PdfParser {
 	public PdfStack getStack() {
 		return mCashForWork;
 	}
+
 }

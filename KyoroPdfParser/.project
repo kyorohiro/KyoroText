@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src_common</name>
+			<type>2</type>
+			<location>C:/github/KyoroHelloAndroid/KyoroCommon/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
