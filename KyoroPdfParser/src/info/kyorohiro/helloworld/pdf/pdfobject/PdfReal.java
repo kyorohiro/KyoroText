@@ -57,6 +57,7 @@ public class PdfReal extends Token {
 
 		private Token pattern_a(PdfParser parser){
 			parser.getStack().mark();
+			parser.getLexer().mark();
 			try {
 				try {
 					parser.getStack().push(parser.getLexer().nextToken(sPlusMinus, true));
@@ -76,9 +77,11 @@ public class PdfReal extends Token {
 				}
 				return t;
 			} catch(Exception e) {
+				parser.getLexer().backToMark();
 				return null;
 			}finally {
 				parser.getStack().release();
+				parser.getLexer().releaseMark();
 			}
 		}
 

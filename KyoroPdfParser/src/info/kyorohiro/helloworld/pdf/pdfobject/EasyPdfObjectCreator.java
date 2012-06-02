@@ -37,7 +37,8 @@ public class EasyPdfObjectCreator implements PdfObjectCreator {
 	}
 
 	private Token pattern_a(PdfParser parser){
-		parser.getStack().mark();
+		parser.getStack().mark(); // token's cash
+		parser.getLexer().mark(); // file pointer's cash
 		try {
 			for(int i=0;i<mPattern.length;i++) {
 				parser.getStack().push(parser.getLexer().nextToken(mPattern[i], mEscapeWhiteSpace[i]));
@@ -48,9 +49,11 @@ public class EasyPdfObjectCreator implements PdfObjectCreator {
 			}
 			return t;
 		} catch(GotoException e) {
+			parser.getLexer().backToMark();
 			return null;
 		} finally {
 			parser.getStack().release();
+			parser.getLexer().releaseMark();
 		}
 	}
 }

@@ -33,10 +33,16 @@ public class PdfLexer {
 		return mText;
 	}
 
-	//
-	// todo todo must be to change private method 
-	public Source getSource() {
-		return mText;
+	public void mark() {
+		getText().getVirtualMemory().pushMark();
+	}
+
+	public void backToMark() {
+		getText().getVirtualMemory().backToMark();
+	}
+
+	public void releaseMark() {
+		getText().getVirtualMemory().popMark();
 	}
 
 	public Token nextToken(SourcePattern pattern, boolean escapedWhiteSpace) throws GotoException {
