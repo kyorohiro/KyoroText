@@ -24,6 +24,10 @@ public class PdfLexer {
 	public static int ID_LITERAL_ESCAPSE_BEGIN_END = 14;
 	public static int ID_EOF = -1;
 
+	public static int ID_HEXADECIMAL_STRING = 11;
+	public static int ID_HEXADECIMAL_STRING_BEGIN = 12;
+	public static int ID_HEXADECIMAL_STRING_END = 13;
+	
 	private WhiteSpace mWhiteSpace = new WhiteSpace();
 	private Delimiter mDelimiter = new Delimiter();
 	private RegularCharacter mRegularCharacter = new RegularCharacter();
@@ -63,15 +67,42 @@ public class PdfLexer {
 		throw new GotoException();
 	}
 
+	public static class HexadecimalStringBegin extends BytePattern {
+		public HexadecimalStringBegin() {
+			super(ID_LITERAL_STRING_BEGIN, new byte[][]{{'<'}}, false, false);
+		}
+	}
+
+	public static class HexadecimalStringEnd extends BytePattern {
+		public HexadecimalStringEnd() {
+			super(ID_LITERAL_STRING_END, new byte[][]{{'>'}}, false, false);
+		}
+	}
+
+	public static class HexadecimalString extends BytePattern {
+		public HexadecimalString() {
+			super(ID_HEXADECIMAL_STRING, new byte[][]{
+					{'A'},{'B'},{'C'},{'D'},{'E'},
+					{'F'},{'G'},{'H'},{'I'},{'J'},
+					{'K'},{'L'},{'M'},{'N'},{'O'},
+					{'P'},{'Q'},{'R'},{'S'},{'T'},
+					{'U'},{'V'},{'W'},{'X'},{'Y'},
+					{'Z'},
+					{'0'},{'1'},{'2'},{'3'},{'4'},
+					{'5'},{'6'},{'7'},{'8'},{'9'},
+			}, true, false);
+		}
+	}
+
 	public static class LiteralStringBegin extends BytePattern {
 		public LiteralStringBegin() {
-			super(ID_LITERAL_STRING_BEGIN, new byte[][]{{'('}}, false, false);
+			super(ID_HEXADECIMAL_STRING_BEGIN, new byte[][]{{'('}}, false, false);
 		}
 	}
 
 	public static class LiteralStringEnd extends BytePattern {
 		public LiteralStringEnd() {
-			super(ID_LITERAL_STRING_END, new byte[][]{{')'}}, false, false);
+			super(ID_HEXADECIMAL_STRING_END, new byte[][]{{')'}}, false, false);
 		}
 	}
 
