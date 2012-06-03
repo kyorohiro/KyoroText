@@ -18,6 +18,10 @@ public class PdfLexer {
 	public static int ID_REAL = 9;
 	public static int ID_PLUSMINUS = 8;
 	public static int ID_DOT = 10;
+	public static int ID_LITERAL_STRING = 11;
+	public static int ID_LITERAL_STRING_BEGIN = 12;
+	public static int ID_LITERAL_STRING_END = 13;
+	public static int ID_LITERAL_ESCAPSE_BEGIN_END = 14;
 	public static int ID_EOF = -1;
 
 	private WhiteSpace mWhiteSpace = new WhiteSpace();
@@ -57,6 +61,32 @@ public class PdfLexer {
 			break;
 		}
 		throw new GotoException();
+	}
+
+	public static class LiteralStringBegin extends BytePattern {
+		public LiteralStringBegin() {
+			super(ID_LITERAL_STRING_BEGIN, new byte[][]{{'('}}, false, false);
+		}
+	}
+
+	public static class LiteralStringEnd extends BytePattern {
+		public LiteralStringEnd() {
+			super(ID_LITERAL_STRING_END, new byte[][]{{')'}}, false, false);
+		}
+	}
+
+	public static class LiteralString extends BytePattern {
+		public LiteralString() {
+			super(ID_LITERAL_STRING, new byte[][]{					
+			{'\\','('},{'\\',')'},{'('},{')'}}, true, true);
+		}
+	}
+
+	public static class LiteralString_EscapeBeginEnd extends BytePattern {
+		public LiteralString_EscapeBeginEnd() {
+			super(ID_LITERAL_ESCAPSE_BEGIN_END, new byte[][]{					
+			{'\\','('},{'\\',')'}}, false, false);
+		}
 	}
 
 	public static class Persent extends BytePattern {

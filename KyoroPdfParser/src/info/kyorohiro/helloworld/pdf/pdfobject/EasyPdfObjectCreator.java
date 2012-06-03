@@ -1,17 +1,13 @@
 package info.kyorohiro.helloworld.pdf.pdfobject;
 
 import info.kyorohiro.helloworld.pdf.pdflexer.GotoException;
-import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer;
 import info.kyorohiro.helloworld.pdf.pdflexer.SourcePattern;
 import info.kyorohiro.helloworld.pdf.pdflexer.Token;
-import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.ExcludeEOL;
-import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.Persent;
 import info.kyorohiro.helloworld.pdf.pdfparser.PdfParser;
 
 public class EasyPdfObjectCreator implements PdfObjectCreator {
 	private SourcePattern[] mPattern = null;
 	private boolean[] mEscapeWhiteSpace = null;
-	private int mId = 0;
 
 	public EasyPdfObjectCreator(SourcePattern[] pattern, boolean[] escapeWhiteSpace) {
 		mPattern = pattern;

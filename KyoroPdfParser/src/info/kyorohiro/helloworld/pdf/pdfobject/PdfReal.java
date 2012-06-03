@@ -1,17 +1,11 @@
 package info.kyorohiro.helloworld.pdf.pdfobject;
 
-import java.io.IOException;
-
 import info.kyorohiro.helloworld.pdf.pdflexer.GotoException;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer;
-import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.BooleanValue;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.Dot;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.IntegerValue;
 import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.PlusMinus;
-import info.kyorohiro.helloworld.pdf.pdflexer.SourcePattern;
 import info.kyorohiro.helloworld.pdf.pdflexer.Token;
-import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.ExcludeEOL;
-import info.kyorohiro.helloworld.pdf.pdflexer.PdfLexer.Persent;
 import info.kyorohiro.helloworld.pdf.pdfparser.PdfParser;
 
 public class PdfReal extends Token {
@@ -27,13 +21,8 @@ public class PdfReal extends Token {
 	public static PdfObjectCreator builder = new Builder();
 
 	public static class Builder implements PdfObjectCreator {
-		private SourcePattern[] mPattern = null;
-		private boolean[] mEscapeWhiteSpace = null;
-		private int mId = 0;
 
 		public Builder() {
-			mPattern = new SourcePattern[]{sIntegerValue};
-			mEscapeWhiteSpace = new boolean[]{true, false};
 		}
 
 		public Token newToken(long start, long end) {
@@ -72,7 +61,7 @@ public class PdfReal extends Token {
 					e.printStackTrace();
 				}
 				Token t = newToken(0,0);
-				for(int i=0;parser.getStack().isMarked();i++) {
+				while(parser.getStack().isMarked()) {
 					t.addFirst(parser.mCashForWork.pop());
 				}
 				return t;

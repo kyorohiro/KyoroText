@@ -21,10 +21,23 @@ public class PdfStack {
 		return token.size();
 	}
 
+	public void releaseMarkOnly() {
+		if(mark.size() > 0) {
+			mark.removeLast();
+		}
+	}
+
+
 	public void release() {
-		int num = mark.removeLast();
-		while ((num + 1) < mark.size() && mark.size() != 0) {
+//		int num = mark.removeLast();
+//		while ((num + 1) < mark.size() && mark.size() != 0) {
+//			pop();
+//		}
+		while(isMarked()){
 			pop();
+		}
+		if(mark.size() > 0) {
+			mark.removeLast();
 		}
 	}
 
