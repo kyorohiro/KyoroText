@@ -66,6 +66,26 @@ public class TestPdfLiteralString extends TestCase {
 				assertEquals(""+new String(value7),")", new String(value7));
 
 			}
+			{
+				//()
+				PdfLiteralString t1 = (PdfLiteralString)PdfLiteralString.builder.createToken(parser);
+				byte[] value1 = t1.getChild(0).getBuffer(text.getVirtualMemory());
+				byte[] value2 = t1.getChild(1).getBuffer(text.getVirtualMemory());
+
+				assertEquals(""+new String(value1),"(", new String(value1));
+				assertEquals(""+new String(value2),")", new String(value2));
+			}
+			{
+				//(\(\))
+				PdfLiteralString t1 = (PdfLiteralString)PdfLiteralString.builder.createToken(parser);
+				byte[] value1 = t1.getChild(0).getBuffer(text.getVirtualMemory());
+				byte[] value2 = t1.getChild(1).getBuffer(text.getVirtualMemory());
+				byte[] value3 = t1.getChild(2).getBuffer(text.getVirtualMemory());
+
+				assertEquals(""+new String(value1),"(", new String(value1));
+				assertEquals(""+new String(value2),"\\(\\)", new String(value2));
+				assertEquals(""+new String(value3),")", new String(value3));
+			}
 
 		} catch (GotoException e) {
 			e.printStackTrace();

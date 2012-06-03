@@ -103,7 +103,11 @@ public class PdfLiteralString extends Token {
 				try {
 					parser.getStack().push(parser.getLexer().nextToken(sLiteralString, true));				
 				} catch(GotoException e) {
-					pattern_string(parser);
+					try {
+						pattern_string(parser);
+					} catch(GotoException f) {
+						parser.getStack().push(parser.getLexer().nextToken(sLiteralStringEscape, true));		
+					}
 				}
 
 				try {

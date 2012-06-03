@@ -85,7 +85,7 @@ public class PdfLexer {
 	public static class LiteralString_EscapeBeginEnd extends BytePattern {
 		public LiteralString_EscapeBeginEnd() {
 			super(ID_LITERAL_ESCAPSE_BEGIN_END, new byte[][]{					
-			{'\\','('},{'\\',')'}}, false, false);
+			{'\\','('},{'\\',')'}}, true, false);
 		}
 	}
 
