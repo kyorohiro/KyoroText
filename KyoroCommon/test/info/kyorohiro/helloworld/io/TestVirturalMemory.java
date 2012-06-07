@@ -1,9 +1,6 @@
-package info.kyorohiro.helloworld.test.io;
-
+package info.kyorohiro.helloworld.io;
 import info.kyorohiro.helloworld.io.VirtualMemory;
 import info.kyorohiro.helloworld.io.VirtualMemory.CyclingByteArrayException;
-import info.kyorohiro.helloworld.test.io.TestVirturalMemory;
-import info.kyorohiro.helloworld.test.io.TestVirturalMemory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -216,7 +213,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 	}
 
 	public static File getTestFile(){
-		File file = new File("src/info/kyorohiro/helloworld/test/io/test.txt");
+		File file = new File("test/info/kyorohiro/helloworld/test/io/test.txt");
 		return file;
 	}
 }

@@ -26,6 +26,7 @@ public class PdfLexer {
 	public static int ID_NAME = 16;
 	public static int ID_EOF = -1;
 	public static int ID_REGULAR_STRING = 17;
+	public static int ID_VALUE = 18;
 
 	public static int ID_HEXADECIMAL_STRING = 11;
 	public static int ID_HEXADECIMAL_STRING_BEGIN = 12;
@@ -101,6 +102,18 @@ public class PdfLexer {
 					{'0'},{'1'},{'2'},{'3'},{'4'},
 					{'5'},{'6'},{'7'},{'8'},{'9'},
 			}, true, false);
+		}
+	}
+
+	public static class ArrayBegin extends BytePattern {
+		public ArrayBegin() {
+			super(ID_HEXADECIMAL_STRING_BEGIN, new byte[][]{{'['}}, false, false);
+		}
+	}
+
+	public static class ArrayEnd extends BytePattern {
+		public ArrayEnd() {
+			super(ID_HEXADECIMAL_STRING_END, new byte[][]{{']'}}, false, false);
 		}
 	}
 
