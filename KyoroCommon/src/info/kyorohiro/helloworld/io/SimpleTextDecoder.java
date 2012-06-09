@@ -7,23 +7,56 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 
-
 public class SimpleTextDecoder {
+	public static final String[] ISO_2022_With_ESCAPE_AS_STRING = {
+			"ISO-2022-JP", "ISO-2022-JP-1", "ISO-2022-JP-2", "ISO-2022-JP-3",
+			"ISO-2022-JP-2004", "ISO-2022-KR", "ISO-2022-CN", "ISO-2022-CN-EXT" };
+	// ESC 0x1B
+	//
+	public static final byte[][] ISO_2022_ESCAPE_LOCKING_SHIFT = {
+			// ISO_2022_JP +=2b . 2e
+			{ 0x1B, 0x28, 'B' }, // ESC ( B
+			{ 0x1B, 0x28, 'J' }, // ESC ( J
+			{ 0x1B, 0x24, '@' }, // ESC $ @
+			{ 0x1B, 0x24, 'B' }, // ESC $ B
+			// ISO_2022_JP_1
+			{ 0x1B, 0x28, 'D' }, // ESC ( D
+			// ISO_2022_JP_2
+			{ 0x1B, 0x24, 'A' }, // ESC $ A
+			{ 0x1B, 0x24, 0x28, 'C' }, // ESC $ ( C
+//			{ 0x1B, 0x2e, 'A' }, // ESC . A   SINGLE SHIFT
+//			{ 0x1B, 0x2e, 'F' }, // ESC . F   SINGLE SHIFT
+			// ISO_2022_JP_3
+			{ 0x1B, 0x24, 0x28, 'O' }, // ESC $ ( C
+			{ 0x1B, 0x24, 0x28, 'P' }, // ESC $ ( C
+			// ISO_2022_JP_2004
+			{ 0x1B, 0x24, 0x28, 'Q' }, // ESC $ ( Q
+			// ISO-2022-KR
+			{ 0x1B, 0x24, ')', 'C' }, // ESC $ ) C
+			// ISO-2022-CN
+			{ 0x1B, 0x24, ')', 'A' }, // ESC $ ) C
+			{ 0x1B, 0x24, ')', 'G' }, // ESC $ ) C
+//			{ 0x1B, 0x24, '*', 'H' }, // ESC $ ) C  SINGLE Shift
+
+	};
+	// public static final Charset[] ISO_2022_WITH_ESCAPE = {
+	// Charset.forName(charsetName),
+	// };
 	private VirtualMemory mReader = null;
 	private MyBuilder mBuffer = new MyBuilder();
 	private Charset mCs = null;
 	private BreakText mBreakText;
 
-	public SimpleTextDecoder(Charset _cs, VirtualMemory reader, 
+	public SimpleTextDecoder(Charset _cs, VirtualMemory reader,
 			BreakText breakText) {
 		mCs = _cs;
 		mReader = reader;
-		mBreakText =  breakText;
+		mBreakText = breakText;
 	}
 
 	public boolean isEOF() {
 		try {
-			if(mReader.getFilePointer() < mReader.length()){
+			if (mReader.getFilePointer() < mReader.length()) {
 				return true;
 			} else {
 				return false;
@@ -34,27 +67,25 @@ public class SimpleTextDecoder {
 		}
 	}
 
-	public CharSequence 
-	decodeLine() throws IOException {
+	public CharSequence decodeLine() throws IOException {
 		return decodeLine(null);
 	}
 
-	public CharSequence 
-	decodeLine(byte[] escape) throws IOException {
+	public CharSequence decodeLine(byte[] escape) throws IOException {
 		mBuffer.clear();
 		CharsetDecoder decoder = mCs.newDecoder();
 		boolean end = false;
 		ByteBuffer bb = ByteBuffer.allocateDirect(32); // bbは書き込める状態
 		CharBuffer cb = CharBuffer.allocate(16); // cbは書き込める状態
 
-		if(escape!=null){
+		if (escape != null) {
 			bb.put(escape);
 		}
 
-		//todo
+		// todo
 		int mode = TODOCRLFString.MODE_INCLUDE_LF;
 		long todoPrevPosition = mReader.getFilePointer();
-		outside:do {
+		outside: do {
 			int d = mReader.read();
 			if (d >= 0) {
 				bb.put((byte) d); // bbへの書き込み
@@ -77,10 +108,10 @@ public class SimpleTextDecoder {
 					// todo add test case following pattern.
 					// add breakText return 2
 					// but b.length return 1
-					//  >> before modify coding if(len != tmp.length())
-					// 
+					// >> before modify coding if(len != tmp.length())
+					//
 
-					//ひとつ前で改行
+					// ひとつ前で改行
 					mBuffer.removeLast();
 					mReader.seek(todoPrevPosition);
 					mode = TODOCRLFString.MODE_EXCLUDE_LF;
@@ -98,10 +129,8 @@ public class SimpleTextDecoder {
 			}
 			cb.clear(); // cbを書き込み状態に変更
 		} while (!end);
-		return new TODOCRLFString(
-				mBuffer.getAllBufferedMoji(),
-				mBuffer.getCurrentBufferedMojiSize(), 
-				mode);
+		return new TODOCRLFString(mBuffer.getAllBufferedMoji(),
+				mBuffer.getCurrentBufferedMojiSize(), mode);
 	}
 
 	public static class TODOCRLFString implements CharSequence {
@@ -109,7 +138,7 @@ public class SimpleTextDecoder {
 		public static int MODE_EXCLUDE_LF = 0;
 		public char[] mContent = null;
 		public int mMode = MODE_EXCLUDE_LF;
-		
+
 		public TODOCRLFString(char[] content, int length, int mode) {
 			mContent = new char[length];
 			System.arraycopy(content, 0, mContent, 0, length);
@@ -130,11 +159,10 @@ public class SimpleTextDecoder {
 		public CharSequence subSequence(int start, int end) {
 			return new String(mContent, start, end);
 		}
-		
+
 		@Override
 		public String toString() {
 			return new String(mContent, 0, mContent.length);
 		}
 	}
-
 }
