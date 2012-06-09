@@ -11,12 +11,15 @@ import junit.framework.TestCase;
 
 public class TestSimpleTextDecoder extends TestCase {
 	String[] expect = {
-			" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefhijklmnopqrstuvwxyz{|}~"+"\r\n",
-			"°Ґ£§•¶І®©™Ђђ≠Ѓѓ∞±≤≥іµґЈЄєЇїЉљЊњјЅ¬√ƒ≈∆«»… ЋћЌќѕ–—“”‘’÷„ЎўЏџ№Ёёя"+"\r\n",
-			"Г@ГAГBГCГDГEГFГGГHГIГJГKГLГMГNГOГPГQГRГSГTГUГVГWГXГYЯрЯсЯтЯуЯфЯхЯцЯчЯшЯщЯъЯыЯь"+"\r\n",
-			"а@аAаBаCаDаEаFаGаHаIаJаKаLаMаNаOаPаQаRаSаTаUаVаWаXаYаZа[а\а]а^а_а`аaаbаcаdаeаfаgаhаiаjаkаlаmаnаoаpаqаrаsаtаuаvаwаxаyаzа{а|а}а~аАаБаВаГаДаЕаЖаЗаИаЙаКаЛаМаНаОаПаРаСаТаУаФаХаЦаЧаШаЩаЪаЫаЬаЭаЮаЯа†а°аҐа£а§а•а¶аІа®а©а™аЂађа≠аЃаѓа∞а±а≤а≥аіаµаґаЈаЄаєаЇаїаЉаљаЊањајаЅа¬а√аƒа≈а∆а«а»а…а аЋаћаЌаќаѕа–а—а“а”а‘а’а÷а„аЎаўаЏаџа№аЁаёаяааабавагадаеажазаиайакаламанаоапарасатауафахацачашащаъаыаь"+"\r\n",
-			"ы\ы]ы^ы_ы`ыaыbыcыdыeыfыgыhыiыjыkыlыmыnыoыpыqыrыsыtыuыvыwыxыyыzы{ы|ы}ы~ыАыБыВыГыДыЕыЖыЗыИыЙыКыЛыМыНыОыПыРыСыТыУыФыХыЦыЧыШыЩыЪыЫыЬыЭыЮыЯы†ы°ыҐы£ы§ы•ы¶ыІы®ы©ы™ыЂыђы≠ыЃыѓы∞ы±ы≤ы≥ыіыµыґыЈыЄыєыЇыїыЉыљыЊыњыјыЅы¬ы√ыƒы≈ы∆ы«ы»ы…ы ыЋыћыЌыќыѕы–ы—ы“ы”ы‘ы’ы÷ы„ыЎыўыЏыџы№ыЁыёыяыаыбывыгыдыеыжызыиыйыкылымыныоыпырысытыуыфыхыцычышыщыъыыыьь@ьAьBьCьDьEьFьGьHьIьJьK"+"\r\n"
-	};
+			" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefhijklmnopqrstuvwxyz{|}~"
+					+ "\r\n",
+			"°Ґ£§•¶І®©™Ђђ≠Ѓѓ∞±≤≥іµґЈЄєЇїЉљЊњјЅ¬√ƒ≈∆«»… ЋћЌќѕ–—“”‘’÷„ЎўЏџ№Ёёя"
+					+ "\r\n",
+			"Г@ГAГBГCГDГEГFГGГHГIГJГKГLГMГNГOГPГQГRГSГTГUГVГWГXГYЯрЯсЯтЯуЯфЯхЯцЯчЯшЯщЯъЯыЯь" + "\r\n",
+			"а@аAаBаCаDаEаFаGаHаIаJаKаLаMаNаOаPаQаRаSаTаUаVаWаXаYаZа[а\а]а^а_а`аaаbаcаdаeаfаgаhаiаjаkаlаmаnаoаpаqаrаsаtаuаvаwаxаyаzа{а|а}а~аАаБаВаГаДаЕаЖаЗаИаЙаКаЛаМаНаОаПаРаСаТаУаФаХаЦаЧаШаЩаЪаЫаЬаЭаЮаЯа†а°аҐа£а§а•а¶аІа®а©а™аЂађа≠аЃаѓа∞а±а≤а≥аіаµаґаЈаЄаєаЇаїаЉаљаЊањајаЅа¬а√аƒа≈а∆а«а»а…а аЋаћаЌаќаѕа–а—а“а”а‘а’а÷а„аЎаўаЏаџа№аЁаёаяааабавагадаеажазаиайакаламанаоапарасатауафахацачашащаъаыаь"
+					+ "\r\n",
+			"ы\ы]ы^ы_ы`ыaыbыcыdыeыfыgыhыiыjыkыlыmыnыoыpыqыrыsыtыuыvыwыxыyыzы{ы|ы}ы~ыАыБыВыГыДыЕыЖыЗыИыЙыКыЛыМыНыОыПыРыСыТыУыФыХыЦыЧыШыЩыЪыЫыЬыЭыЮыЯы†ы°ыҐы£ы§ы•ы¶ыІы®ы©ы™ыЂыђы≠ыЃыѓы∞ы±ы≤ы≥ыіыµыґыЈыЄыєыЇыїыЉыљыЊыњыјыЅы¬ы√ыƒы≈ы∆ы«ы»ы…ы ыЋыћыЌыќыѕы–ы—ы“ы”ы‘ы’ы÷ы„ыЎыўыЏыџы№ыЁыёыяыаыбывыгыдыеыжызыиыйыкылымыныоыпырысытыуыфыхыцычышыщыъыыыьь@ьAьBьCьDьEьFьGьHьIьJьK"
+					+ "\r\n" };
 
 	public void testHello() {
 		System.out.println("hello test");
@@ -32,10 +35,10 @@ public class TestSimpleTextDecoder extends TestCase {
 		Charset cs = Charset.forName("Shift_Jis");
 		BreakText br = new MyBreakText(12);
 		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
-		for(int i=0;i<expect.length-1;i++){
+		for (int i = 0; i < expect.length - 1; i++) {
 			CharSequence c = decoder.decodeLine();
 			String result = c.toString();
-			assertEquals("["+i+"]",expect[i], result);
+			assertEquals("[" + i + "]", expect[i], result);
 		}
 	}
 
@@ -45,13 +48,12 @@ public class TestSimpleTextDecoder extends TestCase {
 		Charset cs = Charset.forName("ISO-2022-JP");
 		BreakText br = new MyBreakText(12);
 		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
-		for(int i=0;i<expect.length-1;i++){
+		for (int i = 0; i < expect.length - 1; i++) {
 			CharSequence c = decoder.decodeLine();
 			String result = c.toString();
-			assertEquals("["+i+"]",expect[i], result);
+			assertEquals("[" + i + "]", expect[i], result);
 		}
 	}
-
 
 	public void testISO2022JP002() throws FileNotFoundException, IOException {
 		File f = TestSimpleTextDecoder.getTestFile("iso_2022_jp_crlf_002.txt");
@@ -65,19 +67,43 @@ public class TestSimpleTextDecoder extends TestCase {
 			assertEquals("abcВ†В©В≥defВљВ»ВЌ", result);
 		}
 		{
-			vm.seek(3);//abc
+			vm.seek(3);// abc
 			byte[] escape = new byte[3];
-			escape[0] = (byte)vm.read();
-			escape[1] = (byte)vm.read();
-			escape[2] = (byte)vm.read();
-			//vm.seek(3+3);//abc + ESC(ESC $ B)
+			escape[0] = (byte) vm.read();
+			escape[1] = (byte) vm.read();
+			escape[2] = (byte) vm.read();
+			// vm.seek(3+3);//abc + ESC(ESC $ B)
 			CharSequence c = decoder.decodeLine(escape);
 			String result = c.toString();
 			assertEquals("В†В©В≥defВљВ»ВЌ", result);
 		}
 	}
 
-	public static File getTestFile(String filename){
+	public void testISO2022JP003() throws FileNotFoundException, IOException {
+		File f = TestSimpleTextDecoder.getTestFile("iso_2022_jp_crlf_003.txt");
+		VirtualMemory vm = new VirtualMemory(f, 64);
+		Charset cs = Charset.forName("ISO-2022-JP");
+		MyBreakText br = new MyBreakText(12);
+		br.nextBreakText(3);
+		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
+		byte[] escape = new byte[3];
+		escape[0] = (byte) vm.read();
+		escape[1] = (byte) vm.read();
+		escape[2] = (byte) vm.read();
+		vm.seek(0);
+		{
+			CharSequence c = decoder.decodeLine();
+			String result = c.toString();
+			assertEquals("В†ВҐВ§", result);
+		}
+		{
+			CharSequence c = decoder.decodeLine(escape);
+			String result = c.toString();
+			assertEquals("В¶В®В©", result);
+		}
+	}
+
+	public static File getTestFile(String filename) {
 		File dir = new File("test/info/kyorohiro/helloworld/io");
 		File path = new File(dir, filename);
 		return path;
@@ -85,12 +111,23 @@ public class TestSimpleTextDecoder extends TestCase {
 
 	public static class MyBreakText implements BreakText {
 		private float mFontSize = 12;
+		private int mNextBreakText = -1;
+
 		public MyBreakText(float fontSize) {
 			mFontSize = fontSize;
 		}
 
-		public int breakText(MyBuilder mBuffer){
-            return mBuffer.getCurrentBufferedMojiSize();
+		public void nextBreakText(int nextBreakText) {
+			mNextBreakText = nextBreakText;
+		}
+
+		public int breakText(MyBuilder mBuffer) {
+			if (mNextBreakText >= 0) {
+				int t = mNextBreakText;
+				//mNextBreakText = -1;
+				return t;
+			}
+			return mBuffer.getCurrentBufferedMojiSize();
 		}
 	}
 }

@@ -33,10 +33,12 @@ public class SimpleTextDecoder {
 			return false;
 		}
 	}
+
 	public CharSequence 
 	decodeLine() throws IOException {
 		return decodeLine(null);
 	}
+
 	public CharSequence 
 	decodeLine(byte[] escape) throws IOException {
 		mBuffer.clear();
@@ -46,11 +48,6 @@ public class SimpleTextDecoder {
 		CharBuffer cb = CharBuffer.allocate(16); // cb‚Í‘‚«‚ß‚éó‘Ô
 
 		if(escape!=null){
-//			ByteBuffer escapeBuffer = ByteBuffer.allocate(escape.length);
-//			escapeBuffer.put(escape);
-//			
-//			decoder.decode(escapeBuffer);
-//			escapeBuffer.clear();
 			bb.put(escape);
 		}
 
@@ -62,7 +59,6 @@ public class SimpleTextDecoder {
 			if (d >= 0) {
 				bb.put((byte) d); // bb‚Ö‚Ì‘‚«‚İ
 			} else {
-				// todo
 				break;
 			}
 			bb.flip();
