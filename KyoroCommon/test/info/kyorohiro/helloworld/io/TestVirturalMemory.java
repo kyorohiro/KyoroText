@@ -160,7 +160,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 		File base = getTestFile();
 		VirtualMemory memory;
 		try {
-			memory = new VirtualMemory(base, 2);
+			memory = new VirtualMemory(base, 128);
 			System.out.println("-a-");
 			assertEquals('a', memory.read());
 			System.out.println("-b-");
@@ -185,7 +185,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 		File base = getTestFile();
 		VirtualMemory memory;
 		try {
-			memory = new VirtualMemory(base, 2);
+			memory = new VirtualMemory(base, 128);
 			System.out.println("-a-");
 			assertEquals('a', memory.read());
 			System.out.println("-b-");
@@ -213,7 +213,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 	}
 
 	public static File getTestFile(){
-		File file = new File("test/info/kyorohiro/helloworld/test/io/test.txt");
+		File file = new File("test/info/kyorohiro/helloworld/io/test.txt");
 		return file;
 	}
 }
