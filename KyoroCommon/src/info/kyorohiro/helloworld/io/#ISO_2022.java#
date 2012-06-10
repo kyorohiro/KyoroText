@@ -1,35 +1,15 @@
 package info.kyorohiro.helloworld.io;
 
-/**
- * memo:
- * http://en.wikipedia.org/wiki/ISO/IEC_2022
- * http://charset.7jp.net/sjis.html
- * http://tools.ietf.org/html/rfc1468
- * http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-035.pdf
- */
+
 public class ISO_2022 {
+//	ESC ( B to switch to ASCII (1 byte per character)
+//	ESC ( J to switch to JIS X 0201-1976 (ISO/IEC 646:JP) Roman set (1 byte per character)
+//	ESC $ @ to switch to JIS X 0208-1978 (2 bytes per character)
+//	ESC $ B to switch to JIS X 0208-1983 (2 bytes per character)
 	final byte[][] ISO_2022_JP_INVOKED = {
-			//ISO-2022-JP
-			DESIGNATED(ISO_2022.DESIGNATED_GZD4, 'B'),//ascii
-			DESIGNATED(ISO_2022.DESIGNATED_GZD4, 'J'),//JIS X 0201-1976
-			DESIGNATED(ISO_2022.DESIGNATED_GZDM4_1, '@'),//JIS X 0208-1978
-			DESIGNATED(ISO_2022.DESIGNATED_GZDM4_1, 'B'),//JIS X 0208-1983 
-			//ISO-2022-JP-1
-			DESIGNATED(ISO_2022.DESIGNATED_GZDM4_0, 'D'),//JIS X 0212-1990 
-			//ISO-2022-JP-2
-			DESIGNATED(ISO_2022.DESIGNATED_GZDM4_1, 'A'),//GB 2312-1980
-			DESIGNATED(ISO_2022.DESIGNATED_GZDM4_0, 'C'),//KS X 1001-1992
-			DESIGNATED(ISO_2022.DESIGNATED_GZDM4_0, 'D'),//ISO/IEC 8859-1
-			DESIGNATED(ISO_2022.DESIGNATED_GZDM4_0, 'D'),// ISO/IEC 8859-7
-			
+	    
 	};
-
-	public static byte[] DESIGNATED(byte[] code, char character) {
-		byte[] buffer = new byte[code.length];
-		buffer[code.length-1] = (byte)character;
-		return buffer;
-	}
-
+	
 	/**
 	 *Name:Locking shift zero
 	 *Effect:GL encodes G0 from now on
@@ -160,8 +140,7 @@ public class ISO_2022 {
 	 * Name:G0--designate multibyte 94-set
 	 * Effect:F selects a 94n-character set to be used for G0.
 	 */
-	public static final byte[] DESIGNATED_GZDM4_0   = {0x1B, 0x24, 0x28, 0x0F};
-	public static final byte[] DESIGNATED_GZDM4_1 = {0x1B, 0x24, 0x0F};
+	public static final byte[] DESIGNATED_GZDM4 = {0x1B, 0x24, 0x28, 0x0F};
 
 	/**
 	 * Name:G1-designate multibyte 94-set
