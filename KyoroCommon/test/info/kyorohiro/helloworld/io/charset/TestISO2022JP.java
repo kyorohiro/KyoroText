@@ -22,12 +22,12 @@ public class TestISO2022JP extends TestCase {
 			assertEquals((int)'a',vm.read());//a
 			assertEquals((int)'b',vm.read());//b
 			assertEquals((int)'c',vm.read());//c
-			iso2022jp._update(vm);
+			iso2022jp.update(vm);
 			assertArrayEquals(ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_1, 'B'), iso2022jp.currentG0());
 			vm.read();vm.read();vm.read();//ESC
 			vm.read();//‚  
 			vm.read();//‚ 
-			iso2022jp._update(vm);
+			iso2022jp.update(vm);
 			assertArrayEquals(ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZD4, 'B'), iso2022jp.currentG0());
 			vm.read();vm.read();vm.read();//ESC
 			assertEquals((int)'d',vm.read());//d

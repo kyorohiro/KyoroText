@@ -18,6 +18,8 @@ public class ISO2022JP extends ISO2022 {
 	private byte[] mCurrentGR = null;
 	private byte[] mCurrentG0 = null;
 	private byte[] mCurrentG2 = null;
+	private G0 mG0 = new G0();
+	private G2 mG2 = new G2();
 
 	public byte[] currentG0() {
 		return mCurrentG0;
@@ -55,14 +57,7 @@ public class ISO2022JP extends ISO2022 {
 		return len;
 	}
 
-	public void update(VirtualMemory vm) {
-		try {
-			_update(vm);
-		} catch (IOException e) {
-		}
-	}
-
-	public void _update(VirtualMemory v) throws IOException {
+	public void update(VirtualMemory v) {
 		try {
 			v.pushMark();
 			if (LF(v)) {;
@@ -87,9 +82,6 @@ public class ISO2022JP extends ISO2022 {
 		}
 		return false;
 	}
-
-	private G0 mG0 = new G0();
-	private G2 mG2 = new G2();
 
 	private boolean G0(VirtualMemory v) {
 		return mG0.match(v);
@@ -126,15 +118,14 @@ public class ISO2022JP extends ISO2022 {
 
 	public static final byte[][] ISO_2022_JP_DESIGNATED_G2 = {
 			// ISO-2022-JP-2
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'A'),// ISO/IEC 8859-1
-																// single lock
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'F'),// ISO/IEC 8859-7
-																// single lock
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'A'),// ISO/IEC 8859-1 single lock
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'F'),// ISO/IEC 8859-7 single lock
 	};
 
 	public static final byte[][] ISO_2022_JP_INVOKE = {
 	// ISO-2022-JP-2
-	ISO2022.INVOKED_LS2 };
+	ISO2022.INVOKED_LS2 
+	};
 
 	private class G0 extends ActionForMatechingEscape implements ObserverForMatechingEscape {
 		public G0() {
