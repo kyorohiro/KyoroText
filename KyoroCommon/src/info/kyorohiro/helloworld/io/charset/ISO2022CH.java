@@ -12,11 +12,11 @@ import java.io.IOException;
 // * LFが現れた時だけ、改行ごとASCIIに戻す仕様とする。
 // ※ ISO2022では、改行前にASCIIに戻すためのESCをいれる決まるになっているが、
 //   念のため守られていない事も考慮しておく。
-public class ISO2022KR extends ISO2022 {
+public class ISO2022CH extends ISO2022 {
 
 	private byte[] mCurrentESC = null;
 	private byte[] mCurrentInvoke = null;
-	
+
 	private G1 mG1 = new G1();
 	private Invoke mInvoke = new Invoke();
 
@@ -52,34 +52,45 @@ public class ISO2022KR extends ISO2022 {
 		try {
 			v.pushMark();
 			if (LF(v)) {;
-			} else if (findG1Designated(v)){;
-			} else if (findG1Invoked(v)){;}
+			} else if (doG1(v)){;
+			} else if (doInvoke(v)){;}
 		} finally {
 			v.backToMark();
 		}
 	}
 
-	private boolean findG1Designated(VirtualMemory v) {
+	private boolean doG1(VirtualMemory v) {
 		return mG1.match(v);
 	}
 
-	private boolean findG1Invoked(VirtualMemory v) {
+	private boolean doInvoke(VirtualMemory v) {
 		return mInvoke.match(v);
 	}
 
-	public static final byte[][] ISO_2022_KR_DESIGNATED_LOCK = {
-		DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'C'),//KS X 1001-1992 single
+	public static final byte[][] ISO_2022_CH_DESIGNATED_LOCK = {
+		DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'A'),//GB 2312-80
+		DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'G'),//CNS 11643-1992
+		DESIGNATED(ISO2022.DESIGNATED_G2DM4, 'H'),//CNS 11643-1992  // single
+
+		//ext
+		DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'E'),//CNS 11643-1992
+		DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'I'),//CNS 11643-1992 3 //single
+		DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'J'),//CNS 11643-1992 4 //single
+		DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'K'),//CNS 11643-1992 5 //single
+		DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'L'),//CNS 11643-1992 6 //single
+		DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'M'),//CNS 11643-1992 7 //single
 	};
 
-	public static final byte[][] ISO_2022_KR_INVOKE = {
+	public static final byte[][] ISO_2022_CH_INVOKE = {
 		ISO2022.INVOKED_LS0, //single
-		ISO2022.INVOKED_LS1//single
+		ISO2022.INVOKED_LS1,//single
+		ISO2022.INVOKED_LS2
 	};
 
 
 	private class G1 extends ActionForMatechingEscape implements ObserverForMatechingEscape {
 		public G1() {
-			super(ISO_2022_KR_DESIGNATED_LOCK);
+			super(ISO_2022_CH_DESIGNATED_LOCK);
 			setObserver(this);
 		}
 		@Override
@@ -90,7 +101,7 @@ public class ISO2022KR extends ISO2022 {
 
 	private class Invoke extends ActionForMatechingEscape implements ObserverForMatechingEscape {
 		public Invoke() {
-			super(ISO_2022_KR_INVOKE);
+			super(ISO_2022_CH_INVOKE);
 			setObserver(this);
 		}
 		@Override

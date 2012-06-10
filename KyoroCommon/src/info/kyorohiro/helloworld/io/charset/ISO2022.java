@@ -21,14 +21,6 @@ public abstract class ISO2022 {
 	public abstract int currentEscape(byte[] escape);
 	public abstract void update(VirtualMemory vm);
 	/*
-	public static final byte[][] ISO_2022_KR_DESIGNATED_LOCK = {
-			DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'C'),//KS X 1001-1992 single
-	};
-
-	public static final byte[][] ISO_2022_KR_INVOKE = {
-		ISO2022.INVOKED_LS0, //single
-		ISO2022.INVOKED_LS1//single
-	};
 
 	public static final byte[][] ISO_2022_CH_DESIGNATED_LOCK = {
 			DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'A'),//GB 2312-80
@@ -269,5 +261,20 @@ public abstract class ISO2022 {
 
 	public static interface ObserverForMatechingEscape {
 		public void matched(byte[] matchedData);
+	}
+
+	protected boolean LF(VirtualMemory v) {
+		try {
+			v.pushMark();
+			if (0x0a == v.read()) {
+				return true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			v.backToMark();
+			v.popMark();
+		}
+		return false;
 	}
 }

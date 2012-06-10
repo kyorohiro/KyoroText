@@ -68,21 +68,6 @@ public class ISO2022JP extends ISO2022 {
 		}
 	}
 
-	private boolean LF(VirtualMemory v) {
-		try {
-			v.pushMark();
-			if (0x0a == v.read()) {
-				return true;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			v.backToMark();
-			v.popMark();
-		}
-		return false;
-	}
-
 	private boolean G0(VirtualMemory v) {
 		return mG0.match(v);
 	}
