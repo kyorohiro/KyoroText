@@ -20,7 +20,7 @@ public abstract class ISO2022 {
 	public abstract byte[] currentGR();
 	public abstract byte[] currentEscape();
 	public abstract void update(VirtualMemory vm);
-	
+	/*
 	public static final byte[][] ISO_2022_KR_DESIGNATED_LOCK = {
 			DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'C'),//KS X 1001-1992 single
 	};
@@ -49,9 +49,12 @@ public abstract class ISO2022 {
 			ISO2022.INVOKED_LS1,//single
 			ISO2022.INVOKED_LS2
 	};
-	
+	*/
 	public static byte[] DESIGNATED(byte[] code, char character) {
 		byte[] buffer = new byte[code.length];
+		for(int i=0;i<buffer.length;i++) {
+			buffer[i] = code[i];
+		}
 		buffer[code.length-1] = (byte)character;
 		return buffer;
 	}

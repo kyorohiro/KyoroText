@@ -6,13 +6,13 @@ import java.io.IOException;
 
 public class ISO2022JP extends ISO2022 {
 
-	byte[] currentGL = null;
-	byte[] currentG0 = null;
-	byte[] currentG2 = null;
+	private byte[] mCurrentGL = null;
+	private byte[] mCurrentG0 = null;
+	private byte[] mCurrentG2 = null;
 
-	public byte[] currentG0() {return currentG0;}
-	public byte[] currentG2(){return currentG2;}
-	public byte[] currentGL(){return currentGL;}
+	public byte[] currentG0() {return mCurrentG0;}
+	public byte[] currentG2(){return mCurrentG2;}
+	public byte[] currentGL(){return mCurrentGL;}
 	public byte[] currentG3(){return null;}
 	public byte[] currentG1() {return null;}
 	public byte[] currentGR(){return null;}
@@ -39,7 +39,7 @@ public class ISO2022JP extends ISO2022 {
 		}
 	}
 
-	public boolean LF(VirtualMemory v) {
+	private boolean LF(VirtualMemory v) {
 		try {
 			v.pushMark();
 			if(0x0a == v.read()){
@@ -54,48 +54,52 @@ public class ISO2022JP extends ISO2022 {
 		return false;
 	}
 
-	public boolean G0(VirtualMemory v) {
+	private boolean G0(VirtualMemory v) {
 		X:for(int i=0;i<ISO_2022_JP_DESIGNATED_G0.length;i++) {
 			byte[] tmp = ISO_2022_JP_DESIGNATED_G0[i];
 			try {
 				v.pushMark();
-				for(int j=0;j<tmp.length;i++){
-					if(tmp[j] != v.read()){
+				for(int j=0;j<tmp.length;j++){
+					int r = v.read();
+					if(tmp[j] != r){
 						continue X;
 					}
 				}
-				currentG0 = currentGL = tmp;
+				mCurrentG0 = mCurrentGL = tmp;
 				return true;
 			} catch(IOException e) {
 
 			} finally {
 				v.backToMark();
+				v.popMark();
 			}
 		}
 		return false;
 	}
 
-	public boolean G2(VirtualMemory v) {
+	private boolean G2(VirtualMemory v) {
 		X:for(int i=0;i<ISO_2022_JP_DESIGNATED_G2.length;i++) {
 			byte[] tmp = ISO_2022_JP_DESIGNATED_G2[i];
 			try {
 				v.pushMark();
-				for(int j=0;j<tmp.length;i++){
-					if(tmp[j] != v.read()){
+				for(int j=0;j<tmp.length;j++){
+					int r = v.read();
+					if(tmp[j] != r){
 						continue X;
 					}
 				}
-				currentG2 = tmp;
+				mCurrentG2 = tmp;
 				return true;
 			} catch(IOException e) {
 			} finally {
 				v.backToMark();
+				v.popMark();
 			}
 		}
 		return false;
 	}
 
-	final byte[][] ISO_2022_JP_DESIGNATED_G0 = {
+	public static final byte[][] ISO_2022_JP_DESIGNATED_G0 = {
 			//ISO-2022-JP
 			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZD4, 'B'),//ascii
 			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZD4, 'J'),//JIS X 0201-1976
@@ -113,13 +117,13 @@ public class ISO2022JP extends ISO2022 {
 			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'Q'),//JIS X 0213:2004
 	};
 
-	final byte[][] ISO_2022_JP_DESIGNATED_G2 = {
+	public static final byte[][] ISO_2022_JP_DESIGNATED_G2 = {
 			//ISO-2022-JP-2
 			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'A'),//ISO/IEC 8859-1 single lock
 			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'F'),// ISO/IEC 8859-7 single lock
 	};
 
-	final byte[][] ISO_2022_JP_INVOKE = {
+	public static final byte[][] ISO_2022_JP_INVOKE = {
 			//ISO-2022-JP-2
 			ISO2022.INVOKED_LS2
 	};
