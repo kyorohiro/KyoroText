@@ -4,36 +4,70 @@ import info.kyorohiro.helloworld.io.VirtualMemory;
 
 import java.io.IOException;
 
+
+//
+// * 一文字だけを対象とした、ESCは記録しない、LockするESCだけ記録する。
+// * 各々、バッファごとに記録する。
+//
+// * LFが現れた時だけ、改行ごとASCIIに戻す仕様とする。
+// ※ ISO2022では、改行前にASCIIに戻すためのESCをいれる決まるになっているが、
+//   念のため守られていない事も考慮しておく。
 public class ISO2022JP extends ISO2022 {
 
 	private byte[] mCurrentGL = null;
+	private byte[] mCurrentGR = null;
 	private byte[] mCurrentG0 = null;
 	private byte[] mCurrentG2 = null;
 
-	public byte[] currentG0() {return mCurrentG0;}
-	public byte[] currentG2(){return mCurrentG2;}
-	public byte[] currentGL(){return mCurrentGL;}
-	public byte[] currentG3(){return null;}
+	public byte[] currentG0() {
+		return mCurrentG0;
+	}
 	public byte[] currentG1() {return null;}
-	public byte[] currentGR(){return null;}
-	public byte[] currentEscape(){
-		return null;
+	public byte[] currentG2() {
+		return mCurrentG2;
+	}
+	public byte[] currentG3() {return null;}
+	public byte[] currentGL() {
+		return mCurrentGL;
+	}
+	public byte[] currentGR() {
+		return mCurrentGR;
 	}
 
-	public void update(VirtualMemory vm){
+	public int currentEscape(byte[] escape) {
+		int p = 0;
+		int len = 0;
+		if(mCurrentG0 == null&&mCurrentG2==null){
+			return 0;
+		}
+		if(mCurrentG0 != null){
+			for(int i=0;i<mCurrentG0.length;i++) {
+				escape[p++] = mCurrentG0[i];
+			}
+			len += mCurrentG0.length;
+		}
+		if(mCurrentG2 != null){
+			for(int i=0;i<mCurrentG2.length;i++) {
+				escape[p++] = mCurrentG2[i];
+			}
+			len += mCurrentG2.length;
+		}
+		return len;
+	}
+
+	public void update(VirtualMemory vm) {
 		try {
 			_update(vm);
-		}catch(IOException e) {
+		} catch (IOException e) {
 		}
 	}
 
 	public void _update(VirtualMemory v) throws IOException {
 		try {
 			v.pushMark();
-			if(LF(v)){;}
-			else if(G0(v)){;}
-			else if(G2(v)){;}
-			else {;}
+			if (LF(v)) {;
+			} else if (G0(v)){;
+			} else if (G2(v)){;}
 		} finally {
 			v.backToMark();
 		}
@@ -42,10 +76,10 @@ public class ISO2022JP extends ISO2022 {
 	private boolean LF(VirtualMemory v) {
 		try {
 			v.pushMark();
-			if(0x0a == v.read()){
+			if (0x0a == v.read()) {
 				return true;
 			}
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			v.backToMark();
@@ -54,78 +88,73 @@ public class ISO2022JP extends ISO2022 {
 		return false;
 	}
 
-	private boolean G0(VirtualMemory v) {
-		X:for(int i=0;i<ISO_2022_JP_DESIGNATED_G0.length;i++) {
-			byte[] tmp = ISO_2022_JP_DESIGNATED_G0[i];
-			try {
-				v.pushMark();
-				for(int j=0;j<tmp.length;j++){
-					int r = v.read();
-					if(tmp[j] != r){
-						continue X;
-					}
-				}
-				mCurrentG0 = mCurrentGL = tmp;
-				return true;
-			} catch(IOException e) {
+	private G0 mG0 = new G0();
+	private G2 mG2 = new G2();
 
-			} finally {
-				v.backToMark();
-				v.popMark();
-			}
-		}
-		return false;
+	private boolean G0(VirtualMemory v) {
+		return mG0.match(v);
 	}
 
 	private boolean G2(VirtualMemory v) {
-		X:for(int i=0;i<ISO_2022_JP_DESIGNATED_G2.length;i++) {
-			byte[] tmp = ISO_2022_JP_DESIGNATED_G2[i];
-			try {
-				v.pushMark();
-				for(int j=0;j<tmp.length;j++){
-					int r = v.read();
-					if(tmp[j] != r){
-						continue X;
-					}
-				}
-				mCurrentG2 = tmp;
-				return true;
-			} catch(IOException e) {
-			} finally {
-				v.backToMark();
-				v.popMark();
-			}
-		}
-		return false;
+		return mG0.match(v);
 	}
 
 	public static final byte[][] ISO_2022_JP_DESIGNATED_G0 = {
-			//ISO-2022-JP
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZD4, 'B'),//ascii
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZD4, 'J'),//JIS X 0201-1976
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_1, '@'),//JIS X 0208-1978
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_1, 'B'),//JIS X 0208-1983 
-			//ISO-2022-JP-1
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'D'),//JIS X 0212-1990 
-			//ISO-2022-JP-2
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_1, 'A'),//GB 2312-1980
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'C'),//KS X 1001-1992
-			//ISO-2022-JP-3
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'O'),//JIS X 0213:2000 
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'P'),//JIS X 0213:2000		
-			//ISO-2022-JP-2004
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'Q'),//JIS X 0213:2004
+			// ISO-2022-JP
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZD4, 'B'),// ascii
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZD4, 'J'),// JIS X 0201-1976
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_1, '@'),// JIS X
+																// 0208-1978
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_1, 'B'),// JIS X
+																// 0208-1983
+			// ISO-2022-JP-1
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'D'),// JIS X
+																// 0212-1990
+			// ISO-2022-JP-2
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_1, 'A'),// GB 2312-1980
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'C'),// KS X
+																// 1001-1992
+			// ISO-2022-JP-3
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'O'),// JIS X
+																// 0213:2000
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'P'),// JIS X
+																// 0213:2000
+			// ISO-2022-JP-2004
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_GZDM4_0, 'Q'),// JIS X
+																// 0213:2004
 	};
 
 	public static final byte[][] ISO_2022_JP_DESIGNATED_G2 = {
-			//ISO-2022-JP-2
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'A'),//ISO/IEC 8859-1 single lock
-			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'F'),// ISO/IEC 8859-7 single lock
+			// ISO-2022-JP-2
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'A'),// ISO/IEC 8859-1
+																// single lock
+			ISO2022.DESIGNATED(ISO2022.DESIGNATED_G2D6, 'F'),// ISO/IEC 8859-7
+																// single lock
 	};
 
 	public static final byte[][] ISO_2022_JP_INVOKE = {
-			//ISO-2022-JP-2
-			ISO2022.INVOKED_LS2
-	};
+	// ISO-2022-JP-2
+	ISO2022.INVOKED_LS2 };
+
+	private class G0 extends ActionForMatechingEscape implements ObserverForMatechingEscape {
+		public G0() {
+			super(ISO_2022_JP_DESIGNATED_G0);
+			setObserver(this);
+		}
+		@Override
+		public void matched(byte[] matchedData) {
+			mCurrentG0 = mCurrentGL = mCurrentGR =matchedData;
+		}
+	}
+	private class G2 extends ActionForMatechingEscape implements ObserverForMatechingEscape {
+		public G2() {
+			super(ISO_2022_JP_DESIGNATED_G2);
+			setObserver(this);
+		}
+		@Override
+		public void matched(byte[] matchedData) {
+			mCurrentG2 = matchedData;
+		}
+	}
 
 }

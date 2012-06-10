@@ -18,7 +18,7 @@ public abstract class ISO2022 {
 	public abstract byte[] currentG3();
 	public abstract byte[] currentGL();
 	public abstract byte[] currentGR();
-	public abstract byte[] currentEscape();
+	public abstract int currentEscape(byte[] escape);
 	public abstract void update(VirtualMemory vm);
 	/*
 	public static final byte[][] ISO_2022_KR_DESIGNATED_LOCK = {
@@ -228,5 +228,46 @@ public abstract class ISO2022 {
 	 */
 	public static final byte[] DESIGNATED_G3DM6 = {0x1B, 0x24, 0x2F, 0x0F};
 
+	/**
+	 * This function is used at many points.
+	 * become optimization target.
+	 */
+	public static class ActionForMatechingEscape {
+		private byte[][] mPattern;
+		private ObserverForMatechingEscape mObserver;
+		public ActionForMatechingEscape(final byte[][] pattern) {
+			mPattern = pattern;
+		}
 
+		public void setObserver( final ObserverForMatechingEscape observer){
+			mObserver = observer;
+		}
+
+		boolean match(VirtualMemory v) {
+			int len = mPattern.length;
+			X:for(int i=0;i<len;i++) {
+				byte[] tmp = mPattern[i];
+				try {
+					v.pushMark();
+					for(int j=0;j<tmp.length;j++){
+						int r = v.read();
+						if(tmp[j] != r){
+							continue X;
+						}
+					}
+					mObserver.matched(tmp);
+					return true;
+				} catch(IOException e) {
+				} finally {
+					v.backToMark();
+					v.popMark();
+				}
+			}
+			return false;
+		}
+	}
+
+	public static interface ObserverForMatechingEscape {
+		public void matched(byte[] matchedData);
+	}
 }
