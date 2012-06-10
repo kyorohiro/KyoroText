@@ -1,15 +1,61 @@
-package info.kyorohiro.helloworld.io;
+package info.kyorohiro.helloworld.io.charset;
 
+import info.kyorohiro.helloworld.io.VirtualMemory;
 
-public class ISO_2022 {
-//	ESC ( B to switch to ASCII (1 byte per character)
-//	ESC ( J to switch to JIS X 0201-1976 (ISO/IEC 646:JP) Roman set (1 byte per character)
-//	ESC $ @ to switch to JIS X 0208-1978 (2 bytes per character)
-//	ESC $ B to switch to JIS X 0208-1983 (2 bytes per character)
-	final byte[][] ISO_2022_JP_INVOKED = {
-	    
+import java.io.IOException;
+
+/**
+ * memo:
+ * http://en.wikipedia.org/wiki/ISO/IEC_2022
+ * http://charset.7jp.net/sjis.html
+ * http://tools.ietf.org/html/rfc1468
+ * http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-035.pdf
+ */
+public abstract class ISO2022 {
+	public abstract byte[] currentG0();
+	public abstract byte[] currentG1();
+	public abstract byte[] currentG2();
+	public abstract byte[] currentG3();
+	public abstract byte[] currentGL();
+	public abstract byte[] currentGR();
+	public abstract byte[] currentEscape();
+	public abstract void update(VirtualMemory vm);
+	
+	public static final byte[][] ISO_2022_KR_DESIGNATED_LOCK = {
+			DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'C'),//KS X 1001-1992 single
+	};
+
+	public static final byte[][] ISO_2022_KR_INVOKE = {
+		ISO2022.INVOKED_LS0, //single
+		ISO2022.INVOKED_LS1//single
+	};
+
+	public static final byte[][] ISO_2022_CH_DESIGNATED_LOCK = {
+			DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'A'),//GB 2312-80
+			DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'G'),//CNS 11643-1992
+			DESIGNATED(ISO2022.DESIGNATED_G2DM4, 'H'),//CNS 11643-1992  // single
+
+			//ext
+			DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'E'),//CNS 11643-1992
+			DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'I'),//CNS 11643-1992 3 //single
+			DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'J'),//CNS 11643-1992 4 //single
+			DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'K'),//CNS 11643-1992 5 //single
+			DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'L'),//CNS 11643-1992 6 //single
+			DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'M'),//CNS 11643-1992 7 //single
+	};
+
+	public static final byte[][] ISO_2022_CH_INVOKE = {
+			ISO2022.INVOKED_LS0, //single
+			ISO2022.INVOKED_LS1,//single
+			ISO2022.INVOKED_LS2
 	};
 	
+	public static byte[] DESIGNATED(byte[] code, char character) {
+		byte[] buffer = new byte[code.length];
+		buffer[code.length-1] = (byte)character;
+		return buffer;
+	}
+
 	/**
 	 *Name:Locking shift zero
 	 *Effect:GL encodes G0 from now on
@@ -28,13 +74,13 @@ public class ISO_2022 {
 	 *Name:Locking shift two
 	 *Effect:GL encodes G2 from now on
 	 */
-	public static final byte[] INVOKED_LS2 = {0x1B, 0x6E, 'n'};
+	public static final byte[] INVOKED_LS2 = {0x1B, 'n'};
 	
 	/**
 	 *Name:Locking shift three
 	 *Effect:GL encodes G3 from now on
 	 */
-	public static final byte[] INVOKED_LS3 = {0x1B, 0x6E, 'o'};
+	public static final byte[] INVOKED_LS3 = {0x1B, 'o'};
 
 	/**
 	 *Name:Single shift two
@@ -140,7 +186,8 @@ public class ISO_2022 {
 	 * Name:G0--designate multibyte 94-set
 	 * Effect:F selects a 94n-character set to be used for G0.
 	 */
-	public static final byte[] DESIGNATED_GZDM4 = {0x1B, 0x24, 0x28, 0x0F};
+	public static final byte[] DESIGNATED_GZDM4_0   = {0x1B, 0x24, 0x28, 0x0F};
+	public static final byte[] DESIGNATED_GZDM4_1 = {0x1B, 0x24, 0x0F};
 
 	/**
 	 * Name:G1-designate multibyte 94-set
