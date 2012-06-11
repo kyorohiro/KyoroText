@@ -8,40 +8,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 
 public class SimpleTextDecoder {
-	public static final String[] ISO_2022_With_ESCAPE_AS_STRING = {
-			"ISO-2022-JP", "ISO-2022-JP-1", "ISO-2022-JP-2", "ISO-2022-JP-3",
-			"ISO-2022-JP-2004", "ISO-2022-KR", "ISO-2022-CN", "ISO-2022-CN-EXT" };
-	// ESC 0x1B
-	//
-	public static final byte[][] ISO_2022_ESCAPE_LOCKING_SHIFT = {
-			// ISO_2022_JP +=2b . 2e
-			{ 0x1B, 0x28, 'B' }, // ESC ( B
-			{ 0x1B, 0x28, 'J' }, // ESC ( J
-			{ 0x1B, 0x24, '@' }, // ESC $ @
-			{ 0x1B, 0x24, 'B' }, // ESC $ B
-			// ISO_2022_JP_1
-			{ 0x1B, 0x28, 'D' }, // ESC ( D
-			// ISO_2022_JP_2
-			{ 0x1B, 0x24, 'A' }, // ESC $ A
-			{ 0x1B, 0x24, 0x28, 'C' }, // ESC $ ( C
-//			{ 0x1B, 0x2e, 'A' }, // ESC . A   SINGLE SHIFT
-//			{ 0x1B, 0x2e, 'F' }, // ESC . F   SINGLE SHIFT
-			// ISO_2022_JP_3
-			{ 0x1B, 0x24, 0x28, 'O' }, // ESC $ ( C
-			{ 0x1B, 0x24, 0x28, 'P' }, // ESC $ ( C
-			// ISO_2022_JP_2004
-			{ 0x1B, 0x24, 0x28, 'Q' }, // ESC $ ( Q
-			// ISO-2022-KR
-			{ 0x1B, 0x24, ')', 'C' }, // ESC $ ) C
-			// ISO-2022-CN
-			{ 0x1B, 0x24, ')', 'A' }, // ESC $ ) C
-			{ 0x1B, 0x24, ')', 'G' }, // ESC $ ) C
-//			{ 0x1B, 0x24, '*', 'H' }, // ESC $ ) C  SINGLE Shift
 
-	};
-	// public static final Charset[] ISO_2022_WITH_ESCAPE = {
-	// Charset.forName(charsetName),
-	// };
 	private VirtualMemory mReader = null;
 	private MyBuilder mBuffer = new MyBuilder();
 	private Charset mCs = null;
