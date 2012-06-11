@@ -14,14 +14,16 @@ import java.io.IOException;
 //   念のため守られていない事も考慮しておく。
 public class ISO2022KR extends ISO2022 {
 
-	private byte[] mCurrentESC = null;
-	private byte[] mCurrentInvoke = null;
+	// ESCが省略された場合は、G1DM4 (C)が設定されたとみなすことにする。Ie FireFox
+	private byte[] mCurrentESC = DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'C');
+	private byte[] mCurrentInvoke = ISO2022.INVOKED_LS0;
 	
 	private G1 mG1 = new G1();
 	private Invoke mInvoke = new Invoke();
 
 	public byte[] currentG0() {return null;}
 	public byte[] currentG1() {return mCurrentESC;}
+	public byte[] currentG1Invoke() {return mCurrentInvoke;}
 	public byte[] currentG2() {return null;}
 	public byte[] currentG3() {return null;}
 	public byte[] currentGL() {return null;}
@@ -72,8 +74,8 @@ public class ISO2022KR extends ISO2022 {
 	};
 
 	public static final byte[][] ISO_2022_KR_INVOKE = {
-		ISO2022.INVOKED_LS0, //single
-		ISO2022.INVOKED_LS1//single
+		ISO2022.INVOKED_LS0,
+		ISO2022.INVOKED_LS1
 	};
 
 

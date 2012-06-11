@@ -81,13 +81,15 @@ public abstract class ISO2022 {
 	 *Name:Single shift two
 	 *Effect:GL encodes G2 for next character only
 	 */
-	public static final byte[] INVOKED_SS2 = {(byte)0x8E, 0x1B, 0x4E, 'N'};
+	public static final byte[] INVOKED_SS2 = {0x1B, 'N'};
+	public static final byte[] INVOKED_SS2_2 = {(byte)0x8E};
 
 	/**
 	 *Name:Single shift three
 	 *Effect:GL encodes G3 for next character only
 	 */
-	public static final byte[] INVOKED_SS3 = {(byte)0x8F, 0x1B, 0x4E, 'O'};
+	public static final byte[] INVOKED_SS3 = {0x1B, 'O'};
+	public static final byte[] INVOKED_SS3_2 = {(byte)0x8F};
 
 	/**
 	 *Name:Locking shift one right

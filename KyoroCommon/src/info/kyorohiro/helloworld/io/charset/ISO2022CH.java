@@ -14,38 +14,24 @@ import java.io.IOException;
 //   îOÇÃÇΩÇﬂéÁÇÁÇÍÇƒÇ¢Ç»Ç¢éñÇ‡çló∂ÇµÇƒÇ®Ç≠ÅB
 public class ISO2022CH extends ISO2022 {
 
-	private byte[] mCurrentESC = null;
+	private byte[] mCurrentESC_G0 = null;
+	private byte[] mCurrentESC_G1 = null;
+	private byte[] mCurrentESC_G2 = null;
+	private byte[] mCurrentESC_G3 = null;
 	private byte[] mCurrentInvoke = null;
 
 	private G1 mG1 = new G1();
 	private Invoke mInvoke = new Invoke();
 
 	public byte[] currentG0() {return null;}
-	public byte[] currentG1() {return mCurrentESC;}
+	public byte[] currentG1() {return mCurrentESC_G0;}
 	public byte[] currentG2() {return null;}
 	public byte[] currentG3() {return null;}
 	public byte[] currentGL() {return null;}
 	public byte[] currentGR() {return null;}
 
 	public int currentEscape(byte[] escape) {
-		int p = 0;
-		int len = 0;
-		if(mCurrentESC  == null&&mCurrentInvoke==null){
-			return 0;
-		}
-		if(mCurrentESC  != null){
-			for(int i=0;i<mCurrentESC .length;i++) {
-				escape[p++] = mCurrentESC[i];
-			}
-			len += mCurrentESC.length;
-		}
-		if(mCurrentInvoke != null){
-			for(int i=0;i<mCurrentInvoke.length;i++) {
-				escape[p++] = mCurrentInvoke[i];
-			}
-			len += mCurrentInvoke.length;
-		}
-		return len;
+		return 0;
 	}
 
 	public void update(VirtualMemory v) {
@@ -67,13 +53,18 @@ public class ISO2022CH extends ISO2022 {
 		return mInvoke.match(v);
 	}
 
-	public static final byte[][] ISO_2022_CH_DESIGNATED_LOCK = {
+	public static final byte[][] ISO_2022_CH_DESIGNATED_G1 = {
 		DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'A'),//GB 2312-80
 		DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'G'),//CNS 11643-1992
-		DESIGNATED(ISO2022.DESIGNATED_G2DM4, 'H'),//CNS 11643-1992  // single
-
 		//ext
 		DESIGNATED(ISO2022.DESIGNATED_G1DM4, 'E'),//CNS 11643-1992
+	};
+
+	public static final byte[][] ISO_2022_CH_DESIGNATED_G2 = {
+		DESIGNATED(ISO2022.DESIGNATED_G2DM4, 'H'),//CNS 11643-1992  // single
+	};
+
+	public static final byte[][] ISO_2022_CH_DESIGNATED_G3 = {
 		DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'I'),//CNS 11643-1992 3 //single
 		DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'J'),//CNS 11643-1992 4 //single
 		DESIGNATED(ISO2022.DESIGNATED_G3DM4, 'K'),//CNS 11643-1992 5 //single
@@ -82,20 +73,42 @@ public class ISO2022CH extends ISO2022 {
 	};
 
 	public static final byte[][] ISO_2022_CH_INVOKE = {
-		ISO2022.INVOKED_LS0, //single
-		ISO2022.INVOKED_LS1,//single
-		ISO2022.INVOKED_LS2
+		ISO2022.INVOKED_LS0,
+		ISO2022.INVOKED_LS1,
+//		ISO2022.INVOKED_LS2 // single
+//		ISO2022.INVOKED_SS3
 	};
 
 
 	private class G1 extends ActionForMatechingEscape implements ObserverForMatechingEscape {
 		public G1() {
-			super(ISO_2022_CH_DESIGNATED_LOCK);
+			super(ISO_2022_CH_DESIGNATED_G1);
 			setObserver(this);
 		}
 		@Override
 		public void matched(byte[] matchedData) {
-			mCurrentESC = matchedData;
+			mCurrentESC_G1 = matchedData;
+		}
+	}
+	private class G2 extends ActionForMatechingEscape implements ObserverForMatechingEscape {
+		public G2() {
+			super(ISO_2022_CH_DESIGNATED_G2);
+			setObserver(this);
+		}
+		@Override
+		public void matched(byte[] matchedData) {
+			mCurrentESC_G1 = matchedData;
+		}
+	}
+
+	private class G3 extends ActionForMatechingEscape implements ObserverForMatechingEscape {
+		public G3() {
+			super(ISO_2022_CH_DESIGNATED_G3);
+			setObserver(this);
+		}
+		@Override
+		public void matched(byte[] matchedData) {
+			mCurrentESC_G1 = matchedData;
 		}
 	}
 
