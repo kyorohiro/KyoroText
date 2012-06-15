@@ -44,7 +44,9 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 		File showedDirectry = firstCandidateDirectory;
 		if (showedDirectry == null || !showedDirectry.exists() || !showedDirectry.canRead()) {
 			showedDirectry = secondCandidateDirectory;
-		} else if (showedDirectry == null || !showedDirectry.exists()||!showedDirectry.canRead()) {
+		} 
+
+		if (showedDirectry == null || !showedDirectry.exists()||!showedDirectry.canRead()) {
 			showedDirectry = thirdCandidateDirectory;
 		} 
 
