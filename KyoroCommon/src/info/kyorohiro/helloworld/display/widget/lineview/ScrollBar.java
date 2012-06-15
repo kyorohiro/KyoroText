@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import android.graphics.Color;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
@@ -11,6 +12,7 @@ public class ScrollBar extends SimpleDisplayObject {
 	private int mEnd;
 	private int mSize;
 	private SimpleImage mImage = null;
+	private int mColorWhenDefault = Color.parseColor("#99ffff86");
 
 	public ScrollBar(SimpleDisplayObject target) {
 		mTargetObject = target;
@@ -31,6 +33,10 @@ public class ScrollBar extends SimpleDisplayObject {
 		mEnd = end;
 		mSize = size;
 	}
+	
+	public void setColor(int color) {
+		mColorWhenDefault = color;
+	}
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
@@ -44,7 +50,8 @@ public class ScrollBar extends SimpleDisplayObject {
 	private void showScrollBar(SimpleGraphics graphics) {
 		// set scrollbar color
 		graphics.setStrokeWidth(3);
-		graphics.setColor(0xAAFFFF00);
+//		graphics.setColor(0xAAFFFF00);
+		graphics.setColor(mColorWhenDefault);
 
 		int w = mTargetObject.getWidth();
 		int h = mTargetObject.getHeight();
@@ -67,14 +74,20 @@ public class ScrollBar extends SimpleDisplayObject {
 		if(mImage != null) {
 			graphics.drawImageAsTile(mImage, barStartX, barStartY, barWidth, (int)(barEndY-barStartY));
 		} else {
+			graphics.setStrokeWidth(2);
 			graphics.drawLine(barStartX, barStartY, barEndX, barStartY);
 			graphics.drawLine(barStartX, barEndY, barEndX, barEndY);
 
 			graphics.drawLine(barStartX, barStartY, barStartX, barEndY);
 			graphics.drawLine(barEndX, barStartY, barEndX, barEndY);
 
-			graphics.drawLine(barStartX, barStartY, barEndX, barEndY);
-			graphics.drawLine(barEndX, barStartY, barStartX, barEndY);
+			graphics.setStrokeWidth(6);
+			int t = (barEndX-barStartX)/3 ; 
+			graphics.drawLine(t+barStartX, barStartY, t+barStartX, barEndY);
+			graphics.drawLine(-t+barEndX, barStartY,-t+barEndX, barEndY);
+
+			//graphics.drawLine(barStartX, barStartY, barEndX, barEndY);
+			//graphics.drawLine(barEndX, barStartY, barStartX, barEndY);
 		}
 	}
 }

@@ -12,7 +12,9 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 	private CircleControllerAction mEvent = new NullCircleControllerEvent();
 	private int mMaxRadius = 100;
 	private int mMinRadius = 50;
-
+	private int mColorWhenDefault = Color.parseColor("#99ffff86");
+	private int mColorWhenTouched = Color.parseColor("#99ffc9f4");
+		
 	public SimpleCircleController() {
 		BG bg = new BG();
 		this.addChild(bg);
@@ -29,6 +31,14 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 
 	public int getHeight(){
 		return mMaxRadius*2;
+	}
+
+	public void setColorWhenDefault(int color) {
+		mColorWhenDefault = color;
+	}
+
+	public void setColorWhenTouced(int color) {
+		mColorWhenTouched = color;
 	}
 
 	public void setEventListener(CircleControllerAction event) {
@@ -81,7 +91,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			graphics.setColor(Color.parseColor("#99ffff86"));
+			graphics.setColor(mColorWhenDefault);
 			graphics.setStyle(SimpleGraphics.STYLE_STROKE);
 			graphics.setStrokeWidth(4);
 
@@ -92,9 +102,9 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 				graphics.drawCircle(0, 0, (int)(mMaxRadius-i*interSpace));
 			}
 			graphics.setStrokeWidth(6);
-			graphics.setColor(Color.parseColor("#99ffff86"));
+			graphics.setColor(mColorWhenDefault);
 			if (isTouched) {
-				graphics.setColor(Color.parseColor("#99ffc9f4"));
+				graphics.setColor(mColorWhenTouched);
 				double pi = 0;
 				if (mTouchX != 0) {
 					pi = Math.atan2(mTouchY, mTouchX);

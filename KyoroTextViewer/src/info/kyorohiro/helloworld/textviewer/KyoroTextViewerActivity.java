@@ -78,7 +78,9 @@ public class KyoroTextViewerActivity extends MainActivity {
 			mViewerWidth = mViewerHeight;
 			mViewerHeight = t;
 		}
-		return new TextViewer(textSize, mViewerWidth, mViewerWidth*1/20);
+		int screenMargine = mViewerWidth*1/20;
+		int screenWidth = mViewerWidth;
+		return new TextViewer(textSize, screenWidth, screenMargine);
 	}
 
 	private void doFileOpenIntentAction() {
