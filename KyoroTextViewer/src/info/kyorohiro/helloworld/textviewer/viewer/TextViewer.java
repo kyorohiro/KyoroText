@@ -175,9 +175,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			int bufferSize = viewerBuffer.getNumberOfStockedElement(); 
 			int beginPosition = TextViewer.this.mLineView.getShowingTextStartPosition();
 			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
-			mScrollBar.setStatus(
-					beginPosition,
-					endPosition, bufferSize);
+			mScrollBar.setStatus(beginPosition, endPosition, bufferSize);
 			TextViewer.this.mLineView.setRect(graphics.getWidth(), graphics.getHeight());
 		}
 	}

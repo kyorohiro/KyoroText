@@ -79,7 +79,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 			mViewerHeight = t;
 		}
 		int screenMargine = mViewerWidth*1/20;
-		int screenWidth = mViewerWidth;
+		int screenWidth = mViewerWidth-screenMargine/2; // mod 2 is my feeling value so design only. 
 		return new TextViewer(textSize, screenWidth, screenMargine);
 	}
 
