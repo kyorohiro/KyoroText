@@ -24,12 +24,9 @@ public class ISO2022CN extends ISO2022 {
 	private G3 mG3 = new G3();
 	private Invoke mInvoke = new Invoke();
 
-	public byte[] currentG0() {return null;}
 	public byte[] currentG1() {return mCurrentESC_G1;}
 	public byte[] currentG2() {return mCurrentESC_G2;}
 	public byte[] currentG3() {return mCurrentESC_G3;}
-	public byte[] currentGL() {return null;}
-	public byte[] currentGR() {return null;}
 	public byte[] currentG1Invoke() {return mCurrentInvoke;}
 
 	public int currentEscape(byte[] escape) {

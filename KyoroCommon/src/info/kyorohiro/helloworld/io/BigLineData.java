@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
+@Deprecated
 public class BigLineData {
 	public static int FILE_LIME = 100;
 

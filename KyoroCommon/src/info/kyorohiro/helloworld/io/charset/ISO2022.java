@@ -10,22 +10,9 @@ import java.io.IOException;
  * http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-035.pdf
  */
 public abstract class ISO2022 {
-	public abstract byte[] currentG0();
-
-	public abstract byte[] currentG1();
-
-	public abstract byte[] currentG2();
-
-	public abstract byte[] currentG3();
-
-	public abstract byte[] currentGL();
-
-	public abstract byte[] currentGR();
 
 	public abstract int currentEscape(byte[] escape);
-
 	public abstract void update(VirtualMemory vm);
-
 
 	public static byte[] DESIGNATED(byte[] code, char character) {
 		byte[] buffer = new byte[code.length];
