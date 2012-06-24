@@ -24,8 +24,6 @@ import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
-	//	public static int COLOR_BG = Color.parseColor("#FF101030");
-	//	public static int COLOR_BG = Color.parseColor("#FF808080");
 	public static int COLOR_BG = Color.parseColor("#FF000000");
 	public static int COLOR_FONT1 = Color.parseColor("#ff80c9f4");
 	public static int COLOR_FONT2 = Color.parseColor("#fff480c9");
@@ -78,10 +76,10 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	@Override
 	public void stop() {
 		mLineView.setBGImage(null);
-		if(mBGImage.getImage().isRecycled()){
+		if(!mBGImage.getImage().isRecycled()){
 			mBGImage.getImage().recycle();
 		}
-		if(mScrollImage.getImage().isRecycled()){
+		if(!mScrollImage.getImage().isRecycled()){
 			mScrollImage.getImage().recycle();
 		}
 	}
