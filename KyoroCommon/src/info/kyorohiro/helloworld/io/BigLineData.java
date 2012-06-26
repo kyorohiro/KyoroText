@@ -3,11 +3,7 @@ package info.kyorohiro.helloworld.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
 import java.util.ArrayList;
 
 import android.graphics.Paint;
@@ -20,13 +16,13 @@ public class BigLineData {
 	private File mPath;
 	private String mCharset = "utf8";
 	private VirtualMemory mReader = null;
+	private SimpleTextDecoder mDecoder = null;
 	
 	// todo
 	private Paint mPaint = null;
 	private int mWidth =800;
 
 	private long mCurrentPosition = 0;
-	private long mLastPosition = 0;
 	private long mLinePosition = 0;
 	private long mLastLinePosition = 0;
 	private ArrayList<Long> mPositionPer100Line = new ArrayList<Long>();
@@ -44,29 +40,32 @@ public class BigLineData {
 		mPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 
+	public class MyBreaktext implements BreakText {
+		@Override
+		public int breakText(MyBuilder b) {
+			int len = mPaint.breakText(b.getAllBufferedMoji(),
+					0,b.getCurrentBufferedMojiSize(), mWidth, null);
+			return len;
+		}
+	}
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
 		mReader = new VirtualMemory(mPath, 1024);
 		mPositionPer100Line.add(0l);
+		mDecoder = new SimpleTextDecoder(
+				Charset.forName(charset), 
+				mReader, new  MyBreaktext());
 	}
 
 	public long getLastLinePosition() {
 		return mLastLinePosition;
 	}
-
-	public boolean stackedLinePosition() {
-		if (mLastPosition >= getDataSize()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
+/*
 	public int getStackedLinePer100() {
 		return mPositionPer100Line.size();
 	}
-
+*/
 	public boolean moveLinePer100(int index) throws IOException {
 		if (index < mPositionPer100Line.size()) {
 			long filePointer = mPositionPer100Line.get(index);
@@ -97,35 +96,21 @@ public class BigLineData {
 	}
 
 	public CharSequence readLine() throws IOException {
-		CharSequence tmp = new TODOCRLFString("", TODOCRLFString.MODE_INCLUDE_LF);
-		int retPosition = (int) mLinePosition;
+		CharSequence tmp = new TODOCRLFString(new char[]{}, 0,TODOCRLFString.MODE_INCLUDE_LF);
+		int lineNumber = (int) mLinePosition;
 		try {
-
-			tmp = decode(Charset.forName(mCharset));
+			tmp = mDecoder.decodeLine();
 			mCurrentPosition = mReader.getFilePointer();
 			mLinePosition += 1;
 			if (mLastLinePosition < mLinePosition) {
 				mLastLinePosition = mLinePosition;
 			}
-			if (mLinePosition % FILE_LIME == 0) {
-				int index = mPositionPer100Line.size() - 1;
-				long stackedPosition = 0;
-				if (index > 0) {
-					stackedPosition = mPositionPer100Line
-							.get(mPositionPer100Line.size() - 1);
-				}
-				if (stackedPosition < mCurrentPosition) {
-					mPositionPer100Line.add(mCurrentPosition);
-				}
-			}
-			if (mLastPosition < mCurrentPosition) {
-				mLastPosition = mCurrentPosition;
-			}
+			updateIndex();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		// 0から始まる!! mLinePosition-1
-		return new LineWithPosition(tmp, mCurrentPosition, retPosition, 
+		return new LineWithPosition(tmp, mCurrentPosition, lineNumber, 
 				((TODOCRLFString)tmp).mMode);
 	}
 
@@ -133,143 +118,21 @@ public class BigLineData {
 		mReader.close();
 	}
 
-	private MyBuilder b = new MyBuilder();
-	public CharSequence decode(Charset cs) throws IOException {
-		//StringBuilder b = new StringBuilder();
-		b.clear();
-		CharsetDecoder decoder = cs.newDecoder();
-		boolean end = false;
-		ByteBuffer bb = ByteBuffer.allocateDirect(32); // bbは書き込める状態
-		CharBuffer cb = CharBuffer.allocate(16); // cbは書き込める状態
-
-		//todo
-		int mode = TODOCRLFString.MODE_INCLUDE_LF;
-		long todoPrevPosition = mReader.getFilePointer();
-		outside:do {
-			int d = mReader.read();
-			if (d >= 0) {
-				bb.put((byte) d); // bbへの書き込み
-			} else {
-				// todo
-				break;
+	private void updateIndex() {
+		if (mLinePosition % FILE_LIME == 0) {
+			int index = mPositionPer100Line.size() - 1;
+			long stackedPosition = 0;
+			if (index > 0) {
+				stackedPosition = mPositionPer100Line
+						.get(mPositionPer100Line.size() - 1);
 			}
-			bb.flip();
-			CoderResult cr = decoder.decode(bb, cb, end);
-
-			cb.flip();
-			char c = ' ';
-			boolean added = false;
-			while (cb.hasRemaining()) {
-				added = true;
-				bb.clear();
-				c = cb.get();
-				b.append(c);
-				if(mPaint != null){
-					// todo kiyohiro unefficient coding
-					//	String tmp = b.toString();
-					//	int len =mPaint.breakText(tmp, true, mWidth, null);
-					int len = mPaint.breakText(b.getAllBufferedMoji(),
-							0,b.getCurrentBufferedMojiSize(), mWidth, null);
-					if (len < b.getCurrentBufferedMojiSize()) {
-						// todo add test case following pattern.
-						// add breakText return 2
-						// but b.length return 1
-						//  >> before modify coding if(len != tmp.length())
-						// 
-						
-						//ひとつ前で改行
-						b.removeLast();
-						mReader.seek(todoPrevPosition);
-						mode = TODOCRLFString.MODE_EXCLUDE_LF;
-						break outside;
-					} else {
-						todoPrevPosition = mReader.getFilePointer();
-					}
-				}
+			if (stackedPosition < mCurrentPosition) {
+				mPositionPer100Line.add(mCurrentPosition);
 			}
-			if (c == '\n') {
-				break;
-			}
-
-			if (!added) {
-				bb.compact();
-			}
-			cb.clear(); // cbを書き込み状態に変更
-		} while (!end);
-		return new TODOCRLFString(b.toString(), mode);
+		}		
 	}
 
-	public static class MyBuilder {
-		private int mPointer = 0;
-		private int mLength = 512;
-		private char[] mBuffer = new char[mLength];
-		
-		public void append(char moji){
-			if(mPointer >= mLength){
-				mLength *=2;
-				char[] tmp = new char[mLength*2];
-				for(int i=0;i<mBuffer.length;i++) {
-					 tmp[i] = mBuffer[i];
-				}
-				mBuffer = tmp;
-			}
-			mBuffer[mPointer] = moji;
-			mPointer++;
-		}
 
-		public void clear() {
-			mPointer = 0;
-		}
-
-		public char[] getAllBufferedMoji(){
-			return mBuffer;
-		}
-
-		public int getCurrentBufferedMojiSize(){
-			return mPointer;
-		}
-		
-		public void removeLast(){
-			if(0<mPointer) {
-				mPointer--;
-			}
-		}
-
-		public String toString(){
-			return new String(mBuffer, 0, mPointer);
-		}
-	}
-	public static class TODOCRLFString implements CharSequence {
-		public static int MODE_INCLUDE_LF = 1;
-		public static int MODE_EXCLUDE_LF = 0;
-		public String mContent = null;
-		public int mMode = MODE_EXCLUDE_LF;
-		
-		public TODOCRLFString(String str, int mode) {
-			mContent = str;
-			mMode = mode;
-		}
-
-		@Override
-		public char charAt(int index) {
-			return mContent.charAt(index);
-		}
-
-		@Override
-		public int length() {
-			return mContent.length();
-		}
-
-		@Override
-		public CharSequence subSequence(int start, int end) {
-			return mContent.subSequence(start, end);
-		}
-		
-		@Override
-		public String toString() {
-			return mContent.toString();
-		}
-	}
 
 	public static class LineWithPosition implements CharSequence {
 		private CharSequence mLine = "";
@@ -282,6 +145,7 @@ public class BigLineData {
 			mPosition = position;
 			mLinePosition = linenum;
 			mMode = mode;
+			android.util.Log.v("kiyo",""+mLine+","+mPosition+","+mLinePosition+","+mMode);
 		}
 
 		public boolean includeLF(){
@@ -306,17 +170,8 @@ public class BigLineData {
 
 		@Override
 		public String toString() {
-			
-			if (mLine == null) {
-				return "";
-			}
+			if (mLine == null) { return ""; }
 			return mLine.toString();
-			
-			//return "----"+getLinePosition()+mLine.toString();
-		}
-
-		public long getColor() {
-			return mPosition;
 		}
 
 		public long getLinePosition() {

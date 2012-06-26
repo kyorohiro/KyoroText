@@ -1,8 +1,7 @@
-package info.kyorohiro.helloworld.textviewer.viewer;
+package info.kyorohiro.helloworld.util;
 
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
-import info.kyorohiro.helloworld.util.CyclingList;
 
 public class LockableCyclingList extends CyclingList<LineViewData>
 implements SimpleLockInter{

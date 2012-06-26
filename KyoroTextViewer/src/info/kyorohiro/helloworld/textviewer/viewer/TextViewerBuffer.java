@@ -4,6 +4,7 @@ import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.util.CyclingList;
+import info.kyorohiro.helloworld.util.LockableCyclingList;
 
 import java.io.File;
 import java.io.FileNotFoundException;

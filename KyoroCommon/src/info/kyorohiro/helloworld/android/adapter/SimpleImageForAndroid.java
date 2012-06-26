@@ -34,7 +34,7 @@ public class SimpleImageForAndroid extends SimpleDisplayObject {
 		// 
 		// このタイミングでリソースを開放するのは、仮実装
 		// Imageを使いまわすような利用方法を間がると適当ではない。
-		if(mBitmap != null && mBitmap.isRecycled()){
+		if(mBitmap != null && !mBitmap.isRecycled()){
 			mBitmap.recycle();
 		}
 		super.dispose();

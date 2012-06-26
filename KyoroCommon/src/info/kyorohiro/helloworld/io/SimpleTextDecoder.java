@@ -24,12 +24,11 @@ public class SimpleTextDecoder {
 	public boolean isEOF() {
 		try {
 			if (mReader.getFilePointer() < mReader.length()) {
-				return true;
-			} else {
 				return false;
+			} else {
+				return true;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
@@ -98,38 +97,5 @@ public class SimpleTextDecoder {
 		} while (!end);
 		return new TODOCRLFString(mBuffer.getAllBufferedMoji(),
 				mBuffer.getCurrentBufferedMojiSize(), mode);
-	}
-
-	public static class TODOCRLFString implements CharSequence {
-		public static int MODE_INCLUDE_LF = 1;
-		public static int MODE_EXCLUDE_LF = 0;
-		public char[] mContent = null;
-		public int mMode = MODE_EXCLUDE_LF;
-
-		public TODOCRLFString(char[] content, int length, int mode) {
-			mContent = new char[length];
-			System.arraycopy(content, 0, mContent, 0, length);
-			mMode = mode;
-		}
-
-		@Override
-		public char charAt(int index) {
-			return mContent[index];
-		}
-
-		@Override
-		public int length() {
-			return mContent.length;
-		}
-
-		@Override
-		public CharSequence subSequence(int start, int end) {
-			return new String(mContent, start, end);
-		}
-
-		@Override
-		public String toString() {
-			return new String(mContent, 0, mContent.length);
-		}
 	}
 }

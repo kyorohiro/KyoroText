@@ -21,7 +21,6 @@ public class KyoroEditActivity extends Activity {
 		int modeForDisableSoftKeyboard = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
         getWindow().setSoftInputMode(modeForDisableSoftKeyboard);
         setContentView(mStage);
-//       setContentView(R.layout.main);
     }
 
     @Override
