@@ -48,6 +48,7 @@ public class BigLineData {
 			return len;
 		}
 	}
+
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
@@ -61,11 +62,11 @@ public class BigLineData {
 	public long getLastLinePosition() {
 		return mLastLinePosition;
 	}
-/*
+
 	public int getStackedLinePer100() {
 		return mPositionPer100Line.size();
 	}
-*/
+
 	public boolean moveLinePer100(int index) throws IOException {
 		if (index < mPositionPer100Line.size()) {
 			long filePointer = mPositionPer100Line.get(index);
@@ -145,7 +146,7 @@ public class BigLineData {
 			mPosition = position;
 			mLinePosition = linenum;
 			mMode = mode;
-			android.util.Log.v("kiyo",""+mLine+","+mPosition+","+mLinePosition+","+mMode);
+//			android.util.Log.v("kiyo",""+mLine+","+mPosition+","+mLinePosition+","+mMode);
 		}
 
 		public boolean includeLF(){
