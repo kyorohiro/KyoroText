@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.textviewer.viewer;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
-import info.kyorohiro.helloworld.io.BigLineData.LineWithPosition;
+import info.kyorohiro.helloworld.io.TODOCRLFString;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewerBuffer.MyBufferDatam;
 
 import java.lang.ref.WeakReference;
@@ -154,7 +154,7 @@ public class LookAheadCaching {
 				//				android.util.Log.v("aaa","=---- START");
 				for (int i = 0;i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();i++) {
 					CharSequence line = mLineManagerFromFile.readLine();
-					LineWithPosition lineWP = (LineWithPosition)line;
+					TODOCRLFString lineWP = (TODOCRLFString)line;
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if(!lineWP.includeLF()) {
 						crlf = LineViewData.EXCLUDE_END_OF_LINE;
@@ -209,7 +209,7 @@ public class LookAheadCaching {
 				i++) {
 
 					CharSequence line = mLineManagerFromFile.readLine();
-					LineWithPosition lineWP = (LineWithPosition)line;
+					TODOCRLFString lineWP = (TODOCRLFString)line;
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if(!lineWP.includeLF()) {
 						crlf = LineViewData.EXCLUDE_END_OF_LINE;
@@ -219,7 +219,7 @@ public class LookAheadCaching {
 							line.toString(),
 							Color.WHITE,
 							crlf,
-							(int)((LineWithPosition)line).getLinePosition());
+							(int)((TODOCRLFString)line).getLinePosition());
 					if(lineWP.getLinePosition() >mStartPosition) {
 						mTextViewer.add(t);
 					}

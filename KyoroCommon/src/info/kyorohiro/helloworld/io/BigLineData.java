@@ -97,10 +97,10 @@ public class BigLineData {
 	}
 
 	public CharSequence readLine() throws IOException {
-		CharSequence tmp = new TODOCRLFString(new char[]{}, 0,TODOCRLFString.MODE_INCLUDE_LF);
+		TODOCRLFString tmp = new TODOCRLFString(new char[]{}, 0,TODOCRLFString.MODE_INCLUDE_LF);
 		int lineNumber = (int) mLinePosition;
 		try {
-			tmp = mDecoder.decodeLine();
+			tmp = (TODOCRLFString)mDecoder.decodeLine();
 			mCurrentPosition = mReader.getFilePointer();
 			mLinePosition += 1;
 			if (mLastLinePosition < mLinePosition) {
@@ -111,8 +111,9 @@ public class BigLineData {
 			e.printStackTrace();
 		}
 		// 0‚©‚çŽn‚Ü‚é!! mLinePosition-1
-		return new LineWithPosition(tmp, mCurrentPosition, lineNumber, 
-				((TODOCRLFString)tmp).mMode);
+//		return new LineWithPosition(tmp, mCurrentPosition, lineNumber, ((TODOCRLFString)tmp).mMode);
+		tmp.setLinePosition(lineNumber);
+		return tmp;
 	}
 
 	public void close() throws IOException {
@@ -134,7 +135,7 @@ public class BigLineData {
 	}
 
 
-
+/*
 	public static class LineWithPosition implements CharSequence {
 		private CharSequence mLine = "";
 		private long mPosition = 0;
@@ -178,5 +179,5 @@ public class BigLineData {
 		public long getLinePosition() {
 			return mLinePosition;
 		}
-	}
+	}*/
 }
