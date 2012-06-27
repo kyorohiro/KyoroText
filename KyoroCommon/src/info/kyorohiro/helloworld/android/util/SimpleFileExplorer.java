@@ -154,6 +154,7 @@ public class SimpleFileExplorer extends Dialog {
 				if(mAction != null) {
 					if(mAction.onSelectedFile(f,SelectedFileAction.LONG_CLICK)) {
 						try {
+							SimpleFileExplorer.this.stopUpdateTask();
 							SimpleFileExplorer.this.dismiss();
 						} catch (Throwable e) {
 							e.printStackTrace();
@@ -184,17 +185,22 @@ public class SimpleFileExplorer extends Dialog {
 
 	private Thread mTh = null;
 	private synchronized void startUpdateTask(File f) {
+		stopUpdateTask();
+		mTh = new Thread(new UpdateListFromDirTask(f));
+		mTh.start();
+	}
+
+	private synchronized void stopUpdateTask() {
 		Thread th = mTh;
 		mTh = null;
 		if(th != null && th.isAlive() &&th.isInterrupted()) {
 			th.interrupt();
 		}
-		Thread.yield();
-		mTh = new Thread(new UpdateListFromDirTask(f));
-		mTh.start();
+		Thread.yield();		
 	}
 
 	private synchronized void startUpdateTask(Runnable task) {
+		stopUpdateTask();
 		mTh = new Thread(task);
 		mTh.start();
 	}

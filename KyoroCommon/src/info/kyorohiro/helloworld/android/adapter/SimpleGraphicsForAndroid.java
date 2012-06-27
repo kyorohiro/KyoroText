@@ -76,22 +76,27 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 				mPaint);
 	}
 
+	Shader shader = null;
 	@Override
 	public void drawImageAsTile(SimpleImage image, int x, int y, int w, int h) {
 		if (image.getImage().isRecycled()) {
 			return;
 		}
+		/*
 		// todo: examine following code.
-		// Shader shader = new BitmapShader(image.getImage(),
-		// Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-		// Paint paint = mPaint; //new Paint();
-		// paint.setShader(shader);
-		// Rect prev = mCanvas.getClipBounds();
-		// mCanvas.clipRect(x, y, x+w, y+h);
-		// mCanvas.drawPaint(paint);
-		// mCanvas.clipRect(prev);
-		// paint.setShader(null);
-		//
+		if(shader == null){
+		 shader = new BitmapShader(image.getImage(),
+				Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		}
+		Paint paint = mPaint; //new Paint();
+		paint.setShader(shader);
+		Rect prev = mCanvas.getClipBounds();
+		mCanvas.clipRect(x, y, x+w, y+h);
+		mCanvas.drawPaint(paint);
+		mCanvas.clipRect(prev);
+		paint.setShader(null);
+        //*/
+		///*
 		Bitmap bitmap = image.getImage();
 		int imgW = bitmap.getWidth();
 		int imgH = bitmap.getHeight();
@@ -113,6 +118,7 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 				mCanvas.drawBitmap(bitmap, src, dst, mPaint);
 			}
 		}
+		//*/
 	}
 
 	public int getTextSize() {

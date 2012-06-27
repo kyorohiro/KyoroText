@@ -67,7 +67,15 @@ public class LookAheadCaching {
         	startReadForwardAndClear(cp);
        }
 	}
-	public void startTask(Builder builder) {
+
+	public synchronized void stopTask() {
+		if (mTaskRunnter != null &&mTaskRunnter.isAlive()) {
+			mTaskRunnter.interrupt();
+			mTaskRunnter = null;
+		}
+	}
+
+	public synchronized void startTask(Builder builder) {
 		if (mTaskRunnter == null || !mTaskRunnter.isAlive()) {
 			mTaskRunnter = new Thread(builder.create());
 			mTaskRunnter.start();
@@ -152,7 +160,7 @@ public class LookAheadCaching {
 				mLineManagerFromFile.moveLinePer100(index);
 				int j=0;
 				//				android.util.Log.v("aaa","=---- START");
-				for (int i = 0;i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();i++) {
+				for (int i = 0;!Thread.interrupted()&&i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();i++) {
 					CharSequence line = mLineManagerFromFile.readLine();
 					TODOCRLFString lineWP = (TODOCRLFString)line;
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
@@ -175,7 +183,8 @@ public class LookAheadCaching {
 				for(int i=j-1;0<=i;i--) {
 					mTextViewer.head(builder[i]);					
 				}
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -205,8 +214,8 @@ public class LookAheadCaching {
 				int index = mStartPosition/BigLineData.FILE_LIME+1;
 				mLineManagerFromFile.moveLinePer100(index);
 				for (int i = 0;
-				i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();
-				i++) {
+						!Thread.interrupted()&&i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();
+						i++) {
 
 					CharSequence line = mLineManagerFromFile.readLine();
 					TODOCRLFString lineWP = (TODOCRLFString)line;

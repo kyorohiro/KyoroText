@@ -266,7 +266,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		
 	}
 	public static void log(String log) {
-		android.util.Log.v("kiyo", ""+log);
+		//android.util.Log.v("kiyo", ""+log);
 	}
 
 	public class A implements InputFilter {

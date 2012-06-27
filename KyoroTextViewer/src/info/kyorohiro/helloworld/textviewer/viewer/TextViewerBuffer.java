@@ -78,9 +78,12 @@ extends LockableCyclingList {
 	public void dispose() {
 		if (null != mLineManagerFromFile) {
 			try {
+				if(mCashing != null){
+					mCashing.stopTask();
+					mCashing = null;
+				}
 				mLineManagerFromFile.close();
 				mLineManagerFromFile = null;
-				mCashing = null;
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Throwable t) {

@@ -12,6 +12,7 @@ public class SimpleStage extends EditableSurfaceView {
 	private InitialCallBack mInitialCallBack = null;
 	private Thread mCurrentThread = null;
 	private SimpleDisplayObjectContainer mRoot = new  SimpleDisplayObjectContainer();
+	private int mSleep = 50;
 
 	public SimpleStage(Context context) {
 		super(context);
@@ -59,7 +60,7 @@ public class SimpleStage extends EditableSurfaceView {
 					} finally {
 						holder.unlockCanvasAndPost(canvas);
 					}
-					Thread.sleep(50);
+					Thread.sleep(mSleep);
 				}
 			} catch (InterruptedException e) {
 			} catch (Throwable e) {

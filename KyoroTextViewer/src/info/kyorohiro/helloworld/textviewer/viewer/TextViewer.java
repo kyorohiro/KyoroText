@@ -136,7 +136,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		if(prevBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) prevBuffer).dispose();
 		}
-		//KyoroApplication.showMessage("charset="+mCurrentCharset);
 	}
 
 	private class LayoutManager extends SimpleDisplayObject {
