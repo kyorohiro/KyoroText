@@ -184,11 +184,11 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			}
 		}
 		public void upButton(int action) {
-			getLineView().setPositionY(getLineView().getPositionY() + 5);
+			getLineView().setPositionY(getLineView().getPositionY() + 1);
 		}
 
 		public void downButton(int action) {
-			getLineView().setPositionY(getLineView().getPositionY() - 5);
+			getLineView().setPositionY(getLineView().getPositionY() - 1);
 		}
 	}
 
