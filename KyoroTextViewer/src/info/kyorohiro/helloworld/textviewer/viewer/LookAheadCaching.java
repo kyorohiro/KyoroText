@@ -11,17 +11,16 @@ import android.graphics.Color;
 
 public class LookAheadCaching {
 	private WeakReference<TextViewerBuffer> mBuffer = null;
-	private ReadBackBuilder mBackBuilder = new ReadBackBuilder(); 
-	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder(); 
+	private ReadBackBuilder mBackBuilder = new ReadBackBuilder();
+	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
 	private Thread mTaskRunnter = null;
-
 
 	public LookAheadCaching(TextViewerBuffer buffer) {
 		mBuffer = new WeakReference<TextViewerBuffer>(buffer);
 	}
 
 	public TextViewerBuffer getTextViewerBuffer() {
-		if (mBuffer!=null) {
+		if (mBuffer != null) {
 			return mBuffer.get();
 		} else {
 			return null;
@@ -30,45 +29,43 @@ public class LookAheadCaching {
 
 	public void updateBufferedStatus() {
 		TextViewerBuffer buffer = getTextViewerBuffer();
-		if(buffer == null){
+		if (buffer == null) {
 			return;
 		}
 		int sp = buffer.getCurrentBufferStartLinePosition();
 		int ep = buffer.getCurrentBufferEndLinePosition();
-        int cp = buffer.getCurrentPosition();
-        int mx = buffer.getMaxOfStackedElement();
-        int chunkSize = mx/10;
+		int cp = buffer.getCurrentPosition();
+		int mx = buffer.getMaxOfStackedElement();
+		int chunkSize = mx / 10;
 
-        if((sp-chunkSize*2)<=cp&&cp<=(ep+chunkSize*2)) {
-        	// 
-        	boolean forward = false;
-        	boolean back = false;
-        	if(ep<(cp+chunkSize*3)){
-        		forward = true;
-        	} 
-        	if(sp>0&&sp>(cp-chunkSize*3)){
-        		back = true;
-        	}
-        	if(forward==true&&back==true){
-        		if((ep-cp)<cp-sp){
-            		startReadForward(ep);	
-        		}else {
-            		startReadBack(sp);        			
-        		}
-        	}
-        	else if(forward==true){
-        		startReadForward(ep);
-        	}
-        	else {
-        		startReadBack(sp);
-        	}
-        } else {
-        	startReadForwardAndClear(cp);
-       }
+		if ((sp - chunkSize * 2) <= cp && cp <= (ep + chunkSize * 2)) {
+			//
+			boolean forward = false;
+			boolean back = false;
+			if (ep < (cp + chunkSize * 3)) {
+				forward = true;
+			}
+			if (sp > 0 && sp > (cp - chunkSize * 3)) {
+				back = true;
+			}
+			if (forward == true && back == true) {
+				if ((ep - cp) < cp - sp) {
+					startReadForward(ep);
+				} else {
+					startReadBack(sp);
+				}
+			} else if (forward == true) {
+				startReadForward(ep);
+			} else {
+				startReadBack(sp);
+			}
+		} else {
+			startReadForwardAndClear(cp);
+		}
 	}
 
 	public synchronized void stopTask() {
-		if (mTaskRunnter != null &&mTaskRunnter.isAlive()) {
+		if (mTaskRunnter != null && mTaskRunnter.isAlive()) {
 			mTaskRunnter.interrupt();
 			mTaskRunnter = null;
 		}
@@ -86,6 +83,7 @@ public class LookAheadCaching {
 		mForwardBuilder.clear = true;
 		startTask(mForwardBuilder);
 	}
+
 	public void startReadForward(int position) {
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = false;
@@ -95,7 +93,6 @@ public class LookAheadCaching {
 	public void startReadBack(int position) {
 		TextViewerBuffer buffer = mBuffer.get();
 		mBackBuilder.position = position;
-		mBackBuilder.cashedStartPosition = buffer.getCurrentBufferStartLinePosition();
 		startTask(mBackBuilder);
 	}
 
@@ -103,127 +100,110 @@ public class LookAheadCaching {
 		Runnable create();
 	}
 
-	public class ReadBackBuilder implements Builder{
+	public class ReadBackBuilder implements Builder {
 		public int position = 0;
-		public int cashedStartPosition = 0;
+
 		public Runnable create() {
 			TextViewerBuffer buffer = mBuffer.get();
-			if(buffer== null) {
-				//todo
+			if (buffer == null) {
 				return null;
 			}
-
-			return new ReadBackFileTask(buffer, position, cashedStartPosition);
+			return new ReadBackFileTask(buffer, position);
 		}
 	}
 
 	public class ReadForwardBuilder implements Builder {
 		public int position = 0;
 		public boolean clear;
+
 		public Runnable create() {
 			TextViewerBuffer buffer = mBuffer.get();
-			if(buffer== null) {
-				//todo
+			if (buffer == null) {
+				// todo
 				return null;
 			}
-			return new ReadForwardFileTask(buffer,position,clear);
+			return new ReadForwardFileTask(buffer, position, clear);
 		}
 	}
 
 	public static class ReadBackFileTask implements Runnable {
-		private int mStartPosition = 0;
-		private int mCashedStartPosition = 0;
-		private BigLineData mLineManagerFromFile = null;
+		private int mStartWithoutOwn = 0;
+		private BigLineData mBigLineData = null;
 		private TextViewerBuffer mTextViewer = null;
 
-		public ReadBackFileTask(
-				TextViewerBuffer textViewer,
-				int startPosition, int cashedStartPosition) {
-			mLineManagerFromFile = textViewer.getBigLineData();
+		public ReadBackFileTask(TextViewerBuffer textViewer, int startWithoutOwn) {
+			mBigLineData = textViewer.getBigLineData();
 			mTextViewer = textViewer;
-			startPosition--;
-
-			if(startPosition > 1) {
-				mStartPosition = cashedStartPosition-1;
-			} else {
-				mStartPosition = startPosition;
-			}
-			mCashedStartPosition = cashedStartPosition;
+			mStartWithoutOwn = startWithoutOwn;
 		}
 
 		public void run() {
 			try {
-				int index = mStartPosition/BigLineData.FILE_LIME;
-				// todo ‚ ‚Ü‚è•ª‚ðŒvŽZ‚·‚é‚±‚Æ
+				mBigLineData.moveLine(mStartWithoutOwn - BigLineData.FILE_LIME);
 				MyBufferDatam[] builder = new MyBufferDatam[BigLineData.FILE_LIME];
-				mLineManagerFromFile.moveLinePer100(index);
-				int j=0;
-				//				android.util.Log.v("aaa","=---- START");
-				for (int i = 0;!Thread.interrupted()&&i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();i++) {
-					CharSequence line = mLineManagerFromFile.readLine();
-					TODOCRLFString lineWP = (TODOCRLFString)line;
+
+				int j = 0;
+				for (int i = 0; !Thread.interrupted()
+						&& i < BigLineData.FILE_LIME && !mBigLineData.isEOF(); i++) {
+					CharSequence line = mBigLineData.readLine();
+					TODOCRLFString lineWP = (TODOCRLFString) line;
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
-					if(!lineWP.includeLF()) {
+					if (!lineWP.includeLF()) {
 						crlf = LineViewData.EXCLUDE_END_OF_LINE;
 					}
-					MyBufferDatam t = new MyBufferDatam(
-							//							"=----"+lineWP.getLinePosition()+"-----"+
-							line.toString(),
-							Color.WHITE,
-							crlf,
-							(int)lineWP.getLinePosition());
-					if(mCashedStartPosition>(int)lineWP.getLinePosition()){
-						builder[j++]=t;
-						//						android.util.Log.v("aaa","=----"+lineWP.getLinePosition());
+					MyBufferDatam t = new MyBufferDatam(line, Color.WHITE,
+							crlf, (int) lineWP.getLinePosition());
+					if (mStartWithoutOwn > (int) lineWP.getLinePosition()) {
+						builder[j++] = t;
 					}
 					Thread.yield();
 				}
-				//				android.util.Log.v("aaa","=---- END");
-				for(int i=j-1;0<=i;i--) {
-					mTextViewer.head(builder[i]);					
+				for (int i = j - 1; 0 <= i; i--) {
+					mTextViewer.head(builder[i]);
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
 	public static class ReadForwardFileTask implements Runnable {
-		private int mStartPosition = 0;
-		private BigLineData mLineManagerFromFile = null;
+		private int mStartWithoutOwn = 0;
+		private BigLineData mBigLineData = null;
 		private TextViewerBuffer mTextViewer = null;
 		private boolean mClear = false;
-		public ReadForwardFileTask(TextViewerBuffer textViewer, int startPosition) {
-			mLineManagerFromFile = textViewer.getBigLineData();
+
+		public ReadForwardFileTask(TextViewerBuffer textViewer,int startWithoutOwn) {
+			mBigLineData = textViewer.getBigLineData();
 			mTextViewer = textViewer;
-			mStartPosition = startPosition;
+			mStartWithoutOwn = startWithoutOwn;
 		}
-		public ReadForwardFileTask(TextViewerBuffer textViewer, int startPosition,boolean clear) {
-			mLineManagerFromFile = textViewer.getBigLineData();
+
+		public ReadForwardFileTask(TextViewerBuffer textViewer,int startPosition, boolean clear) {
+			mBigLineData = textViewer.getBigLineData();
 			mTextViewer = textViewer;
-			mStartPosition = startPosition;
+			mStartWithoutOwn = startPosition;
 			mClear = clear;
 		}
+
 		public void run() {
 			try {
-				if(mClear){
+				if (mClear) {
 					mTextViewer.clear();
 				}
-				int index = mStartPosition/BigLineData.FILE_LIME+1;
-				mLineManagerFromFile.moveLinePer100(index);
-				for (int i = 0;
-						!Thread.interrupted()&&i<BigLineData.FILE_LIME&&!mLineManagerFromFile.isEOF();
-						i++) {
+				mBigLineData.moveLine(mStartWithoutOwn);
+				for (int i = 0; !Thread.interrupted()
+						&& i < BigLineData.FILE_LIME
+						&& !mBigLineData.isEOF(); i++) {
 
-					CharSequence line = mLineManagerFromFile.readLine();
-					TODOCRLFString lineWP = (TODOCRLFString)line;
+					TODOCRLFString lineWP = (TODOCRLFString) mBigLineData.readLine();
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
-					if(!lineWP.includeLF()) {
+					if (!lineWP.includeLF()) {
 						crlf = LineViewData.EXCLUDE_END_OF_LINE;
-					}							
-					MyBufferDatam t = new MyBufferDatam(line.toString(),Color.WHITE,crlf,(int)((TODOCRLFString)line).getLinePosition());
-					if(lineWP.getLinePosition() >mStartPosition) {
+					}
+					MyBufferDatam t = new MyBufferDatam(lineWP, Color.WHITE,crlf,
+							(int) ((TODOCRLFString) lineWP).getLinePosition());
+					if (lineWP.getLinePosition() > mStartWithoutOwn) {
 						mTextViewer.add(t);
 					}
 					Thread.yield();
