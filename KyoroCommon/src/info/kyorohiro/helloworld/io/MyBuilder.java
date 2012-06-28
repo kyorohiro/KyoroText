@@ -22,6 +22,19 @@ public class MyBuilder {
 		mPointer = 0;
 	}
 
+	public void clearFirst(int num) {
+		if(num <0){
+			return;
+		}
+		for(int i=0;(i+num)<mBuffer.length;i++) {
+			mBuffer[i] = mBuffer[i+num]; 
+		}		
+		mPointer -= num;
+		if(mPointer < 0){
+			mPointer = 0;
+		}
+	}
+
 	public char[] getAllBufferedMoji(){
 		return mBuffer;
 	}
