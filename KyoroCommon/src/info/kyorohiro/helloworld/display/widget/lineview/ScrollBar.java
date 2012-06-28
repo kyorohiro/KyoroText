@@ -50,7 +50,6 @@ public class ScrollBar extends SimpleDisplayObject {
 	private void showScrollBar(SimpleGraphics graphics) {
 		// set scrollbar color
 		graphics.setStrokeWidth(3);
-//		graphics.setColor(0xAAFFFF00);
 		graphics.setColor(mColorWhenDefault);
 
 		int w = mTargetObject.getWidth();
@@ -85,9 +84,6 @@ public class ScrollBar extends SimpleDisplayObject {
 			int t = (barEndX-barStartX)/3 ; 
 			graphics.drawLine(t+barStartX, barStartY, t+barStartX, barEndY);
 			graphics.drawLine(-t+barEndX, barStartY,-t+barEndX, barEndY);
-
-			//graphics.drawLine(barStartX, barStartY, barEndX, barEndY);
-			//graphics.drawLine(barEndX, barStartY, barStartX, barEndY);
 		}
 	}
 }

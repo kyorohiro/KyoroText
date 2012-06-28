@@ -11,7 +11,7 @@ public class LineView extends SimpleDisplayObject {
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
 	private CyclingListInter<LineViewData> mInputtedText = null;
-	private int mPosition = 0;
+	private int mPositionY = 0;
 	private int mPosX = 0;
 	private int mTextSize = 16;
 	private int mShowingTextStartPosition = 0;
@@ -83,7 +83,7 @@ public class LineView extends SimpleDisplayObject {
 	}
 
 	public synchronized void setPositionY(int position) {
-		mPosition = position;
+		mPositionY = position;
 	}
 
 	public void setPositionX(int x) {
@@ -101,7 +101,7 @@ public class LineView extends SimpleDisplayObject {
 		return mTodoExtraY = extra;
 	}
 	public synchronized int getPositionY() {
-		return mPosition;
+		return mPositionY;
 	}
 
 	public int getPositionX() {
@@ -164,7 +164,7 @@ public class LineView extends SimpleDisplayObject {
 				graphics.drawText(""+mShowingTextStartPosition+":"+mShowingTextEndPosition, 30, s*4);
 				graphics.setTextSize(s);
 			}
-			mDrawingPosition.updateInfo(mPosition, getHeight(),
+			mDrawingPosition.updateInfo(mPositionY, getHeight(),
 					mTextSize, mScale, showingText);
 			start = mDrawingPosition.getStart();
 			end = mDrawingPosition.getEnd();
@@ -207,28 +207,27 @@ public class LineView extends SimpleDisplayObject {
 		}
 	}
 
-	private void updateStatus(SimpleGraphics graphics,
-			CyclingListInter<LineViewData> showingText) {
+	private void updateStatus(SimpleGraphics graphics, CyclingListInter<LineViewData> showingText) {
 		mNumOfLine = (int)(getHeight() / (mTextSize*1.2*mScale));//todo mScale
 		{
 			// todo refactaring
 			// current Position
-			if(!mIsTail||mPosition > 1) {
+			if(!mIsTail||mPositionY > 1) {
 				int a = resetAddPositionY();
 				if(a != 0){
 					mCash += showingText.getNumOfAdd();
-					mPosition = mCash+a;
+					mPositionY = mCash+a;
 				} else {
 					mCash = 0;
-					mPosition += showingText.getNumOfAdd();				
+					mPositionY += showingText.getNumOfAdd();				
 				}
 			}
 			showingText.clearNumOfAdd();
 		}
 		int blankSpace = mNumOfLine / 2;
-		if (mPosition < -(mNumOfLine - blankSpace)) {
+		if (mPositionY < -(mNumOfLine - blankSpace)) {
 			setPositionY(-(mNumOfLine - blankSpace) - 1);
-		} else if (mPosition > (showingText.getNumberOfStockedElement() - blankSpace)) {
+		} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
 			setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
 		}
 		graphics.setTextSize((int)(mTextSize*mScale));//todo mScale

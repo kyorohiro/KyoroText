@@ -15,7 +15,7 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleCon
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.MyTouchAndZoomForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
@@ -56,7 +56,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mScrollBar = new ScrollBar(mLineView);
 		addChild(mLineView);
 		addChild(new TouchAndMoveActionForLineView(mLineView));
-		addChild(new MyTouchAndZoomForLineView(mLineView));
+		addChild(new TouchAndZoomForLineView(mLineView));
 		addChild(mCircleController = new SimpleCircleController());
 		addChild(new LayoutManager());
 		addChild(mScrollBar);

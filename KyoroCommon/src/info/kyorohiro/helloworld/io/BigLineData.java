@@ -50,32 +50,12 @@ public class BigLineData {
 				mReader, new  MyBreaktext());
 	}
 
-	public long getLastLinePosition() {
-		return mLastLinePosition;
-	}
-
-	public int getStackedLinePer100() {
-		return mPositionPer100Line.size();
-	}
-
 	public void moveLine(int lineNumber) throws IOException {
 		int index = lineNumber/FILE_LIME;
 		int number = lineNumber%FILE_LIME;
 		moveLinePer100(index);
 		for(int i=0;i<number;i++){
 			readLine();
-		}
-	}
-
-	public boolean moveLinePer100(int index) throws IOException {
-		if (index < mPositionPer100Line.size()) {
-			long filePointer = mPositionPer100Line.get(index);
-			// mReader.seek(0);
-			mReader.seek(filePointer);
-			mLinePosition = index * BigLineData.FILE_LIME;
-			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -92,9 +72,6 @@ public class BigLineData {
 		return false;
 	}
 
-	public long getDataSize() {
-		return mPath.length();
-	}
 
 	public CharSequence readLine() throws IOException {
 		TODOCRLFString tmp = new TODOCRLFString(new char[]{}, 0,TODOCRLFString.MODE_INCLUDE_LF);
@@ -132,7 +109,6 @@ public class BigLineData {
 		}		
 	}
 
-	//
 	// following code move to android.adapter
 	public class MyBreaktext implements BreakText {
 		@Override
@@ -143,4 +119,30 @@ public class BigLineData {
 		}
 	}
 
+	private boolean moveLinePer100(int index) throws IOException {
+		if (index < mPositionPer100Line.size()) {
+			long filePointer = mPositionPer100Line.get(index);
+			// mReader.seek(0);
+			mReader.seek(filePointer);
+			mLinePosition = index * BigLineData.FILE_LIME;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Deprecated
+	private long getDataSize() {
+		return mPath.length();
+	}
+
+	@Deprecated
+	private long getLastLinePosition() {
+		return mLastLinePosition;
+	}
+
+	@Deprecated
+	private int getStackedLinePer100() {
+		return mPositionPer100Line.size();
+	}
 }
