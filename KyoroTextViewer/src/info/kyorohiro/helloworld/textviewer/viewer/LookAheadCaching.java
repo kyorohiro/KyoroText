@@ -38,16 +38,17 @@ public class LookAheadCaching {
 		int mx = buffer.getMaxOfStackedElement();
 		int chunkSize = mx / 10;
 
-		if ((sp - chunkSize * 2) <= cp && cp <= (ep + chunkSize * 2)) {
-			//
+		if (bufferIsKeep(buffer)) {
 			boolean forward = false;
 			boolean back = false;
+
 			if (ep < (cp + chunkSize * 3)) {
 				forward = true;
 			}
 			if (sp > 0 && sp > (cp - chunkSize * 3)) {
 				back = true;
 			}
+
 			if (forward == true && back == true) {
 				if ((ep - cp) < cp - sp) {
 					startReadForward(ep);
@@ -64,6 +65,19 @@ public class LookAheadCaching {
 		}
 	}
 
+	private boolean bufferIsKeep(TextViewerBuffer buffer) {
+		int sp = buffer.getCurrentBufferStartLinePosition();
+		int ep = buffer.getCurrentBufferEndLinePosition();
+		int cp = buffer.getCurrentPosition();
+		int mx = buffer.getMaxOfStackedElement();
+		int chunkSize = mx / 10;
+		if ((sp - chunkSize * 2) <= cp && cp <= (ep + chunkSize * 3)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public synchronized void stopTask() {
 		if (mTaskRunnter != null && mTaskRunnter.isAlive()) {
 			mTaskRunnter.interrupt();
@@ -71,14 +85,14 @@ public class LookAheadCaching {
 		}
 	}
 
-	public synchronized void startTask(Builder builder) {
+	private synchronized void startTask(Builder builder) {
 		if (mTaskRunnter == null || !mTaskRunnter.isAlive()) {
 			mTaskRunnter = new Thread(builder.create());
 			mTaskRunnter.start();
 		}
 	}
 
-	public void startReadForwardAndClear(int position) {
+	private void startReadForwardAndClear(int position) {
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = true;
 		startTask(mForwardBuilder);
@@ -90,7 +104,7 @@ public class LookAheadCaching {
 		startTask(mForwardBuilder);
 	}
 
-	public void startReadBack(int position) {
+	private void startReadBack(int position) {
 		TextViewerBuffer buffer = mBuffer.get();
 		mBackBuilder.position = position;
 		startTask(mBackBuilder);
@@ -143,16 +157,14 @@ public class LookAheadCaching {
 				MyBufferDatam[] builder = new MyBufferDatam[BigLineData.FILE_LIME];
 
 				int j = 0;
-				for (int i = 0; !Thread.interrupted()
-						&& i < BigLineData.FILE_LIME && !mBigLineData.isEOF(); i++) {
+				for (int i = 0; !Thread.interrupted()&& i < BigLineData.FILE_LIME && !mBigLineData.isEOF(); i++) {
 					CharSequence line = mBigLineData.readLine();
 					TODOCRLFString lineWP = (TODOCRLFString) line;
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if (!lineWP.includeLF()) {
 						crlf = LineViewData.EXCLUDE_END_OF_LINE;
 					}
-					MyBufferDatam t = new MyBufferDatam(line, Color.WHITE,
-							crlf, (int) lineWP.getLinePosition());
+					MyBufferDatam t = new MyBufferDatam(line, Color.WHITE, crlf, (int) lineWP.getLinePosition());
 					if (mStartWithoutOwn > (int) lineWP.getLinePosition()) {
 						builder[j++] = t;
 					}
@@ -192,10 +204,7 @@ public class LookAheadCaching {
 					mTextViewer.clear();
 				}
 				mBigLineData.moveLine(mStartWithoutOwn);
-				for (int i = 0; !Thread.interrupted()
-						&& i < BigLineData.FILE_LIME
-						&& !mBigLineData.isEOF(); i++) {
-
+				for (int i = 0; !Thread.interrupted() && i < BigLineData.FILE_LIME && !mBigLineData.isEOF(); i++) {
 					TODOCRLFString lineWP = (TODOCRLFString) mBigLineData.readLine();
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if (!lineWP.includeLF()) {
