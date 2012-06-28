@@ -14,37 +14,20 @@ import android.graphics.Color;
 
 public class TextViewerBuffer
 
-// todo following code:
-// mod from extends to implements
-// example)
-// >>implements CyclingList<Flow..?>
-// >> private CyclingList<FlowingLineDatam> mCash = ...;
-//
 extends LockableCyclingList {
-//		extends CyclingList<FlowingLineDatam>  {
-
 	private BigLineData mLineManagerFromFile = null;
 	private int mCurrentBufferStartLinePosition = 0;
 	private int mCurrentBufferEndLinePosition = 0;
 	private int mCurrentPosition = 0;
-	private LineViewData mReturnUnexpectedValue = new LineViewData(
-			"..", Color.RED, LineViewData.INCLUDE_END_OF_LINE);
-	private LineViewData mReturnLoadingValue = new LineViewData(
-			"loading..", Color.parseColor("#33FFFF00"),
-			LineViewData.INCLUDE_END_OF_LINE);
+	private LineViewData mErrorLineMessage = new LineViewData("..", Color.RED, LineViewData.INCLUDE_END_OF_LINE);
+	private LineViewData mLoadingLineMessage = new LineViewData("loading..", Color.parseColor("#33FFFF00"),LineViewData.INCLUDE_END_OF_LINE);
 	private LookAheadCaching mCashing = null;
 	private int mNumberOfStockedElement = 0;
 
-	public TextViewerBuffer(int listSize, int textSize, int screenWidth,
-			File path, String charset) {
+	public TextViewerBuffer(int listSize, int textSize, int screenWidth, File path, String charset) throws FileNotFoundException {
 		super(listSize);
-		try {
-			mLineManagerFromFile = new BigLineData(path, charset, textSize,
-					screenWidth);
-			mCashing = new LookAheadCaching(this);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		mLineManagerFromFile = new BigLineData(path, charset, textSize, screenWidth);
+		mCashing = new LookAheadCaching(this);
 	}
 
 	public BigLineData getBigLineData() {
@@ -118,36 +101,24 @@ extends LockableCyclingList {
 		}
 	}
 
-	// todo : this method is so big
 	public synchronized LineViewData get(int i) {
-		// 読み込むホジションを調べる。
 		if (i < 0) {
-			return mReturnUnexpectedValue;
+			return mErrorLineMessage;
 		}
-		mCurrentBufferStartLinePosition = 0;
-		mCurrentBufferEndLinePosition = 0;
-		mCurrentPosition = i;
 		try {
-			int bufferSize = super.getNumberOfStockedElement();
-
-			doSetCurrentBufferedPosition();
-			// must to call following code after
-			// mCurrentBufferStartLinePosition.
-			int bufferedPoaition = i - mCurrentBufferStartLinePosition;
-
-			if (bufferedPoaition < 0 || bufferSize < bufferedPoaition) {
-				return mReturnLoadingValue;
-			} else {
-				LineViewData bufferedDataForReturn = super
-						.get(bufferedPoaition);
-				if (bufferedDataForReturn == null) {
-					return mReturnUnexpectedValue;
-				}
-				return bufferedDataForReturn;
+			resetBufferedStartEndPosition(i);
+			if(!appointedLineIsLoaded(i)) {
+				return mLoadingLineMessage;
 			}
+
+			LineViewData bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
+			if (bufferedDataForReturn == null) {
+				return mErrorLineMessage;
+			}
+			return bufferedDataForReturn;
 		} catch (Throwable t) {
 			t.printStackTrace();
-			return mReturnUnexpectedValue;
+			return mErrorLineMessage;
 		} finally {
 			if (mCashing != null) {
 				mCashing.updateBufferedStatus();
@@ -155,17 +126,31 @@ extends LockableCyclingList {
 		}
 	}
 
-	private void doSetCurrentBufferedPosition() {
+	private int lineNumberToBufferedNumber(int lineNumber) {
+		int ret = lineNumber - mCurrentBufferStartLinePosition;
+		return ret;
+	}
+
+	private boolean appointedLineIsLoaded(int lineNumber) {
+		int bufferSize = super.getNumberOfStockedElement();
+		int bufferedPoaition = lineNumberToBufferedNumber(lineNumber);
+		if (bufferedPoaition < 0 || bufferSize < bufferedPoaition) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	private void resetBufferedStartEndPosition(int lineNumber) {
+		mCurrentPosition = lineNumber;
 		int bufferSize = super.getNumberOfStockedElement();
 		if (0 < bufferSize) {
 			CharSequence startLine = super.get(0);
 			CharSequence endLine = super.get(bufferSize - 1);
 			MyBufferDatam startLineWithPosition = (MyBufferDatam) startLine;
 			MyBufferDatam endLineWithPosition = (MyBufferDatam) endLine;
-			mCurrentBufferStartLinePosition = (int) startLineWithPosition
-					.getLinePosition();
-			mCurrentBufferEndLinePosition = (int) endLineWithPosition
-					.getLinePosition();
+			mCurrentBufferStartLinePosition = (int) startLineWithPosition.getLinePosition();
+			mCurrentBufferEndLinePosition = (int) endLineWithPosition.getLinePosition();
 		} else {
 			mCurrentBufferStartLinePosition = 0;
 			mCurrentBufferEndLinePosition = 0;

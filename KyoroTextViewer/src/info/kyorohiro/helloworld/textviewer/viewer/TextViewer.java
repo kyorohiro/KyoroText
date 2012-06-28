@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import android.content.res.Resources;
@@ -126,7 +127,13 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 		mCurrentPath = file.getAbsolutePath();
 		KyoroSetting.setCurrentFile(file.getAbsolutePath());
-		mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mCurrentFontSize, mBufferWidth, file, mCurrentCharset);
+		try {
+			mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mCurrentFontSize, mBufferWidth, file, mCurrentCharset);
+		} catch(FileNotFoundException e) {
+			// don't pass along this code
+			KyoroApplication.showMessage("file can not read null filen --007--");
+			return;
+		}
 		CyclingListInter<LineViewData> prevBuffer = mLineView.getCyclingList();
 		mLineView.setCyclingList(mBuffer);
 		prevBuffer.clear();
@@ -194,7 +201,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	private static class ColorFilteredBuffer extends TextViewerBuffer {
 		public ColorFilteredBuffer(int listSize, int textSize, int screenWidth,
-				File path, String charset) {
+				File path, String charset) throws FileNotFoundException {
 			super(listSize, textSize, screenWidth, path, charset);
 		}
 

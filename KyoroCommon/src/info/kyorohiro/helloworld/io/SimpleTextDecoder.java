@@ -71,12 +71,6 @@ public class SimpleTextDecoder {
 				mBuffer.append(c);
 				int len = mBreakText.breakText(mBuffer);
 				if (len < mBuffer.getCurrentBufferedMojiSize()) {
-					// todo add test case following pattern.
-					// add breakText return 2
-					// but b.length return 1
-					// >> before modify coding if(len != tmp.length())
-					//
-
 					// ‚Ğ‚Æ‚Â‘O‚Å‰üs
 					mBuffer.removeLast();
 					mReader.seek(todoPrevPosition);

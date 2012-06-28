@@ -40,15 +40,6 @@ public class BigLineData {
 		mPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 
-	public class MyBreaktext implements BreakText {
-		@Override
-		public int breakText(MyBuilder b) {
-			int len = mPaint.breakText(b.getAllBufferedMoji(),
-					0,b.getCurrentBufferedMojiSize(), mWidth, null);
-			return len;
-		}
-	}
-
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
@@ -110,8 +101,6 @@ public class BigLineData {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// 0‚©‚çŽn‚Ü‚é!! mLinePosition-1
-//		return new LineWithPosition(tmp, mCurrentPosition, lineNumber, ((TODOCRLFString)tmp).mMode);
 		tmp.setLinePosition(lineNumber);
 		return tmp;
 	}
@@ -132,6 +121,17 @@ public class BigLineData {
 				mPositionPer100Line.add(mCurrentPosition);
 			}
 		}		
+	}
+
+	//
+	// following code move to android.adapter
+	public class MyBreaktext implements BreakText {
+		@Override
+		public int breakText(MyBuilder b) {
+			int len = mPaint.breakText(b.getAllBufferedMoji(),
+					0,b.getCurrentBufferedMojiSize(), mWidth, null);
+			return len;
+		}
 	}
 
 }
