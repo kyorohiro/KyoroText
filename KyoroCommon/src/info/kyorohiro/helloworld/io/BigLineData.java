@@ -43,7 +43,7 @@ public class BigLineData {
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
-		mReader = new VirtualMemory(mPath, 1024);
+		mReader = new VirtualMemory(mPath, 1024*4);
 		mPositionPer100Line.add(0l);
 		mDecoder = new SimpleTextDecoder(
 				Charset.forName(charset), 
@@ -56,6 +56,15 @@ public class BigLineData {
 
 	public int getStackedLinePer100() {
 		return mPositionPer100Line.size();
+	}
+
+	public void moveLine(int lineNumber) throws IOException {
+		int index = lineNumber/FILE_LIME;
+		int number = lineNumber%FILE_LIME;
+		moveLinePer100(index);
+		for(int i=0;i<number;i++){
+			readLine();
+		}
 	}
 
 	public boolean moveLinePer100(int index) throws IOException {

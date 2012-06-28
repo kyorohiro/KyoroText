@@ -38,8 +38,8 @@ public class VirtualMemory {
 
 	public VirtualMemory(File base, int cashSize) throws FileNotFoundException {
 		mFile = new RandomAccessFile(base, "r");
-		mBuffer = new CyclingByteArray(mBufferLength);
 		mBufferLength = cashSize;
+		mBuffer = new CyclingByteArray(mBufferLength);
 	}
 
 	public int read() throws IOException {

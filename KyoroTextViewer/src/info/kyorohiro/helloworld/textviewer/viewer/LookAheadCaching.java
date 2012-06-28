@@ -21,10 +21,9 @@ public class LookAheadCaching {
 	}
 
 	public TextViewerBuffer getTextViewerBuffer() {
-		if(mBuffer!=null){
+		if (mBuffer!=null) {
 			return mBuffer.get();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -223,12 +222,7 @@ public class LookAheadCaching {
 					if(!lineWP.includeLF()) {
 						crlf = LineViewData.EXCLUDE_END_OF_LINE;
 					}							
-					MyBufferDatam t = new MyBufferDatam(
-							//							"+----"+lineWP.getLinePosition()+"-----"+
-							line.toString(),
-							Color.WHITE,
-							crlf,
-							(int)((TODOCRLFString)line).getLinePosition());
+					MyBufferDatam t = new MyBufferDatam(line.toString(),Color.WHITE,crlf,(int)((TODOCRLFString)line).getLinePosition());
 					if(lineWP.getLinePosition() >mStartPosition) {
 						mTextViewer.add(t);
 					}
