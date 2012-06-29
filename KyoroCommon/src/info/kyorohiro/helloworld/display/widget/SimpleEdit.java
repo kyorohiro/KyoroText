@@ -1,6 +1,9 @@
 package info.kyorohiro.helloworld.display.widget;
 
+import java.util.LinkedList;
+
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -11,6 +14,9 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.MyInputConnection;
+import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.io.MyBuilder;
+import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
 
 //
 //
@@ -18,7 +24,16 @@ import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.MyInputConne
 public class SimpleEdit extends SimpleDisplayObjectContainer {
 
 	private TextView mViewer = new TextView();
-
+	private Paint mPaint = new Paint();
+	public class MyBreaktext implements BreakText {
+		@Override
+		public int breakText(MyBuilder b) {
+			int len = mPaint.breakText(b.getAllBufferedMoji(),
+					0,b.getCurrentBufferedMojiSize(), getWidth()*8/10, null);
+			return len;
+		}
+	}
+	private SampleText mTextBuffer = new SampleText(new MyBreaktext());
 	public SimpleEdit() {
 		addChild(mViewer);
 	}
@@ -38,6 +53,7 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 			if(c == null) {
 				return;
 			}
+			mPaint.setTextSize(12);
 			CharSequence commit = c.getCommitText();
 			CharSequence composing = c.getComposingText();
 			graphics.setColor(Color.BLACK);
@@ -71,16 +87,22 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 //					android.util.Log.v("kiyo","["+i+"]"+s.getSpanFlags(s.charAt(i)));
 //				}
 			}
+			try {
+			mTextBuffer.pushCommit(c.popFirst());
+			mTextBuffer.paint(graphics, (int)mPaint.getTextSize());
+			} catch(Throwable e){
+				e.printStackTrace();
+			}
 		}
 
 		private int[] pushed = new int[100];
 		private int len = 0;
 		@Override
 		public boolean onKeyDown(int keycode) {
-			//if(keycode == KeyEvent.KEYCODE_DEL) {
+			if(keycode == KeyEvent.KEYCODE_DEL) {
 				pushed[len] = keycode;
 				len++;
-			//}
+			}
 			return super.onKeyDown(keycode);
 		}
 		public void drawBG(SimpleGraphics graphics) {
@@ -88,9 +110,9 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 			graphics.setStyle(SimpleGraphics.STYLE_FILL);
 			graphics.startPath();
 			graphics.moveTo(0, 0);
-			graphics.lineTo(0, getWidth());
-			graphics.lineTo(getHeight(), getWidth());
-			graphics.lineTo(getHeight(), 0);
+			graphics.lineTo(0, getHeight());
+			graphics.lineTo(getWidth(), getHeight());
+			graphics.lineTo(getWidth(), 0);
 			graphics.lineTo(0, 0);
 			graphics.endPath();
 		}
@@ -104,6 +126,84 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 				stage.showInputConnection();
 			}
 			return super.onTouchTest(x, y, action);
+		}
+	}
+	
+	public static class SampleText implements W {
+		private int cursorRow = 0;//line
+		private int cursorCol = 0;//point
+		private LinkedList<CharSequence> lines = new LinkedList<CharSequence>();
+		private BreakText mBreakText = null;
+		private MyBuilder builder = new MyBuilder();
+
+		public void paint(SimpleGraphics graphics, int textSize) {
+			int len = lines.size();
+			graphics.setTextSize(textSize);
+			android.util.Log.v("kiyo",""+len);
+			for(int i=0;i<len;i++) {
+				graphics.drawText(lines.get(i),20,(int)(20+textSize*1.2*i));
+				android.util.Log.v("kiyo","["+i+"]"+lines.get(i));
+			}
+		}
+		//
+		//todo
+		
+		public SampleText(BreakText breaktext) {
+			mBreakText = breaktext;
+		}
+
+		@Override
+		public void pushCommit(CharSequence text) {
+			builder.clear();
+			pushCommit(text, cursorRow, cursorCol);
+		}
+
+		public void pushCommit(CharSequence text, int row, int col) {
+			CharSequence current = null;
+			if(row <lines.size()) {
+				current = lines.get(row);
+			} else {
+				current = "";
+			}
+			if(current == null) {
+				current = "";
+			}
+
+			int p = 0;
+		//	builder.clear();
+			for(int i=0;i<col;i++) {
+				builder.append(current.charAt(i));
+				p++;
+			}
+			for(int i=0;i<text.length();i++){
+				builder.append(text.charAt(i));
+			}
+			for(int i=col;i<current.length();i++){
+				builder.append(current.charAt(i));
+			}
+			// mod
+			int breakPoint = mBreakText.breakText(builder);
+			android.util.Log.v("kiyo","b="+breakPoint+","+builder.getCurrentBufferedMojiSize());
+			if(row <lines.size()) {
+				lines.set(row, new String(builder.getAllBufferedMoji(),0,breakPoint));
+			} else {
+				lines.add(new String(builder.getAllBufferedMoji(),0,breakPoint));				
+			}
+			if(breakPoint < builder.getCurrentBufferedMojiSize()) {
+				android.util.Log.v("kiyo","pushCommit"+(row+1)+","+builder.getCurrentBufferedMojiSize());
+				// Ä“xŒvŽZ‚·‚éB
+				builder.clearFirst(breakPoint);
+				pushCommit("",row+1,0);
+			}
+		}
+
+		@Override
+		public void setComposing(CharSequence text) {
+		}
+		
+		public void setCursor(int row, int col) {
+			cursorRow = row;
+			cursorCol = col;
 		}
 	}
 }

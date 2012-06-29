@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.display.simple;
 
 
+import java.util.LinkedList;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -84,6 +86,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	
 	private static CharSequence mComposingText = null;
 	private static CharSequence mCommitText = null;
+	private static LinkedList<CharSequence> mCommitTextList = new LinkedList<CharSequence>();
 	private static int mStart = 0;
 	private static int mEnd = 0;
 	public class MyInputConnection extends BaseInputConnection {
@@ -117,6 +120,14 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			return mCommitText;
 		}
 		
+		public CharSequence popFirst() {
+			if(0<mCommitTextList.size()){
+			return mCommitTextList.removeFirst();
+			}
+			else {
+				return "";
+			}
+		}
 		public MyInputConnection(View targetView, boolean fullEditor) {
 			super(targetView, fullEditor);
 			log("new MyInputConnection");
@@ -190,6 +201,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 //			log("--3--="+text.getPosition());
 			try {
 				mCommitText = text.getText();
+				mCommitTextList.addLast(mCommitText);
 				return super.commitCompletion(text);
 			} finally {
 				mComposingText = "";
@@ -204,7 +216,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("--1--="+Selection.getSelectionStart(text));
 			log("--2--="+Selection.getSelectionEnd(text));
 			mCommitText = text;
-
+			mCommitTextList.addLast(mCommitText);
 			try{
 				return super.commitText(text, newCursorPosition);
 			} finally {

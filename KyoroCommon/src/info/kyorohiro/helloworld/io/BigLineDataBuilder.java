@@ -34,36 +34,35 @@ public class BigLineDataBuilder {
 		private int cursorCol = 0;//point
 		private LinkedList<CharSequence> lines = new LinkedList<CharSequence>();
 		private BreakText mBreakText = null;
+		private MyBuilder builder = new MyBuilder();
 
 		public SampleText(BreakText breaktext) {
 			mBreakText = breaktext;
 		}
 
-		MyBuilder builder = new MyBuilder();
 		@Override
 		public void pushCommit(CharSequence text) {
 			builder.clear();
+			pushCommit(text, cursorRow, cursorCol);
 		}
 
 		public void pushCommit(CharSequence text, int row, int col) {
 			CharSequence current = lines.get(row);
 
-			// char
-			char[] buffer = new char[text.length()+current.length()];
 			int p = 0;
+			builder.clear();
 			for(int i=0;i<col;i++) {
-				buffer[p] = current.charAt(i);
+				builder.append(current.charAt(i));
 				p++;
 			}
 			for(int i=0;i<text.length();i++){
-				buffer[p] = text.charAt(i);
+				builder.append(text.charAt(i));
 			}
 			for(int i=col;i<current.length();i++){
-				buffer[i] = current.charAt(i);
+				builder.append(current.charAt(i));
 			}
 			// mod
 			int breakPoint = mBreakText.breakText(builder);
-
 			// Ä“xŒvŽZ‚·‚éB
 			builder.clearFirst(breakPoint);
 			pushCommit(null,row+1,0);
