@@ -21,7 +21,7 @@ public class BigLineDataBuilder {
 	}
 
 	public static interface W {
-		public void pushCommit(CharSequence text);
+		public void pushCommit(CharSequence text, int cursor);
 		public void setComposing(CharSequence text);
 	}
 
@@ -29,52 +29,5 @@ public class BigLineDataBuilder {
 		public void add(C text,int num);
 	}
 
-	public static class SampleText implements W {
-		private int cursorRow = 0;//line
-		private int cursorCol = 0;//point
-		private LinkedList<CharSequence> lines = new LinkedList<CharSequence>();
-		private BreakText mBreakText = null;
-		private MyBuilder builder = new MyBuilder();
 
-		public SampleText(BreakText breaktext) {
-			mBreakText = breaktext;
-		}
-
-		@Override
-		public void pushCommit(CharSequence text) {
-			builder.clear();
-			pushCommit(text, cursorRow, cursorCol);
-		}
-
-		public void pushCommit(CharSequence text, int row, int col) {
-			CharSequence current = lines.get(row);
-
-			int p = 0;
-			builder.clear();
-			for(int i=0;i<col;i++) {
-				builder.append(current.charAt(i));
-				p++;
-			}
-			for(int i=0;i<text.length();i++){
-				builder.append(text.charAt(i));
-			}
-			for(int i=col;i<current.length();i++){
-				builder.append(current.charAt(i));
-			}
-			// mod
-			int breakPoint = mBreakText.breakText(builder);
-			// Ä“xŒvŽZ‚·‚éB
-			builder.clearFirst(breakPoint);
-			pushCommit(null,row+1,0);
-		}
-
-		@Override
-		public void setComposing(CharSequence text) {
-		}
-		
-		public void setCursor(int row, int col) {
-			cursorRow = row;
-			cursorCol = col;
-		}
-	}
 }

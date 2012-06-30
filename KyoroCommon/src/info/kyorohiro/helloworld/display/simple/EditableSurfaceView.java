@@ -25,18 +25,13 @@ import android.view.inputmethod.InputMethodManager;
 
 public class EditableSurfaceView extends MultiTouchSurfaceView {
 
-	
-//	private Editable.Factory mEditableFactory = Editable.Factory.getInstance();
-//  private Spannable.Factory mSpannableFactory = Spannable.Factory.getInstance();
 	private InputMethodManager mManager = null;
-
 	private MyInputConnection mCurrentInputConnection = null;
 	public EditableSurfaceView(Context context) {
 		super(context);
 		mManager = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		setFocusable(true);
 		setFocusableInTouchMode(true);
-		//setBackgroundColor(Color.WHITE);
 	}
 
 	@Override
@@ -46,7 +41,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	
 	@Override
 	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-//         mManager.showSoftInput(this, 0);
 		outAttrs.inputType = EditorInfo.TYPE_CLASS_TEXT;
 		outAttrs.imeOptions = EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI;
 		if(mCurrentInputConnection == null) {
@@ -66,10 +60,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		boolean ret  = super.onTouchEvent(event);
-//		mManager.showSoftInput(this,
-//				InputMethodManager.SHOW_IMPLICIT);
-//				InputMethodManager.RESULT_SHOWN);
-//		
 		return ret;
 	}
 	
@@ -86,7 +76,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	
 	private static CharSequence mComposingText = null;
 	private static CharSequence mCommitText = null;
-	private static LinkedList<CharSequence> mCommitTextList = new LinkedList<CharSequence>();
+	private static LinkedList<CommitText> mCommitTextList = new LinkedList<CommitText>();
 	private static int mStart = 0;
 	private static int mEnd = 0;
 	public class MyInputConnection extends BaseInputConnection {
@@ -99,16 +89,12 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean beginBatchEdit() {
 			log("beginBatchEditn");
-			log("--1--="+Selection.getSelectionStart(getEditable()));
-			log("--2--="+Selection.getSelectionEnd(getEditable()));
 			return super.beginBatchEdit();
 		}
 
 		@Override
 		public boolean endBatchEdit() {
 			log("endBatchEdit");
-			log("--1--="+Selection.getSelectionStart(getEditable()));
-			log("--2--="+Selection.getSelectionEnd(getEditable()));
 			return super.endBatchEdit();
 		}
 
@@ -120,12 +106,12 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			return mCommitText;
 		}
 		
-		public CharSequence popFirst() {
+		public CommitText popFirst() {
 			if(0<mCommitTextList.size()){
 			return mCommitTextList.removeFirst();
 			}
 			else {
-				return "";
+				return null;
 			}
 		}
 		public MyInputConnection(View targetView, boolean fullEditor) {
@@ -148,39 +134,17 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		private SpannableStringBuilder mBuilder = null;
 		@Override
 		public Editable getEditable() {
-			//log("getEditable");
-			//Editable e = null; 
-			//return super.getEditable();
+			log("getEditable");
 			if(mBuilder == null){
 				mBuilder = new SpannableStringBuilder();
-				mBuilder.setFilters(new InputFilter[]{new A()});
 			}
 			return mBuilder;
-			//return mEditableFactory.getInstance().newEditable("");
 		}
 
 		@Override
 		public boolean setComposingText(CharSequence text, int newCursorPosition) {
 			log("setComposingText="+text+","+newCursorPosition);
-			log("--1--="+Selection.getSelectionStart(text));
-			log("--2--="+Selection.getSelectionEnd(text));
-			log("--3--="+Selection.getSelectionStart(getEditable()));
-			log("--3--="+Selection.getSelectionEnd(getEditable()));
-
 			mComposingText = text;
-		
-			if(3<=text.length()){
-				SpannableString s = (SpannableString)text;
-				Object[] a = s.getSpans(0, s.length(), Object.class);
-				for(Object b:a) {
-					log("0="+b.toString());							
-					log("1="+s.getSpanStart(b));							
-					log("2="+s.getSpanEnd(b));	
-				}
-//				log(""+s.getSpanFlags(s.charAt(2)));							
-//				graphics.drawText(""+s.getSpanStart(c.getEditable().), 120, 160);							
-			}
-
 			return super.setComposingText(text, newCursorPosition);
 		}
 
@@ -196,12 +160,9 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean commitCompletion(CompletionInfo text) {
 			log("commitCompletion="+text);
-//			log("--1--="+Selection.getSelectionStart(text.getText()));
-//			log("--2--="+Selection.getSelectionEnd(text.getText()));
-//			log("--3--="+text.getPosition());
 			try {
 				mCommitText = text.getText();
-				mCommitTextList.addLast(mCommitText);
+				mCommitTextList.addLast(new CommitText(text.getText(), text.getPosition()));
 				return super.commitCompletion(text);
 			} finally {
 				mComposingText = "";
@@ -216,7 +177,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("--1--="+Selection.getSelectionStart(text));
 			log("--2--="+Selection.getSelectionEnd(text));
 			mCommitText = text;
-			mCommitTextList.addLast(mCommitText);
+			mCommitTextList.addLast(new CommitText(text, newCursorPosition));
 			try{
 				return super.commitText(text, newCursorPosition);
 			} finally {
@@ -277,19 +238,21 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		
 		
 	}
+	public static class CommitText {
+		private CharSequence mText = null;
+		private int mNewCursorPosition = 0;
+		public CommitText(CharSequence text, int newCursorPosition) {
+			mText = text;
+			mNewCursorPosition = newCursorPosition;
+		}
+		public CharSequence getText() {
+			return mText;
+		}
+		public int getNewCursorPosition() {
+			return mNewCursorPosition;
+		}
+	}
 	public static void log(String log) {
 		//android.util.Log.v("kiyo", ""+log);
-	}
-
-	public class A implements InputFilter {
-
-		@Override
-		public CharSequence filter(CharSequence arg0, int arg1, int arg2,
-				Spanned arg3, int arg4, int arg5) {
-			log("filter="+arg0+","+arg1+","+arg2);
-			log("filter="+arg3+","+arg4+","+arg5);
-			return null;
-		}
-		
 	}
 }

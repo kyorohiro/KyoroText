@@ -9,6 +9,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.view.KeyEvent;
+import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.CommitText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -28,8 +29,8 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 	public class MyBreaktext implements BreakText {
 		@Override
 		public int breakText(MyBuilder b) {
-			int len = mPaint.breakText(b.getAllBufferedMoji(),
-					0,b.getCurrentBufferedMojiSize(), getWidth()*8/10, null);
+			int len = mPaint.breakText(b.getAllBufferedMoji(), 0, 
+					b.getCurrentBufferedMojiSize(), getWidth()*8/10, null);
 			return len;
 		}
 	}
@@ -54,7 +55,6 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 				return;
 			}
 			mPaint.setTextSize(12);
-			CharSequence commit = c.getCommitText();
 			CharSequence composing = c.getComposingText();
 			graphics.setColor(Color.BLACK);
 			graphics.drawText(""+composing, 40, 40);
@@ -66,30 +66,12 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 			
 			graphics.drawText("d"+((SpannableStringBuilder)c.getEditable()).toString(),40,80);
 			len =0;
-			if(composing instanceof SpannableString) {
-				graphics.drawText("SpannableString", 40, 100);							
-//				((SpannableString)composing).;
-			}
-			if(composing instanceof SpannableStringBuilder) {
-				graphics.drawText("SpannableStringBuilder", 40, 120);							
-			}
-			if(composing instanceof Spannable) {
-				graphics.drawText("Spannable", 40, 140);
-				Spannable s = ((Spannable)composing);
-				//s.setSpan(s, 0, 1, Spannable.SPAN_COMPOSING);
-				if(3<=s.length()){
-					graphics.drawText(""+s.getSpanFlags(s.charAt(0)), 40, 160);							
-					graphics.drawText(""+s.getSpanFlags(s.charAt(1)), 80, 160);							
-					graphics.drawText(""+s.getSpanFlags(s.charAt(2)), 120, 160);							
-//					graphics.drawText(""+s.getSpanStart(c.getEditable().), 120, 160);							
-				}
-//				for(int i=0;i<s.length();i++){
-//					android.util.Log.v("kiyo","["+i+"]"+s.getSpanFlags(s.charAt(i)));
-//				}
-			}
 			try {
-			mTextBuffer.pushCommit(c.popFirst());
-			mTextBuffer.paint(graphics, (int)mPaint.getTextSize());
+				CommitText text = c.popFirst();
+				if(text != null) {
+					mTextBuffer.pushCommit(text.getText(),text.getNewCursorPosition());
+				}
+				mTextBuffer.paint(graphics, (int)mPaint.getTextSize());
 			} catch(Throwable e){
 				e.printStackTrace();
 			}
@@ -153,11 +135,29 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 		}
 
 		@Override
-		public void pushCommit(CharSequence text) {
+		public void pushCommit(CharSequence text, int cursor) {
 			builder.clear();
 			pushCommit(text, cursorRow, cursorCol);
+			if(cursor > 0) {
+				moveCursor(text.length()+(cursor-1));
+			}
 		}
 
+		private void moveCursor(int move) {
+			CharSequence c = lines.get(cursorRow);
+			int m = cursorCol+move;
+			if(m<c.length()) {
+				cursorCol = m;
+			} else {
+				if( (cursorRow+1)<lines.size()) {
+					cursorCol = 0;
+					cursorRow += 1;
+					moveCursor(m-c.length());
+				} else {
+					cursorRow = c.length();
+				}
+			}
+		}
 		public void pushCommit(CharSequence text, int row, int col) {
 			CharSequence current = null;
 			if(row <lines.size()) {
@@ -170,7 +170,6 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 			}
 
 			int p = 0;
-		//	builder.clear();
 			for(int i=0;i<col;i++) {
 				builder.append(current.charAt(i));
 				p++;
@@ -181,17 +180,13 @@ public class SimpleEdit extends SimpleDisplayObjectContainer {
 			for(int i=col;i<current.length();i++){
 				builder.append(current.charAt(i));
 			}
-			// mod
 			int breakPoint = mBreakText.breakText(builder);
-			android.util.Log.v("kiyo","b="+breakPoint+","+builder.getCurrentBufferedMojiSize());
 			if(row <lines.size()) {
 				lines.set(row, new String(builder.getAllBufferedMoji(),0,breakPoint));
 			} else {
 				lines.add(new String(builder.getAllBufferedMoji(),0,breakPoint));				
 			}
 			if(breakPoint < builder.getCurrentBufferedMojiSize()) {
-				android.util.Log.v("kiyo","pushCommit"+(row+1)+","+builder.getCurrentBufferedMojiSize());
-				// Ä“xŒvŽZ‚·‚éB
 				builder.clearFirst(breakPoint);
 				pushCommit("",row+1,0);
 			}
