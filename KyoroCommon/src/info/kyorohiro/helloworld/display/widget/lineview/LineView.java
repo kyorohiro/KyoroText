@@ -5,12 +5,13 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.util.CyclingListInter;
+import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObject {
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
-	private CyclingListInter<LineViewData> mInputtedText = null;
+	private LineViewBufferSpec<LineViewData> mInputtedText = null;
 	private int mPositionY = 0;
 	private int mPosX = 0;
 	private int mTextSize = 16;
@@ -31,81 +32,49 @@ public class LineView extends SimpleDisplayObject {
 	//
 	//==========================================================
 
-	public LineView(CyclingListInter<LineViewData> inputtedText, int textSize) {
+	public LineView(LineViewBufferSpec<LineViewData> inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 	}
 
-	public LineView(CyclingListInter<LineViewData> inputtedText, int textSize, int cashSize) {
+	public LineView(LineViewBufferSpec<LineViewData> inputtedText, int textSize, int cashSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 		mDefaultCashSize = cashSize;
 	}
 
-	public void setBgColor(int color) {
-		mBgColor = color;
-	}
+	public void setBgColor(int color) {mBgColor = color;}
+	public int getBgColor() {return mBgColor;}
+	public void setScale(float scale) {mScale = scale;}
+	public float getScale() {return mScale;}
+	public void setTextSize(int textSize) {mTextSize = textSize;}
+	public int getTextSize() {return mTextSize;}
+	public synchronized void setCyclingList(CyclingListInter<LineViewData> inputtedText) {mInputtedText = inputtedText;}
+	public synchronized LineViewBufferSpec<LineViewData> getLineViewBuffer() {return mInputtedText;}
 
-	public int getBgColor() {
-		return mBgColor;
-	}
+	@Deprecated
+	public synchronized CyclingListInter<LineViewData> getCyclingList() {return (CyclingListInter<LineViewData>)mInputtedText;}
+	public synchronized int getShowingTextStartPosition() {return mShowingTextStartPosition;}
+	public synchronized int getShowingTextEndPosition() {return mShowingTextEndPosition;}
+	public synchronized void setPositionY(int position) {mPositionY = position;}
+	public void setPositionX(int x) {mPosX = x;}
+	public void isTail(boolean on) {mIsTail = on;}
+	public synchronized int getTodoExtra() {return mTodoExtraY;}
+	public synchronized int setTodoExtra(int extra) {return mTodoExtraY = extra;}
+	public synchronized int getPositionY() {return mPositionY;}
+	public int getPositionX() {return mPosX;}
+	private DrawingPosition mDrawingPosition = new DrawingPosition();
 
-	public void setScale(float scale) {
-		mScale = scale;
+	public void setBGImage(SimpleImage image) {
+		mImage = image;
 	}
-
-	public float getScale() {
-		return mScale;
+	public synchronized void addPositionY(int position) {
+		mAddedPoint += position;
 	}
-
-	public void setTextSize(int textSize) {
-		mTextSize = textSize;
-	}
-
-	public int getTextSize() {
-		return mTextSize;
-	}
-
-	public synchronized void setCyclingList(CyclingListInter<LineViewData> inputtedText) {
-		mInputtedText = inputtedText;
-	}
-
-	public synchronized CyclingListInter<LineViewData> getCyclingList() {
-		return mInputtedText;
-	}
-
-	public synchronized int getShowingTextStartPosition() {
-		return mShowingTextStartPosition;
-	}
-
-	public synchronized int getShowingTextEndPosition() {
-		return mShowingTextEndPosition;
-	}
-
-	public synchronized void setPositionY(int position) {
-		mPositionY = position;
-	}
-
-	public void setPositionX(int x) {
-		mPosX = x;
-	}
-
-	public void isTail(boolean on) {
-		mIsTail = on;
-	}
-
-	public synchronized int getTodoExtra() {
-		return mTodoExtraY;
-	}
-	public synchronized int setTodoExtra(int extra) {
-		return mTodoExtraY = extra;
-	}
-	public synchronized int getPositionY() {
-		return mPositionY;
-	}
-
-	public int getPositionX() {
-		return mPosX;
+	private synchronized int resetAddPositionY() {
+		int tmp = mAddedPoint;
+		mAddedPoint = 0;
+		return tmp;
 	}
 
 	private void showLineDate(SimpleGraphics graphics, LineViewData[] list, int len, int blank) {
@@ -140,10 +109,9 @@ public class LineView extends SimpleDisplayObject {
 		}
 	}
 
-	private DrawingPosition mDrawingPosition = new DrawingPosition();
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
-		CyclingListInter<LineViewData> showingText = mInputtedText;
+		LineViewBufferSpec<LineViewData> showingText = mInputtedText;
 		int start = 0;
 		int end = 0;
 		int blank = 0;
@@ -174,6 +142,7 @@ public class LineView extends SimpleDisplayObject {
 			} else {
 				len = end-start;
 			}
+			android.util.Log.v("kiyo","1:"+list);
 			if(mCashBuffer.length < len) {
 				int buffeSize = len;
 				if(buffeSize<mDefaultCashSize) {
@@ -183,6 +152,7 @@ public class LineView extends SimpleDisplayObject {
 			}
 			list = mCashBuffer;
 			list = showingText.getElements(list, start, end);
+			android.util.Log.v("kiyo","2:"+list);
 
 		} finally {
 			if(showingText instanceof SimpleLockInter) {
@@ -190,24 +160,14 @@ public class LineView extends SimpleDisplayObject {
 			}
 		}
 
-		showLineDate(graphics, list, len, blank);
+		if(list != null) {//bug fix
+			showLineDate(graphics, list, len, blank);
+		}
 		mShowingTextStartPosition = start;
 		mShowingTextEndPosition = end;
 	}
 
-
-	public void setBGImage(SimpleImage image) {
-		mImage = image;
-	}
-
-	private void drawBG(SimpleGraphics graphics) {
-		graphics.drawBackGround(mBgColor);
-		if(mImage != null) {
-			graphics.drawImageAsTile(mImage, 0, 0,getWidth(), getHeight());
-		}
-	}
-
-	private void updateStatus(SimpleGraphics graphics, CyclingListInter<LineViewData> showingText) {
+	private void updateStatus(SimpleGraphics graphics, LineViewBufferSpec<LineViewData> showingText) {
 		mNumOfLine = (int)(getHeight() / (mTextSize*1.2*mScale));//todo mScale
 		{
 			// todo refactaring
@@ -233,15 +193,10 @@ public class LineView extends SimpleDisplayObject {
 		graphics.setTextSize((int)(mTextSize*mScale));//todo mScale
 	}
 
-	public synchronized void addPositionY(int position) {
-		mAddedPoint += position;
+	private void drawBG(SimpleGraphics graphics) {
+		graphics.drawBackGround(mBgColor);
+		if(mImage == null) { return;}
+		graphics.drawImageAsTile(mImage, 0, 0,getWidth(), getHeight());
 	}
-
-	private synchronized int resetAddPositionY() {
-		int tmp = mAddedPoint;
-		mAddedPoint = 0;
-		return tmp;
-	}
-
 }
 

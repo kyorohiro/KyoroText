@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.util.CyclingListInter;
+import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
 public class DrawingPosition {
 	private int mPosition = 0;
@@ -26,7 +27,7 @@ public class DrawingPosition {
 	}
 
 	public void updateInfo(int position, int height, int textSize, 
-			double scale,CyclingListInter<LineViewData> showingText) {
+			double scale,LineViewBufferSpec<LineViewData> showingText) {
 		mPosition = position;
 		mNumOfLine = (int)(height / (textSize*1.2*scale));
 		mStart = start(showingText);
@@ -34,7 +35,7 @@ public class DrawingPosition {
 		mBlank = blank(showingText);
 	}
 
-	public int start(CyclingListInter<LineViewData> showingText) {
+	public int start(LineViewBufferSpec<LineViewData> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int start = referPoint;
@@ -45,7 +46,7 @@ public class DrawingPosition {
 	}
 
 
-	public int end(CyclingListInter<LineViewData> showingText) {
+	public int end(LineViewBufferSpec<LineViewData> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int end = referPoint + mNumOfLine;
@@ -58,7 +59,7 @@ public class DrawingPosition {
 		return end;
 	}
 
-	public int blank(CyclingListInter<LineViewData> showingText) {
+	public int blank(LineViewBufferSpec<LineViewData> showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int blank = 0;
