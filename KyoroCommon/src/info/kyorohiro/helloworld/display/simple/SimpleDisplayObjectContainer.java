@@ -111,6 +111,12 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		int[] pa1 = {0,2};  
 		int[] pa2 = {1,3};  
 
+		//todo refactaringf
+		bound[0] = super.getX();
+		bound[1] = super.getX() + super.getWidth();
+		bound[2] = super.getY();
+		bound[3] = super.getY() + super.getHeight();
+
 		for(SimpleDisplayObject child: mMyChildren){
 			if(child != null) {
 				tmp[0] = child.getX();

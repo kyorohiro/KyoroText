@@ -72,6 +72,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 //					mMoveYY +=a-(int)(mMovingY/tS);
 //					mViewer.setTodoExtra((int)((mViewer.getPositionY()+ mMoveYY)%tS));
 					//if((mMovingY/tS)>=1){
+/*
 					if(mViewer.getTodoExtra()>=0){
 						mMoveYY=(mMoveYY-tS+todoY)%tS;
 					//	mViewer.setTodoExtra((int)mMoveYY);
@@ -80,7 +81,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 						mMoveYY=(mMoveYY+tS+todoY)%tS;
 					//	mViewer.setTodoExtra((int)mMoveYY);
 //						mViewer.setTodoExtra((int)((mViewer.getTodoExtra()+tS+(todoY))%tS));						
-					}
+					}*/
 				} else {
 //					mViewer.setTodoExtra((int)((mViewer.getPositionY()+ mMoveYY)%tS));					
 					mMoveYY =(mMoveYY+todoY)%tS;
@@ -103,7 +104,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		} else if (action == MotionEvent.ACTION_DOWN) {
 			mHeavyX = 0;
 			mHeavyY = 0;
-			mMovingY = mViewer.getTodoExtra();;
+//			mMovingY = mViewer.getTodoExtra();;
 			mMoveYY = mMovingY; 
 			mMovingX = 0;
 			mPrevY = -999;

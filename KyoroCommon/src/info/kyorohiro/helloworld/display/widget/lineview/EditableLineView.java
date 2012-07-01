@@ -15,7 +15,9 @@ import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
-public class EditableLineView extends LineView {
+public class EditableLineView 
+//extends LineView {
+extends CursorableLineView {
 
 	private EditableLineViewBuffer mTextBuffer = null;//new EditableLineViewBuffer();
 	private Paint mPaint = new Paint();

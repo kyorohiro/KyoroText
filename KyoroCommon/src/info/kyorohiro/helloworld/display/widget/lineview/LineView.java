@@ -2,18 +2,22 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 import android.graphics.Color;
 
-public class LineView extends SimpleDisplayObject {
+public class LineView
+extends SimpleDisplayObjectContainer {
+//extends SimpleDisplayObject {
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
 	private LineViewBufferSpec<LineViewData> mInputtedText = null;
+	private int mBlankY = 0;
 	private int mPositionY = 0;
-	private int mPosX = 0;
+	private int mPositionX = 0;
 	private int mTextSize = 16;
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
@@ -26,7 +30,6 @@ public class LineView extends SimpleDisplayObject {
 
 	//==========================================================
 	// todo refactaring
-	private int mTodoExtraY = 0;
 	private int mCash  = 0;
 	private int mTestTextColor = Color.parseColor("#33FFFF00");
 	//
@@ -57,12 +60,11 @@ public class LineView extends SimpleDisplayObject {
 	public synchronized int getShowingTextStartPosition() {return mShowingTextStartPosition;}
 	public synchronized int getShowingTextEndPosition() {return mShowingTextEndPosition;}
 	public synchronized void setPositionY(int position) {mPositionY = position;}
-	public void setPositionX(int x) {mPosX = x;}
-	public void isTail(boolean on) {mIsTail = on;}
-	public synchronized int getTodoExtra() {return mTodoExtraY;}
-	public synchronized int setTodoExtra(int extra) {return mTodoExtraY = extra;}
 	public synchronized int getPositionY() {return mPositionY;}
-	public int getPositionX() {return mPosX;}
+	public void setPositionX(int x) {mPositionX = x;}
+	public int getPositionX() {return mPositionX;}
+	public int getBlinkY(){return mBlankY;}
+	public void isTail(boolean on) {mIsTail = on;}
 	private DrawingPosition mDrawingPosition = new DrawingPosition();
 
 	public void setBGImage(SimpleImage image) {
@@ -77,9 +79,31 @@ public class LineView extends SimpleDisplayObject {
 		return tmp;
 	}
 
-	private void showLineDate(SimpleGraphics graphics, LineViewData[] list, int len, int blank) {
+	public int getXForShowLine(int x,int y) {
+		return (getWidth()) / 20 + mPositionX*19/20;
+	}
+
+	public int getYForShowLine(int textSize,int x,int y) {
+		int yy = (int)(textSize*1.2) * (mBlankY + y + 1);
+		int yyy = yy + (int)(textSize*0.2);
+		return yy;
+	}
+	public int getLineYForShowLine(int textSize,int x,int y) {
+		int yy = (int)(textSize*1.2) * (mBlankY + y + 1);
+		int yyy = yy + (int)(textSize*0.2);
+		return yyy;
+	}
+
+	private void showLineDate(SimpleGraphics graphics, LineViewData[] list, int len) {
 		if(len > list.length){
 			len = list.length;
+		}
+
+		if(mPositionX >0) {
+			mPositionX = 0;
+		}
+		if(mPositionX < -1*(getWidth()*mScale-getWidth())) {
+			mPositionX = -1*(int)(getWidth()*mScale-getWidth());
 		}
 
 		for (int i = 0; i < len; i++) {
@@ -88,16 +112,12 @@ public class LineView extends SimpleDisplayObject {
 			}
 			// drawLine
 			graphics.setColor(list[i].getColor());
-			if(mPosX >0) {
-				mPosX = 0;
-			}
-			if(mPosX < -1*(getWidth()*mScale-getWidth())) {
-				mPosX = -1*(int)(getWidth()*mScale-getWidth());
-			}
-			int x = (getWidth()) / 20 + mPosX*19/20; //todo mPosY
-			int y = mTodoExtraY+
-			(int)(graphics.getTextSize()*1.2) * (blank + i + 1);
-			int yy = y + (int)(graphics.getTextSize()*0.2);
+
+			int x = getXForShowLine(0,i);
+//			int y = (int)(graphics.getTextSize()*1.2) * (mBlankY + i + 1);
+//			int yy = y + (int)(graphics.getTextSize()*0.2);
+			int y = getYForShowLine(graphics.getTextSize(), 0,i);
+			int yy = getLineYForShowLine(graphics.getTextSize(), 0,i);
 
 			graphics.drawText(list[i], x, y);
 			if (list[i].getStatus() == LineViewData.INCLUDE_END_OF_LINE) {
@@ -114,7 +134,7 @@ public class LineView extends SimpleDisplayObject {
 		LineViewBufferSpec<LineViewData> showingText = mInputtedText;
 		int start = 0;
 		int end = 0;
-		int blank = 0;
+//		int blank = 0;
 		LineViewData[] list = null;
 		int len = 0;
 		try {
@@ -136,7 +156,7 @@ public class LineView extends SimpleDisplayObject {
 					mTextSize, mScale, showingText);
 			start = mDrawingPosition.getStart();
 			end = mDrawingPosition.getEnd();
-			blank = mDrawingPosition.getBlank();
+			mBlankY = mDrawingPosition.getBlank();
 			if (start > end) {
 				len = 0;
 			} else {
@@ -161,10 +181,11 @@ public class LineView extends SimpleDisplayObject {
 		}
 
 		if(list != null) {//bug fix
-			showLineDate(graphics, list, len, blank);
+			showLineDate(graphics, list, len);
 		}
 		mShowingTextStartPosition = start;
 		mShowingTextEndPosition = end;
+		super.paint(graphics);
 	}
 
 	private void updateStatus(SimpleGraphics graphics, LineViewBufferSpec<LineViewData> showingText) {
@@ -197,6 +218,11 @@ public class LineView extends SimpleDisplayObject {
 		graphics.drawBackGround(mBgColor);
 		if(mImage == null) { return;}
 		graphics.drawImageAsTile(mImage, 0, 0,getWidth(), getHeight());
+	}
+	
+	@Override
+	public boolean onTouchTest(int x, int y, int action) {
+		return super.onTouchTest(x, y, action);
 	}
 }
 
