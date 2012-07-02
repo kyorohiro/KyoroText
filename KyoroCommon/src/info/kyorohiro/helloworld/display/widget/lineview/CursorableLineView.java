@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.util.LineViewBufferSpec;
@@ -26,10 +27,11 @@ public class CursorableLineView extends LineView {
 		a += ",ePos="+this.getShowingTextEndPosition();
 		a += ",blink="+this.getBlinkY();
 		graphics.drawText(""+a, 10, 500);
+		mRight.setPoint(getXForShowLine(0,0),getYForShowLine(getTextSize(), 0, cursorCol));
 	}
 
 
-	public static class MyCursor extends SimpleDisplayObject {
+	public class MyCursor extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
 			setPoint(100, 100);
@@ -43,6 +45,35 @@ public class CursorableLineView extends LineView {
 			graphics.lineTo(0, 0);			
 			graphics.endPath();
 			graphics.drawText("goooo", 100, 100);
-		}		
+		}
+
+		private int x = 0;
+		private int y = 0;
+		private int px = 0;
+		private int py = 0;		
+		private boolean focus = false;
+		@Override
+		public boolean onTouchTest(int x, int y, int action) {
+			if(action ==MotionEvent.ACTION_DOWN) {
+				if(-getWidth()/2<x&&x<getWidth()/2&&
+				0<y&&y<getHeight()){
+					focus = true;
+					px = x;
+					py = y;
+				}else {
+					focus = false;
+				}
+			}
+
+			if(action == MotionEvent.ACTION_UP){
+				focus = false;				
+			}
+			else if(action == MotionEvent.ACTION_MOVE){
+				if(focus == true){
+					cursorCol = getYToPosY(y-py+getY());
+				}
+			}
+			return focus;//super.onTouchTest(x, y, action);
+		}
 	}
 }

@@ -85,9 +85,16 @@ extends SimpleDisplayObjectContainer {
 
 	public int getYForShowLine(int textSize,int x,int y) {
 		int yy = (int)(textSize*1.2) * (mBlankY + y + 1);
-		int yyy = yy + (int)(textSize*0.2);
 		return yy;
 	}
+
+	public int getYToPosY(int y) {
+		int n= (int)(y/(getTextSize()*1.2));
+		int yy = n-mBlankY-1;
+		android.util.Log.v("kiyo","yy="+yy+","+y+","+mBlankY);
+		return yy;
+	}
+
 	public int getLineYForShowLine(int textSize,int x,int y) {
 		int yy = (int)(textSize*1.2) * (mBlankY + y + 1);
 		int yyy = yy + (int)(textSize*0.2);
