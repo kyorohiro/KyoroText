@@ -20,13 +20,12 @@ public class EditableLineView
 extends CursorableLineView {
 
 	private EditableLineViewBuffer mTextBuffer = null;//new EditableLineViewBuffer();
-	private Paint mPaint = new Paint();
 
 	private EditableLineViewBuffer s= null;
 	public EditableLineView() {
 		super(new EditableLineViewBuffer(), 16, 512);
 		mTextBuffer = (EditableLineViewBuffer)getLineViewBuffer();
-		mTextBuffer.setBreakText(new MyBreaktext());
+		mTextBuffer.setBreakText(getBreakText());
 	}
 
 	@Override
@@ -44,7 +43,6 @@ extends CursorableLineView {
 		MyInputConnection c = stage.getCurrentInputConnection();
 		if (c == null) {return;}
 
-		mPaint.setTextSize(getTextSize());
 		try {
 			CommitText text = c.popFirst();
 			if (text != null) {
@@ -194,12 +192,5 @@ extends CursorableLineView {
 		}
 	}
 
-	public class MyBreaktext implements BreakText {
-		@Override
-		public int breakText(MyBuilder b) {
-			int len = mPaint.breakText(b.getAllBufferedMoji(), 0,
-					b.getCurrentBufferedMojiSize(), getWidth() * 8 / 10, null);
-			return len;
-		}
-	}
+
 }

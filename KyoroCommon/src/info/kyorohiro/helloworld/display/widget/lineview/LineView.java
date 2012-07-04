@@ -5,9 +5,11 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
+import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 import android.graphics.Color;
+import android.graphics.Paint;
 
 public class LineView
 extends SimpleDisplayObjectContainer {
@@ -93,6 +95,30 @@ extends SimpleDisplayObjectContainer {
 		int yy = n-mBlankY-1;
 		android.util.Log.v("kiyo","yy="+yy+","+y+","+mBlankY);
 		return yy;
+	}
+
+	public LineViewData getLineViewData(int cursorCol){
+		if(mCashBuffer == null || cursorCol >= mCashBuffer.length|| cursorCol<0){
+			return null;
+		}
+		LineViewData data = mCashBuffer[cursorCol];
+		return data;
+	}
+	@Deprecated
+	public int getXToPosX(Paint paint, int cursorCol, int x, int cur) {
+		if(mCashBuffer == null || cursorCol >= mCashBuffer.length|| cursorCol<0){
+			android.util.Log.v("nky","ret="+mCashBuffer.toString()+","+cursorCol +","+x+","+mCashBuffer.length);
+			return cur;
+		}
+		LineViewData data = mCashBuffer[cursorCol];
+		if(data== null){
+			return cur;
+		}
+		int ret = paint.breakText(data, 0, data.length(), false,
+				x-getXForShowLine(0,cursorCol),//(float)(getWidth()*8/10.0)-getXForShowLine(0,cursorCol),
+				null);
+		android.util.Log.v("nky","ret="+ret+",data="+data);
+		return ret;
 	}
 
 	public int getLineYForShowLine(int textSize,int x,int y) {
