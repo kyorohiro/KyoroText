@@ -129,5 +129,13 @@ public class TestSimpleTextDecoder extends TestCase {
 			}
 			return mBuffer.getCurrentBufferedMojiSize();
 		}
+		@Override
+		public void setTextSize(float textSize) {}
+		@Override
+		public int breakText(MyBuilder mBuffer, int width) {return 0;}
+		@Override
+		public int getTextWidths(char[] text, int index, int count,float[] widths) {return 0;}
+		@Override
+		public int getTextWidths(CharSequence text, int start, int end,float[] widths) {return 0;}
 	}
 }

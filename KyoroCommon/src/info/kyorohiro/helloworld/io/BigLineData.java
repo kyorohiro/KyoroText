@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
-@Deprecated
+//@Deprecated
 public class BigLineData {
 	public static int FILE_LIME = 100;
 
@@ -19,25 +19,22 @@ public class BigLineData {
 	private SimpleTextDecoder mDecoder = null;
 	
 	// todo
-	private Paint mPaint = null;
-	private int mWidth =800;
+//	private Paint mPaint = null;
+//	private int mWidth =800;
 
 	private long mCurrentPosition = 0;
 	private long mLinePosition = 0;
 	private long mLastLinePosition = 0;
 	private ArrayList<Long> mPositionPer100Line = new ArrayList<Long>();
+	private BreakText mBreakText = null;
 
 	public BigLineData(File path) throws FileNotFoundException {
 		init(path, mCharset);
 	}
 
-	public BigLineData(File path, String charset, int textSize, int screenWidth) throws FileNotFoundException {
+	public BigLineData(File path, String charset, BreakText breakText) throws FileNotFoundException {
+		mBreakText = breakText;
 		init(path, charset);
-		mWidth = screenWidth;
-		mPaint = new Paint();
-		mPaint.setTextSize(12);
-		mPaint.setTextSize(textSize);
-		mPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 
 	private void init(File path, String charset) throws FileNotFoundException {
@@ -45,9 +42,7 @@ public class BigLineData {
 		mCharset = charset;
 		mReader = new VirtualMemory(mPath, 1024*4);
 		mPositionPer100Line.add(0l);
-		mDecoder = new SimpleTextDecoder(
-				Charset.forName(charset), 
-				mReader, new  MyBreaktext());
+		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
 	}
 
 	public void moveLine(int lineNumber) throws IOException {
@@ -109,15 +104,7 @@ public class BigLineData {
 		}		
 	}
 
-	// following code move to android.adapter
-	public class MyBreaktext implements BreakText {
-		@Override
-		public int breakText(MyBuilder b) {
-			int len = mPaint.breakText(b.getAllBufferedMoji(),
-					0,b.getCurrentBufferedMojiSize(), mWidth, null);
-			return len;
-		}
-	}
+
 
 	private boolean moveLinePer100(int index) throws IOException {
 		if (index < mPositionPer100Line.size()) {

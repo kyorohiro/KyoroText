@@ -18,11 +18,13 @@ import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLi
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
 import info.kyorohiro.helloworld.io.BigLineData;
+import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.R;
 import info.kyorohiro.helloworld.util.CyclingList;
-import info.kyorohiro.helloworld.util.CyclingListInter;
+import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
 	public static int COLOR_BG = Color.parseColor("#FF000000");
@@ -31,7 +33,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	private String mCurrentCharset = "utf8";
 
-	private CyclingListInter<LineViewData> mBuffer = null;
+	private LineViewBufferSpec mBuffer = null;
 	private LineView mLineView = null;
 	private int mBufferWidth = 0;
 	private SimpleCircleController mCircleController = null;
@@ -41,6 +43,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private int mCurrentFontSize = KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
 	private String mCurrentPath = "";
 	private int mMergine = 0;
+	private MyBreakText mBreakText = new MyBreakText();
 
 	public TextViewer(int textSize, int width, int mergine) {
 		mCurrentFontSize = textSize;
@@ -88,6 +91,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public String getCurrentPath() {
 		return mCurrentPath;
 	}
+
 	@Override
 	public void setRect(int w, int h) {
 		super.setRect(w, h);
@@ -116,6 +120,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			readFile(new File(mCurrentPath));
 		}
 	}
+
 	public void readFile(File file) {
 		if(file == null) {
 			KyoroApplication.showMessage("file can not read null file");
@@ -128,15 +133,23 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mCurrentPath = file.getAbsolutePath();
 		KyoroSetting.setCurrentFile(file.getAbsolutePath());
 		try {
-			mBuffer = new ColorFilteredBuffer(20*BigLineData.FILE_LIME, mCurrentFontSize, mBufferWidth, file, mCurrentCharset);
+			mBreakText.setTextSize(mCurrentFontSize);
+			mBreakText.setBufferWidth(mBufferWidth);
+			mBuffer = new ColorFilteredBuffer(
+					20*BigLineData.FILE_LIME,
+					mBreakText, file, mCurrentCharset);
 		} catch(FileNotFoundException e) {
 			// don't pass along this code
 			KyoroApplication.showMessage("file can not read null filen --007--");
 			return;
 		}
-		CyclingListInter<LineViewData> prevBuffer = mLineView.getCyclingList();
-		mLineView.setCyclingList(mBuffer);
-		prevBuffer.clear();
+		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView.getLineViewBuffer();
+
+		mLineView.setLineViewBufferSpec(mBuffer);
+		if(prevBuffer instanceof TextViewerBuffer) {
+			((TextViewerBuffer)prevBuffer).clear();
+
+		}
 		if(mBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) mBuffer).startReadFile();
 		}
@@ -175,7 +188,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 
 		public void paintScroll(SimpleGraphics graphics) {
-			CyclingListInter<?> viewerBuffer = TextViewer.this.mLineView.getCyclingList();
+			LineViewBufferSpec viewerBuffer = TextViewer.this.mLineView.getLineViewBuffer();
+
 			int bufferSize = viewerBuffer.getNumberOfStockedElement(); 
 			int beginPosition = TextViewer.this.mLineView.getShowingTextStartPosition();
 			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
@@ -199,10 +213,13 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	private static class ColorFilteredBuffer extends TextViewerBuffer {
-		public ColorFilteredBuffer(int listSize, int textSize, int screenWidth,
+	private static class ColorFilteredBuffer
+	extends TextViewerBuffer implements LineViewBufferSpec {
+		public ColorFilteredBuffer(int listSize, 
+				BreakText breakText,
+				//int textSize, int screenWidth,
 				File path, String charset) throws FileNotFoundException {
-			super(listSize, textSize, screenWidth, path, charset);
+			super(listSize, breakText, path, charset);
 		}
 
 		@Override
@@ -215,9 +232,14 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			super.add(element);
 			element.setColor(COLOR_FONT1);
 		}
+
+		@Override
+		public BreakText getBreakText() {
+			return null;
+		}
 	}
 
-	private CyclingList<LineViewData> getStartupMessageBuffer() {
+	private LineViewBuffer getStartupMessageBuffer() {
 		String[] message = {
 				"Please open file\n",
 				"Current charset is "+mCurrentCharset+"\n", 
@@ -238,7 +260,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 				Color.RED,
 				Color.RED,				
 		};
-		CyclingList<LineViewData> startupMessage = new CyclingList<LineViewData>(100);
+		LineViewBuffer startupMessage = new LineViewBuffer(100);
 		for(int i=0;i<message.length;i++){
 			String m = message[i];
 			int crlf = LineViewData.INCLUDE_END_OF_LINE;
@@ -249,5 +271,13 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 		return startupMessage;
 	}
-
+	public static class LineViewBuffer extends CyclingList<LineViewData> implements LineViewBufferSpec {
+		public LineViewBuffer(int listSize) {
+			super(listSize);
+		}
+		@Override
+		public BreakText getBreakText() {
+			return null;
+		}
+	}
 }

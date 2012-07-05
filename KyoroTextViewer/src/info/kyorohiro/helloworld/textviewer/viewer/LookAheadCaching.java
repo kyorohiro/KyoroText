@@ -105,7 +105,6 @@ public class LookAheadCaching {
 	}
 
 	private void startReadBack(int position) {
-		TextViewerBuffer buffer = mBuffer.get();
 		mBackBuilder.position = position;
 		startTask(mBackBuilder);
 	}

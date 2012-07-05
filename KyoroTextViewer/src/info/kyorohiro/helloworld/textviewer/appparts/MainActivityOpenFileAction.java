@@ -50,8 +50,7 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 			showedDirectry = thirdCandidateDirectory;
 		} 
 
-		SimpleFileExplorer dialog = SimpleFileExplorer.createDialog(activity,
-				showedDirectry);
+		SimpleFileExplorer dialog = SimpleFileExplorer.createDialog(activity, showedDirectry);
 		dialog.show();
 		dialog.setOnSelectedFileAction(new SelectedFileAction() {
 			@Override

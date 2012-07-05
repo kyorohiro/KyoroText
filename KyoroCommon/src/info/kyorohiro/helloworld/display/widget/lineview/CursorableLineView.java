@@ -15,12 +15,12 @@ public class CursorableLineView extends LineView {
 	private int cursorRow = 0;
 	private int cursorCol = 0;
     private MyCursor mRight = new MyCursor();
-	private Paint mPaint = new Paint();
-	private MyBreaktext mBreakText = new MyBreaktext();
-	public BreakText getBreakText(){
-		return mBreakText;
+
+    public BreakText getBreakText(){
+		return getLineViewBuffer().getBreakText();
 	}
-	public CursorableLineView(LineViewBufferSpec<LineViewData> inputtedText,
+
+	public CursorableLineView(LineViewBufferSpec inputtedText,
 			int textSize, int cashSize) {
 		super(inputtedText, textSize, cashSize);
 		addChild(mRight);
@@ -35,7 +35,7 @@ public class CursorableLineView extends LineView {
 		a += ",ePos="+this.getShowingTextEndPosition();
 		a += ",blink="+this.getBlinkY();
 		graphics.drawText(""+a, 10, 500);
-		mPaint.setTextSize(getTextSize());
+		getBreakText().setTextSize(getTextSize());
 		
 		
 		float x = getXForShowLine(0, 0);
@@ -44,7 +44,7 @@ public class CursorableLineView extends LineView {
 			LineViewData d = getLineViewData(cursorCol);
 			if(d!=null){
 				float[] widths = new float[1000];
-				l = mPaint.getTextWidths(d, 0, cursorRow, widths);
+				l = getBreakText().getTextWidths(d, 0, cursorRow, widths);
 			//	mPaint.
 				for(int i=0;i<l;i++){
 				//if(0<l){
@@ -100,19 +100,11 @@ public class CursorableLineView extends LineView {
 			else if(action == MotionEvent.ACTION_MOVE){
 				if(focus == true){
 					cursorCol = getYToPosY(y-py+getY());
-					cursorRow = getXToPosX(mPaint,cursorCol,x-px+getX(),cursorRow);
+					//cursorRow = getXToPosX(mPaint,cursorCol,x-px+getX(),cursorRow);
 				}
 			}
 			return focus;//super.onTouchTest(x, y, action);
 		}
 	}
 
-	public class MyBreaktext implements BreakText {
-		@Override
-		public int breakText(MyBuilder b) {
-			int len = mPaint.breakText(b.getAllBufferedMoji(), 0,
-					b.getCurrentBufferedMojiSize(), getWidth() * 8 / 10, null);
-			return len;
-		}
-	}
 }

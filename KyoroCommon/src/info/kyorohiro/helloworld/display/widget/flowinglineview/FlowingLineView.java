@@ -7,6 +7,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
 import info.kyorohiro.helloworld.util.CyclingListInter;
+import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 import android.graphics.Color;
 
 //
@@ -16,7 +17,7 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 	private ScrollBar scrollBar = null;
 	private LineView viewer = null;
 
-	public FlowingLineView(CyclingListInter<LineViewData> inputtedText, int textSize) {
+	public FlowingLineView(LineViewBufferSpec inputtedText, int textSize) {
 		scrollBar = new ScrollBar(this);
 		viewer = new LineView(inputtedText, textSize);
 		this.addChild(viewer);
@@ -36,18 +37,17 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 	private class Layout extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			CyclingListInter<?> list = viewer.getCyclingList();
+			LineViewBufferSpec list = viewer.getLineViewBuffer();
 			int size = list.getNumberOfStockedElement(); 
 
 			viewer.setRect(graphics.getWidth(), graphics.getHeight());
 			scrollBar.setStatus(viewer.getShowingTextStartPosition(), viewer.getShowingTextEndPosition(), size);
-
 		}
 	}
 	public class MyLineView extends LineView {
 
 		public int mBaseTextSize = 12;
-		public MyLineView(CyclingListInter<LineViewData> inputtedText,
+		public MyLineView(LineViewBufferSpec inputtedText,
 				int textSize) {
 			super(inputtedText, textSize);
 			mBaseTextSize = textSize;

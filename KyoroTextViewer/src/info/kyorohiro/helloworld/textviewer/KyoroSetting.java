@@ -73,7 +73,6 @@ public class KyoroSetting {
 	}
 
 
-
 	public static void setData(String property, String value) {
 		setData(KyoroApplication.getKyoroApplication(), property, value);
 	}

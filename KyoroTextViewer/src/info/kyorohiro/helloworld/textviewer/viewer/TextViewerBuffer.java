@@ -1,9 +1,8 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
-import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
-import info.kyorohiro.helloworld.util.CyclingList;
+import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.util.LockableCyclingList;
 
 import java.io.File;
@@ -12,9 +11,7 @@ import java.io.IOException;
 
 import android.graphics.Color;
 
-public class TextViewerBuffer
-
-extends LockableCyclingList {
+public class TextViewerBuffer extends LockableCyclingList {
 	private BigLineData mLineManagerFromFile = null;
 	private int mCurrentBufferStartLinePosition = 0;
 	private int mCurrentBufferEndLinePosition = 0;
@@ -24,9 +21,9 @@ extends LockableCyclingList {
 	private LookAheadCaching mCashing = null;
 	private int mNumberOfStockedElement = 0;
 
-	public TextViewerBuffer(int listSize, int textSize, int screenWidth, File path, String charset) throws FileNotFoundException {
+	public TextViewerBuffer(int listSize, BreakText breakText, File path, String charset) throws FileNotFoundException {
 		super(listSize);
-		mLineManagerFromFile = new BigLineData(path, charset, textSize, screenWidth);
+		mLineManagerFromFile = new BigLineData(path, charset, breakText);
 		mCashing = new LookAheadCaching(this);
 	}
 

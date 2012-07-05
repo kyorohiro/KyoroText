@@ -4,7 +4,6 @@ import java.io.File;
 
 import info.kyorohiro.helloworld.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.textviewer.appparts.MainActivityCaptureImageAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetectionAction;
@@ -22,6 +21,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 	private TextViewer mTextViewer = null;
 	private int mViewerWidth = 100;
 	private int mViewerHeight = 100;
+	@SuppressWarnings("unused")
 	private boolean modifyIntent = false; 
 
 	@Override
@@ -32,8 +32,6 @@ public class KyoroTextViewerActivity extends MainActivity {
 		mTextViewer.setRect(mViewerWidth, mViewerHeight);
 		mStage = new SimpleStage(this);
 		mStage.getRoot().addChild(mTextViewer);
-
-
 		int modeForDisableSoftKeyboard = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
 		getWindow().setSoftInputMode(modeForDisableSoftKeyboard);
 		setContentView(mStage);
@@ -42,7 +40,6 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivitySetCharsetAction(mTextViewer));
 		setMenuAction(new MainActivitySetTextSizeAction(mTextViewer));
 		setMenuAction(new MainActivitySetCharsetDetectionAction(mTextViewer));
-		//setMenuAction(new MainActivityCaptureImageAction(mTextViewer));
 	}
 
 	@Override
@@ -65,15 +62,20 @@ public class KyoroTextViewerActivity extends MainActivity {
 		mStage.stop();
 	}
 
-	private TextViewer newTextViewer() {
+	private int[] getWindowSize(){
 		WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
 		int width = disp.getWidth();
 		int height = disp.getHeight();
+		return new int[]{width, height};
+	}
+
+	private TextViewer newTextViewer() {
 		int textSize = KyoroSetting.getCurrentFontSize();
-		mViewerWidth = width;
-		mViewerHeight = height;
-		if(mViewerWidth>mViewerHeight){
+		int[] widthHeight = getWindowSize();
+		mViewerWidth = widthHeight[0];
+		mViewerHeight = widthHeight[1];
+		if (mViewerWidth>mViewerHeight) {
 			int t = mViewerWidth;
 			mViewerWidth = mViewerHeight;
 			mViewerHeight = t;
@@ -86,18 +88,17 @@ public class KyoroTextViewerActivity extends MainActivity {
 	private void doFileOpenIntentAction() {
 		Intent intentFromExteralApplication = getIntent();
 		modifyIntent = false;
-		try{
-			if(intentFromExteralApplication != null){
+		try {
+			if (intentFromExteralApplication != null) {
 				String action = intentFromExteralApplication.getAction();
-				Uri uri;
-				if(action != null && Intent.ACTION_VIEW.equals(action)){
-					uri = intentFromExteralApplication.getData();
-					if(uri != null){
+				if (action != null && Intent.ACTION_VIEW.equals(action)) {
+					Uri uri = intentFromExteralApplication.getData();
+					if (uri != null) {
 						mTextViewer.readFile(new File(uri.getPath()));
 					}
 				}
 			}
-		}catch(Throwable t){
+		} catch(Throwable t) {
 			t.printStackTrace();
 		}
 	}

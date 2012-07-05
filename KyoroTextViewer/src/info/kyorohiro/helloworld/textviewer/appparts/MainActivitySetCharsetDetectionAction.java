@@ -1,13 +1,9 @@
 package info.kyorohiro.helloworld.textviewer.appparts;
 
 import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.util.SortedMap;
 
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
-import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction.DialogForShowDeviceSupportCharset;
 import info.kyorohiro.helloworld.textviewer.util.CharsetDetectorSample;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
@@ -57,7 +53,6 @@ public class MainActivitySetCharsetDetectionAction implements MainActivityMenuAc
 		public DialogForShowDeviceSupportCharset(Context context) {
 			super(context);
 			mCharsetListUIParts = new ListView(context);
-			ArrayAdapter<String> displayCharsetList = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
 			mCharsetListUIParts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

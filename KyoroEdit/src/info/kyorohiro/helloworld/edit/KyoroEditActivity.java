@@ -1,7 +1,6 @@
 package info.kyorohiro.helloworld.edit;
 
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.widget.SimpleEdit;
 import info.kyorohiro.helloworld.display.widget.lineview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
@@ -12,7 +11,6 @@ import android.view.WindowManager;
 
 public class KyoroEditActivity extends Activity {
     private SimpleStage mStage = null;
-    private SimpleEdit mViewer = null;
     private EditableLineView mEdit = null;
 
     @Override
@@ -23,7 +21,7 @@ public class KyoroEditActivity extends Activity {
 //       mViewer.setRect(400, 400);
 //       mStage.getRoot().addChild(mViewer);
         
-        mEdit = new EditableLineView();
+        mEdit = EditableLineView.newEditableLineView();
         mEdit.setRect(400, 400);
         mStage.getRoot().addChild(new TouchAndMoveActionForLineView(mEdit));
         mStage.getRoot().addChild(new TouchAndZoomForLineView(mEdit));

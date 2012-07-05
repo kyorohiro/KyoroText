@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.util;
 
-public interface CyclingListInter<N> extends LineViewBufferSpec<N>{
+public interface CyclingListInter<N> {
 	public N get(int i);
 	public int getNumOfAdd();
 	public void clearNumOfAdd();

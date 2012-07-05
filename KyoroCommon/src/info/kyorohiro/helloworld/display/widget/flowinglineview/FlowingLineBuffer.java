@@ -25,7 +25,6 @@ implements SimpleLockInter {
 		mWidth = width;
 		mPaint = new Paint();
 		mPaint.setTextSize(textSize);
-		//mPaint.setTypeface(Typeface.SERIF);
 	}
 
 	public int getTextSize() {

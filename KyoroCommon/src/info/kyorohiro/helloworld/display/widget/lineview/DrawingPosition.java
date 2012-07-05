@@ -27,7 +27,7 @@ public class DrawingPosition {
 	}
 
 	public void updateInfo(int position, int height, int textSize, 
-			double scale,LineViewBufferSpec<LineViewData> showingText) {
+			double scale,LineViewBufferSpec showingText) {
 		mPosition = position;
 		mNumOfLine = (int)(height / (textSize*1.2*scale));
 		mStart = start(showingText);
@@ -35,7 +35,7 @@ public class DrawingPosition {
 		mBlank = blank(showingText);
 	}
 
-	public int start(LineViewBufferSpec<LineViewData> showingText) {
+	public int start(LineViewBufferSpec showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int start = referPoint;
@@ -46,7 +46,7 @@ public class DrawingPosition {
 	}
 
 
-	public int end(LineViewBufferSpec<LineViewData> showingText) {
+	public int end(LineViewBufferSpec showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int end = referPoint + mNumOfLine;
@@ -59,7 +59,7 @@ public class DrawingPosition {
 		return end;
 	}
 
-	public int blank(LineViewBufferSpec<LineViewData> showingText) {
+	public int blank(LineViewBufferSpec showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
 		int blank = 0;
