@@ -12,6 +12,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
@@ -52,14 +53,16 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBufferWidth = width-mergine*2;
 		mMergine = mergine;
 
-		mLineView = new LineView(mBuffer, textSize,200);
+//		mLineView = new LineView(mBuffer, textSize,200);
+		mLineView = new CursorableLineView(mBuffer, textSize,200);
+		
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
 
 		mScrollBar = new ScrollBar(mLineView);
-		addChild(mLineView);
 		addChild(new TouchAndMoveActionForLineView(mLineView));
 		addChild(new TouchAndZoomForLineView(mLineView));
+		addChild(mLineView);
 		addChild(mCircleController = new SimpleCircleController());
 		addChild(new LayoutManager());
 		addChild(mScrollBar);
@@ -214,10 +217,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	private static class ColorFilteredBuffer
-	extends TextViewerBuffer implements LineViewBufferSpec {
+	extends TextViewerBuffer  {
 		public ColorFilteredBuffer(int listSize, 
 				BreakText breakText,
-				//int textSize, int screenWidth,
 				File path, String charset) throws FileNotFoundException {
 			super(listSize, breakText, path, charset);
 		}
@@ -231,11 +233,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		public synchronized void add(LineViewData element) {
 			super.add(element);
 			element.setColor(COLOR_FONT1);
-		}
-
-		@Override
-		public BreakText getBreakText() {
-			return null;
 		}
 	}
 

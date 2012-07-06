@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.textviewer.viewer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 import info.kyorohiro.helloworld.util.LockableCyclingList;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.io.IOException;
 
 import android.graphics.Color;
 
-public class TextViewerBuffer extends LockableCyclingList {
+public class TextViewerBuffer extends LockableCyclingList implements LineViewBufferSpec {
 	private BigLineData mLineManagerFromFile = null;
 	private int mCurrentBufferStartLinePosition = 0;
 	private int mCurrentBufferEndLinePosition = 0;
@@ -166,5 +167,11 @@ public class TextViewerBuffer extends LockableCyclingList {
 		public synchronized int getLinePosition() {
 			return mLinePosition;
 		}
+	}
+
+	@Override
+	public BreakText getBreakText() {
+		// TODO Auto-generated method stub
+		return mLineManagerFromFile.getBreakText();
 	}
 }

@@ -45,6 +45,10 @@ public class BigLineData {
 		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
 	}
 
+	public BreakText getBreakText(){
+		return mBreakText;
+	}
+
 	public void moveLine(int lineNumber) throws IOException {
 		int index = lineNumber/FILE_LIME;
 		int number = lineNumber%FILE_LIME;

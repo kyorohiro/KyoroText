@@ -36,5 +36,11 @@ public class MyBreakText implements BreakText {
 			float[] widths) {
 		return mPaint.getTextWidths(text, start, end, widths);
 	}
+	@Override
+	public int breakText(CharSequence data, int index, int count, int width) {
+//		int len = mPaint.breakText(data, 0, count, width, null);
+		int len = mPaint.breakText(data, 0, count, false, width, null);
+		return len;
+	}
 
 }

@@ -137,5 +137,11 @@ public class TestSimpleTextDecoder extends TestCase {
 		public int getTextWidths(char[] text, int index, int count,float[] widths) {return 0;}
 		@Override
 		public int getTextWidths(CharSequence text, int start, int end,float[] widths) {return 0;}
+
+		@Override
+		public int breakText(CharSequence data, int index, int count, int width) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	}
 }

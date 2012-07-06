@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.io.MyBuilder;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 import android.graphics.Color;
@@ -158,7 +159,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public int getYToPosY(int y) {
 		int n = (int) (y / (getTextSize() * 1.2));
 		int yy = n - mBlankY - 1;
-		android.util.Log.v("kiyo", "yy=" + yy + "," + y + "," + mBlankY);
+//		android.util.Log.v("kiyo", "yy=" + yy + "," + y + "," + mBlankY);
 		return yy;
 	}
 
@@ -184,7 +185,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	@Deprecated
-	public int getXToPosX(Paint paint, int cursorCol, int x, int cur) {
+	public int getXToPosX(int cursorCol, int x, int cur) {
+		if(null == mInputtedText.getBreakText()){
+			return 0;
+		}
 		if (mCashBuffer == null || cursorCol >= mCashBuffer.length
 				|| cursorCol < 0) {
 			android.util.Log.v("nky", "ret=" + mCashBuffer.toString() + ","
@@ -195,9 +199,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (data == null) {
 			return cur;
 		}
-		int ret = paint.breakText(data, 0, data.length(), false, x
-				- getXForShowLine(0, cursorCol),// (float)(getWidth()*8/10.0)-getXForShowLine(0,cursorCol),
-				null);
+		MyBuilder b = new MyBuilder();
+		int ret = mInputtedText.getBreakText().breakText(
+				data, 0, data.length(), x-getXForShowLine(0, cursorCol));
 		android.util.Log.v("nky", "ret=" + ret + ",data=" + data);
 		return ret;
 	}
@@ -273,7 +277,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			} else {
 				len = end - start;
 			}
-			android.util.Log.v("kiyo", "1:" + list);
+//			android.util.Log.v("kiyo", "1:" + list);
 			if (mCashBuffer.length < len) {
 				int buffeSize = len;
 				if (buffeSize < mDefaultCashSize) {
@@ -283,7 +287,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			}
 			list = mCashBuffer;
 			list = showingText.getElements(list, start, end);
-			android.util.Log.v("kiyo", "2:" + list);
+//			android.util.Log.v("kiyo", "2:" + list);
 
 		} finally {
 			if (showingText instanceof SimpleLockInter) {
