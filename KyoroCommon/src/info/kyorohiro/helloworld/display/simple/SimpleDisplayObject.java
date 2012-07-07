@@ -28,6 +28,10 @@ public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 		
 	};
 
+	public boolean includeParentRect() {
+		return true;
+	}
+
 	public int getX() {
 		return mX;
 	}

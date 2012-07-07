@@ -144,6 +144,15 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 			}
 			return new LineViewData[0];
 		}
+
+		@Override
+		public LineViewData get(int i) {
+			CyclingListInter<LineViewData> b = mBuffer.get();
+			if(b != null) {
+				return b.get(i);
+			}
+			return null;
+		}
 		
 	}
 }

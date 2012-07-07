@@ -111,6 +111,9 @@ public class BigLineData {
 
 
 	private boolean moveLinePer100(int index) throws IOException {
+		if(index <0) {
+			return true;
+		}
 		if (index < mPositionPer100Line.size()) {
 			long filePointer = mPositionPer100Line.get(index);
 			// mReader.seek(0);

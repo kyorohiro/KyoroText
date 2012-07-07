@@ -84,7 +84,7 @@ extends CursorableLineView {
 
 		@Override
 		public int getNumberOfStockedElement() {
-			android.util.Log.v("kiyo","number="+getLines().size());
+//			android.util.Log.v("kiyo","number="+getLines().size());
 			return getLines().size();
 		}
 
@@ -94,7 +94,7 @@ extends CursorableLineView {
 			for(int i=start;i<end&&i<getLines().size();i++){
 				ret[j] = new LineViewData(getLines().get(i), Color.YELLOW, LineViewData.INCLUDE_END_OF_LINE);
 				j++;
-				android.util.Log.v("kiyo","["+i+"]"+getLines().get(i));
+//				android.util.Log.v("kiyo","["+i+"]"+getLines().get(i));
 			}
 			return ret;
 		}
@@ -102,6 +102,11 @@ extends CursorableLineView {
 		@Override
 		public BreakText getBreakText() {
 			return mBreakText;
+		}
+
+		@Override
+		public LineViewData get(int i) {
+			return new LineViewData(getLines().get(i), Color.YELLOW, LineViewData.INCLUDE_END_OF_LINE);
 		}
 	
 	}

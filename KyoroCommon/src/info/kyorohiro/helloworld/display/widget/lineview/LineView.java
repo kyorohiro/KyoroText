@@ -102,6 +102,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized void setPositionY(int position) {
+		android.util.Log.v("kiyo","kiyo_pos="+position);
 		mPositionY = position;
 	}
 
@@ -156,15 +157,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return yyy;
 	}
 
-	public int getYToPosY(int y) {
-		int n = (int) (y / (getTextSize() * 1.2));
-		int yy = n - mBlankY - 1;
-//		android.util.Log.v("kiyo", "yy=" + yy + "," + y + "," + mBlankY);
-		return yy;
-	}
 
 	public LineViewData getLineViewData(int cursorCol) {
-		if (mCashBuffer == null || cursorCol >= mCashBuffer.length
+		if (mInputtedText == null || cursorCol >= mInputtedText.getNumberOfStockedElement()
 				|| cursorCol < 0) {
 			return null;
 		}
@@ -173,7 +168,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			if (showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).beginLock();
 			}
-			LineViewData data = mCashBuffer[cursorCol];
+			LineViewData data = mInputtedText.get(cursorCol);
 			return data;
 		} catch (Exception e) {
 			return null;
@@ -184,27 +179,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	@Deprecated
-	public int getXToPosX(int cursorCol, int x, int cur) {
-		if(null == mInputtedText.getBreakText()){
-			return 0;
-		}
-		if (mCashBuffer == null || cursorCol >= mCashBuffer.length
-				|| cursorCol < 0) {
-			android.util.Log.v("nky", "ret=" + mCashBuffer.toString() + ","
-					+ cursorCol + "," + x + "," + mCashBuffer.length);
-			return cur;
-		}
-		LineViewData data = mCashBuffer[cursorCol];
-		if (data == null) {
-			return cur;
-		}
-		MyBuilder b = new MyBuilder();
-		int ret = mInputtedText.getBreakText().breakText(
-				data, 0, data.length(), x-getXForShowLine(0, cursorCol));
-		android.util.Log.v("nky", "ret=" + ret + ",data=" + data);
-		return ret;
-	}
 
 	private void showLineDate(SimpleGraphics graphics, LineViewData[] list,
 			int len) {
