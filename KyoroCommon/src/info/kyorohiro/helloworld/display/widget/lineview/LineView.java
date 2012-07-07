@@ -102,7 +102,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized void setPositionY(int position) {
-		android.util.Log.v("kiyo","kiyo_pos="+position);
+//		android.util.Log.v("kiyo","kiyo_pos="+position);
 		mPositionY = position;
 	}
 

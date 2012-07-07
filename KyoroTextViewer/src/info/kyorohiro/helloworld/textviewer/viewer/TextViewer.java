@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.text.ClipboardManager;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -68,69 +70,42 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		// addChild(mCircleController = new SimpleCircleController());
 		addChild(mCircleController = new SimpleCircleControllerMenuPlus());
 		if (mCircleController instanceof SimpleCircleControllerMenuPlus) {
-			((SimpleCircleControllerMenuPlus) mCircleController)
-					.addCircleMenu(new CircleMenuItem() {
+			((SimpleCircleControllerMenuPlus) mCircleController).setCircleMenuItem(
+					new CircleMenuItem() {
 						@Override
-						public boolean selected(int id) {
-							if (mLineView instanceof CursorableLineView) {
-								((CursorableLineView) mLineView)
-										.setMode(CursorableLineView.MODE_SELECT);
+						public boolean selected(int id, String title) {
+							((SimpleCircleControllerMenuPlus) mCircleController).clearCircleMenu();
+							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_SELECT);
+							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_VIEW);
+							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_EDIT);
+							
+							if(title.equals(CursorableLineView.MODE_EDIT)){
+								((CursorableLineView)mLineView).setMode(CursorableLineView.MODE_EDIT);
+							}else if(title.equals(CursorableLineView.MODE_VIEW)){
+								((CursorableLineView)mLineView).setMode(CursorableLineView.MODE_VIEW);							
+							}else if(title.equals(CursorableLineView.MODE_SELECT)){
+								((CursorableLineView)mLineView).setMode(CursorableLineView.MODE_SELECT);
+								((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,"Copy");
+							}else if(title.equals("Copy")){
+								KyoroApplication.getKyoroApplication().getHanler().post(new Runnable(){
+									public void run(){
+										try{
+											ClipboardManager cm=(ClipboardManager)KyoroApplication.getKyoroApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+											cm.setText(""+((CursorableLineView)mLineView).copy());
+											((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,"Copy");
+										}catch(Throwable t){
+											t.printStackTrace();
+										}
+									}
+								});
 							}
+
 							return false;
 						}
-
-						@Override
-						public int getid() {
-							return 0;
-						}
-
-						@Override
-						public String getTitle() {
-							return "select mode";
-						}
 					});
-			((SimpleCircleControllerMenuPlus) mCircleController)
-					.addCircleMenu(new CircleMenuItem() {
-						@Override
-						public boolean selected(int id) {
-							if (mLineView instanceof CursorableLineView) {
-								((CursorableLineView) mLineView)
-										.setMode(CursorableLineView.MODE_EDIT);
-							}
-							return false;
-						}
-
-						@Override
-						public int getid() {
-							return 1;
-						}
-
-						@Override
-						public String getTitle() {
-							return "edit mode";
-						}
-					});
-			((SimpleCircleControllerMenuPlus) mCircleController)
-					.addCircleMenu(new CircleMenuItem() {
-						@Override
-						public boolean selected(int id) {
-							if (mLineView instanceof CursorableLineView) {
-								((CursorableLineView) mLineView)
-										.setMode(CursorableLineView.MODE_VIEW);
-							}
-							return false;
-						}
-
-						@Override
-						public int getid() {
-							return 2;
-						}
-
-						@Override
-						public String getTitle() {
-							return "view mode";
-						}
-					});
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_EDIT);
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_VIEW);
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_SELECT);
 		}
 		addChild(new LayoutManager());
 		addChild(mScrollBar);
