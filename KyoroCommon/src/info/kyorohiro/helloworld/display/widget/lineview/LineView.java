@@ -201,8 +201,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.setColor(list[i].getColor());
 
 			int x = getXForShowLine(0, i);
-			// int y = (int)(graphics.getTextSize()*1.2) * (mBlankY + i + 1);
-			// int yy = y + (int)(graphics.getTextSize()*0.2);
 			int y = getYForShowLine(graphics.getTextSize(), 0, i);
 			int yy = getLineYForShowLine(graphics.getTextSize(), 0, i);
 
