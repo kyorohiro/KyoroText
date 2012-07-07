@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.display.widget;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import android.graphics.Color;
 import android.view.MotionEvent;
@@ -153,9 +154,9 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 							(int) (radiusN * -1 * Math.sin(a)));
 				}
 
-				
-//				Math.
-				
+				if(selected<itemList.size()){
+					itemList.get(selected).selected(selected);
+				}
 			}
 		}
 	}

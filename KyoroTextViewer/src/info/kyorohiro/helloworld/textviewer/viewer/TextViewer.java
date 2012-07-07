@@ -52,12 +52,12 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mCurrentFontSize = textSize;
 		mCurrentCharset = KyoroSetting.getCurrentCharset();
 		mBuffer = getStartupMessageBuffer();
-		mBufferWidth = width-mergine*2;
+		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
 
-//		mLineView = new LineView(mBuffer, textSize,200);
-		mLineView = new CursorableLineView(mBuffer, textSize,200);
-		
+		// mLineView = new LineView(mBuffer, textSize,200);
+		mLineView = new CursorableLineView(mBuffer, textSize, 200);
+
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
 
@@ -65,33 +65,72 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		addChild(new TouchAndMoveActionForLineView(mLineView));
 		addChild(new TouchAndZoomForLineView(mLineView));
 		addChild(mLineView);
-//		addChild(mCircleController = new SimpleCircleController());
+		// addChild(mCircleController = new SimpleCircleController());
 		addChild(mCircleController = new SimpleCircleControllerMenuPlus());
-		if(mCircleController instanceof SimpleCircleControllerMenuPlus) {
-			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(new CircleMenuItem() {
-				@Override
-				public boolean selected(int id) {return false;}
-				@Override
-				public int getid() {return 0;}
-				@Override
-				public String getTitle() {return "select mode";}
-			});
-			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(new CircleMenuItem() {
-				@Override
-				public boolean selected(int id) {return false;}
-				@Override
-				public int getid() {return 1;}
-				@Override
-				public String getTitle() {return "edit mode";}
-			});
-			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(new CircleMenuItem() {
-				@Override
-				public boolean selected(int id) {return false;}
-				@Override
-				public int getid() {return 2;}
-				@Override
-				public String getTitle() {return "view mode";}
-			});
+		if (mCircleController instanceof SimpleCircleControllerMenuPlus) {
+			((SimpleCircleControllerMenuPlus) mCircleController)
+					.addCircleMenu(new CircleMenuItem() {
+						@Override
+						public boolean selected(int id) {
+							if (mLineView instanceof CursorableLineView) {
+								((CursorableLineView) mLineView)
+										.setMode(CursorableLineView.MODE_SELECT);
+							}
+							return false;
+						}
+
+						@Override
+						public int getid() {
+							return 0;
+						}
+
+						@Override
+						public String getTitle() {
+							return "select mode";
+						}
+					});
+			((SimpleCircleControllerMenuPlus) mCircleController)
+					.addCircleMenu(new CircleMenuItem() {
+						@Override
+						public boolean selected(int id) {
+							if (mLineView instanceof CursorableLineView) {
+								((CursorableLineView) mLineView)
+										.setMode(CursorableLineView.MODE_EDIT);
+							}
+							return false;
+						}
+
+						@Override
+						public int getid() {
+							return 1;
+						}
+
+						@Override
+						public String getTitle() {
+							return "edit mode";
+						}
+					});
+			((SimpleCircleControllerMenuPlus) mCircleController)
+					.addCircleMenu(new CircleMenuItem() {
+						@Override
+						public boolean selected(int id) {
+							if (mLineView instanceof CursorableLineView) {
+								((CursorableLineView) mLineView)
+										.setMode(CursorableLineView.MODE_VIEW);
+							}
+							return false;
+						}
+
+						@Override
+						public int getid() {
+							return 2;
+						}
+
+						@Override
+						public String getTitle() {
+							return "view mode";
+						}
+					});
 		}
 		addChild(new LayoutManager());
 		addChild(mScrollBar);
@@ -103,19 +142,19 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		Resources res = KyoroApplication.getKyoroApplication().getResources();
 		InputStream is = res.openRawResource(R.drawable.tex2res4);
 		mBGImage = new SimpleImage(is);
-		mLineView.setBGImage(mBGImage);		
+		mLineView.setBGImage(mBGImage);
 		InputStream isScroll = res.openRawResource(R.drawable.tex2res2);
 		mScrollImage = new SimpleImage(isScroll);
-		//mScrollBar.setBGImage(mScrollImage);
+		// mScrollBar.setBGImage(mScrollImage);
 	}
 
 	@Override
 	public void stop() {
 		mLineView.setBGImage(null);
-		if(!mBGImage.getImage().isRecycled()){
+		if (!mBGImage.getImage().isRecycled()) {
 			mBGImage.getImage().recycle();
 		}
-		if(!mScrollImage.getImage().isRecycled()){
+		if (!mScrollImage.getImage().isRecycled()) {
 			mScrollImage.getImage().recycle();
 		}
 	}
@@ -130,15 +169,15 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mLineView.setRect(w, h);
 	}
 
-	public void setCurrentFontSize(int fontSize){
+	public void setCurrentFontSize(int fontSize) {
 		mCurrentFontSize = fontSize;
 		mLineView.setTextSize(fontSize);
 	}
 
 	public void setCharset(String charset) {
-		if(charset == null|| charset.equals("")){
+		if (charset == null || charset.equals("")) {
 			mCurrentCharset = "utf8";
-		}else{
+		} else {
 			mCurrentCharset = charset;
 		}
 	}
@@ -148,18 +187,19 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	public void restart() {
-		if(mCurrentPath != null && !mCurrentPath.equals("")){
+		if (mCurrentPath != null && !mCurrentPath.equals("")) {
 			readFile(new File(mCurrentPath));
 		}
 	}
 
 	public void readFile(File file) {
-		if(file == null) {
+		if (file == null) {
 			KyoroApplication.showMessage("file can not read null file");
 			return;
 		}
-		if(!file.canRead() || !file.exists()|| !file.isFile()){
-			KyoroApplication.showMessage("file can not read " + file.toString());
+		if (!file.canRead() || !file.exists() || !file.isFile()) {
+			KyoroApplication
+					.showMessage("file can not read " + file.toString());
 			return;
 		}
 		mCurrentPath = file.getAbsolutePath();
@@ -167,25 +207,26 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		try {
 			mBreakText.setTextSize(mCurrentFontSize);
 			mBreakText.setBufferWidth(mBufferWidth);
-			mBuffer = new ColorFilteredBuffer(
-					20*BigLineData.FILE_LIME,
+			mBuffer = new ColorFilteredBuffer(20 * BigLineData.FILE_LIME,
 					mBreakText, file, mCurrentCharset);
-		} catch(FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			// don't pass along this code
-			KyoroApplication.showMessage("file can not read null filen --007--");
+			KyoroApplication
+					.showMessage("file can not read null filen --007--");
 			return;
 		}
-		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView.getLineViewBuffer();
+		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView
+				.getLineViewBuffer();
 
 		mLineView.setLineViewBufferSpec(mBuffer);
-		if(prevBuffer instanceof TextViewerBuffer) {
-			((TextViewerBuffer)prevBuffer).clear();
+		if (prevBuffer instanceof TextViewerBuffer) {
+			((TextViewerBuffer) prevBuffer).clear();
 
 		}
-		if(mBuffer instanceof TextViewerBuffer) {
+		if (mBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) mBuffer).startReadFile();
 		}
-		if(prevBuffer instanceof TextViewerBuffer) {
+		if (prevBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) prevBuffer).dispose();
 		}
 	}
@@ -203,39 +244,46 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 		private void setTextViewSize(SimpleGraphics graphics) {
 			int textSize = TextViewer.this.mCurrentFontSize;
-			int width = TextViewer.this.mLineView.getWidth();//SimpleDisplayObject.getStage(TextViewer.this).getWidth();//graphics.getWidth();
-			int w = TextViewer.this.mBufferWidth + mMergine*2;
-			TextViewer.this.mLineView.setTextSize(textSize*width/w);
+			int width = TextViewer.this.mLineView.getWidth();// SimpleDisplayObject.getStage(TextViewer.this).getWidth();//graphics.getWidth();
+			int w = TextViewer.this.mBufferWidth + mMergine * 2;
+			TextViewer.this.mLineView.setTextSize(textSize * width / w);
 		}
 
 		private void updateCircleControllerSize(SimpleGraphics graphics) {
 			int min = graphics.getWidth();
-			if(min>graphics.getHeight()){
+			if (min > graphics.getHeight()) {
 				min = graphics.getHeight();
 			}
-			min = min/2;
-			if(min<mCircleController.getWidth()){
-				mCircleController.setRadius(min/2);
+			min = min / 2;
+			if (min < mCircleController.getWidth()) {
+				mCircleController.setRadius(min / 2);
 			}
 		}
 
 		public void paintScroll(SimpleGraphics graphics) {
-			LineViewBufferSpec viewerBuffer = TextViewer.this.mLineView.getLineViewBuffer();
+			LineViewBufferSpec viewerBuffer = TextViewer.this.mLineView
+					.getLineViewBuffer();
 
-			int bufferSize = viewerBuffer.getNumberOfStockedElement(); 
-			int beginPosition = TextViewer.this.mLineView.getShowingTextStartPosition();
-			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
+			int bufferSize = viewerBuffer.getNumberOfStockedElement();
+			int beginPosition = TextViewer.this.mLineView
+					.getShowingTextStartPosition();
+			int endPosition = TextViewer.this.mLineView
+					.getShowingTextEndPosition();
 			mScrollBar.setStatus(beginPosition, endPosition, bufferSize);
-			TextViewer.this.mLineView.setRect(graphics.getWidth(), graphics.getHeight());
+			TextViewer.this.mLineView.setRect(graphics.getWidth(),
+					graphics.getHeight());
 		}
 	}
 
-	private class MyCircleControllerEvent implements SimpleCircleController.CircleControllerAction {
+	private class MyCircleControllerEvent implements
+			SimpleCircleController.CircleControllerAction {
 		public void moveCircle(int action, int degree, int rateDegree) {
 			if (action == CircleControllerAction.ACTION_MOVE) {
-				getLineView().setPositionY(getLineView().getPositionY() + rateDegree*2);
+				getLineView().setPositionY(
+						getLineView().getPositionY() + rateDegree * 2);
 			}
 		}
+
 		public void upButton(int action) {
 			getLineView().setPositionY(getLineView().getPositionY() + 1);
 		}
@@ -245,10 +293,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	private static class ColorFilteredBuffer
-	extends TextViewerBuffer  {
-		public ColorFilteredBuffer(int listSize, 
-				BreakText breakText,
+	private static class ColorFilteredBuffer extends TextViewerBuffer {
+		public ColorFilteredBuffer(int listSize, BreakText breakText,
 				File path, String charset) throws FileNotFoundException {
 			super(listSize, breakText, path, charset);
 		}
@@ -258,6 +304,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			super.head(element);
 			element.setColor(COLOR_FONT2);
 		}
+
 		@Override
 		public synchronized void add(LineViewData element) {
 			super.add(element);
@@ -266,41 +313,33 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	private LineViewBuffer getStartupMessageBuffer() {
-		String[] message = {
-				"Please open file\n",
-				"Current charset is "+mCurrentCharset+"\n", 
-				"..\n",
+		String[] message = { "Please open file\n",
+				"Current charset is " + mCurrentCharset + "\n", "..\n",
 				"Sorry, this application is pre-alpha version",
 				"Testing and Developing.. now",
-				"Please mail kyorohiro.android@gmail.com, ", 
+				"Please mail kyorohiro.android@gmail.com, ",
 				"If you have particular questions or comments, ",
-				"please don't hesitate to contact me. Thank you. \n"
-		};
-		int color[] = {
-				Color.CYAN,
-				Color.YELLOW,
-				Color.RED,
-				Color.RED,
-				Color.RED,
-				Color.RED,
-				Color.RED,
-				Color.RED,				
-		};
+				"please don't hesitate to contact me. Thank you. \n" };
+		int color[] = { Color.CYAN, Color.YELLOW, Color.RED, Color.RED,
+				Color.RED, Color.RED, Color.RED, Color.RED, };
 		LineViewBuffer startupMessage = new LineViewBuffer(100);
-		for(int i=0;i<message.length;i++){
+		for (int i = 0; i < message.length; i++) {
 			String m = message[i];
 			int crlf = LineViewData.INCLUDE_END_OF_LINE;
-			if(!m.endsWith("\n")){
+			if (!m.endsWith("\n")) {
 				crlf = LineViewData.EXCLUDE_END_OF_LINE;
 			}
 			startupMessage.add(new LineViewData(m, color[i], crlf));
 		}
 		return startupMessage;
 	}
-	public static class LineViewBuffer extends CyclingList<LineViewData> implements LineViewBufferSpec {
+
+	public static class LineViewBuffer extends CyclingList<LineViewData>
+			implements LineViewBufferSpec {
 		public LineViewBuffer(int listSize) {
 			super(listSize);
 		}
+
 		@Override
 		public BreakText getBreakText() {
 			return null;

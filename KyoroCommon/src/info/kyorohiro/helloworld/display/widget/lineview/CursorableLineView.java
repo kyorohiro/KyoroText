@@ -11,7 +11,36 @@ import info.kyorohiro.helloworld.io.MyBuilder;
 import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
 public class CursorableLineView extends LineView {
+	private MyCursor mLeft = new MyCursor();
 	private MyCursor mRight = new MyCursor();
+	private CharSequence mMode = MODE_VIEW;
+
+	public final static String MODE_SELECT = "MODE SELECT";
+	public final static String MODE_VIEW = "MODE VIEW";
+	public final static String MODE_EDIT = "MODE EDIT: NOW CREATING!!";
+	private int mTestTextColor = Color.parseColor("#66FFFF00");
+
+	public void setMode(String mode) {
+		mMode = mode;
+		if (MODE_SELECT.equals(mode)) {
+			mLeft.enable(true);
+			mRight.enable(true);
+			int col = getShowingTextStartPosition();
+			mLeft.setCursorCol(col);
+			mLeft.setCursorRow(0);
+			mRight.setCursorCol(col);
+			mRight.setCursorRow(3);
+
+		}
+		if (MODE_VIEW.equals(mode)) {
+			mLeft.enable(false);
+			mRight.enable(false);
+		}
+		if (MODE_EDIT.equals(mode)) {
+			mLeft.enable(false);
+			mRight.enable(true);
+		}
+	}
 
 	public BreakText getBreakText() {
 		return getLineViewBuffer().getBreakText();
@@ -22,8 +51,7 @@ public class CursorableLineView extends LineView {
 		if (super.onTouchTest(x, y, action)) {
 			return true;
 		} else {
-			if (action == MotionEvent.ACTION_DOWN) {
-			} else if (action == MotionEvent.ACTION_UP) {
+			if (mMode == MODE_EDIT && action == MotionEvent.ACTION_UP) {
 				mRight.setCursorCol(getYToPosY(y));
 				mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), x,
 						mRight.getCursorRow()));
@@ -36,7 +64,10 @@ public class CursorableLineView extends LineView {
 			int cashSize) {
 		super(inputtedText, textSize, cashSize);
 		addChild(mRight);
+		addChild(mLeft);
 		mRight.setRect(20, 120);
+		mLeft.setRect(20, 120);
+		mLeft.setPoint(100, 100);
 	}
 
 	@Override
@@ -45,40 +76,76 @@ public class CursorableLineView extends LineView {
 		if (null == getBreakText()) {
 			return;
 		}
-		int y = 0;
-		float x = 0.0f;
 
-		String a = "posY=" + this.getPositionY();
-		a += ",sPos=" + this.getShowingTextStartPosition();
-		a += ",ePos=" + this.getShowingTextEndPosition();
-		a += ",blink=" + this.getBlinkY();
+		updateCursor(graphics, mRight);
+		updateCursor(graphics, mLeft);
+		// String a = "posY=" + this.getPositionY();
+		// a += ",sPos=" + this.getShowingTextStartPosition();
+		// a += ",ePos=" + this.getShowingTextEndPosition();
+		// a += ",blink=" + this.getBlinkY();
 		// graphics.drawText("" + a, 10, 500);
-		// getBreakText().setTextSize(getTextSize());
+		graphics.setColor(mTestTextColor);
+		graphics.setTextSize(30);
+		graphics.drawText(mMode, 20, this.getHeight() - 50);
+		drawBGForSelect(graphics);
+	}
 
-		x = getXForShowLine(0, 0);
-		int l = 0;
-		try {
-			LineViewData d = getLineViewData(mRight.getCursorCol());
-			graphics.setColor(Color.YELLOW);
-			graphics.drawText("" + a + "," + d.toString(), 10, 500);
-			if (d != null) {
-				float[] widths = new float[1000];
-				l = getBreakText().getTextWidths(
-						d, 0, d.length(), widths);
-				// mPaint.
-//				for (int i = d.length()-1; i >= (d.length()-mRight.getCursorRow()); i--) {
-				for (int i = 0; i <=mRight.getCursorRow(); i++) {
-					x += widths[i];
-				}
+	private void drawBGForSelect(SimpleGraphics graphics) {
+		if (mLeft.enable() && mRight.enable()) {
+			MyCursor b = mLeft;
+			MyCursor e = mRight;
+			int textSize = getTextSize();
+			if (b.getY()>e.getY()|| (b.getY() == e.getY() && b.getX()> e.getX())) {
+				b = mRight;
+				e = mLeft;
 			}
-		} catch (Exception e) {
-			// e.printStackTrace();
+			
+			graphics.setColor(mTestTextColor);
+			graphics.setStrokeWidth(10);
+			if(b.getY() != e.getY()){
+				graphics.drawLine(b.getX(), b.getY(), (int)(getWidth()*0.95), b.getY());
+				graphics.drawLine(this.getXForShowLine(0, 0), e.getY(), e.getX(), e.getY());
+				graphics.startPath();
+				graphics.moveTo((int)(getWidth()*0.05), b.getY()+getTextSize());//+getTextSize());
+				graphics.lineTo((int)(getWidth()*0.95), b.getY());
+				graphics.lineTo((int)(getWidth()*0.95), e.getY()-getTextSize());
+				graphics.lineTo((int)(getWidth()*0.05), e.getY());//+getTextSize());
+				graphics.moveTo((int)(getWidth()*0.05), b.getY());//+getTextSize());
+				graphics.endPath();
+			} else {
+				graphics.drawLine(b.getX(), b.getY(), e.getX(), e.getY());
+			}
 		}
+	}
 
-		y = getYForShowLine(getTextSize(), mRight.getCursorRow(),
-				mRight.getCursorCol() - getShowingTextStartPosition());
-		// android.util.Log.v("mkj","xxx="+x+","+y+","+l+","+cursorRow);
-		mRight.setPoint((int) x, y);
+	private void updateCursor(SimpleGraphics graphics, MyCursor cursor) {
+		{
+			int y = 0;
+			float x = 0.0f;
+			x = getXForShowLine(0, 0);
+			int l = 0;
+			try {
+				LineViewData d = getLineViewData(cursor.getCursorCol());
+				graphics.setColor(Color.YELLOW);
+				if (d != null) {
+					float[] widths = new float[1000];
+					l = getBreakText().getTextWidths(d, 0, d.length(), widths);
+					// mPaint.
+					// for (int i = d.length()-1; i >=
+					// (d.length()-mRight.getCursorRow()); i--) {
+					for (int i = 0; i <= cursor.getCursorRow(); i++) {
+						x += widths[i];
+					}
+				}
+			} catch (Exception e) {
+				// e.printStackTrace();
+			}
+
+			y = getYForShowLine(getTextSize(), cursor.getCursorRow(),
+					cursor.getCursorCol() - getShowingTextStartPosition());
+			// android.util.Log.v("mkj","xxx="+x+","+y+","+l+","+cursorRow);
+			cursor.setPoint((int) x, y);
+		}
 	}
 
 	public class MyCursor extends SimpleDisplayObject {
@@ -89,6 +156,15 @@ public class CursorableLineView extends LineView {
 		private int px = 0;
 		private int py = 0;
 		private boolean focus = false;
+		private boolean mEnable = false;
+
+		public boolean enable() {
+			return mEnable;
+		}
+
+		public void enable(boolean enable) {
+			mEnable = enable;
+		}
 
 		public void setCursorCol(int col) {
 			cursorCol = col;
@@ -108,6 +184,9 @@ public class CursorableLineView extends LineView {
 
 		@Override
 		public void paint(SimpleGraphics graphics) {
+			if (!mEnable) {
+				return;
+			}
 			// setPoint(100, 100);
 			if (!focus) {
 				graphics.setColor(Color.parseColor("#66FFFF00"));
@@ -117,15 +196,16 @@ public class CursorableLineView extends LineView {
 				graphics.setColor(Color.parseColor("#6600FFFF"));
 			}
 			drawCursor(graphics, 0, 0);
-			LineViewData d = CursorableLineView.this.getLineViewData(cursorCol);
-			String a = "";
-			if (d != null) {
-				a += d.toString();
-			}
-			graphics.drawText(
-					"mo,x=" + cursorRow + ",y=" + cursorCol + "," + a, 100, 100);
-			android.util.Log.v("kiyo", "zzz=" + "mo,x=" + cursorRow + ",y="
-					+ cursorCol + "," + a);
+			// LineViewData d =
+			// CursorableLineView.this.getLineViewData(cursorCol);
+			// String a = "";
+			// if (d != null) {
+			// a += d.toString();
+			// }
+			// graphics.drawText(
+			// "mo,x=" + cursorRow + ",y=" + cursorCol + "," + a, 100, 100);
+			// android.util.Log.v("kiyo", "zzz=" + "mo,x=" + cursorRow + ",y="
+			// + cursorCol + "," + a);
 		}
 
 		private void drawCursor(SimpleGraphics graphics, int x, int y) {
@@ -141,6 +221,9 @@ public class CursorableLineView extends LineView {
 
 		@Override
 		public boolean onTouchTest(int x, int y, int action) {
+			if (!mEnable) {
+				return false;
+			}
 			mX = x;
 			mY = y;
 			if (action == MotionEvent.ACTION_DOWN) {
@@ -155,7 +238,7 @@ public class CursorableLineView extends LineView {
 			}
 
 			if (action == MotionEvent.ACTION_UP) {
-				if(focus == true){
+				if (focus == true) {
 					focus = false;
 					return true;
 				}
@@ -179,8 +262,8 @@ public class CursorableLineView extends LineView {
 	}
 
 	public int getYToPosY(int y) {
-		int n = (int) (y / (getTextSize() * 1.2))+1;
-		int yy = n - super.getBlinkY()-1;
+		int n = (int) (y / (getTextSize() * 1.2)) + 1;
+		int yy = n - super.getBlinkY() - 1;
 		return yy + getShowingTextStartPosition();
 	}
 
