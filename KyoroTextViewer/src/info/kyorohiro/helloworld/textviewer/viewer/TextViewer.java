@@ -12,6 +12,8 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
+import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus;
+import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
@@ -63,7 +65,34 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		addChild(new TouchAndMoveActionForLineView(mLineView));
 		addChild(new TouchAndZoomForLineView(mLineView));
 		addChild(mLineView);
-		addChild(mCircleController = new SimpleCircleController());
+//		addChild(mCircleController = new SimpleCircleController());
+		addChild(mCircleController = new SimpleCircleControllerMenuPlus());
+		if(mCircleController instanceof SimpleCircleControllerMenuPlus) {
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(new CircleMenuItem() {
+				@Override
+				public boolean selected(int id) {return false;}
+				@Override
+				public int getid() {return 0;}
+				@Override
+				public String getTitle() {return "select mode";}
+			});
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(new CircleMenuItem() {
+				@Override
+				public boolean selected(int id) {return false;}
+				@Override
+				public int getid() {return 1;}
+				@Override
+				public String getTitle() {return "edit mode";}
+			});
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(new CircleMenuItem() {
+				@Override
+				public boolean selected(int id) {return false;}
+				@Override
+				public int getid() {return 2;}
+				@Override
+				public String getTitle() {return "view mode";}
+			});
+		}
 		addChild(new LayoutManager());
 		addChild(mScrollBar);
 		mCircleController.setEventListener(new MyCircleControllerEvent());

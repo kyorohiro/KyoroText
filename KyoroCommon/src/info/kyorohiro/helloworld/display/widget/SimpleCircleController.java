@@ -24,7 +24,21 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		mMaxRadius = radius;
 		mMinRadius = mMaxRadius/2;
 	}
-	
+
+	public int getMinRadius() {
+		return mMinRadius;
+	}
+
+	public int getMaxRadius() {
+		return mMaxRadius;
+	}
+
+	public int getCenterX() {
+		return 0;
+	}
+	public int getCenterY() {
+		return 0;
+	}
 	public int getWidth(){
 		return mMaxRadius*2;
 	}
@@ -116,9 +130,9 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 				graphics.drawCircle(x, y, centerRadius / 5);
 			}
 
-			graphics.drawCircle(0, 0, mMaxRadius);
-			graphics.drawCircle(0, 0, mMinRadius);
-			graphics.drawCircle(0, 0, mMinRadius);
+			graphics.drawCircle(getCenterX(), getCenterY(), mMaxRadius);
+			graphics.drawCircle(getCenterX(), getCenterY(), mMinRadius);
+			graphics.drawCircle(getCenterX(), getCenterY(), mMinRadius);
 
 			graphics.drawLine(mMinRadius, -10, centerRadius, 0);
 			graphics.drawLine(mMaxRadius, -10, centerRadius, 0);
