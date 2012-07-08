@@ -71,7 +71,7 @@ public class LookAheadCaching {
 		int cp = buffer.getCurrentPosition();
 		int mx = buffer.getMaxOfStackedElement();
 		int chunkSize = mx / 10;
-		if ((sp - chunkSize * 2) <= cp && cp <= (ep + chunkSize * 3)) {
+		if ((sp - chunkSize * 3) <= cp && cp <= (ep + chunkSize * 3)) {
 			return true;
 		} else {
 			return false;
