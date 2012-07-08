@@ -318,7 +318,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 		@Override
 		public BreakText getBreakText() {
-			return null;
+			return new MyBreakText();
 		}
 	}
 }
