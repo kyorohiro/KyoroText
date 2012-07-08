@@ -98,6 +98,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 										}
 									}
 								});
+								return true;
 							}
 
 							return false;

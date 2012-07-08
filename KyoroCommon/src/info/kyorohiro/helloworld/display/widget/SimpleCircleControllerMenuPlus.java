@@ -16,11 +16,11 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 	private ArrayList<Item> itemList = new ArrayList<Item>();
 	private CircleMenuItem mListener = null;
 
-	public void setCircleMenuItem(CircleMenuItem listener){
+	public void setCircleMenuItem(CircleMenuItem listener) {
 		mListener = listener;
 	}
 
-	public void addCircleMenu(int id,String title) {
+	public void addCircleMenu(int id, String title) {
 		Item i = new Item();
 		i.id = id;
 		i.title = title;
@@ -72,7 +72,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 			int radius = SimpleCircleControllerMenuPlus.this.getMinRadius();
 			int radiusN = SimpleCircleControllerMenuPlus.this.getMaxRadius() * 3;
 			if (action == MotionEvent.ACTION_DOWN) {
-				if (mFocus==false &&x * x + y * y < radius * radius) {
+				if (mFocus == false && x * x + y * y < radius * radius) {
 					mFocus = true;
 					mPrevX = x;
 					mPrevY = y;
@@ -84,7 +84,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 				if (mFocus == true && x * x + y * y < radiusN * radiusN) {
 					mCurrentX = x - mPrevX;
 					mCurrentY = y - mPrevY;
-//					android.util.Log.v("kiyo","okm x="+x+",y="+y);
+					// android.util.Log.v("kiyo","okm x="+x+",y="+y);
 					return true;
 				} else {
 					mFocus = false;
@@ -99,7 +99,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 			}
 			return super.onTouchTest(x, y, action);
 		}
-		
+
 	}
 
 	public class SelectMenu extends SimpleDisplayObject {
@@ -120,58 +120,58 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 				graphics.drawCircle(x, y, radiusN * 4 / 5);
 				graphics.drawCircle(x, y, radiusN * 3 / 5);
 
-				int len = 3;//itemList.size();
-				int div = 4;//(len + 1);
-				double angle = Math.PI/(2*div);
+				int len = 3;// itemList.size();
+				int div = 4;// (len + 1);
+				double angle = Math.PI / (2 * div);
 
 				double p = Math.atan2(-mButton.getYY(), mButton.getXX());
-				int curDegree = (int) Math.toDegrees(p)-90;
-				if(curDegree <=0){
+				int curDegree = (int) Math.toDegrees(p) - 90;
+				if (curDegree <= 0) {
 					curDegree = 1;
 				}
-				int base = curDegree/(90/8);
-				int selected =(base+1)/2;
-//				android.util.Log.v("kiyo","base="+base+","+selected+","+curDegree+","+ Math.toDegrees(p));
+				int base = curDegree / (90 / 8);
+				int selected = (base + 1) / 2;
+				// android.util.Log.v("kiyo","base="+base+","+selected+","+curDegree+","+
+				// Math.toDegrees(p));
 
-				for (int i = 0; i < div*2; i++) {
-					double a = angle*i+Math.PI/2;
-					if(i==selected){
+				for (int i = 0; i < div * 2; i++) {
+					double a = angle * i + Math.PI / 2;
+					if (i == selected) {
 						graphics.setColor(Color.YELLOW);
 					} else {
-						graphics.setColor(Color.GREEN);						
+						graphics.setColor(Color.GREEN);
 					}
-					
-					graphics.drawLine(
-							(int) (radius * Math.cos(a)),
+
+					graphics.drawLine((int) (radius * Math.cos(a)),
 							(int) (radius * -1 * Math.sin(a)),
 							(int) (radiusN * Math.cos(a)),
 							(int) (radiusN * -1 * Math.sin(a)));
 				}
 
-
 				for (int i = 0; i < itemList.size(); i++) {
-					if(i==selected){
+					if (i == selected) {
 						graphics.setColor(Color.YELLOW);
 					} else {
-						graphics.setColor(Color.GREEN);						
+						graphics.setColor(Color.GREEN);
 					}
-					double a = angle*i+Math.PI/2;
-					graphics.drawText(
-							itemList.get(i).title,
+					double a = angle * i + Math.PI / 2;
+					graphics.drawText(itemList.get(i).title,
 							(int) (radiusN * Math.cos(a)),
 							(int) (radiusN * -1 * Math.sin(a)));
 				}
 
-//				if(selected<itemList.size()){
-//					itemList.get(selected).selected(selected);
-//				}
-				int radiusM = SimpleCircleControllerMenuPlus.this.getMaxRadius();
-				if ( mButton.getXX()* mButton.getXX() +  mButton.getYY()* mButton.getYY() > radiusM * radiusM) {
-					if(selected<itemList.size()){
-						mListener.selected(
-								itemList.get(selected).id,
-								itemList.get(selected).title
-								);
+				// if(selected<itemList.size()){
+				// itemList.get(selected).selected(selected);
+				// }
+				int radiusM = SimpleCircleControllerMenuPlus.this
+						.getMaxRadius();
+				if (mButton.getXX() * mButton.getXX() + mButton.getYY()
+						* mButton.getYY() > radiusM * radiusM) {
+					if (selected < itemList.size()) {
+						if (mListener.selected(itemList.get(selected).id,
+								itemList.get(selected).title)) {
+							mFocus = false;
+						}
 					}
 				}
 			}
@@ -181,6 +181,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 	public interface CircleMenuItem {
 		public boolean selected(int id, String title);
 	}
+
 	public static class Item {
 		public String title;
 		public int id;

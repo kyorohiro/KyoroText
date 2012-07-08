@@ -143,5 +143,11 @@ public class TestSimpleTextDecoder extends TestCase {
 			// TODO Auto-generated method stub
 			return 0;
 		}
+
+		@Override
+		public float getTextSize() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	}
 }
