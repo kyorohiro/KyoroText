@@ -61,12 +61,12 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 				if (file.exists() && file.isFile()) {
 					if(mViewer.readFile(file)&& mRefActivity!=null){
 						Activity a = mRefActivity.get();
-			/*			if(a!=null){
+						if(a!=null){
 							// todo refactraing 
 							// reset Intent. for open current showing file 
 							// when restart this application.
 							a.setIntent(null);							
-						}*/
+						}
 					}
 					return true;
 				}
