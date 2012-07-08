@@ -120,8 +120,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		InputStream is = res.openRawResource(R.drawable.tex2res4);
 		mBGImage = new SimpleImage(is);
 		mLineView.setBGImage(mBGImage);
-		InputStream isScroll = res.openRawResource(R.drawable.tex2res2);
-		mScrollImage = new SimpleImage(isScroll);
+		//InputStream isScroll = res.openRawResource(R.drawable.tex2res2);
+		//mScrollImage = new SimpleImage(isScroll);
 		// mScrollBar.setBGImage(mScrollImage);
 	}
 
@@ -131,9 +131,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		if (!mBGImage.getImage().isRecycled()) {
 			mBGImage.getImage().recycle();
 		}
-		if (!mScrollImage.getImage().isRecycled()) {
-			mScrollImage.getImage().recycle();
-		}
+		//if (!mScrollImage.getImage().isRecycled()) {
+		//	mScrollImage.getImage().recycle();
+		//}
 	}
 
 	public String getCurrentPath() {

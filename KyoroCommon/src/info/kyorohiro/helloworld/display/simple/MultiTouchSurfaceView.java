@@ -99,9 +99,9 @@ public class MultiTouchSurfaceView extends SurfaceView {
 				support = true;
 			}
 		} catch (SecurityException e) {
-			e.printStackTrace();
+		//	e.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+		//	e.printStackTrace();
 		}
 	}
 

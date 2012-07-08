@@ -69,7 +69,12 @@ public class SimpleTextDecoder {
 				bb.clear();
 				c = cb.get();
 				mBuffer.append(c);
-				int len = mBreakText.breakText(mBuffer);
+				{
+				// following code maby out of memor error , you must change kb
+				int len = Integer.MAX_VALUE;// example -->1024*4;// force crlf 12kb 
+				if(mBreakText != null){
+					len = mBreakText.breakText(mBuffer);
+				}
 				if (len < mBuffer.getCurrentBufferedMojiSize()) {
 					// ‚Ð‚Æ‚Â‘O‚Å‰üs
 					mBuffer.removeLast();
@@ -78,6 +83,7 @@ public class SimpleTextDecoder {
 					break outside;
 				} else {
 					todoPrevPosition = mReader.getFilePointer();
+				}
 				}
 			}
 			if (c == '\n') {

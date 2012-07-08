@@ -83,7 +83,7 @@ implements SimpleLockInter {
 				mNumOfLineAdded++;
 				add(new LineViewData(line.subSequence(0, len), mCurrentColor,
 						LineViewData.EXCLUDE_END_OF_LINE));
-				line = line.subSequence(len, len+line.length()-len);
+				line = line.subSequence(len, line.length()-len);
 				// kiyo
 			}
 		}

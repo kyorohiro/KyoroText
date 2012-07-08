@@ -180,7 +180,7 @@ public class CursorableLineView extends LineView {
 	}
 
 	//
-	private float[] widths = new float[2056];
+	private float[] widths = new float[1024];
 
 	private void updateCursor(SimpleGraphics graphics, MyCursor cursor) {
 		{
