@@ -348,10 +348,10 @@ public class CursorableLineView extends LineView {
 	}
 
 	public int getYToPosY(int y) {
-		int n = (int) ((float)y / (float)(getTextSize()*1.2));
-		int yy = n - super.getBlinkY()-1;
+		int n = (int) (y / (int)(getTextSize()*1.2));
+		int yy = n - getBlinkY()-1;
 		//
-		return yy + (getShowingTextStartPosition())+1;
+		return yy + (getShowingTextStartPosition());
 	}
 
 	@Deprecated
