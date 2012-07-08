@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.text.ClipboardManager;
+import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -262,11 +263,15 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 
 		public void upButton(int action) {
-			getLineView().setPositionY(getLineView().getPositionY() + 1);
+			if(action == CircleControllerAction.ACTION_PRESSED) {
+				getLineView().setPositionY(getLineView().getPositionY() + 1);
+			}
 		}
 
 		public void downButton(int action) {
-			getLineView().setPositionY(getLineView().getPositionY() - 1);
+			if(action == CircleControllerAction.ACTION_PRESSED) {
+				getLineView().setPositionY(getLineView().getPositionY() - 1);
+			}
 		}
 	}
 
