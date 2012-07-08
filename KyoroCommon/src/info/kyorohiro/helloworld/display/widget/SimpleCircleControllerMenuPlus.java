@@ -113,7 +113,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 			int x = SimpleCircleControllerMenuPlus.this.getCenterX();
 			int y = SimpleCircleControllerMenuPlus.this.getCenterY();
 			int radius = SimpleCircleControllerMenuPlus.this.getMaxRadius();
-			int radiusN = SimpleCircleControllerMenuPlus.this.getMaxRadius() * 3;
+			int radiusN = SimpleCircleControllerMenuPlus.this.getMaxRadius() * 3*3/4;
 			if (mFocus) {
 				graphics.setColor(Color.GREEN);
 				graphics.setStrokeWidth(1);
@@ -156,8 +156,8 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 					}
 					double a = angle * i + Math.PI / 2;
 					graphics.drawText(itemList.get(i).title,
-							(int) (radiusN*3/4* Math.cos(a)),
-							(int) (radiusN*3/4* -1 * Math.sin(a)));
+							(int) (radiusN* Math.cos(a)),
+							(int) (radiusN* -1 * Math.sin(a)));
 				}
 
 				// if(selected<itemList.size()){
