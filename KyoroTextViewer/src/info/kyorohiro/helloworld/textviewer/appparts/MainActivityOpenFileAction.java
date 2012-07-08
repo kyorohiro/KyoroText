@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.textviewer.appparts;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
@@ -35,7 +36,9 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 		return false;
 	}
 
+	private WeakReference<Activity> mRefActivity = null;
 	private void showExplorer(Activity activity) {
+		mRefActivity = new WeakReference<Activity>(activity);
 		File directory = new File(KyoroSetting.getCurrentFile());
 		File firstCandidateDirectory = directory.getParentFile();
 		File secondCandidateDirectory = Environment.getExternalStorageDirectory();
@@ -56,7 +59,15 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 			@Override
 			public boolean onSelectedFile(File file, String action) {
 				if (file.exists() && file.isFile()) {
-					mViewer.readFile(file);
+					if(mViewer.readFile(file)&& mRefActivity!=null){
+						Activity a = mRefActivity.get();
+						if(a!=null){
+							// todo refactraing 
+							// reset Intent. for open current showing file 
+							// when restart this application.
+							a.setIntent(null);							
+						}
+					}
 					return true;
 				}
 				return false;

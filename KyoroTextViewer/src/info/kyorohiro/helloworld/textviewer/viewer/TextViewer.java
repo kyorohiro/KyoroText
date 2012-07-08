@@ -168,15 +168,15 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	public void readFile(File file) {
+	public boolean readFile(File file) {
 		if (file == null) {
 			KyoroApplication.showMessage("file can not read null file");
-			return;
+			return false;
 		}
 		if (!file.canRead() || !file.exists() || !file.isFile()) {
 			KyoroApplication
 					.showMessage("file can not read " + file.toString());
-			return;
+			return false;
 		}
 		mCurrentPath = file.getAbsolutePath();
 		KyoroSetting.setCurrentFile(file.getAbsolutePath());
@@ -189,7 +189,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			// don't pass along this code
 			KyoroApplication
 					.showMessage("file can not read null filen --007--");
-			return;
+			return false;
 		}
 		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView
 				.getLineViewBuffer();
@@ -205,6 +205,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		if (prevBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) prevBuffer).dispose();
 		}
+		return true;
 	}
 
 	private class LayoutManager extends SimpleDisplayObject {
