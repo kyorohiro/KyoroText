@@ -187,22 +187,26 @@ public class CursorableLineView extends LineView {
 			int y = 0;
 			float x = 0.0f;
 			int l = 0;
-			try {
-				LineViewData d = getLineViewData(cursor.getCursorCol());
-				graphics.setColor(Color.YELLOW);
-				if (d != null) {
-					l = getBreakText().getTextWidths(d, 0, d.length(), widths);
-					// mPaint.
-					// for (int i = d.length()-1; i >=
-					// (d.length()-mRight.getCursorRow()); i--) {
-					for (int i = 0; i < cursor.getCursorRow(); i++) {
-						x += widths[i];
+			if(cursor.getCursorCol()<getShowingTextStartPosition()|| cursor.getCursorCol()>getShowingTextEndPosition()){
+				// TextViewerとのキャッシュの取り合いで、画面が点滅してしまう。
+				// todo 後で対策を考える。
+			}else {
+				try {
+					LineViewData d = getLineViewData(cursor.getCursorCol());
+					graphics.setColor(Color.YELLOW);
+					if (d != null) {
+						l = getBreakText().getTextWidths(d, 0, d.length(), widths);
+						// mPaint.
+						// for (int i = d.length()-1; i >=
+						// (d.length()-mRight.getCursorRow()); i--) {
+						for (int i = 0; i < cursor.getCursorRow(); i++) {
+							x += widths[i];
+						}
 					}
+				} catch (Exception e) {
+					// e.printStackTrace();
 				}
-			} catch (Exception e) {
-				// e.printStackTrace();
 			}
-
 			y = getYForShowLine((int) (getTextSize() * getScale()),
 					cursor.getCursorRow(), cursor.getCursorCol()
 							- getShowingTextStartPosition());
@@ -261,6 +265,9 @@ public class CursorableLineView extends LineView {
 		@Override
 		public void paint(SimpleGraphics graphics) {
 			if (!mEnable) {
+				return;
+			}
+			if(getCursorCol()<getShowingTextStartPosition()|| getCursorCol()>getShowingTextEndPosition()){
 				return;
 			}
 			// setPoint(100, 100);
