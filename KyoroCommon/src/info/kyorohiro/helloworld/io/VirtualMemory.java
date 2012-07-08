@@ -12,6 +12,7 @@ public class VirtualMemory {
 	private RandomAccessFile mFile = null;
 	private long mFilePointer = 0;
 	private CyclingByteArray mBuffer = null;
+	byte[] b= null;
 	
 	private LinkedList<Long> mMark = new LinkedList<Long>();
 	public void pushMark() {
@@ -39,6 +40,7 @@ public class VirtualMemory {
 	public VirtualMemory(File base, int cashSize) throws FileNotFoundException {
 		mFile = new RandomAccessFile(base, "r");
 		mBufferLength = cashSize;
+		b = new byte[mBufferLength/4]; 
 		mBuffer = new CyclingByteArray(mBufferLength);
 	}
 
@@ -46,7 +48,7 @@ public class VirtualMemory {
 		try {
 			if(!mBuffer.isBuffered(mFilePointer)){
 				mFile.seek(mFilePointer);
-				byte[] b= new byte[mBufferLength/4]; 
+//				byte[] b= new byte[mBufferLength/4]; 
 				int len = mFile.read(b);
 				if(len==-1){
 					return -1; 
