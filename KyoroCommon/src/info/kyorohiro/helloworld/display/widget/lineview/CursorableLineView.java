@@ -207,7 +207,7 @@ public class CursorableLineView extends LineView {
 					// e.printStackTrace();
 				}
 			}
-			y = getYForShowLine((int) (getTextSize() * getScale()),
+			y = getYForShowLine((int) (getTextSize() * getSclaeFromTextSize()),
 					cursor.getCursorRow(), cursor.getCursorCol()
 							- getShowingTextStartPosition());
 			// android.util.Log.v("mkj","xxx="+x+","+y+","+getScale());
@@ -348,7 +348,7 @@ public class CursorableLineView extends LineView {
 	}
 
 	public int getYToPosY(int y) {
-		int n = (int) (y / (getTextSize()*1.2));
+		int n = (int) ((float)y / (float)(getTextSize()*1.2));
 		int yy = n - super.getBlinkY()-1;
 		//
 		return yy + (getShowingTextStartPosition())+1;
