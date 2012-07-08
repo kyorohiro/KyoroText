@@ -1,8 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.text.ClipboardManager;
 import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -13,7 +11,6 @@ public class CursorableLineView extends LineView {
 	private MyCursor mLeft = new MyCursor();
 	private MyCursor mRight = new MyCursor();
 	private CharSequence mMode = MODE_VIEW;
-	// private Mode mCopy = new Mode();
 
 	public final static String MODE_SELECT = "MODE SELECT";
 	public final static String MODE_VIEW = "MODE VIEW";
@@ -26,43 +23,42 @@ public class CursorableLineView extends LineView {
 			MyCursor e = mRight;
 			int textSize = (int) (getTextSize() * getScale());
 			if (b.getCursorCol() > e.getCursorCol()
-					|| (b.getCursorCol() == e.getCursorCol() && b.getCursorRow() > e.getCursorRow())) {
+					|| (b.getCursorCol() == e.getCursorCol() && b
+							.getCursorRow() > e.getCursorRow())) {
 				b = mRight;
 				e = mLeft;
 			}
-			if(b.getCursorCol()<0){
+			if (b.getCursorCol() < 0) {
 				b.setCursorCol(0);
 				b.setCursorRow(0);
 			}
-			if(e.getCursorCol()<0){
+			if (e.getCursorCol() < 0) {
 				e.setCursorCol(0);
 				e.setCursorRow(0);
 			}
 
-			
 			StringBuilder bb = new StringBuilder();
 			LineViewBufferSpec buffer = getLineViewBuffer();
 
 			try {
-				if(b.getY() == e.getY()) {
-					CharSequence c = buffer.get(b.getCursorCol());// e.getY());
-					if(c==null){c="";}
+				if (b.getY() == e.getY()) {
+					CharSequence c = buffer.get(b.getCursorCol());
+					if (c == null) {
+						c = "";
+					}
 					bb.append(c.subSequence(b.getCursorRow(), e.getCursorRow()));
 				} else {
-					CharSequence c = buffer.get(b.getCursorCol());// e.getY());
-					bb.append(""//"start="
+					CharSequence c = buffer.get(b.getCursorCol());
+					bb.append(""
 							+ c.subSequence(b.getCursorRow(),
-									c.length() - b.getCursorRow()));// e.getX(),e.getY()));
-					// for(int i=b.getY()+1;i<e.getY()-1;i++){
+									c.length() - b.getCursorRow()));
 					for (int i = b.getCursorCol() + 1; i < e.getCursorCol() - 1; i++) {
 						bb.append(buffer.get(i));
 					}
-					CharSequence cc = buffer.get(e.getCursorCol());// e.getY());
-					bb.append(""//"end="
-							+ cc.subSequence(0, e.getCursorRow()));// e.getX(),e.getY()));
-					// android.util.Log.v("kiyo","copy="+bb.toString());
+					CharSequence cc = buffer.get(e.getCursorCol());
+					bb.append("" + cc.subSequence(0, e.getCursorRow()));
 				}
-			}catch(Throwable t){
+			} catch (Throwable t) {
 				;
 			}
 			return bb.toString();
@@ -344,33 +340,11 @@ public class CursorableLineView extends LineView {
 		}
 	}
 
-	/*
-	 * public class Mode extends SimpleDisplayObject { private int anime = 0;
-	 * private int access = 1; private boolean mFocus = false;
-	 * 
-	 * @Override public void paint(SimpleGraphics graphics) { if
-	 * (mMode.equals(MODE_SELECT)) { if (anime > 100) { anime = 0; access = 1; }
-	 * anime += access; access++; graphics.setTextSize(20); if(mFocus){
-	 * graphics.setColor(Color.RED); } else { graphics.setColor(Color.YELLOW); }
-	 * graphics.drawText("push here then Copy", 0, -1 * anime); } }
-	 * 
-	 * @Override public boolean onTouchTest(int x, int y, int action) { if
-	 * (mMode.equals(MODE_SELECT)) { if (action == MotionEvent.ACTION_DOWN) { if
-	 * (-30 < y && y < 30 && 0 < x && x < 200) { mFocus = true; } }else
-	 * if(action == MotionEvent.ACTION_MOVE){ if(-30<y&&y<30&&0<x&&x<200){ }else
-	 * { mFocus = false; } } else if (action == MotionEvent.ACTION_UP) {
-	 * if(mFocus){ try{ ClipboardManager cm =
-	 * (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE); }
-	 * catch(Throwable e){
-	 * 
-	 * } } mFocus = false; } } else { mFocus = false; } return false; }
-	 * 
-	 * @Override public boolean includeParentRect() { return false; } }
-	 */
 	public int getYToPosY(int y) {
-		int n = (int) (y / (getTextSize() * 1.2 * getScale())) + 1;
-		int yy = n - super.getBlinkY() - 1;
-		return yy + getShowingTextStartPosition();
+		int n = (int) (y / (getTextSize()*1.2));
+		int yy = n - super.getBlinkY()-1;
+		//
+		return yy + (getShowingTextStartPosition())+1;
 	}
 
 	@Deprecated
@@ -388,9 +362,11 @@ public class CursorableLineView extends LineView {
 		if (data == null) {
 			return cur;
 		}
-		int ret = mInputtedText.getBreakText().breakText(data, 0,
+		int ret = mInputtedText.getBreakText().breakText(data,
+				0,
 				data.length(),// x);
-				(int) (x - getXForShowLine(0, cursorCol)/getSclaeFromTextSize()));
+				(int) (x - getXForShowLine(0, cursorCol)
+						/ getSclaeFromTextSize()));
 
 		return ret;
 	}
