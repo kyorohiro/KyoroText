@@ -43,23 +43,27 @@ public class CursorableLineView extends LineView {
 			StringBuilder bb = new StringBuilder();
 			LineViewBufferSpec buffer = getLineViewBuffer();
 
-			if(b.getY() == e.getY()) {
-				CharSequence c = buffer.get(b.getCursorCol());// e.getY());
-				if(c==null){c="";}
-				bb.append(c.subSequence(b.getCursorRow(), e.getCursorRow()));
-			} else {
-				CharSequence c = buffer.get(b.getCursorCol());// e.getY());
-				bb.append(""//"start="
-						+ c.subSequence(b.getCursorRow(),
-								c.length() - b.getCursorRow()));// e.getX(),e.getY()));
-				// for(int i=b.getY()+1;i<e.getY()-1;i++){
-				for (int i = b.getCursorCol() + 1; i < e.getCursorCol() - 1; i++) {
-					bb.append(buffer.get(i));
+			try {
+				if(b.getY() == e.getY()) {
+					CharSequence c = buffer.get(b.getCursorCol());// e.getY());
+					if(c==null){c="";}
+					bb.append(c.subSequence(b.getCursorRow(), e.getCursorRow()));
+				} else {
+					CharSequence c = buffer.get(b.getCursorCol());// e.getY());
+					bb.append(""//"start="
+							+ c.subSequence(b.getCursorRow(),
+									c.length() - b.getCursorRow()));// e.getX(),e.getY()));
+					// for(int i=b.getY()+1;i<e.getY()-1;i++){
+					for (int i = b.getCursorCol() + 1; i < e.getCursorCol() - 1; i++) {
+						bb.append(buffer.get(i));
+					}
+					CharSequence cc = buffer.get(e.getCursorCol());// e.getY());
+					bb.append(""//"end="
+							+ cc.subSequence(0, e.getCursorRow()));// e.getX(),e.getY()));
+					// android.util.Log.v("kiyo","copy="+bb.toString());
 				}
-				CharSequence cc = buffer.get(e.getCursorCol());// e.getY());
-				bb.append(""//"end="
-				+ cc.subSequence(0, e.getCursorRow()));// e.getX(),e.getY()));
-				// android.util.Log.v("kiyo","copy="+bb.toString());
+			}catch(Throwable t){
+				;
 			}
 			return bb.toString();
 		} else {
