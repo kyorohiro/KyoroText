@@ -25,11 +25,21 @@ public class CursorableLineView extends LineView {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
 			int textSize = (int) (getTextSize() * getScale());
-			if (b.getY() > e.getY()
-					|| (b.getY() == e.getY() && b.getX() > e.getX())) {
+			if (b.getCursorCol() > e.getCursorCol()
+					|| (b.getCursorCol() == e.getCursorCol() && b.getCursorRow() > e.getCursorRow())) {
 				b = mRight;
 				e = mLeft;
 			}
+			if(b.getCursorCol()<0){
+				b.setCursorCol(0);
+				b.setCursorRow(0);
+			}
+			if(e.getCursorCol()<0){
+				e.setCursorCol(0);
+				e.setCursorRow(0);
+			}
+
+			
 			StringBuilder bb = new StringBuilder();
 			LineViewBufferSpec buffer = getLineViewBuffer();
 

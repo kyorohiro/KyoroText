@@ -156,8 +156,8 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 					}
 					double a = angle * i + Math.PI / 2;
 					graphics.drawText(itemList.get(i).title,
-							(int) (radiusN * Math.cos(a)),
-							(int) (radiusN * -1 * Math.sin(a)));
+							(int) (radiusN*3/4* Math.cos(a)),
+							(int) (radiusN*3/4* -1 * Math.sin(a)));
 				}
 
 				// if(selected<itemList.size()){
