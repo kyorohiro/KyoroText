@@ -266,9 +266,9 @@ public class CursorableLineView extends LineView {
 			if (!mEnable) {
 				return;
 			}
-			if(getCursorCol()<getShowingTextStartPosition()|| getCursorCol()>getShowingTextEndPosition()){
-				return;
-			}
+//			if(getCursorCol()<getShowingTextStartPosition()|| getCursorCol()>getShowingTextEndPosition()){
+//				return;
+//			}
 			// setPoint(100, 100);
 			if (!focus) {
 				graphics.setColor(Color.parseColor("#66FFFF00"));
