@@ -22,37 +22,36 @@ public class CursorableLineView extends LineView {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
 			int textSize = (int) (getTextSize() * getScale());
-			if (b.getCursorCol() > e.getCursorCol()
-					|| (b.getCursorCol() == e.getCursorCol() && b
-							.getCursorRow() > e.getCursorRow())) {
+			if (b.getCursorCol() > e.getCursorCol() 
+					|| (b.getCursorCol() == e.getCursorCol() && 
+					b.getCursorRow() > e.getCursorRow())) {
 				b = mRight;
 				e = mLeft;
 			}
 			if (b.getCursorCol() < 0) {
 				b.setCursorCol(0);
-				b.setCursorRow(0);
 			}
 			if (e.getCursorCol() < 0) {
 				e.setCursorCol(0);
-				e.setCursorRow(0);
 			}
 
 			StringBuilder bb = new StringBuilder();
 			LineViewBufferSpec buffer = getLineViewBuffer();
 
 			try {
-				if (b.getY() == e.getY()) {
+				if (b.getCursorCol() == e.getCursorCol()) {
 					CharSequence c = buffer.get(b.getCursorCol());
 					if (c == null) {
 						c = "";
 					}
+					//bb.append(""+b.getCursorRow()+","+e.getCursorRow()+","+c.length());
 					bb.append(c.subSequence(b.getCursorRow(), e.getCursorRow()));
 				} else {
 					CharSequence c = buffer.get(b.getCursorCol());
 					bb.append(""
 							+ c.subSequence(b.getCursorRow(),
-									c.length() - b.getCursorRow()));
-					for (int i = b.getCursorCol() + 1; i < e.getCursorCol() - 1; i++) {
+									c.length()));
+					for (int i = b.getCursorCol() + 1; i < e.getCursorCol() ; i++) {
 						bb.append(buffer.get(i));
 					}
 					CharSequence cc = buffer.get(e.getCursorCol());

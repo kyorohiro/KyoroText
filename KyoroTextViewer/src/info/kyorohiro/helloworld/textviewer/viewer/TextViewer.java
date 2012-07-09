@@ -92,8 +92,10 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 									public void run(){
 										try{
 											ClipboardManager cm=(ClipboardManager)KyoroApplication.getKyoroApplication().getSystemService(Context.CLIPBOARD_SERVICE);
-											cm.setText(""+((CursorableLineView)mLineView).copy());
+											CharSequence copy =  ((CursorableLineView)mLineView).copy();
+											cm.setText(""+copy);
 											((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,"Copy");
+											KyoroApplication.showMessage(""+copy);
 										}catch(Throwable t){
 											t.printStackTrace();
 										}

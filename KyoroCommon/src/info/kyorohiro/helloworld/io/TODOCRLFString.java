@@ -25,7 +25,7 @@ public class TODOCRLFString  implements CharSequence {
 
 	@Override
 	public CharSequence subSequence(int start, int end) {
-		return new String(mContent, start, end);
+		return new String(mContent, start, end-start);
 	}
 
 	@Override
