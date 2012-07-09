@@ -76,9 +76,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 						@Override
 						public boolean selected(int id, String title) {
 							((SimpleCircleControllerMenuPlus) mCircleController).clearCircleMenu();
-							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_SELECT);
-							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_VIEW);
 							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_EDIT);
+							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_VIEW);
+							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_SELECT);
 							
 							if(title.equals(CursorableLineView.MODE_EDIT)){
 								((CursorableLineView)mLineView).setMode(CursorableLineView.MODE_EDIT);
