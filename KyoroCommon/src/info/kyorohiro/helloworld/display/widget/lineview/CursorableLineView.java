@@ -22,9 +22,9 @@ public class CursorableLineView extends LineView {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
 			int textSize = (int) (getTextSize() * getScale());
-			if (b.getCursorCol() > e.getCursorCol() 
-					|| (b.getCursorCol() == e.getCursorCol() && 
-					b.getCursorRow() > e.getCursorRow())) {
+			if (b.getCursorCol() > e.getCursorCol()
+					|| (b.getCursorCol() == e.getCursorCol() && b
+							.getCursorRow() > e.getCursorRow())) {
 				b = mRight;
 				e = mLeft;
 			}
@@ -44,14 +44,12 @@ public class CursorableLineView extends LineView {
 					if (c == null) {
 						c = "";
 					}
-					//bb.append(""+b.getCursorRow()+","+e.getCursorRow()+","+c.length());
+					// bb.append(""+b.getCursorRow()+","+e.getCursorRow()+","+c.length());
 					bb.append(c.subSequence(b.getCursorRow(), e.getCursorRow()));
 				} else {
 					CharSequence c = buffer.get(b.getCursorCol());
-					bb.append(""
-							+ c.subSequence(b.getCursorRow(),
-									c.length()));
-					for (int i = b.getCursorCol() + 1; i < e.getCursorCol() ; i++) {
+					bb.append("" + c.subSequence(b.getCursorRow(), c.length()));
+					for (int i = b.getCursorCol() + 1; i < e.getCursorCol(); i++) {
 						bb.append(buffer.get(i));
 					}
 					CharSequence cc = buffer.get(e.getCursorCol());
@@ -186,35 +184,34 @@ public class CursorableLineView extends LineView {
 			int y = 0;
 			float x = 0.0f;
 			int l = 0;
-			if(cursor.getCursorCol()<getShowingTextStartPosition()|| cursor.getCursorCol()>getShowingTextEndPosition()){
+			float scale = getSclaeFromTextSize();
+			if (cursor.getCursorCol() < getShowingTextStartPosition()
+					|| cursor.getCursorCol() > getShowingTextEndPosition()) {
 				// TextViewerとのキャッシュの取り合いで、画面が点滅してしまう。
 				// todo 後で対策を考える。
-			}else {
+			} else {
 				try {
 					LineViewData d = getLineViewData(cursor.getCursorCol());
 					graphics.setColor(Color.YELLOW);
 					if (d != null) {
-						l = getBreakText().getTextWidths(d, 0, d.length(), widths);
-						// mPaint.
-						// for (int i = d.length()-1; i >=
-						// (d.length()-mRight.getCursorRow()); i--) {
-						for (int i = 0; i < cursor.getCursorRow(); i++) {
-							x += widths[i];
+						l = getBreakText().getTextWidths(d, 0,
+								cursor.getCursorRow(), widths);
+						// StringBuilder a = new StringBuilder();
+						for (int i = 0; i < l; i++) {
+							x += widths[i] * scale;
+							// a.append(",[" + i + "]=" + widths[i] +
+							// d.charAt(i));
 						}
+						// android.util.Log.v("kiyo", "te=" + a.toString());
 					}
 				} catch (Exception e) {
 					// e.printStackTrace();
 				}
 			}
-			y = getYForShowLine(getTextSize(),
-					cursor.getCursorRow(), cursor.getCursorCol()
-							- getShowingTextStartPosition());
-			// android.util.Log.v("mkj","xxx="+x+","+y+","+getScale());
-			float scale = getSclaeFromTextSize();
-			// android.util.Log.v("mkj", "xxx=" + x + "," + y + "," + getScale()
-			// + "," + getTextSize() + "/" + getBreakText().getTextSize());
+			y = getYForShowLine(getTextSize(), cursor.getCursorRow(),
+					cursor.getCursorCol() - getShowingTextStartPosition());
 
-			cursor.setPoint((int) (x * scale) + getXForShowLine(0, 0), y);
+			cursor.setPoint((int) x + getXForShowLine(0, 0), y);
 		}
 	}
 
@@ -266,9 +263,10 @@ public class CursorableLineView extends LineView {
 			if (!mEnable) {
 				return;
 			}
-//			if(getCursorCol()<getShowingTextStartPosition()|| getCursorCol()>getShowingTextEndPosition()){
-//				return;
-//			}
+			// if(getCursorCol()<getShowingTextStartPosition()||
+			// getCursorCol()>getShowingTextEndPosition()){
+			// return;
+			// }
 			// setPoint(100, 100);
 			if (!focus) {
 				graphics.setColor(Color.parseColor("#66FFFF00"));
@@ -347,15 +345,16 @@ public class CursorableLineView extends LineView {
 	}
 
 	public int getYToPosY(int y) {
-		int n = (int) (y / (int)(getTextSize()*1.2));
-		int yy = n - getBlinkY()-1;
+		int n = (int) (y / (int) (getTextSize() * 1.2));
+		int yy = n - getBlinkY() - 1;
 		//
 		return yy + (getShowingTextStartPosition());
 	}
 
 	@Deprecated
-	public int getXToPosX(int cursorCol, int x, int cur) {
-		x /= getSclaeFromTextSize();
+	public int getXToPosX(int cursorCol, int xx, int cur) {
+		float x = xx;
+		x -= getXForShowLine(0, cursorCol);
 		LineViewBufferSpec mInputtedText = super.getLineViewBuffer();
 		if (mInputtedText == null || null == mInputtedText.getBreakText()) {
 			return cur;
@@ -368,13 +367,19 @@ public class CursorableLineView extends LineView {
 		if (data == null) {
 			return cur;
 		}
-		int ret = mInputtedText.getBreakText().breakText(data,
-				0,
-				data.length(),// x);
-				(int) (x - getXForShowLine(0, cursorCol)
-						/ getSclaeFromTextSize()));
+		int l = getBreakText().getTextWidths(data, 0, data.length(), widths);
 
-		return ret;
+		float ww = 0;
+		for (int i = 0; i < l; i++) {
+			ww += widths[i] * getSclaeFromTextSize();
+			if (ww > x) {
+				return i;
+			}
+		}
+
+//		android.util.Log
+//				.v("kiyo", "ss=" + data.toString() + "," + xx + "," + x);
+		return data.length();
 	}
 
 }

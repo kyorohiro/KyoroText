@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.test.display.widget.lineview;
+/*package info.kyorohiro.helloworld.test.display.widget.lineview;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import junit.framework.TestCase;
@@ -156,4 +156,4 @@ public class TestLineViewData extends TestCase{
 		System.out.println("mo:"+"datam="+datam.toString());
 		assertEquals("abcdefghij"+"™"+"klmnopqrstuvwxyz0123456789", datam.toString());
 	}
-}
+}*/
