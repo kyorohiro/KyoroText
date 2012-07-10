@@ -7,8 +7,12 @@ import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +58,7 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 		} 
 
 		SimpleFileExplorer dialog = SimpleFileExplorer.createDialog(activity, showedDirectry);
+		((KyoroTextViewerActivity)activity).stopStage();
 		dialog.show();
 		dialog.setOnSelectedFileAction(new SelectedFileAction() {
 			@Override
@@ -65,12 +70,31 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 							// todo refactraing 
 							// reset Intent. for open current showing file 
 							// when restart this application.
-							a.setIntent(null);							
+							a.setIntent(null);
 						}
 					}
+
 					return true;
 				}
 				return false;
+			}
+		});
+		dialog.setOnCancelListener(new OnCancelListener() {			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				if(mRefActivity!=null){
+					Activity a = mRefActivity.get();
+					((KyoroTextViewerActivity)a).startStage();
+				}
+			}
+		});
+		dialog.setOnDismissListener(new OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				if(mRefActivity!=null){
+					Activity a = mRefActivity.get();
+					((KyoroTextViewerActivity)a).startStage();
+				}
 			}
 		});
 	}

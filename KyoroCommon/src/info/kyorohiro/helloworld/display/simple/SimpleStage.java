@@ -24,10 +24,21 @@ public class SimpleStage extends EditableSurfaceView {
 		this.setFocusable(true);
 	}
 
+	public boolean isAlive() {
+		if(mCurrentThread == null || !mCurrentThread.isAlive()){
+			return false;
+		}else {
+			return true;
+		}
+	}
+
 	public synchronized void start() {
-		mCurrentThread = new Thread(new Animation());
-		mCurrentThread.start();
-		getRoot().start();
+		if(!isAlive()){
+			mCurrentThread = new Thread(new Animation());
+			mCurrentThread.start();
+		} else {
+			mCountForLogicalSleep = 0;
+		}
 	}
 
 	public SimpleDisplayObjectContainer getRoot(){
@@ -35,12 +46,34 @@ public class SimpleStage extends EditableSurfaceView {
 	}
 
 	public synchronized void stop() {
-		Thread tmp = mCurrentThread;
-		mCurrentThread = null;
-		if (tmp != null && tmp.isAlive()) {
-			tmp.interrupt();
+		if(isAlive()){
+			Thread tmp = mCurrentThread;
+			mCurrentThread = null;
+			if (tmp != null && tmp.isAlive()) {
+				tmp.interrupt();
+			}
 		}
-		getRoot().stop();
+	}
+
+	private static int mCountForLogicalSleep = 0;
+	protected void logicalSleepForCpuUage() throws InterruptedException {
+		if(mCountForLogicalSleep<60) {
+			Thread.sleep(mSleep);
+		}
+		else if(mCountForLogicalSleep<2*120){
+			Thread.sleep(mSleep*4);
+		}
+		else if(mCountForLogicalSleep<4*240){
+			Thread.sleep(mSleep*6);
+		}
+		else if(mCountForLogicalSleep<480){
+			Thread.sleep(mSleep*8);
+		}
+		else if(mCountForLogicalSleep<960){
+			Thread.sleep(mSleep*12);
+		} else {
+			mCountForLogicalSleep++;
+		}
 	}
 
 	private class Animation implements Runnable {
@@ -50,21 +83,29 @@ public class SimpleStage extends EditableSurfaceView {
 
 			SurfaceHolder holder = SimpleStage.this.getHolder();
 			try {
+				Canvas canvas = null;
+				 mCountForLogicalSleep = 0;
+				getRoot().start();
 				while (true) {
 					if (mCurrentThread == null || mCurrentThread != Thread.currentThread()) {
 						break;
 					}
-					Canvas canvas = holder.lockCanvas();
 					try {
+						canvas = holder.lockCanvas();
 						doDraw(canvas);
-					} finally {
-						holder.unlockCanvasAndPost(canvas);
+					} 
+					finally {
+						if(canvas != null){
+							holder.unlockCanvasAndPost(canvas);
+						}
 					}
-					Thread.sleep(mSleep);
+					logicalSleepForCpuUage();
 				}
 			} catch (InterruptedException e) {
 			} catch (Throwable e) {
 				e.printStackTrace();
+			} finally {
+				getRoot().stop();
 			}
 		}
 	}
@@ -76,50 +117,44 @@ public class SimpleStage extends EditableSurfaceView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		mCountForLogicalSleep = 0;
 		boolean ret = super.onTouchEvent(event);
 		mRoot.onTouchTest(
 				(int) event.getX() - mRoot.getX(),
 				(int) event.getY() - mRoot.getY(),
 				event.getAction());
-		return ret;
+		if(isAlive()){
+			return ret;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		mCountForLogicalSleep = 0;
 		getRoot().onKeyDown(keyCode);
 		return super.onKeyDown(keyCode, event);
 	}
 	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		mCountForLogicalSleep = 0;
 		getRoot().onKeyUp(keyCode);
 		return super.onKeyUp(keyCode, event);
 	}
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {
-	//	float y = event.getY();
-	//	float x = event.getX();
-	/*	if(x*x < y*y){
-			if(event.getY() > 0){
-				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_DOWN);
-				getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_DOWN);
-			}
-			else if(event.getY() < 0) {
-				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_UP);
-				getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_UP);
-			}			
+		mCountForLogicalSleep = 0;
+		if(event.getX() > 0){
+			getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_DOWN);
+			getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_DOWN);
 		}
-		else {*/
-			if(event.getX() > 0){
-				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_DOWN);
-				getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_DOWN);
-			}
-			else if(event.getX() < 0) {
-				getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_UP);
-				getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_UP);
-			}
-//		}
+		else if(event.getX() < 0) {
+			getRoot().onKeyUp(KeyEvent.KEYCODE_DPAD_UP);
+			getRoot().onKeyDown(KeyEvent.KEYCODE_DPAD_UP);
+		}
 		return super.onTrackballEvent(event);
 	}
 

@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 
 public class KyoroTextViewerActivity extends MainActivity {
@@ -41,6 +43,36 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivitySetTextSizeAction(mTextViewer));
 		setMenuAction(new MainActivitySetCharsetDetectionAction(mTextViewer));
 	}
+
+	public void startStage() {
+		if(mStage != null) {
+			mStage.start();
+		}
+	}
+
+	public void stopStage() {
+		if(mStage != null) {
+			mStage.stop();
+		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		startStage();
+		return super.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onTrackballEvent(MotionEvent event) {
+		startStage();
+		return super.onTrackballEvent(event);
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		startStage();
+		return super.onKeyDown(keyCode, event);
+	}
+	
 
 	@Override
 	protected void onNewIntent(Intent intent) {
