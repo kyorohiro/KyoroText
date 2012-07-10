@@ -92,6 +92,13 @@ public class LookAheadCaching {
 		}
 	}
 
+	private void startReadBack(int position) {
+		if(position>=0) {
+			mBackBuilder.position = position;
+			startTask(mBackBuilder);
+		}
+	}
+
 	private void startReadForwardAndClear(int position) {
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = true;
@@ -99,15 +106,17 @@ public class LookAheadCaching {
 	}
 
 	public void startReadForward(int position) {
+		TextViewerBuffer buffer = getTextViewerBuffer();
+		if (buffer == null) {
+			return;
+		}
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = false;
-		startTask(mForwardBuilder);
+		if(!buffer.getBigLineData().isEOF()){
+			startTask(mForwardBuilder);
+		}
 	}
 
-	private void startReadBack(int position) {
-		mBackBuilder.position = position;
-		startTask(mBackBuilder);
-	}
 
 	interface Builder {
 		Runnable create();
@@ -139,7 +148,7 @@ public class LookAheadCaching {
 		}
 	}
 
-	public static class ReadBackFileTask implements Runnable {
+	public class ReadBackFileTask implements Runnable {
 		private int mStartWithoutOwn = 0;
 		private BigLineData mBigLineData = null;
 		private TextViewerBuffer mTextViewer = null;
@@ -156,7 +165,10 @@ public class LookAheadCaching {
 				MyBufferDatam[] builder = new MyBufferDatam[BigLineData.FILE_LIME];
 
 				int j = 0;
-				for (int i = 0; !Thread.interrupted()&& i < BigLineData.FILE_LIME && !mBigLineData.isEOF(); i++) {
+				for (int i = 0; 
+						!Thread.interrupted()&& i < BigLineData.FILE_LIME  && !mBigLineData.isEOF()
+						&&mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
+						i++) {
 					CharSequence line = mBigLineData.readLine();
 					TODOCRLFString lineWP = (TODOCRLFString) line;
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
@@ -178,7 +190,7 @@ public class LookAheadCaching {
 		}
 	}
 
-	public static class ReadForwardFileTask implements Runnable {
+	public class ReadForwardFileTask implements Runnable {
 		private int mStartWithoutOwn = 0;
 		private BigLineData mBigLineData = null;
 		private TextViewerBuffer mTextViewer = null;
@@ -203,7 +215,12 @@ public class LookAheadCaching {
 					mTextViewer.clear();
 				}
 				mBigLineData.moveLine(mStartWithoutOwn);
-				for (int i = 0; !Thread.interrupted() && i < BigLineData.FILE_LIME && !mBigLineData.isEOF(); i++) {
+				for (int i = 0; 
+						!Thread.interrupted() && 
+						i < BigLineData.FILE_LIME && !mBigLineData.isEOF()&&
+						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
+						
+						i++) {
 					TODOCRLFString lineWP = (TODOCRLFString) mBigLineData.readLine();
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if (!lineWP.includeLF()) {
