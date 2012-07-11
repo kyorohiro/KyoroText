@@ -105,7 +105,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 		try {
 			resetBufferedStartEndPosition(i);
-			if(!appointedLineIsLoaded(i)) {
+			if(!lineIsLoaded(i)) {
 				return mLoadingLineMessage;
 			}
 
@@ -129,7 +129,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		return ret;
 	}
 
-	private boolean appointedLineIsLoaded(int lineNumber) {
+	private boolean lineIsLoaded(int lineNumber) {
 		int bufferSize = super.getNumberOfStockedElement();
 		int bufferedPoaition = lineNumberToBufferedNumber(lineNumber);
 		if (bufferedPoaition < 0 || bufferSize < bufferedPoaition) {
@@ -158,8 +158,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	public static class MyBufferDatam extends LineViewData {
 		private int mLinePosition = 0;
 
-		public MyBufferDatam(CharSequence line, int color, int status,
-				int linePosition) {
+		public MyBufferDatam(CharSequence line, int color, int status, int linePosition) {
 			super(line, color, status);
 			mLinePosition = linePosition;
 		}
@@ -171,7 +170,6 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 
 	@Override
 	public BreakText getBreakText() {
-		// TODO Auto-generated method stub
 		return mLineManagerFromFile.getBreakText();
 	}
 }

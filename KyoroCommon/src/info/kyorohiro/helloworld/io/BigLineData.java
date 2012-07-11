@@ -50,12 +50,13 @@ public class BigLineData {
 	}
 
 	public long getLinePosition() {
-		return mLinePosition;
+		return mLastLinePosition;
 	}
-	public void moveLine(int lineNumber) throws IOException {
-		int index = lineNumber/FILE_LIME;
-		int number = lineNumber%FILE_LIME;
-		moveLinePer100(index);
+
+	public void moveLine(long lineNumber) throws IOException {
+		long index = lineNumber/FILE_LIME;
+		long number = lineNumber%FILE_LIME;
+		moveLinePer100((int)index);
 		for(int i=0;i<number;i++){
 			readLine();
 		}

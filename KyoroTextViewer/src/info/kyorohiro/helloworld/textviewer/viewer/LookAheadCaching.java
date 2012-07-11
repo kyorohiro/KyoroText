@@ -105,15 +105,18 @@ public class LookAheadCaching {
 		startTask(mForwardBuilder);
 	}
 
-	public void startReadForward(int position) {
+	public void startReadForward(long position) {
 		TextViewerBuffer buffer = getTextViewerBuffer();
 		if (buffer == null) {
 			return;
 		}
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = false;
-		if(!buffer.getBigLineData().isEOF()||position<=buffer.getCurrentPosition()){
+		if(!buffer.getBigLineData().isEOF()||(position+1)<buffer.getBigLineData().getLinePosition()){
+//			android.util.Log.v("kiyo","="+position+"<"+buffer.getBigLineData().getLinePosition());
 			startTask(mForwardBuilder);
+		} else {
+//			android.util.Log.v("kiyo","="+position+"NN"+buffer.getBigLineData().getLinePosition()+","+buffer.getBigLineData().isEOF());			
 		}
 	}
 
@@ -135,7 +138,7 @@ public class LookAheadCaching {
 	}
 
 	public class ReadForwardBuilder implements Builder {
-		public int position = 0;
+		public long position = 0;
 		public boolean clear;
 
 		public Runnable create() {
@@ -191,18 +194,18 @@ public class LookAheadCaching {
 	}
 
 	public class ReadForwardFileTask implements Runnable {
-		private int mStartWithoutOwn = 0;
+		private long mStartWithoutOwn = 0;
 		private BigLineData mBigLineData = null;
 		private TextViewerBuffer mTextViewer = null;
 		private boolean mClear = false;
 
-		public ReadForwardFileTask(TextViewerBuffer textViewer,int startWithoutOwn) {
+		public ReadForwardFileTask(TextViewerBuffer textViewer,long startWithoutOwn) {
 			mBigLineData = textViewer.getBigLineData();
 			mTextViewer = textViewer;
 			mStartWithoutOwn = startWithoutOwn;
 		}
 
-		public ReadForwardFileTask(TextViewerBuffer textViewer,int startPosition, boolean clear) {
+		public ReadForwardFileTask(TextViewerBuffer textViewer,long startPosition, boolean clear) {
 			mBigLineData = textViewer.getBigLineData();
 			mTextViewer = textViewer;
 			mStartWithoutOwn = startPosition;
