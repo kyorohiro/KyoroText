@@ -112,7 +112,7 @@ public class LookAheadCaching {
 		}
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = false;
-		if(!buffer.getBigLineData().isEOF()){
+		if(!buffer.getBigLineData().isEOF()||position<=buffer.getCurrentPosition()){
 			startTask(mForwardBuilder);
 		}
 	}

@@ -49,6 +49,9 @@ public class BigLineData {
 		return mBreakText;
 	}
 
+	public long getLinePosition() {
+		return mLinePosition;
+	}
 	public void moveLine(int lineNumber) throws IOException {
 		int index = lineNumber/FILE_LIME;
 		int number = lineNumber%FILE_LIME;

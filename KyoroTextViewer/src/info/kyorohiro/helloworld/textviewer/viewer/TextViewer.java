@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.text.ClipboardManager;
-import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -45,7 +44,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private SimpleCircleController mCircleController = null;
 	private ScrollBar mScrollBar = null;
 	private SimpleImage mBGImage = null;
-	private SimpleImage mScrollImage = null;
 	private int mCurrentFontSize = KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
 	private String mCurrentPath = "";
 	private int mMergine = 0;
@@ -58,7 +56,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
 
-		// mLineView = new LineView(mBuffer, textSize,200);
 		mLineView = new CursorableLineView(mBuffer, textSize, 200);
 
 		mLineView.isTail(false);
@@ -68,7 +65,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		addChild(new TouchAndMoveActionForLineView(mLineView));
 		addChild(new TouchAndZoomForLineView(mLineView));
 		addChild(mLineView);
-		// addChild(mCircleController = new SimpleCircleController());
 		addChild(mCircleController = new SimpleCircleControllerMenuPlus());
 		if (mCircleController instanceof SimpleCircleControllerMenuPlus) {
 			((SimpleCircleControllerMenuPlus) mCircleController).setCircleMenuItem(
@@ -122,9 +118,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		InputStream is = res.openRawResource(R.drawable.tex2res4);
 		mBGImage = new SimpleImage(is);
 		mLineView.setBGImage(mBGImage);
-		//InputStream isScroll = res.openRawResource(R.drawable.tex2res2);
-		//mScrollImage = new SimpleImage(isScroll);
-		// mScrollBar.setBGImage(mScrollImage);
 	}
 
 	@Override
@@ -133,9 +126,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		if (!mBGImage.getImage().isRecycled()) {
 			mBGImage.getImage().recycle();
 		}
-		//if (!mScrollImage.getImage().isRecycled()) {
-		//	mScrollImage.getImage().recycle();
-		//}
 	}
 
 	public String getCurrentPath() {
@@ -241,17 +231,12 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 
 		public void paintScroll(SimpleGraphics graphics) {
-			LineViewBufferSpec viewerBuffer = TextViewer.this.mLineView
-					.getLineViewBuffer();
-
+			LineViewBufferSpec viewerBuffer = TextViewer.this.mLineView.getLineViewBuffer();
 			int bufferSize = viewerBuffer.getNumberOfStockedElement();
-			int beginPosition = TextViewer.this.mLineView
-					.getShowingTextStartPosition();
-			int endPosition = TextViewer.this.mLineView
-					.getShowingTextEndPosition();
+			int beginPosition = TextViewer.this.mLineView.getShowingTextStartPosition();
+			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
 			mScrollBar.setStatus(beginPosition, endPosition, bufferSize);
-			TextViewer.this.mLineView.setRect(graphics.getWidth(),
-					graphics.getHeight());
+			TextViewer.this.mLineView.setRect(graphics.getWidth(),graphics.getHeight());
 		}
 	}
 
