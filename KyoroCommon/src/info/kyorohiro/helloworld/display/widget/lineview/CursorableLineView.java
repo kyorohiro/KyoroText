@@ -129,15 +129,8 @@ public class CursorableLineView extends LineView {
 		if (null == getBreakText()) {
 			return;
 		}
-		// mCopy.setPoint(20, getHeight() - 50);
-
 		updateCursor(graphics, mRight);
 		updateCursor(graphics, mLeft);
-		// String a = "posY=" + this.getPositionY();
-		// a += ",sPos=" + this.getShowingTextStartPosition();
-		// a += ",ePos=" + this.getShowingTextEndPosition();
-		// a += ",blink=" + this.getBlinkY();
-		// graphics.drawText("" + a, 10, 500);
 		graphics.setColor(mTestTextColor);
 		graphics.setTextSize(30);
 		graphics.drawText(mMode, 20, this.getHeight() - 50);
@@ -195,16 +188,11 @@ public class CursorableLineView extends LineView {
 					if (d != null) {
 						l = getBreakText().getTextWidths(d, 0,
 								cursor.getCursorRow(), widths);
-						// StringBuilder a = new StringBuilder();
 						for (int i = 0; i < l; i++) {
 							x += widths[i] * scale;
-							// a.append(",[" + i + "]=" + widths[i] +
-							// d.charAt(i));
 						}
-						// android.util.Log.v("kiyo", "te=" + a.toString());
 					}
 				} catch (Exception e) {
-					// e.printStackTrace();
 				}
 			}
 			y = getYForShowLine(getTextSize(), cursor.getCursorRow(),
@@ -376,8 +364,6 @@ public class CursorableLineView extends LineView {
 			}
 		}
 
-//		android.util.Log
-//				.v("kiyo", "ss=" + data.toString() + "," + xx + "," + x);
 		return data.length();
 	}
 

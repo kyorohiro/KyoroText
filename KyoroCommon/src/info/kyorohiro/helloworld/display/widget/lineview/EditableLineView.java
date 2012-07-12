@@ -3,7 +3,6 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 import java.util.LinkedList;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
@@ -13,15 +12,11 @@ import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.io.MyBuilder;
 import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
-import info.kyorohiro.helloworld.util.CyclingListInter;
 
-public class EditableLineView 
-//extends LineView {
-extends CursorableLineView {
+public class EditableLineView extends CursorableLineView {
 
 	private EditableLineViewBuffer mTextBuffer = null;//new EditableLineViewBuffer();
 
-	private EditableLineViewBuffer s= null;
 	private EditableLineView(EditableLineViewBuffer buffer) {
 		super(buffer, 16, 512);
 		mTextBuffer = (EditableLineViewBuffer)getLineViewBuffer();
@@ -174,10 +169,8 @@ extends CursorableLineView {
 				current = "";
 			}
 
-			int p = 0;
 			for (int i = 0; i < col; i++) {
 				builder.append(current.charAt(i));
-				p++;
 			}
 			for (int i = 0; i < text.length(); i++) {
 				builder.append(text.charAt(i));
