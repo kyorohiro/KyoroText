@@ -8,7 +8,6 @@ import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBuilder;
 import info.kyorohiro.helloworld.util.CyclingListInter;
-import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 import android.graphics.Color;
 import android.graphics.Paint;
 

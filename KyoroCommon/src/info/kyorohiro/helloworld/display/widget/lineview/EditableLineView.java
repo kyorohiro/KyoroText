@@ -14,7 +14,6 @@ import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.io.MyBuilder;
 import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
 import info.kyorohiro.helloworld.util.CyclingListInter;
-import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
 public class EditableLineView 
 //extends LineView {

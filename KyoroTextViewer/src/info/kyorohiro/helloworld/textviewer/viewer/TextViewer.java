@@ -17,6 +17,7 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleCon
 import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
@@ -29,7 +30,6 @@ import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.R;
 import info.kyorohiro.helloworld.util.CyclingList;
-import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
 	public static int COLOR_BG = Color.parseColor("#FF000000");

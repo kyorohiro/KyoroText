@@ -1,9 +1,9 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.io.BreakText;
-import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 import info.kyorohiro.helloworld.util.LockableCyclingList;
 
 import java.io.File;

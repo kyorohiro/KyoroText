@@ -5,7 +5,6 @@ import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.io.BreakText;
-import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
 public class CursorableLineView extends LineView {
 	private MyCursor mLeft = new MyCursor();

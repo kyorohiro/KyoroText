@@ -49,10 +49,6 @@ public class BigLineData {
 		return mBreakText;
 	}
 
-	public long getLinePosition() {
-		return mLastLinePosition;
-	}
-
 	public void moveLine(long lineNumber) throws IOException {
 		long index = lineNumber/FILE_LIME;
 		long number = lineNumber%FILE_LIME;
@@ -135,7 +131,7 @@ public class BigLineData {
 	}
 
 	@Deprecated
-	private long getLastLinePosition() {
+	public long getLastLinePosition() {
 		return mLastLinePosition;
 	}
 

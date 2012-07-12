@@ -112,7 +112,7 @@ public class LookAheadCaching {
 		}
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = false;
-		if(!buffer.getBigLineData().isEOF()||(position+1)<buffer.getBigLineData().getLinePosition()){
+		if(!buffer.getBigLineData().isEOF()||(position+1)<buffer.getBigLineData().getLastLinePosition()){
 //			android.util.Log.v("kiyo","="+position+"<"+buffer.getBigLineData().getLinePosition());
 			startTask(mForwardBuilder);
 		} else {

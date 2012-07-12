@@ -8,12 +8,12 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.util.CyclingListInter;
-import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
 public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 

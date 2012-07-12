@@ -1,7 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.util.CyclingListInter;
-import info.kyorohiro.helloworld.util.LineViewBufferSpec;
 
 public class DrawingPosition {
 	private int mPosition = 0;

@@ -1,6 +1,5 @@
-package info.kyorohiro.helloworld.util;
+package info.kyorohiro.helloworld.display.widget.lineview;
 
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BreakText;
 
 public interface LineViewBufferSpec {
