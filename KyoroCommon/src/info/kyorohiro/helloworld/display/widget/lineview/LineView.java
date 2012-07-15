@@ -217,6 +217,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public int getYToPosY(int y) {
 		int n = (int) (y / (getShowingTextSize() * 1.2));
 		int yy = n - getBlinkY() - 1;
+//		android.util.Log.v("kiyo","DD="+getBlinkY()+","+n+","+getScale()+","+getShowingTextSize());
 		return yy + (getShowingTextStartPosition());
 	}
 
