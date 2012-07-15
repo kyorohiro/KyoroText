@@ -1,23 +1,17 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
-import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
-import info.kyorohiro.helloworld.io.BreakText;
-import info.kyorohiro.helloworld.io.MyBuilder;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.view.ViewDebug.ExportedProperty;
 
 public class LineView extends SimpleDisplayObjectContainer {
 	// extends SimpleDisplayObject {
 	private int mScaleX = 0;
 	private int mScaleY = 0;
 	private int mScaleTime = 0;
-	private int mScaleLine = 0;
 
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
@@ -68,16 +62,15 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public synchronized void setScale(float scale, int linePosY,int baseX, int baseY) {
 		mScale = scale;
+		updateStatus(mInputtedText);
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
-		android.util.Log.v("kiyo",
-				"MMM=" + mInputtedText.getNumberOfStockedElement() + ","
-						+ linePosY + "," + pos + "," + getBlinkY());
+//		android.util.Log.v("kiyo",
+//				"MMM=" + mInputtedText.getNumberOfStockedElement() + ","
+//						+ linePosY + "," + pos + "," + getBlinkY());
 		mScaleX = baseX;
 		mScaleY = baseY;
 		mScaleTime = 20;
-		mScaleLine = linePosY;
 		setPositionY(mInputtedText.getNumberOfStockedElement() - linePosY - pos);
-		this.updateStatus(mInputtedText);
 	}
 
 	public float getScale() {
