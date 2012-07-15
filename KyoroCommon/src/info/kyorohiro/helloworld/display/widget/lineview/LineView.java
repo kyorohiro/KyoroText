@@ -23,7 +23,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
 	private float mScale = 1.0f;
-	private int mScalePoint = 0;
+//	private int mScalePoint = 0;
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
@@ -41,8 +41,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mTextSize = textSize;
 	}
 
-	public LineView(LineViewBufferSpec inputtedText,
-			int textSize, int cashSize) {
+	public LineView(LineViewBufferSpec inputtedText, int textSize, int cashSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 		mDefaultCashSize = cashSize;
@@ -58,6 +57,28 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public void setScale(float scale) {
 		mScale = scale;
+	}
+
+	public void setScale(float scale, int linePosY, int basePos) {
+/*		android.util.Log.v("kiyo", "MMM scale=" + scale + ",linePosY="
+				+ linePosY + ",basePos=" + basePos);
+		android.util.Log.v("kiyo", "MMM positionY=" + getPositionY() + ","
+				+ getShowingTextSize());*/
+		mScale = scale;
+//		int linePos = getYForShowLine(getShowingTextSize(), linePosY
+//				- getShowingTextStartPosition());
+int pos =  (int) ((getHeight()-basePos)/ (getShowingTextSize() * 1.2));//
+android.util.Log.v("kiyo", 
+		"MMM=" + mInputtedText.getNumberOfStockedElement()
+		+","+linePosY
+		+","+pos+
+		","+mBlankY);		
+
+		///int pos = getYToPosY(basePos);
+//		android.util.Log.v("kiyo", "MMM linePos=" + linePos + "," + pos);
+		
+		setPositionY(mInputtedText.getNumberOfStockedElement()-linePosY-pos);
+//		android.util.Log.v("kiyo", "MMMN linePos=" + linePosY + "," +getPositionY()+","+mInputtedText.getNumberOfStockedElement()+","+pos);
 	}
 
 	public float getScale() {
@@ -79,12 +100,12 @@ public class LineView extends SimpleDisplayObjectContainer {
 	@Deprecated
 	public synchronized void setCyclingList(
 			CyclingListInter<LineViewData> inputtedText) {
-		mInputtedText = (LineViewBufferSpec)inputtedText;
+		mInputtedText = (LineViewBufferSpec) inputtedText;
 	}
 
 	public synchronized void setLineViewBufferSpec(
 			LineViewBufferSpec inputtedText) {
-		mInputtedText = (LineViewBufferSpec)inputtedText;
+		mInputtedText = (LineViewBufferSpec) inputtedText;
 	}
 
 	public synchronized LineViewBufferSpec getLineViewBuffer() {
@@ -105,7 +126,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized void setPositionY(int position) {
-//		android.util.Log.v("kiyo","kiyo_pos="+position);
+		// android.util.Log.v("kiyo","kiyo_pos="+position);
 		mPositionY = position;
 	}
 
@@ -135,40 +156,40 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mImage = image;
 	}
 
-	public synchronized void addScalePositionY(int position) {
-		mScalePoint += position;
-	}
+//	public synchronized void addScalePositionY(int position) {
+//		mScalePoint += position;
+//	}
 
-	private synchronized int resetAddPositionY() {
-		int tmp = mScalePoint;
-		mScalePoint = 0;
-		return tmp;
-	}
+//	private synchronized int resetAddPositionY() {
+//		int tmp = mScalePoint;
+//		mScalePoint = 0;
+//		return tmp;
+//	}
 
 	public int getXForShowLine(int x, int y) {
 		return (getWidth()) / 20 + mPositionX * 19 / 20;
 	}
 
-	public int getYForShowLine(int textSize, int cursurRow, int cursurCol) {
-		int yy = (int) ((int)(textSize * 1.2)) * (mBlankY + cursurCol + 1);
+	public int getYForShowLine(int textSize, int cursurCol) {
+		int yy = (int) ((int) (textSize * 1.2)) * (mBlankY + cursurCol + 1);
 		return yy;
 	}
 
 	public int getYToPosY(int y) {
-		int n = (int) (y / (int) (getShowingTextSize() * 1.2));
+		int n = (int) (y / (getShowingTextSize() * 1.2));
 		int yy = n - getBlinkY() - 1;
 		return yy + (getShowingTextStartPosition());
 	}
 
-	public int getLineYForShowLine(int textSize,int cursurRow,int cursurCol) {
-		int yy = getYForShowLine(textSize, cursurRow, cursurCol);
-		int yyy = yy + (int)(textSize*0.2);
+	public int getLineYForShowLine(int textSize, int cursurRow, int cursurCol) {
+		int yy = getYForShowLine(textSize, cursurCol);
+		int yyy = yy + (int) (textSize * 0.2);
 		return yyy;
 	}
 
-
 	public LineViewData getLineViewData(int cursorCol) {
-		if (mInputtedText == null || cursorCol >= mInputtedText.getNumberOfStockedElement()
+		if (mInputtedText == null
+				|| cursorCol >= mInputtedText.getNumberOfStockedElement()
 				|| cursorCol < 0) {
 			return null;
 		}
@@ -187,7 +208,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 			}
 		}
 	}
-
 
 	private void showLineDate(SimpleGraphics graphics, LineViewData[] list,
 			int len) {
@@ -210,7 +230,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.setColor(list[i].getColor());
 
 			int x = getXForShowLine(0, i);
-			int y = getYForShowLine(graphics.getTextSize(), 0, i);
+			int y = getYForShowLine(graphics.getTextSize(), i);
 			int yy = getLineYForShowLine(graphics.getTextSize(), 0, i);
 
 			graphics.drawText(list[i], x, y);
@@ -258,7 +278,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			} else {
 				len = end - start;
 			}
-//			android.util.Log.v("kiyo", "1:" + list);
+			// android.util.Log.v("kiyo", "1:" + list);
 			if (mCashBuffer.length < len) {
 				int buffeSize = len;
 				if (buffeSize < mDefaultCashSize) {
@@ -268,7 +288,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			}
 			list = mCashBuffer;
 			list = showingText.getElements(list, start, end);
-//			android.util.Log.v("kiyo", "2:" + list);
+			// android.util.Log.v("kiyo", "2:" + list);
 
 		} finally {
 			if (showingText instanceof SimpleLockInter) {
@@ -292,14 +312,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 			// todo refactaring
 			// current Position
 			if (!mIsTail || mPositionY > 1) {
-				int a = resetAddPositionY();
-				if (a != 0) {
-					mCash += showingText.getNumOfAdd();
-					mPositionY = mCash + a;
-				} else {
+//				int a = resetAddPositionY();
+//				if (a != 0) {
+//					mCash += showingText.getNumOfAdd();
+//					mPositionY = mCash + a;
+//				} else {
 					mCash = 0;
 					mPositionY += showingText.getNumOfAdd();
-				}
+//				}
 			}
 			showingText.clearNumOfAdd();
 		}

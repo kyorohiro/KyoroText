@@ -21,105 +21,112 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	private int mStartPosY = 0;
 	private float mStartLength = 0;
 
-	private int mY = 0;
+	// private int mY = 0;
 	private boolean mIsClear = false;
 
-	
-	private int getLength(){
-		SimpleStage stage = SimpleDisplayObject.getStage(this); 
+	private int getLength() {
+		SimpleStage stage = SimpleDisplayObject.getStage(this);
 		SimplePoint[] p = stage.getMultiTouchEvent();
-		int xx = p[0].getX()-p[1].getX();
-		int yy = p[0].getY()-p[1].getY();
-		return xx*xx + yy*yy;		
+		int xx = p[0].getX() - p[1].getX();
+		int yy = p[0].getY() - p[1].getY();
+		return xx * xx + yy * yy;
 	}
 
 	private int getCenterY() {
-		SimpleStage stage = SimpleDisplayObject.getStage(this); 		
+		SimpleStage stage = SimpleDisplayObject.getStage(this);
 		SimplePoint[] p = stage.getMultiTouchEvent();
-		int ret = (p[0].getY()+p[1].getY())/2;
+		int ret = (p[0].getY() + p[1].getY()) / 2;
 		return ret;
 	}
 
 	private int getCenterX() {
-		SimpleStage stage = SimpleDisplayObject.getStage(this); 		
+		SimpleStage stage = SimpleDisplayObject.getStage(this);
 		SimplePoint[] p = stage.getMultiTouchEvent();
-		int ret = (p[0].getX()+p[1].getX())/2;
+		int ret = (p[0].getX() + p[1].getX()) / 2;
 		return ret;
 	}
 
 	private boolean doubleTouched() {
-		SimpleStage stage = SimpleDisplayObject.getStage(this); 		
+		SimpleStage stage = SimpleDisplayObject.getStage(this);
 		SimplePoint[] p = stage.getMultiTouchEvent();
-		if(p[0].isVisible() && p[1].isVisible()) {
+		if (p[0].isVisible() && p[1].isVisible()) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
 
 	@Override
 	public synchronized boolean onTouchTest(int x, int y, int action) {
-		SimpleStage stage = SimpleDisplayObject.getStage(this); 
-		
-		if(action == MotionEvent.ACTION_UP&& mIsClear) {
+		SimpleStage stage = SimpleDisplayObject.getStage(this);
+
+		if (action == MotionEvent.ACTION_UP && mIsClear) {
 			mIsClear = false;
+			mStartZoom = false;
 			return true;
 		}
-
-		// multi touch 
-		if(stage != null && stage.isSupportMultiTouch()) {
-			if(!doubleTouched()) {
+		// multi touch
+		else if (stage != null && stage.isSupportMultiTouch()) {
+			if (!doubleTouched()) {
 				mStartZoom = false;
-				mStartLength =0;
+				mStartLength = 0;
 				return false;
 			}
 			mIsClear = true;
-			if(mStartZoom == false) {
+			if (mStartZoom == false) {
 				mStartZoom = true;
 				mStartScale = mLineViewer.getScale();
 				mStartTextSize = mLineViewer.getTextSize();
-				mStartLength =  getLength();
+				mStartLength = getLength();
 				mStartCenterX = getCenterX();
 				mStartCenterY = getCenterY();
-				mStartPosY = (int)(mLineViewer.getPositionY() 
-								+ (mY-mStartCenterY)/(mStartTextSize*mStartScale*1.2));
-				return true;
+				mStartPosY = mLineViewer.getYToPosY(mStartCenterY);
+				// (int)(mLineViewer.getPositionY()
+				// + (mY-mStartCenterY)/(mStartTextSize*mStartScale*1.2));
+				//return true;
 			}
-			
 
-			int currentLength = getLength();//xx*xx + yy*yy;
-			if(mStartLength != 0) {
-				float nextScale = mStartScale +=(currentLength-mStartLength)/(400*400);
-				if(nextScale<1.0){
+			int currentLength = getLength();// xx*xx + yy*yy;
+			if (mStartLength != 0) {
+				float nextScale = mStartScale += (currentLength - mStartLength)
+						/ (400 * 400);
+				if (nextScale < 1.0) {
 					nextScale = 1.0f;
-				}else if(nextScale>6) {
-					nextScale =6.0f;
+				} else if (nextScale > 6) {
+					nextScale = 6.0f;
 				}
 				// keeping position
-				double keepPos = (mY-mStartCenterY);
-
+				//float keepPos = (mY-mStartCenterY);
 				//
-				int movePos = (int)(keepPos/(mStartTextSize*nextScale*1.2));
-				mScalePositionY = mStartPosY-movePos;
-				mCurrentScale = nextScale;						
-				//}
+				//
+				// int movePos = (int)(keepPos/(mStartTextSize*nextScale*1.2));
+				// mScalePositionY = mStartPosY-movePos;
+
+//				int movePos = mStartPosY
+//				mScalePositionY = -(int)(
+//						mLineViewer.getShowingTextSize()*(nextScale/mLineViewer.getScale())
+//						);
+				mCurrentScale = nextScale;
+				// }
 			}
 			mStartLength = currentLength;
 			return true;
+		} else {
+			mStartZoom = false;
 		}
 		return false;
 	}
 
-
 	private int mScalePositionY = 0;
 	private float mCurrentScale = 0;
+
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
-		mY = mLineViewer.getHeight();
-		if(mStartZoom){
-			mLineViewer.addScalePositionY(mScalePositionY);
-			mLineViewer.setScale(mCurrentScale);
+		// mY = mLineViewer.getHeight();
+		if (mStartZoom) {
+//			mLineViewer.addScalePositionY(mScalePositionY);
+			mLineViewer.setScale(mCurrentScale, mStartPosY, mStartCenterY);
 		}
 	}
-	
+
 }
