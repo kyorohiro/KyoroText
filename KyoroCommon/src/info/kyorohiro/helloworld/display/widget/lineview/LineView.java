@@ -16,12 +16,12 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
 	private LineViewBufferSpec mInputtedText = null;
-//	private int mBlankY = 0;
+	// private int mBlankY = 0;
 	private int mPositionY = 0;
 	private int mPositionX = 0;
 	private int mTextSize = 16;
-	//private int mShowingTextStartPosition = 0;
-	//private int mShowingTextEndPosition = 0;
+	// private int mShowingTextStartPosition = 0;
+	// private int mShowingTextEndPosition = 0;
 	private float mScale = 1.0f;
 	// private int mScalePoint = 0;
 	private int mBgColor = Color.parseColor("#FF000022");
@@ -59,18 +59,34 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mScale = scale;
 	}
 
-
-	public synchronized void setScale(float scale, int linePosY,int baseX, int baseY) {
+	public synchronized void setScale(float scale, float sScale, int sGetX,int linePosX,
+			int linePosY, int baseX, int baseY) {
 		mScale = scale;
 		updateStatus(mInputtedText);
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
-//		android.util.Log.v("kiyo",
-//				"MMM=" + mInputtedText.getNumberOfStockedElement() + ","
-//						+ linePosY + "," + pos + "," + getBlinkY());
 		mScaleX = baseX;
 		mScaleY = baseY;
 		mScaleTime = 20;
 		setPositionY(mInputtedText.getNumberOfStockedElement() - linePosY - pos);
+
+		
+		{
+			int l = getWidth(linePosX, widths, (int)(getTextSize()*sScale));
+			float ww = 0;
+			for (int i = 0; i < l || i < linePosX; i++) {
+				ww += widths[i]; 
+			}
+			ww = sGetX;
+			float option = baseX * scale -baseX*sScale;
+			setPositionX((int) ((ww-option) * sScale / scale));
+
+			//			setPositionX(getWidth()-(int) ((baseX+ww) * sScale / scale));
+			//android.util.Log.v("kiyo", "" + ((int) ((ww-option) * sScale / scale))
+			//		+ ","+ ((int) ((ww) * sScale / scale))+
+			//		","+scale+","+sScale);
+
+		}
+
 	}
 
 	public float getScale() {
@@ -120,7 +136,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized void setPositionY(int position) {
-		// android.util.Log.v("kiyo","kiyo_pos="+position);
 		mPositionY = position;
 	}
 
@@ -157,6 +172,46 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public int getYForShowLine(int textSize, int cursurCol) {
 		int yy = (int) ((int) (textSize * 1.2)) * (getBlinkY() + cursurCol + 1);
 		return yy;
+	}
+
+	//
+	private float[] widths = new float[1024];
+
+	public int getWidth(int cursorCol, float[] w) {
+		return getWidth(cursorCol, w, getShowingTextSize());
+	}
+	public int getWidth(int cursorCol, float[] w, int textSize) {
+		LineViewBufferSpec mInputtedText = getLineViewBuffer();
+		if (mInputtedText == null || null == mInputtedText.getBreakText()) {
+			return -1;
+		} else if (cursorCol >= mInputtedText.getNumberOfStockedElement()
+				|| cursorCol < 0) {
+			return -1;
+		}
+
+		LineViewData data = mInputtedText.get(cursorCol);
+		if (data == null) {
+			return -1;
+		}
+		int l = mInputtedText.getBreakText().getTextWidths(data, 0,
+				data.length(), w, textSize);
+		return l;
+	}
+
+	@Deprecated
+	public int getXToPosX(int cursorCol, int xx, int cur) {
+		float x = xx;// /getScale();
+		x -= getXForShowLine(0, cursorCol);
+		int l = getWidth(cursorCol, widths);
+
+		float ww = 0;
+		for (int i = 0; i < l; i++) {
+			ww += widths[i];// * getSclaeFromTextSize();
+			if (ww > x) {
+				return i;
+			}
+		}
+		return l;
 	}
 
 	public int getYToPosY(int y) {
@@ -206,7 +261,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			mPositionX = -1 * (int) (getWidth() * mScale - getWidth());
 		}
 
-		//int scaleLine = mScaleLine-getShowingTextStartPosition();
+		// int scaleLine = mScaleLine-getShowingTextStartPosition();
 		for (int i = 0; i < len; i++) {
 			if (list[i] == null) {
 				continue;
@@ -283,10 +338,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.setTextSize(s);
 		}
 
-		if(mScaleTime >0){
-			graphics.setColor(Color.argb(mScaleTime,0xff,0xff,0x00));					
+		if (mScaleTime > 0) {
+			graphics.setColor(Color.argb(mScaleTime, 0xff, 0xff, 0x00));
 			graphics.drawCircle(mScaleX, mScaleY, 30);
-			mScaleTime-=3;
+			mScaleTime -= 3;
 		}
 
 		if (list != null) {// bug fix
@@ -296,7 +351,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	private void updateStatus(LineViewBufferSpec showingText) {
-		mNumOfLine = (int) (getHeight() / (getShowingTextSize()* 1.2));// todo
+		mNumOfLine = (int) (getHeight() / (getShowingTextSize() * 1.2));// todo
 		if (!mIsTail || mPositionY > 1) {
 			mCash = 0;
 			mPositionY += showingText.getNumOfAdd();
@@ -309,8 +364,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 		} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
 			setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
 		}
-		mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize,
-				mScale, showingText);
+		mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize, mScale,
+				showingText);
 	}
 
 	private void drawBG(SimpleGraphics graphics) {

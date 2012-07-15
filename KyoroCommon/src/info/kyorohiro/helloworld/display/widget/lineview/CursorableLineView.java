@@ -15,6 +15,7 @@ public class CursorableLineView extends LineView {
 	public final static String MODE_VIEW = "MODE VIEW";
 	public final static String MODE_EDIT = "MODE EDIT: NOW CREATING!!";
 	private int mTestTextColor = Color.parseColor("#66FFFF00");
+	private float[] widths = new float[1024];
 
 	public String copy() {
 		if (mLeft.enable() && mRight.enable()) {
@@ -156,8 +157,6 @@ public class CursorableLineView extends LineView {
 		}
 	}
 
-	//
-	private float[] widths = new float[1024];
 
 	private void updateCursor(SimpleGraphics graphics, MyCursor cursor) {
 		{
@@ -322,35 +321,6 @@ public class CursorableLineView extends LineView {
 		}
 	}
 
-	@Deprecated
-	public int getXToPosX(int cursorCol, int xx, int cur) {
-		float x = xx;// /getScale();
-		x -= getXForShowLine(0, cursorCol);
-		// x /=getScale();
-		LineViewBufferSpec mInputtedText = super.getLineViewBuffer();
-		if (mInputtedText == null || null == mInputtedText.getBreakText()) {
-			return cur;
-		} else if (cursorCol >= mInputtedText.getNumberOfStockedElement()
-				|| cursorCol < 0) {
-			return cur;
-		}
 
-		LineViewData data = mInputtedText.get(cursorCol);
-		if (data == null) {
-			return cur;
-		}
-		int l = getBreakText().getTextWidths(data, 0, data.length(), widths,
-				getShowingTextSize());
-
-		float ww = 0;
-		for (int i = 0; i < l; i++) {
-			ww += widths[i];// * getSclaeFromTextSize();
-			if (ww > x) {
-				return i;
-			}
-		}
-
-		return data.length();
-	}
 
 }
