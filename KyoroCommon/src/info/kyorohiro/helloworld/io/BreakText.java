@@ -11,4 +11,5 @@ public interface BreakText {
 	public int breakText(CharSequence data, int index, int count, int width);
 	public int getTextWidths(char[] text, int index, int count, float[] widths);
 	public int getTextWidths(CharSequence text, int start, int end, float[] widths);
+	public int getTextWidths(CharSequence text, int start, int end, float[] widths, float textSize);
 }

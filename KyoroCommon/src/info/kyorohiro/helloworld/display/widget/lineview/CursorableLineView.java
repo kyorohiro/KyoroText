@@ -187,14 +187,17 @@ public class CursorableLineView extends LineView {
 					graphics.setColor(Color.YELLOW);
 					if (d != null) {
 						l = getBreakText().getTextWidths(d, 0,
-								cursor.getCursorRow(), widths);
+								cursor.getCursorRow(), widths, getShowingTextSize());
 						for (int i = 0; i < l; i++) {
-							x += widths[i] * scale*getScale();
+							x += widths[i];//* scale*getScale();
 						}
 					}
 				} catch (Exception e) {
 				}
 			}
+			//x *= scale*getScale();
+			//		x = x*(int)(scale*getScale());
+
 			y = getYForShowLine(getShowingTextSize(), cursor.getCursorRow(),
 					cursor.getCursorCol() - getShowingTextStartPosition());
 
@@ -332,9 +335,9 @@ public class CursorableLineView extends LineView {
 
 	@Deprecated
 	public int getXToPosX(int cursorCol, int xx, int cur) {
-		float x = xx;
+		float x = xx;///getScale();
 		x -= getXForShowLine(0, cursorCol);
-		x /=getScale();
+		//x /=getScale();
 		LineViewBufferSpec mInputtedText = super.getLineViewBuffer();
 		if (mInputtedText == null || null == mInputtedText.getBreakText()) {
 			return cur;
@@ -347,11 +350,12 @@ public class CursorableLineView extends LineView {
 		if (data == null) {
 			return cur;
 		}
-		int l = getBreakText().getTextWidths(data, 0, data.length(), widths);
+		int l = getBreakText().getTextWidths(data, 0, data.length(), widths,
+				getShowingTextSize());
 
 		float ww = 0;
 		for (int i = 0; i < l; i++) {
-			ww += widths[i] * getSclaeFromTextSize();
+			ww += widths[i];// * getSclaeFromTextSize();
 			if (ww > x) {
 				return i;
 			}

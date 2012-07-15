@@ -49,4 +49,12 @@ public class MyBreakText implements BreakText {
 		return len;
 	}
 
+	private Paint specialPaint = new Paint();
+	@Override
+	public int getTextWidths(CharSequence text, int start, int end,
+			float[] widths, float textSize) {
+		specialPaint.setTextSize(textSize);
+		return specialPaint.getTextWidths(text, start, end, widths);
+	}
+
 }

@@ -149,5 +149,12 @@ public class TestSimpleTextDecoder extends TestCase {
 			// TODO Auto-generated method stub
 			return 0;
 		}
+
+		@Override
+		public int getTextWidths(CharSequence text, int start, int end,
+				float[] widths, float textSize) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	}
 }
