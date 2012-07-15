@@ -23,7 +23,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
 	private float mScale = 1.0f;
-	private int mAddedPoint = 0;
+	private int mScalePoint = 0;
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
@@ -135,13 +135,13 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mImage = image;
 	}
 
-	public synchronized void addPositionY(int position) {
-		mAddedPoint += position;
+	public synchronized void addScalePositionY(int position) {
+		mScalePoint += position;
 	}
 
 	private synchronized int resetAddPositionY() {
-		int tmp = mAddedPoint;
-		mAddedPoint = 0;
+		int tmp = mScalePoint;
+		mScalePoint = 0;
 		return tmp;
 	}
 
