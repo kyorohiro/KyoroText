@@ -24,6 +24,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
 	private LineViewData[] mCashBuffer = new LineViewData[0];
+	private float[] widths = new float[1024];//<---refataging
 
 	// ==========================================================
 	// todo refactaring
@@ -63,7 +64,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mScaleX = baseX;
 		mScaleY = baseY;
 		mScaleTime = 20;
-		setPositionY(mInputtedText.getNumberOfStockedElement() - linePosY - pos);
+		setPositionY(mInputtedText.getNumberOfStockedElement() - linePosY - pos-1);
 
 		
 		{
@@ -158,9 +159,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 		int yy = (int) ((int) (textSize * 1.2)) * (getBlinkY() + cursurCol + 1);
 		return yy;
 	}
-
-	//
-	private float[] widths = new float[1024];
 
 	public int getWidth(int cursorCol, float[] w) {
 		return getWidth(cursorCol, w, getShowingTextSize());
@@ -274,6 +272,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 		LineViewBufferSpec showingText = mInputtedText;
 		LineViewData[] list = null;
 		int len = 0;
+		
+		// update status
 		try {
 			if (showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).beginLock();
@@ -281,16 +281,15 @@ public class LineView extends SimpleDisplayObjectContainer {
 			// update statusr
 			_updateStatus(showingText);
 			// get buffer
-			list = _getBuffer(showingText);
+			len = _getBuffer(showingText);
+			list = mCashBuffer;
 		} finally {
 			if (showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).endLock();
 			}
 		}
 
-		//
 		// show buffer
-		//
 		graphics.setTextSize(getShowingTextSize());// todo mScale
 
 		// draw extra
@@ -325,13 +324,11 @@ public class LineView extends SimpleDisplayObjectContainer {
 		super.paint(graphics);
 	}
 
-	private LineViewData[] _getBuffer(LineViewBufferSpec showingText) {
+	private int _getBuffer(LineViewBufferSpec showingText) {
 		int start = mDrawingPosition.getStart();
 		int end = mDrawingPosition.getEnd();
 		int len = 0;
-		if (start > end) {
-			len = 0;
-		} else {
+		if (start<=end) {
 			len = end - start;
 		}
 		if (mCashBuffer.length < len) {
@@ -342,8 +339,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 			mCashBuffer = new LineViewData[buffeSize];
 		}
 		mCashBuffer = showingText.getElements(mCashBuffer, start, end);
-		return mCashBuffer;
+		return len;
 	}
+
 	private void _updateStatus(LineViewBufferSpec showingText) {
 		mNumOfLine = (int) (getHeight() / (getShowingTextSize() * 1.2));// todo
 		if (!mIsTail || mPositionY > 1) {
@@ -363,14 +361,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	private void drawBG(SimpleGraphics graphics) {
 		graphics.drawBackGround(mBgColor);
-		if (mImage == null) {
-			return;
-		}
+		if (mImage == null) {return;}
 		graphics.drawImageAsTile(mImage, 0, 0, getWidth(), getHeight());
-	}
-
-	@Override
-	public boolean onTouchTest(int x, int y, int action) {
-		return super.onTouchTest(x, y, action);
 	}
 }
