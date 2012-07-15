@@ -10,6 +10,7 @@ import info.kyorohiro.helloworld.io.MyBuilder;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.ViewDebug.ExportedProperty;
 
 public class LineView extends SimpleDisplayObjectContainer {
 	// extends SimpleDisplayObject {
@@ -21,12 +22,12 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
 	private LineViewBufferSpec mInputtedText = null;
-	private int mBlankY = 0;
+//	private int mBlankY = 0;
 	private int mPositionY = 0;
 	private int mPositionX = 0;
 	private int mTextSize = 16;
-	private int mShowingTextStartPosition = 0;
-	private int mShowingTextEndPosition = 0;
+	//private int mShowingTextStartPosition = 0;
+	//private int mShowingTextEndPosition = 0;
 	private float mScale = 1.0f;
 	// private int mScalePoint = 0;
 	private int mBgColor = Color.parseColor("#FF000022");
@@ -70,7 +71,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
 		android.util.Log.v("kiyo",
 				"MMM=" + mInputtedText.getNumberOfStockedElement() + ","
-						+ linePosY + "," + pos + "," + mBlankY);
+						+ linePosY + "," + pos + "," + getBlinkY());
 		mScaleX = baseX;
 		mScaleY = baseY;
 		mScaleTime = 20;
@@ -115,12 +116,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return (CyclingListInter<LineViewData>) mInputtedText;
 	}
 
+	@Deprecated
 	public synchronized int getShowingTextStartPosition() {
-		return mShowingTextStartPosition;
+		return mDrawingPosition.getStart();
 	}
 
+	@Deprecated
 	public synchronized int getShowingTextEndPosition() {
-		return mShowingTextEndPosition;
+		return mDrawingPosition.getEnd();
 	}
 
 	public synchronized void setPositionY(int position) {
@@ -141,7 +144,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public int getBlinkY() {
-		return mBlankY;
+		return mDrawingPosition.getBlank();
 	}
 
 	public void isTail(boolean on) {
@@ -159,7 +162,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public int getYForShowLine(int textSize, int cursurCol) {
-		int yy = (int) ((int) (textSize * 1.2)) * (mBlankY + cursurCol + 1);
+		int yy = (int) ((int) (textSize * 1.2)) * (getBlinkY() + cursurCol + 1);
 		return yy;
 	}
 
@@ -215,12 +218,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 			if (list[i] == null) {
 				continue;
 			}
-			// drawLine
-		//	if(mScaleTime>0&&scaleLine==i) {
-		//		graphics.setColor(Color.YELLOW);				
-		//	} else {
-				graphics.setColor(list[i].getColor());
-		//	}
+
+			graphics.setColor(list[i].getColor());
 			int x = getXForShowLine(0, i);
 			int y = getYForShowLine(graphics.getTextSize(), i);
 			int yy = getLineYForShowLine(graphics.getTextSize(), 0, i);
@@ -239,9 +238,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		LineViewBufferSpec showingText = mInputtedText;
-		int start = 0;
-		int end = 0;
-		// int blank = 0;
 		LineViewData[] list = null;
 		int len = 0;
 		try {
@@ -249,37 +245,20 @@ public class LineView extends SimpleDisplayObjectContainer {
 				((SimpleLockInter) showingText).beginLock();
 			}
 
+			//
+			// update statusr
+			//
 			updateStatus(showingText);
-			graphics.setTextSize(getShowingTextSize());// todo mScale
-
-			drawBG(graphics);
-			{
-				// test
-				int s = graphics.getTextSize();
-				graphics.setTextSize(s * 3);
-				graphics.setColor(mTestTextColor);
-				graphics.drawText("" + mShowingTextStartPosition + ":"
-						+ mShowingTextEndPosition, 30, s * 4);
-				graphics.setTextSize(s);
-			}
-			{
-				if(mScaleTime >0){
-					graphics.setColor(Color.argb(mScaleTime,0xff,0xff,0x00));					
-					graphics.drawCircle(mScaleX, mScaleY, 30);
-					mScaleTime-=3;
-				}
-			}
-			mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize,
-					mScale, showingText);
-			start = mDrawingPosition.getStart();
-			end = mDrawingPosition.getEnd();
-			mBlankY = mDrawingPosition.getBlank();
+			//
+			// get buffer
+			//
+			int start = mDrawingPosition.getStart();
+			int end = mDrawingPosition.getEnd();
 			if (start > end) {
 				len = 0;
 			} else {
 				len = end - start;
 			}
-			// android.util.Log.v("kiyo", "1:" + list);
 			if (mCashBuffer.length < len) {
 				int buffeSize = len;
 				if (buffeSize < mDefaultCashSize) {
@@ -290,18 +269,36 @@ public class LineView extends SimpleDisplayObjectContainer {
 			list = mCashBuffer;
 			list = showingText.getElements(list, start, end);
 			// android.util.Log.v("kiyo", "2:" + list);
-
 		} finally {
 			if (showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).endLock();
 			}
 		}
 
+		//
+		// show buffer
+		//
+		graphics.setTextSize(getShowingTextSize());// todo mScale
+
+		drawBG(graphics);
+		{
+			int s = graphics.getTextSize();
+			graphics.setTextSize(s * 3);
+			graphics.setColor(mTestTextColor);
+			graphics.drawText("" + getShowingTextStartPosition() + ":"
+					+ getShowingTextEndPosition(), 30, s * 4);
+			graphics.setTextSize(s);
+		}
+
+		if(mScaleTime >0){
+			graphics.setColor(Color.argb(mScaleTime,0xff,0xff,0x00));					
+			graphics.drawCircle(mScaleX, mScaleY, 30);
+			mScaleTime-=3;
+		}
+
 		if (list != null) {// bug fix
 			showLineDate(graphics, list, len);
 		}
-		mShowingTextStartPosition = start;
-		mShowingTextEndPosition = end;
 		super.paint(graphics);
 	}
 
@@ -319,6 +316,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 		} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
 			setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
 		}
+		mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize,
+				mScale, showingText);
 	}
 
 	private void drawBG(SimpleGraphics graphics) {

@@ -11,7 +11,6 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	private LineView mLineViewer = null;
 	private boolean mStartZoom = false;
 	private float mStartScale = 0;
-	private int mStartTextSize = 0;
 	private int mStartCenterY = 0;
 	private int mStartCenterX = 0;
 	private int mStartPosY = 0;
@@ -19,7 +18,6 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	private int mStartLineBaseColor = 0;
 	private float mStartLength = 0;
 	private float mCurrentScale = 0;
-	private boolean mIsClear = false;
 
 	public TouchAndZoomForLineView(LineView viewer) {
 		mLineViewer = viewer;
@@ -74,11 +72,9 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 					return false;
 				}
 			}
-			mIsClear = true;
 			if (mStartZoom == false) {
 				mStartZoom = true;
 				mStartScale = mLineViewer.getScale();
-				mStartTextSize = mLineViewer.getTextSize();
 				mStartLength = getLength();
 				mStartCenterX = getCenterX();
 				mStartCenterY = getCenterY();
@@ -92,8 +88,7 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 
 			int currentLength = getLength();// xx*xx + yy*yy;
 			if (mStartLength != 0) {
-				float nextScale = mStartScale += (currentLength - mStartLength)
-						/ (400 * 400);
+				float nextScale = mStartScale += (currentLength-mStartLength)/(400 * 400);
 				if (nextScale < 1.0) {
 					nextScale = 1.0f;
 				} else if (nextScale > 6) {
@@ -110,8 +105,7 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		if (mStartZoom) {
-			mLineViewer.setScale(mCurrentScale, mStartPosY, mStartCenterX,
-					mStartCenterY);
+			mLineViewer.setScale(mCurrentScale, mStartPosY, mStartCenterX, mStartCenterY);
 		}
 	}
 
