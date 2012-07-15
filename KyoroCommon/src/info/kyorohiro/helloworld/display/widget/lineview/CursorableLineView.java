@@ -20,7 +20,7 @@ public class CursorableLineView extends LineView {
 		if (mLeft.enable() && mRight.enable()) {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
-			int textSize = (int) (getTextSize() * getScale());
+			int textSize = getShowingTextSize();
 			if (b.getCursorCol() > e.getCursorCol()
 					|| (b.getCursorCol() == e.getCursorCol() && b
 							.getCursorRow() > e.getCursorRow())) {
@@ -73,7 +73,7 @@ public class CursorableLineView extends LineView {
 			mLeft.setCursorRow(0);
 			mRight.setCursorCol(col);
 			mRight.setCursorRow(3);
-			setScale(1.0f);
+//			setScale(1.0f);
 		}
 		if (MODE_VIEW.equals(mode)) {
 			mLeft.enable(false);
@@ -87,11 +87,11 @@ public class CursorableLineView extends LineView {
 
 	@Override
 	public void setScale(float scale) {
-		if (mMode.equals(MODE_VIEW)) {
+//		if (mMode.equals(MODE_VIEW)) {
 			super.setScale(scale);
-		} else {
-			super.setScale(1.0f);
-		}
+//		} else {
+//			super.setScale(1.0f);
+//		}
 	}
 
 	public BreakText getBreakText() {
@@ -141,7 +141,7 @@ public class CursorableLineView extends LineView {
 		if (mLeft.enable() && mRight.enable()) {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
-			int textSize = (int) (getTextSize() * getScale());
+			int textSize =getShowingTextSize();
 			if (b.getY() > e.getY()
 					|| (b.getY() == e.getY() && b.getX() > e.getX())) {
 				b = mRight;
@@ -189,13 +189,13 @@ public class CursorableLineView extends LineView {
 						l = getBreakText().getTextWidths(d, 0,
 								cursor.getCursorRow(), widths);
 						for (int i = 0; i < l; i++) {
-							x += widths[i] * scale;
+							x += widths[i] * scale*getScale();
 						}
 					}
 				} catch (Exception e) {
 				}
 			}
-			y = getYForShowLine(getTextSize(), cursor.getCursorRow(),
+			y = getYForShowLine(getShowingTextSize(), cursor.getCursorRow(),
 					cursor.getCursorCol() - getShowingTextStartPosition());
 
 			cursor.setPoint((int) x + getXForShowLine(0, 0), y);
@@ -206,8 +206,7 @@ public class CursorableLineView extends LineView {
 	// setScale‚ÆsetTextSize()‚ÅŠg‘å—¦‚ðÝ’è‚µ‚Ä‚¢‚éB
 	// Œã‚Å‚Ç‚¿‚ç‚©‚ÉsetScale‚É“ˆê‚·‚éH
 	private float getSclaeFromTextSize() {
-		float scale = getScale()
-				* (getTextSize() / getBreakText().getTextSize());
+		float scale = (getTextSize() / getBreakText().getTextSize());
 		return scale;
 	}
 
@@ -278,8 +277,8 @@ public class CursorableLineView extends LineView {
 
 		private void drawCursor(SimpleGraphics graphics, int x, int y) {
 			graphics.startPath();
-			x *= getScale();
-			y *= getScale();
+			//x *= getScale();
+			//y *= getScale();
 			graphics.moveTo(x, y);
 			graphics.lineTo(x + getWidth() / 2, y + getHeight() * 2 / 3);
 			graphics.lineTo(x + getWidth() / 2, y + getHeight());
@@ -331,17 +330,11 @@ public class CursorableLineView extends LineView {
 		}
 	}
 
-	public int getYToPosY(int y) {
-		int n = (int) (y / (int) (getTextSize() * 1.2));
-		int yy = n - getBlinkY() - 1;
-		//
-		return yy + (getShowingTextStartPosition());
-	}
-
 	@Deprecated
 	public int getXToPosX(int cursorCol, int xx, int cur) {
 		float x = xx;
 		x -= getXForShowLine(0, cursorCol);
+		x /=getScale();
 		LineViewBufferSpec mInputtedText = super.getLineViewBuffer();
 		if (mInputtedText == null || null == mInputtedText.getBreakText()) {
 			return cur;

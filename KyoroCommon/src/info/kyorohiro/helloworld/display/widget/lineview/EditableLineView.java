@@ -15,19 +15,13 @@ import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
 
 public class EditableLineView extends CursorableLineView {
 
-	private EditableLineViewBuffer mTextBuffer = null;//new EditableLineViewBuffer();
+	private EditableLineViewBuffer mTextBuffer = null;
 
-	private EditableLineView(EditableLineViewBuffer buffer) {
-		super(buffer, 16, 512);
+	public  EditableLineView(LineViewBufferSpec v) {
+		super(new EditableLineViewBuffer(v), 16, 512);
 		mTextBuffer = (EditableLineViewBuffer)getLineViewBuffer();
-		mTextBuffer.setBreakText(getBreakText());
 	}
 
-	public static EditableLineView newEditableLineView(){
-		EditableLineViewBuffer buffer = new EditableLineViewBuffer(new MyBreakText());
-		EditableLineView mView = new EditableLineView(buffer);
-		return mView;
-	}
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		if (0 < x && x < this.getWidth() && 0 < y && y < this.getHeight()) {
@@ -48,8 +42,6 @@ public class EditableLineView extends CursorableLineView {
 			if (text != null) {
 				mTextBuffer.pushCommit(text.getText(),text.getNewCursorPosition());
 			}
-		//	graphics.setColor(Color.WHITE);
-		//	mTextBuffer.paint(graphics, (int) mPaint.getTextSize());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -57,30 +49,26 @@ public class EditableLineView extends CursorableLineView {
 	}
 
 
+	//
+	// e‚ðã‘‚«‚·‚éB
+	//
 	public static class EditableLineViewBuffer 
-	extends  EditableLineViewBufferA 
-	implements LineViewBufferSpec {
+	extends  EditableLineViewBufferA implements LineViewBufferSpec {
 
-		private BreakText mBreakText = null;
-		public EditableLineViewBuffer(BreakText breakText) {
+		private LineViewBufferSpec mOwner = null;
+		public EditableLineViewBuffer(LineViewBufferSpec owner) {
 			super();
-			mBreakText = breakText;
+			mOwner = owner;
 		}
 
 		@Override
-		public int getNumOfAdd() {
-			return 0;
-		}
-
+		public int getNumOfAdd() {return 0;}
 		@Override
-		public void clearNumOfAdd() {
-		}
-
+		public void clearNumOfAdd() {}
 		@Override
-		public int getNumberOfStockedElement() {
-//			android.util.Log.v("kiyo","number="+getLines().size());
-			return getLines().size();
-		}
+		public int getNumberOfStockedElement() {return getLines().size();}
+		@Override
+		public BreakText getBreakText() {return mOwner.getBreakText();}
 
 		@Override
 		public LineViewData[] getElements(LineViewData[] ret, int start, int end) {
@@ -88,15 +76,10 @@ public class EditableLineView extends CursorableLineView {
 			for(int i=start;i<end&&i<getLines().size();i++){
 				ret[j] = new LineViewData(getLines().get(i), Color.YELLOW, LineViewData.INCLUDE_END_OF_LINE);
 				j++;
-//				android.util.Log.v("kiyo","["+i+"]"+getLines().get(i));
 			}
 			return ret;
 		}
 
-		@Override
-		public BreakText getBreakText() {
-			return mBreakText;
-		}
 
 		@Override
 		public LineViewData get(int i) {
@@ -136,28 +119,6 @@ public class EditableLineView extends CursorableLineView {
 			}
 		}
 
-		private void moveCursor(int move) {
-			if(lines == null || lines.size() == 0){
-				return;
-			}
-			if(cursorRow>=lines.size()){
-				cursorRow = lines.size()-1;
-			}
-			CharSequence c = lines.get(cursorRow);
-			int m = cursorCol + move;
-			if (m < c.length()) {
-				cursorCol = m;
-			} else {
-				if ((cursorRow + 1) < lines.size()) {
-					cursorCol = 0;
-					cursorRow += 1;
-					moveCursor(m - c.length());
-				} else {
-					cursorRow = c.length();
-				}
-			}
-		}
-
 		public void pushCommit(CharSequence text, int row, int col) {
 			CharSequence current = null;
 			if (row < lines.size()) {
@@ -193,14 +154,32 @@ public class EditableLineView extends CursorableLineView {
 		}
 
 		@Override
-		public void setComposing(CharSequence text) {
-		}
-
 		public void setCursor(int row, int col) {
 			cursorRow = row;
 			cursorCol = col;
 		}
-	}
 
+		private void moveCursor(int move) {
+			if(lines == null || lines.size() == 0){
+				return;
+			}
+			if(cursorRow>=lines.size()){
+				cursorRow = lines.size()-1;
+			}
+			CharSequence c = lines.get(cursorRow);
+			int m = cursorCol + move;
+			if (m < c.length()) {
+				cursorCol = m;
+			} else {
+				if ((cursorRow + 1) < lines.size()) {
+					cursorCol = 0;
+					cursorRow += 1;
+					moveCursor(m - c.length());
+				} else {
+					cursorRow = c.length();
+				}
+			}
+		}
+	}
 
 }

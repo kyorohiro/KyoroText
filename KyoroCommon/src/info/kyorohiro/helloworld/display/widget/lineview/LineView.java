@@ -72,6 +72,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return mTextSize;
 	}
 
+	public int getShowingTextSize() {
+		return (int) (mTextSize * mScale);
+	}
+
 	@Deprecated
 	public synchronized void setCyclingList(
 			CyclingListInter<LineViewData> inputtedText) {
@@ -146,8 +150,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public int getYForShowLine(int textSize, int cursurRow, int cursurCol) {
-		int yy = (int) (textSize * 1.2) * (mBlankY + cursurCol + 1);
+		int yy = (int) ((int)(textSize * 1.2)) * (mBlankY + cursurCol + 1);
 		return yy;
+	}
+
+	public int getYToPosY(int y) {
+		int n = (int) (y / (int) (getShowingTextSize() * 1.2));
+		int yy = n - getBlinkY() - 1;
+		return yy + (getShowingTextStartPosition());
 	}
 
 	public int getLineYForShowLine(int textSize,int cursurRow,int cursurCol) {
@@ -299,7 +309,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
 			setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
 		}
-		graphics.setTextSize((int) (mTextSize * mScale));// todo mScale
+		graphics.setTextSize(getShowingTextSize());// todo mScale
 	}
 
 	private void drawBG(SimpleGraphics graphics) {

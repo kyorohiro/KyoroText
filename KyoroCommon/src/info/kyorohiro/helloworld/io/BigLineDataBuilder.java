@@ -21,8 +21,8 @@ public class BigLineDataBuilder {
 	}
 
 	public static interface W {
+		public void setCursor(int row, int col);
 		public void pushCommit(CharSequence text, int cursor);
-		public void setComposing(CharSequence text);
 	}
 
 	public static interface C {
