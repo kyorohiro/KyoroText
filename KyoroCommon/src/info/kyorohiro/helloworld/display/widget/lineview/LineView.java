@@ -13,6 +13,11 @@ import android.graphics.Paint;
 
 public class LineView extends SimpleDisplayObjectContainer {
 	// extends SimpleDisplayObject {
+	private int mScaleX = 0;
+	private int mScaleY = 0;
+	private int mScaleTime = 0;
+	private int mScaleLine = 0;
+
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
 	private LineViewBufferSpec mInputtedText = null;
@@ -23,7 +28,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private int mShowingTextStartPosition = 0;
 	private int mShowingTextEndPosition = 0;
 	private float mScale = 1.0f;
-//	private int mScalePoint = 0;
+	// private int mScalePoint = 0;
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
@@ -59,26 +64,19 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mScale = scale;
 	}
 
-	public void setScale(float scale, int linePosY, int basePos) {
-/*		android.util.Log.v("kiyo", "MMM scale=" + scale + ",linePosY="
-				+ linePosY + ",basePos=" + basePos);
-		android.util.Log.v("kiyo", "MMM positionY=" + getPositionY() + ","
-				+ getShowingTextSize());*/
-		mScale = scale;
-//		int linePos = getYForShowLine(getShowingTextSize(), linePosY
-//				- getShowingTextStartPosition());
-int pos =  (int) ((getHeight()-basePos)/ (getShowingTextSize() * 1.2));//
-android.util.Log.v("kiyo", 
-		"MMM=" + mInputtedText.getNumberOfStockedElement()
-		+","+linePosY
-		+","+pos+
-		","+mBlankY);		
 
-		///int pos = getYToPosY(basePos);
-//		android.util.Log.v("kiyo", "MMM linePos=" + linePos + "," + pos);
-		
-		setPositionY(mInputtedText.getNumberOfStockedElement()-linePosY-pos);
-//		android.util.Log.v("kiyo", "MMMN linePos=" + linePosY + "," +getPositionY()+","+mInputtedText.getNumberOfStockedElement()+","+pos);
+	public synchronized void setScale(float scale, int linePosY,int baseX, int baseY) {
+		mScale = scale;
+		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
+		android.util.Log.v("kiyo",
+				"MMM=" + mInputtedText.getNumberOfStockedElement() + ","
+						+ linePosY + "," + pos + "," + mBlankY);
+		mScaleX = baseX;
+		mScaleY = baseY;
+		mScaleTime = 20;
+		mScaleLine = linePosY;
+		setPositionY(mInputtedText.getNumberOfStockedElement() - linePosY - pos);
+		this.updateStatus(mInputtedText);
 	}
 
 	public float getScale() {
@@ -156,16 +154,6 @@ android.util.Log.v("kiyo",
 		mImage = image;
 	}
 
-//	public synchronized void addScalePositionY(int position) {
-//		mScalePoint += position;
-//	}
-
-//	private synchronized int resetAddPositionY() {
-//		int tmp = mScalePoint;
-//		mScalePoint = 0;
-//		return tmp;
-//	}
-
 	public int getXForShowLine(int x, int y) {
 		return (getWidth()) / 20 + mPositionX * 19 / 20;
 	}
@@ -222,13 +210,17 @@ android.util.Log.v("kiyo",
 			mPositionX = -1 * (int) (getWidth() * mScale - getWidth());
 		}
 
+		//int scaleLine = mScaleLine-getShowingTextStartPosition();
 		for (int i = 0; i < len; i++) {
 			if (list[i] == null) {
 				continue;
 			}
 			// drawLine
-			graphics.setColor(list[i].getColor());
-
+		//	if(mScaleTime>0&&scaleLine==i) {
+		//		graphics.setColor(Color.YELLOW);				
+		//	} else {
+				graphics.setColor(list[i].getColor());
+		//	}
 			int x = getXForShowLine(0, i);
 			int y = getYForShowLine(graphics.getTextSize(), i);
 			int yy = getLineYForShowLine(graphics.getTextSize(), 0, i);
@@ -257,7 +249,9 @@ android.util.Log.v("kiyo",
 				((SimpleLockInter) showingText).beginLock();
 			}
 
-			updateStatus(graphics, showingText);
+			updateStatus(showingText);
+			graphics.setTextSize(getShowingTextSize());// todo mScale
+
 			drawBG(graphics);
 			{
 				// test
@@ -267,6 +261,13 @@ android.util.Log.v("kiyo",
 				graphics.drawText("" + mShowingTextStartPosition + ":"
 						+ mShowingTextEndPosition, 30, s * 4);
 				graphics.setTextSize(s);
+			}
+			{
+				if(mScaleTime >0){
+					graphics.setColor(Color.argb(mScaleTime,0xff,0xff,0x00));					
+					graphics.drawCircle(mScaleX, mScaleY, 30);
+					mScaleTime-=3;
+				}
 			}
 			mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize,
 					mScale, showingText);
@@ -304,32 +305,20 @@ android.util.Log.v("kiyo",
 		super.paint(graphics);
 	}
 
-	private void updateStatus(SimpleGraphics graphics,
-			LineViewBufferSpec showingText) {
-		mNumOfLine = (int) (getHeight() / (mTextSize * 1.2 * mScale));// todo
-																		// mScale
-		{
-			// todo refactaring
-			// current Position
-			if (!mIsTail || mPositionY > 1) {
-//				int a = resetAddPositionY();
-//				if (a != 0) {
-//					mCash += showingText.getNumOfAdd();
-//					mPositionY = mCash + a;
-//				} else {
-					mCash = 0;
-					mPositionY += showingText.getNumOfAdd();
-//				}
-			}
-			showingText.clearNumOfAdd();
+	private void updateStatus(LineViewBufferSpec showingText) {
+		mNumOfLine = (int) (getHeight() / (getShowingTextSize()* 1.2));// todo
+		if (!mIsTail || mPositionY > 1) {
+			mCash = 0;
+			mPositionY += showingText.getNumOfAdd();
 		}
+		showingText.clearNumOfAdd();
+
 		int blankSpace = mNumOfLine / 2;
 		if (mPositionY < -(mNumOfLine - blankSpace)) {
 			setPositionY(-(mNumOfLine - blankSpace) - 1);
 		} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
 			setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
 		}
-		graphics.setTextSize(getShowingTextSize());// todo mScale
 	}
 
 	private void drawBG(SimpleGraphics graphics) {
