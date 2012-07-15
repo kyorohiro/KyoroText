@@ -107,8 +107,8 @@ public class CursorableLineView extends LineView {
 		super(inputtedText, textSize, cashSize);
 		addChild(mRight);
 		addChild(mLeft);
-		mRight.setRect(30, 120);
-		mLeft.setRect(30, 120);
+		mRight.setRect(40, 120);
+		mLeft.setRect(40, 120);
 		mLeft.setPoint(100, 100);
 	}
 
