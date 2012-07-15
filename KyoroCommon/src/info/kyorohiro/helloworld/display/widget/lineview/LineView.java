@@ -16,14 +16,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private SimpleImage mImage = null;
 	private int mNumOfLine = 300;
 	private LineViewBufferSpec mInputtedText = null;
-	// private int mBlankY = 0;
 	private int mPositionY = 0;
 	private int mPositionX = 0;
 	private int mTextSize = 16;
-	// private int mShowingTextStartPosition = 0;
-	// private int mShowingTextEndPosition = 0;
 	private float mScale = 1.0f;
-	// private int mScalePoint = 0;
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
@@ -31,7 +27,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	// ==========================================================
 	// todo refactaring
-	private int mCash = 0;
+//	private int mCash = 0;
 	private int mTestTextColor = Color.parseColor("#33FFFF00");
 
 	//
@@ -62,7 +58,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public synchronized void setScale(float scale, float sScale, int sGetX,int linePosX,
 			int linePosY, int baseX, int baseY) {
 		mScale = scale;
-		updateStatus(mInputtedText);
+		_updateStatus(mInputtedText);
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
 		mScaleX = baseX;
 		mScaleY = baseY;
@@ -105,12 +101,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return (int) (mTextSize * mScale);
 	}
 
-	@Deprecated
-	public synchronized void setCyclingList(
-			CyclingListInter<LineViewData> inputtedText) {
-		mInputtedText = (LineViewBufferSpec) inputtedText;
-	}
-
 	public synchronized void setLineViewBufferSpec(
 			LineViewBufferSpec inputtedText) {
 		mInputtedText = (LineViewBufferSpec) inputtedText;
@@ -118,11 +108,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public synchronized LineViewBufferSpec getLineViewBuffer() {
 		return mInputtedText;
-	}
-
-	@Deprecated
-	public synchronized CyclingListInter<LineViewData> getCyclingList() {
-		return (CyclingListInter<LineViewData>) mInputtedText;
 	}
 
 	@Deprecated
@@ -293,31 +278,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 			if (showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).beginLock();
 			}
-
-			//
 			// update statusr
-			//
-			updateStatus(showingText);
-			//
+			_updateStatus(showingText);
 			// get buffer
-			//
-			int start = mDrawingPosition.getStart();
-			int end = mDrawingPosition.getEnd();
-			if (start > end) {
-				len = 0;
-			} else {
-				len = end - start;
-			}
-			if (mCashBuffer.length < len) {
-				int buffeSize = len;
-				if (buffeSize < mDefaultCashSize) {
-					buffeSize = mDefaultCashSize;
-				}
-				mCashBuffer = new LineViewData[buffeSize];
-			}
-			list = mCashBuffer;
-			list = showingText.getElements(list, start, end);
-			// android.util.Log.v("kiyo", "2:" + list);
+			list = _getBuffer(showingText);
 		} finally {
 			if (showingText instanceof SimpleLockInter) {
 				((SimpleLockInter) showingText).endLock();
@@ -329,8 +293,13 @@ public class LineView extends SimpleDisplayObjectContainer {
 		//
 		graphics.setTextSize(getShowingTextSize());// todo mScale
 
-		drawBG(graphics);
-		{
+		// draw extra
+
+		{//bg
+			drawBG(graphics);
+		}
+
+		{//line number
 			int s = graphics.getTextSize();
 			graphics.setTextSize(s * 3);
 			graphics.setColor(mTestTextColor);
@@ -339,22 +308,45 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.setTextSize(s);
 		}
 
-		if (mScaleTime > 0) {
-			graphics.setColor(Color.argb(mScaleTime, 0xff, 0xff, 0x00));
-			graphics.drawCircle(mScaleX, mScaleY, 30);
-			mScaleTime -= 3;
+		{//scale in out animation
+			if (mScaleTime > 0) {
+				graphics.setColor(Color.argb(mScaleTime, 0xff, 0xff, 0x00));
+				graphics.drawCircle(mScaleX, mScaleY, 30);
+				mScaleTime -= 3;
+			}
 		}
 
+		// draw content
 		if (list != null) {// bug fix
 			showLineDate(graphics, list, len);
 		}
+		
+		// fin
 		super.paint(graphics);
 	}
 
-	private void updateStatus(LineViewBufferSpec showingText) {
+	private LineViewData[] _getBuffer(LineViewBufferSpec showingText) {
+		int start = mDrawingPosition.getStart();
+		int end = mDrawingPosition.getEnd();
+		int len = 0;
+		if (start > end) {
+			len = 0;
+		} else {
+			len = end - start;
+		}
+		if (mCashBuffer.length < len) {
+			int buffeSize = len;
+			if (buffeSize < mDefaultCashSize) {
+				buffeSize = mDefaultCashSize;
+			}
+			mCashBuffer = new LineViewData[buffeSize];
+		}
+		mCashBuffer = showingText.getElements(mCashBuffer, start, end);
+		return mCashBuffer;
+	}
+	private void _updateStatus(LineViewBufferSpec showingText) {
 		mNumOfLine = (int) (getHeight() / (getShowingTextSize() * 1.2));// todo
 		if (!mIsTail || mPositionY > 1) {
-			mCash = 0;
 			mPositionY += showingText.getNumOfAdd();
 		}
 		showingText.clearNumOfAdd();
