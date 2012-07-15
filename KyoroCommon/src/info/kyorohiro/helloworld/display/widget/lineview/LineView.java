@@ -25,39 +25,28 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private int mDefaultCashSize = 100;
 	private LineViewData[] mCashBuffer = new LineViewData[0];
 	private float[] widths = new float[1024];//<---refataging
-
-	// ==========================================================
 	// todo refactaring
-//	private int mCash = 0;
 	private int mTestTextColor = Color.parseColor("#33FFFF00");
-
-	//
-	// ==========================================================
 	public LineView(LineViewBufferSpec inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 	}
-
 	public LineView(LineViewBufferSpec inputtedText, int textSize, int cashSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 		mDefaultCashSize = cashSize;
 	}
-
 	public void setBgColor(int color) {
 		mBgColor = color;
 	}
-
 	public int getBgColor() {
 		return mBgColor;
 	}
-
 	public void setScale(float scale) {
 		mScale = scale;
 	}
 
-	public synchronized void setScale(float scale, float sScale, int sGetX,int linePosX,
-			int linePosY, int baseX, int baseY) {
+	public synchronized void setScale(float scale, float sScale, int sGetX,int linePosX,int linePosY, int baseX, int baseY) {
 		mScale = scale;
 		_updateStatus(mInputtedText);
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
