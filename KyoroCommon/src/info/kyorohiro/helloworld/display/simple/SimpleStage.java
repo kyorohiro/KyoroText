@@ -57,23 +57,32 @@ public class SimpleStage extends EditableSurfaceView {
 
 	private static int mCountForLogicalSleep = 0;
 	protected void logicalSleepForCpuUage() throws InterruptedException {
-		if(mCountForLogicalSleep<60) {
+		if(mCountForLogicalSleep<30) {
 			Thread.sleep(mSleep);
 		}
+		else if(mCountForLogicalSleep<60){
+//			Thread.sleep(mSleep*4);
+			sleepPlus(8);
+		}
 		else if(mCountForLogicalSleep<120){
-			Thread.sleep(mSleep*4);
+//			Thread.sleep(mSleep*8);
+			sleepPlus(16*2);
 		}
 		else if(mCountForLogicalSleep<240){
-			Thread.sleep(mSleep*8);
+//			Thread.sleep(mSleep*16);
+			sleepPlus(32*2);
 		}
 		else if(mCountForLogicalSleep<480){
-			Thread.sleep(mSleep*16);
-		}
-		else if(mCountForLogicalSleep<960){
-			Thread.sleep(mSleep*20);//
+//			Thread.sleep(mSleep*20);//
+			sleepPlus(64*2);
 		}
 		if(mCountForLogicalSleep<9999){
 			mCountForLogicalSleep++;			
+		}
+	}
+	private void sleepPlus(int num) throws InterruptedException{
+		for(int i=0;i<num&&mCountForLogicalSleep>=50;i++){
+			Thread.sleep(mSleep);
 		}
 	}
 
