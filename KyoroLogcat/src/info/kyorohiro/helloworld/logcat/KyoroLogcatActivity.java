@@ -13,6 +13,7 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus.C
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
+import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceFontSizeDialog;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatDirectoryDialog;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatFilenameDialog;
@@ -194,6 +195,7 @@ public class KyoroLogcatActivity extends TestActivity {
 		mInputForLogFilter.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		FilterSettingAction f = new FilterSettingAction();
 		mInputForLogFilter.setOnEditorActionListener(f);
+		mInputForLogFilter.setText(KyoroLogcatSetting.getCurrentFind());
 		ArrayAdapter<String> automatedStrage = new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line, new String[] {
 						"[DIVWEFS]/", " [DIVWEFS]/", ".[DIVWEFS]/", " D/",
@@ -345,12 +347,16 @@ public class KyoroLogcatActivity extends TestActivity {
 				mShowTask = new ShowCurrentLogTask(mLogcatOutput,
 						KyoroLogcatSetting.getLogcatOption());
 				mShowTask.start();
+				// todo following refactraing
+				mStage.resetTimer();
 			}
 			myResult = true;
 		} else if (MENU_START_SHOW_LOG_FROM_FILE.equals(selectedItemTitle)) {
 			mLogcatOutput.setTextSize(KyoroLogcatSetting.getFontSize());
 			startFolder();
 			myResult = true;
+			// todo following refactraing
+			mStage.resetTimer();
 		} else if (MENU_STOP_SHOW_LOG.equals(selectedItemTitle)) {
 			stopShowLog();
 			myResult = true;
@@ -520,6 +526,9 @@ public class KyoroLogcatActivity extends TestActivity {
 				}
 				Pattern filter = Pattern.compile(filterText);
 				mLogcatViewer.startFilter(filter);
+				// todo following refactraing
+				mStage.resetTimer();
+
 			} catch (Throwable t) {
 				KyoroApplication
 						.showNotification("Failed to filter logcat log from input text.");

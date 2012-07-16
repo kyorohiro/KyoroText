@@ -63,10 +63,14 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		return mViewer.getLineView();
 	}
 
-	public void startFilter(Pattern nextFilter) {
+	public void startFilter(Pattern nextFilter) {		
 		if (nextFilter == null || mInputtedText == null) {
 			return;
 		}
+		//
+		// todo refactaring
+		KyoroLogcatSetting.setCurrentFind(nextFilter.pattern());
+
 		Pattern currentFilter = mInputtedText.getFilterText();
 
 		if (!equalFilter(currentFilter, nextFilter)) {

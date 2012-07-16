@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.kyorohiro.helloworld.logcat"
-    android:versionCode="171"
-    android:versionName="0.8171 alpha" >
+    android:versionCode="172"
+    android:versionName="0.8172 alpha" >
 
     <uses-sdk android:minSdkVersion="4" />
 

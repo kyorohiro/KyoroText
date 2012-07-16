@@ -16,6 +16,7 @@ public class KyoroLogcatSetting {
 	public static String SAVE_TASK_IS_STARTED = "started";
 	public static String SAVE_TASK_IS_STOPPED= "stopped";
 
+
 	// following tag is mistak. but released so. 
 	// could not change.
 	public static String OPTION_TAG = "-v -time";
@@ -28,6 +29,24 @@ public class KyoroLogcatSetting {
 	public static String FILENAME_DEFAULT_NAME = "log_";
 	public static final String SAVEDDIR = "KyoroLogcat";
 	public static HashMap<String, String> sCash= new HashMap<String, String>();
+
+	public static String CURRENT_FIND_TAG = "current_find_text";
+
+	public static String getCurrentFind() {
+		String ret = "";
+		try {
+			String t = getData(KyoroApplication.getKyoroApplication(), CURRENT_FIND_TAG, "");
+			if(t != null && !t.equals("")) {
+				ret = t;
+			}
+		} catch(Throwable t) {		
+		}
+		return ret;
+	}
+
+	public static void setCurrentFind(String findtext) {
+		setData(KyoroApplication.getKyoroApplication(), CURRENT_FIND_TAG, findtext);		
+	}
 
 	public static String getFilename() {
 		String fname = FILENAME_DEFAULT_NAME;
@@ -124,11 +143,15 @@ public class KyoroLogcatSetting {
 	}
 
 	public static String getData(Context context, String property) {
+		return getData(context, property,"none");
+	}
+
+	public static String getData(Context context, String property, String def) {
 		if(sCash.containsKey(property)){
 			return sCash.get(property);
 		}
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		return  pref.getString(property, "none");
+		return  pref.getString(property, def);
 	}
 
 }
