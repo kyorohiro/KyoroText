@@ -130,6 +130,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return mDrawingPosition.getBlank();
 	}
 
+	public boolean isTail() {
+		return mIsTail;
+	}
+
 	public void isTail(boolean on) {
 		mIsTail = on;
 	}
@@ -331,7 +335,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return len;
 	}
 
-	private void _updateStatus(LineViewBufferSpec showingText) {
+	protected void _updateStatus(LineViewBufferSpec showingText) {
 		mNumOfLine = (int) (getHeight() / (getShowingTextSize() * 1.2));// todo
 		if (!mIsTail || mPositionY > 1) {
 			mPositionY += showingText.getNumOfAdd();

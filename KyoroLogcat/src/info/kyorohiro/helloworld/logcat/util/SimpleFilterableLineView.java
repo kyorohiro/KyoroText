@@ -10,7 +10,10 @@ import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
+import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.util.CyclingListInter;
@@ -30,6 +33,8 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		mTextSize = mInputtedText.getTextSize();
 		mViewer = new FlowingLineView(new LineViewBufferSpecAdapterForFlowingLineBuffer(mInputtedText), mTextSize);
 		mBaseWidth = baseWidth;
+		addChild(new TouchAndMoveActionForLineView(this.getLineView()));
+		addChild(new TouchAndZoomForLineView(this.getLineView()));	
 		addChild(new Layout());
 		onAddViewer();
 		addChild(mViewer);
@@ -105,7 +110,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
 		@Override
 		public BreakText getBreakText() {
-			return null;
+			return new MyBreakText();
 		}
 
 		@Override

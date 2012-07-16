@@ -17,6 +17,34 @@ public class CursorableLineView extends LineView {
 	private int mTestTextColor = Color.parseColor("#66FFFF00");
 	private float[] widths = new float[1024];
 
+	@Override
+	protected void _updateStatus(LineViewBufferSpec showingText) {
+		// following code is KyoroLogcat 
+		// ‚±‚ê‚Å‚æ‚¢‚©Œã‚Ål‚¦‚éB
+		if(this.isTail()){
+			int m = showingText.getNumOfAdd();
+			int y = mRight.getCursorCol()-m;
+			if(y>=showingText.getNumberOfStockedElement()){
+				y = showingText.getNumberOfStockedElement();
+			}
+			if(y<0){
+				y=0;
+			}
+			mRight.setCursorCol(y);
+
+			y = mLeft.getCursorCol()-m;
+			if(y>=showingText.getNumberOfStockedElement()){
+				y = showingText.getNumberOfStockedElement();
+			}
+			if(y<0){
+				y=0;
+			}
+
+			mLeft.setCursorCol(y);
+		}
+		super._updateStatus(showingText);
+	}
+
 	public String copy() {
 		if (mLeft.enable() && mRight.enable()) {
 			MyCursor b = mLeft;

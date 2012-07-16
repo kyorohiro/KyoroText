@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.display.widget.flowinglineview;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
@@ -16,10 +17,13 @@ import android.graphics.Color;
 public class FlowingLineView extends SimpleDisplayObjectContainer {
 	private ScrollBar scrollBar = null;
 	private LineView viewer = null;
+//	private CursorableLineView viewer = null;
 
 	public FlowingLineView(LineViewBufferSpec inputtedText, int textSize) {
 		scrollBar = new ScrollBar(this);
 		viewer = new LineView(inputtedText, textSize);
+//		viewer = new CursorableLineView(inputtedText, textSize, 512);
+//		viewer.setMode(CursorableLineView.MODE_SELECT);
 		this.addChild(viewer);
 		this.addChild(new Layout());
 		this.addChild(scrollBar);
