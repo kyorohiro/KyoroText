@@ -6,6 +6,7 @@ public interface CyclingListInter<N> {
 	public void clearNumOfAdd();
 	public void add(N element);
 	public int getNumberOfStockedElement();
+	public int getMaxOfStackedElement();
 	public void head(N element);
 	public void clear();
 	public N[] getLast(N[] ret, int numberOfRetutnArrayElement);

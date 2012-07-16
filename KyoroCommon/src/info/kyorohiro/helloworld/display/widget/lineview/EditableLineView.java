@@ -85,6 +85,11 @@ public class EditableLineView extends CursorableLineView {
 		public LineViewData get(int i) {
 			return new LineViewData(getLines().get(i), Color.YELLOW, LineViewData.INCLUDE_END_OF_LINE);
 		}
+
+		@Override
+		public int getMaxOfStackedElement() {
+			return mOwner.getMaxOfStackedElement();
+		}
 	
 	}
 	public static class EditableLineViewBufferA implements W {

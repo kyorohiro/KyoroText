@@ -9,7 +9,9 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus;
+import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceFontSizeDialog;
 import info.kyorohiro.helloworld.logcat.appparts.PreferenceLogcatDirectoryDialog;
@@ -67,9 +69,10 @@ public class KyoroLogcatActivity extends TestActivity {
 
 	private LogcatViewer mLogcatViewer = null;
 	private FlowingLineBuffer mLogcatOutput = null;
-	private SimpleCircleController mCircleController
-//	= new SimpleCircleControllerMenuPlus();
-	= new SimpleCircleController();
+	private SimpleCircleControllerMenuPlus mCircleController
+	= new SimpleCircleControllerMenuPlus();
+//	private SimpleCircleController mCircleController
+//	= new SimpleCircleController();
 	private SimpleStage mStage = null;
 	private AutoCompleteTextView mInputForLogFilter = null;
 	private TaskInter mShowTask = null;
@@ -135,6 +138,44 @@ public class KyoroLogcatActivity extends TestActivity {
 		mCircleController.setEventListener(mLogcatViewer
 				.getCircleControllerAction());
 		mCircleController.setRadius(radius);
+		mCircleController.setCircleMenuItem(new CircleMenuItem() {
+			@Override
+			public boolean selected(int id, String title) {
+				if(!(mLogcatViewer.getLineView() instanceof CursorableLineView)){
+					return false;
+				}
+				CursorableLineView lineview = (CursorableLineView)mLogcatViewer.getLineView();
+				switch(id) {
+				case 0:
+					lineview.setMode(CursorableLineView.MODE_VIEW);
+					mCircleController.clearCircleMenu();
+					mCircleController.addCircleMenu(0, "view mode");
+					mCircleController.addCircleMenu(1, "select mode");
+					break;
+				case 1:
+					lineview.setMode(CursorableLineView.MODE_SELECT);
+					mLogcatViewer.getLineView();
+					mCircleController.clearCircleMenu();
+					mCircleController.addCircleMenu(0, "view mode");
+					mCircleController.addCircleMenu(1, "select mode");
+					mCircleController.addCircleMenu(2, "copy");
+					break;
+				case 2:
+					mCircleController.clearCircleMenu();
+					mCircleController.addCircleMenu(0, "view mode");
+					mCircleController.addCircleMenu(1, "select mode");
+					KyoroApplication.showMessage(lineview.copy());
+					KyoroApplication.copyToClipboard(lineview.copy());
+					lineview.setMode(CursorableLineView.MODE_VIEW);
+//					mCircleController.addCircleMenu(2, "copy");
+					break;
+				}
+				return false;
+			}
+		});
+		mCircleController.clearCircleMenu();
+		mCircleController.addCircleMenu(0, "view mode");
+		mCircleController.addCircleMenu(1, "select mode");
 
 		//
 		// simple stage

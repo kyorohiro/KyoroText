@@ -21,8 +21,8 @@ public class FlowingLineView extends SimpleDisplayObjectContainer {
 
 	public FlowingLineView(LineViewBufferSpec inputtedText, int textSize) {
 		scrollBar = new ScrollBar(this);
-		viewer = new LineView(inputtedText, textSize);
-//		viewer = new CursorableLineView(inputtedText, textSize, 512);
+//		viewer = new LineView(inputtedText, textSize);
+		viewer = new CursorableLineView(inputtedText, textSize, 512);
 //		viewer.setMode(CursorableLineView.MODE_SELECT);
 		this.addChild(viewer);
 		this.addChild(new Layout());

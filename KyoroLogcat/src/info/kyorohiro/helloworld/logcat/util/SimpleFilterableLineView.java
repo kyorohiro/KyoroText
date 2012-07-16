@@ -158,6 +158,17 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 			}
 			return null;
 		}
+
+		@Override
+		public int  getMaxOfStackedElement() {
+			CyclingListInter<LineViewData> b = mBuffer.get();
+			if(b != null) {
+				return b.getMaxOfStackedElement();
+			}
+			else {
+				return -1;
+			}
+		}
 		
 	}
 }

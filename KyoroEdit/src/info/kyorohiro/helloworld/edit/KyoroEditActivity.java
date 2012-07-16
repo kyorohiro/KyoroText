@@ -48,6 +48,10 @@ public class KyoroEditActivity extends Activity {
 			public BreakText getBreakText() {
 				return new MyBreakText();
 			}
+			@Override
+			public int getMaxOfStackedElement() {
+				return -1;
+			}
         });
         mEdit.setRect(400, 400);
         mStage.getRoot().addChild(new TouchAndMoveActionForLineView(mEdit));

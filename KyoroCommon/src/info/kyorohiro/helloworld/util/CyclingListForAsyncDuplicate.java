@@ -146,4 +146,10 @@ public class CyclingListForAsyncDuplicate<T> implements CyclingListInter<T> {
 	public void clearNumOfAdd() {
 		mCopy.clearNumOfAdd();
 	}
+
+
+	@Override
+	public synchronized int getMaxOfStackedElement() {
+		return mCopy.getMaxOfStackedElement();
+	}
 }

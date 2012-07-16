@@ -17,11 +17,13 @@ public class CursorableLineView extends LineView {
 	private int mTestTextColor = Color.parseColor("#66FFFF00");
 	private float[] widths = new float[1024];
 
+	
 	@Override
 	protected void _updateStatus(LineViewBufferSpec showingText) {
 		// following code is KyoroLogcat 
 		// ‚±‚ê‚Å‚æ‚¢‚©Œã‚Ål‚¦‚éB
-		if(this.isTail()){
+		int r = showingText.getMaxOfStackedElement();
+		if(this.isTail()&&r >= 0&& r<=showingText.getNumberOfStockedElement()){
 			int m = showingText.getNumOfAdd();
 			int y = mRight.getCursorCol()-m;
 			if(y>=showingText.getNumberOfStockedElement()){

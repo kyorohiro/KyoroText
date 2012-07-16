@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.logcat;
 
+import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;
 import android.app.Application;
@@ -9,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.ClipboardManager;
 import android.widget.Toast;
 
 public class KyoroApplication extends Application {
@@ -77,6 +80,34 @@ public class KyoroApplication extends Application {
 		}
 	}
 
+	public static void copyToClipboard(String message) {
+		try {
+			sInstance.mHandler.post(new Clipboard(message));
+		} catch(Throwable e){
+			e.printStackTrace();
+		}
+	}
+	
+
+	private static class Clipboard implements Runnable {
+
+		String mContent;
+
+		public Clipboard(String content) {
+			mContent = content;
+		}
+
+		@Override
+		public void run(){
+			try{
+				ClipboardManager cm=(ClipboardManager)KyoroApplication.getKyoroApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+				cm.setText(""+mContent);
+			}catch(Throwable t){
+				t.printStackTrace();
+			}
+		}
+		
+	}
 	private static class ToastMessage implements Runnable {
 		private Context mContext = null;
 		private String mMessage = null;
