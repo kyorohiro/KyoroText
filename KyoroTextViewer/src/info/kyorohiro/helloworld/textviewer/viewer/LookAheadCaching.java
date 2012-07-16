@@ -8,6 +8,7 @@ import info.kyorohiro.helloworld.textviewer.viewer.TextViewerBuffer.MyBufferData
 import java.lang.ref.WeakReference;
 
 import android.graphics.Color;
+import android.os.Debug;
 
 public class LookAheadCaching {
 	private WeakReference<TextViewerBuffer> mBuffer = null;
@@ -74,6 +75,7 @@ public class LookAheadCaching {
 		if ((sp - chunkSize * 3) <= cp && cp <= (ep + chunkSize * 3)) {
 			return true;
 		} else {
+//			Debug.waitForDebugger();
 			return false;
 		}
 	}

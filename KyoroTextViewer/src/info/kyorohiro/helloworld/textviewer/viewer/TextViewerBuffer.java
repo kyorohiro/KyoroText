@@ -149,9 +149,11 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			MyBufferDatam endLineWithPosition = (MyBufferDatam) endLine;
 			mCurrentBufferStartLinePosition = (int) startLineWithPosition.getLinePosition();
 			mCurrentBufferEndLinePosition = (int) endLineWithPosition.getLinePosition();
+//			android.util.Log.v("kiyo","AA="+startLine+","+endLine);
 		} else {
 			mCurrentBufferStartLinePosition = 0;
 			mCurrentBufferEndLinePosition = 0;
+			android.util.Log.v("kiyo","AA= clear");
 		}
 	}
 

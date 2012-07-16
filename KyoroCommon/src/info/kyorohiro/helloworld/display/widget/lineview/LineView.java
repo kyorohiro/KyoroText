@@ -57,12 +57,12 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 		
 		{
-			int l = getWidth(linePosX, widths, (int)(getTextSize()*sScale));
-			float ww = 0;
-			for (int i = 0; i < l || i < linePosX; i++) {
-				ww += widths[i]; 
-			}
-			ww = sGetX;
+//			int l = getWidth(linePosX, widths, (int)(getTextSize()*sScale));
+//			float ww = 0;
+//			for (int i = 0; i < l || i < linePosX; i++) {
+//				ww += widths[i]; 
+//			}
+			float ww = sGetX;
 			float option = baseX * scale -baseX*sScale;
 			setPositionX((int) ((ww-option) * sScale / scale));
 
