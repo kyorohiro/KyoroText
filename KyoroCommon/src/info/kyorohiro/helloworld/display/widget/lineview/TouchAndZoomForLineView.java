@@ -1,10 +1,12 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 import android.graphics.Color;
+import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
+import info.kyorohiro.helloworld.display.widget.lineview.LineView.Point;
 
 public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	private LineView mLineViewer = null;
@@ -13,7 +15,7 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	private float mNextScale = 0;
 	private int mStartCenterY = 0;
 	private int mStartCenterX = 0;
-	private int mStartPosY = 0;
+	private Point mStartPosY = null;
 	private int mStartPosX = 0;
 	private int mStartGetX = 0;
 	private LineViewData mStartLine = null;
@@ -75,18 +77,27 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 				}
 			}
 			if (mStartZoom == false) {
-				mStartZoom = true;
-				mStartScale = mNextScale = mLineViewer.getScale();
-				mStartLength = getLength();
-				mStartCenterX = getCenterX();
-				mStartCenterY = getCenterY();
-				mStartPosY = mLineViewer.getYToPosY(mStartCenterY);
-				mStartPosX = mLineViewer.getXToPosX(mStartPosY, mStartCenterX, 0);
-				mStartLine = mLineViewer.getLineViewData(mStartPosY);
-				mStartGetX = mLineViewer.getPositionX();
-				if (mStartLine != null) {
-					mStartLineBaseColor = mStartLine.getColor();
-					mStartLine.setColor(Color.YELLOW);
+				try {
+					if (mLineViewer instanceof SimpleLockInter) {
+						((SimpleLockInter) mLineViewer).beginLock();
+					}
+					mStartZoom = true;
+					mStartScale = mNextScale = mLineViewer.getScale();
+					mStartLength = getLength();
+					mStartCenterX = getCenterX();
+					mStartCenterY = getCenterY();
+					mStartPosY = mLineViewer.getPoint(mLineViewer.getYToPosY(mStartCenterY));
+					mStartLine = mLineViewer.getLineViewData(mStartPosY.getPoint());
+					mStartPosX = mLineViewer.getXToPosX(mStartPosY.getPoint(), mStartCenterX, 0);
+					mStartGetX = mLineViewer.getPositionX();
+					if (mStartLine != null) {
+						mStartLineBaseColor = mStartLine.getColor();
+						mStartLine.setColor(Color.YELLOW);
+					}
+				}finally {
+					if (mLineViewer instanceof SimpleLockInter) {
+						((SimpleLockInter) mLineViewer).endLock();
+					}					
 				}
 			}
 

@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import java.util.WeakHashMap;
+
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -9,6 +11,37 @@ import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObjectContainer {
 	// extends SimpleDisplayObject {
+	public static class Point {
+		public Point(int point) {
+			mPoint = point;
+		}
+
+		public int getPoint() {
+			return mPoint;
+		}
+
+		private int mPoint = 0;
+	}
+
+	private int s = 0;
+
+	public synchronized Point getPoint(int num) {
+		Point point = new Point(num);
+		mPoint.put(s++, point);
+		return point;
+	}
+
+	private synchronized void addPoint(int num) {
+		if (this.isTail()
+				&& mInputtedText.getMaxOfStackedElement() <= mInputtedText
+						.getNumberOfStockedElement()) {
+			for (Point p : mPoint.values()) {
+				p.mPoint -= num;
+			}
+		}
+	}
+
+	private WeakHashMap<Integer, Point> mPoint = new WeakHashMap<Integer, Point>();
 	private int mScaleX = 0;
 	private int mScaleY = 0;
 	private int mScaleTime = 0;
@@ -24,54 +57,47 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
 	private LineViewData[] mCashBuffer = new LineViewData[0];
-	private float[] widths = new float[1024];//<---refataging
+	private float[] widths = new float[1024];// <---refataging
 	// todo refactaring
 	private int mTestTextColor = Color.parseColor("#33FFFF00");
+
 	public LineView(LineViewBufferSpec inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 	}
+
 	public LineView(LineViewBufferSpec inputtedText, int textSize, int cashSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
 		mDefaultCashSize = cashSize;
 	}
+
 	public void setBgColor(int color) {
 		mBgColor = color;
 	}
+
 	public int getBgColor() {
 		return mBgColor;
 	}
+
 	public void setScale(float scale) {
 		mScale = scale;
 	}
 
-	public synchronized void setScale(float scale, float sScale, int sGetX,int linePosX,int linePosY, int baseX, int baseY) {
+	public synchronized void setScale(float scale, float sScale, int sGetX,
+			int linePosX, Point linePosY, int baseX, int baseY) {
 		mScale = scale;
-		_updateStatus(mInputtedText);
+		 _updateStatus(mInputtedText);
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
 		mScaleX = baseX;
 		mScaleY = baseY;
 		mScaleTime = 20;
-		setPositionY(mInputtedText.getNumberOfStockedElement() - linePosY - pos-1);
+		setPositionY(mInputtedText.getNumberOfStockedElement()
+				- linePosY.getPoint() - pos - 1);
 
-		
-		{
-//			int l = getWidth(linePosX, widths, (int)(getTextSize()*sScale));
-//			float ww = 0;
-//			for (int i = 0; i < l || i < linePosX; i++) {
-//				ww += widths[i]; 
-//			}
-			float ww = sGetX;
-			float option = baseX * scale -baseX*sScale;
-			setPositionX((int) ((ww-option) * sScale / scale));
-
-			//			setPositionX(getWidth()-(int) ((baseX+ww) * sScale / scale));
-			//android.util.Log.v("kiyo", "" + ((int) ((ww-option) * sScale / scale))
-			//		+ ","+ ((int) ((ww) * sScale / scale))+
-			//		","+scale+","+sScale);
-
-		}
+		float option = baseX-(baseX - sGetX) * scale / sScale;
+//		setPositionX((int) (sGetX * scale / sScale - option));
+		setPositionX((int) (option));
 
 	}
 
@@ -156,6 +182,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public int getWidth(int cursorCol, float[] w) {
 		return getWidth(cursorCol, w, getShowingTextSize());
 	}
+
 	public int getWidth(int cursorCol, float[] w, int textSize) {
 		LineViewBufferSpec mInputtedText = getLineViewBuffer();
 		if (mInputtedText == null || null == mInputtedText.getBreakText()) {
@@ -191,9 +218,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public int getYToPosY(int y) {
-		int n = (int) (y / (int)((getShowingTextSize() * 1.2)));
+		int n = (int) (y / (int) ((getShowingTextSize() * 1.2)));
 		int yy = n - getBlinkY() - 1;
-//		android.util.Log.v("kiyo","DD="+getBlinkY()+","+n+","+getScale()+","+getShowingTextSize());
+		// android.util.Log.v("kiyo","DD="+getBlinkY()+","+n+","+getScale()+","+getShowingTextSize());
 		return yy + (getShowingTextStartPosition());
 	}
 
@@ -265,7 +292,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		LineViewBufferSpec showingText = mInputtedText;
 		LineViewData[] list = null;
 		int len = 0;
-		
+
 		// update status
 		try {
 			if (showingText instanceof SimpleLockInter) {
@@ -287,11 +314,11 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 		// draw extra
 
-		{//bg
+		{// bg
 			drawBG(graphics);
 		}
 
-		{//line number
+		{// line number
 			int s = graphics.getTextSize();
 			graphics.setTextSize(s * 3);
 			graphics.setColor(mTestTextColor);
@@ -300,7 +327,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.setTextSize(s);
 		}
 
-		{//scale in out animation
+		{// scale in out animation
 			if (mScaleTime > 0) {
 				graphics.setColor(Color.argb(mScaleTime, 0xff, 0xff, 0x00));
 				graphics.drawCircle(mScaleX, mScaleY, 30);
@@ -312,7 +339,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (list != null) {// bug fix
 			showLineDate(graphics, list, len);
 		}
-		
+
 		// fin
 		super.paint(graphics);
 	}
@@ -321,7 +348,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		int start = mDrawingPosition.getStart();
 		int end = mDrawingPosition.getEnd();
 		int len = 0;
-		if (start<=end) {
+		if (start <= end) {
 			len = end - start;
 		}
 		if (mCashBuffer.length < len) {
@@ -339,6 +366,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mNumOfLine = (int) (getHeight() / (getShowingTextSize() * 1.2));// todo
 		if (!mIsTail || mPositionY > 1) {
 			mPositionY += showingText.getNumOfAdd();
+			addPoint(showingText.getNumOfAdd());
 		}
 		showingText.clearNumOfAdd();
 
@@ -354,7 +382,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	private void drawBG(SimpleGraphics graphics) {
 		graphics.drawBackGround(mBgColor);
-		if (mImage == null) {return;}
+		if (mImage == null) {
+			return;
+		}
 		graphics.drawImageAsTile(mImage, 0, 0, getWidth(), getHeight());
 	}
 }
