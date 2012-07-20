@@ -17,6 +17,7 @@ import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleCon
 import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
@@ -56,7 +57,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
 
-		mLineView = new CursorableLineView(mBuffer, textSize, 200);
+//		mLineView = new CursorableLineView(mBuffer, textSize, 200);
+		mLineView = new EditableLineView(mBuffer, textSize, 200);
 
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
@@ -180,8 +182,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 					mBreakText, file, mCurrentCharset);
 		} catch (FileNotFoundException e) {
 			// don't pass along this code
-			KyoroApplication
-					.showMessage("file can not read null filen --007--");
+			KyoroApplication.showMessage("file can not read null filen --007--");
 			return false;
 		}
 		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView

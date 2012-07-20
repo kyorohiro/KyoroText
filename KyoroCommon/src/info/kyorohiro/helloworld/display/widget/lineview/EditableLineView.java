@@ -22,6 +22,11 @@ public class EditableLineView extends CursorableLineView {
 		mTextBuffer = (EditableLineViewBuffer)getLineViewBuffer();
 	}
 
+	public  EditableLineView(LineViewBufferSpec v, int textSize, int cashSize)  {
+		super(new EditableLineViewBuffer(v), textSize, cashSize);
+		mTextBuffer = (EditableLineViewBuffer)getLineViewBuffer();
+	}
+
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		if (0 < x && x < this.getWidth() && 0 < y && y < this.getHeight()) {
