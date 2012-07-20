@@ -3,7 +3,6 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 import android.graphics.Color;
 import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.io.BreakText;
 
 public class CursorableLineView extends LineView {
 	private MyCursor mLeft = new MyCursor(this);
@@ -93,29 +92,25 @@ public class CursorableLineView extends LineView {
 		}
 	}
 
-
-
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		try{
-		lock();
 		if (super.onTouchTest(x, y, action)) {
 			return true;
 		} else {
 			if (mMode == MODE_EDIT && action == MotionEvent.ACTION_UP) {
-				mRight.setCursorCol(getYToPosY(y));
-				mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), x,
-						mRight.getCursorRow()));
+				try{
+					lock();
+					mRight.setCursorCol(getYToPosY(y));
+					mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), x, mRight.getCursorRow()));
+				}finally{
+					releaseLock();
+				}
 			}
 			return false;
 		}
-		}finally{
-		releaseLock();
-		}
 	}
 
-	public CursorableLineView(LineViewBufferSpec inputtedText, int textSize,
-			int cashSize) {
+	public CursorableLineView(LineViewBufferSpec inputtedText, int textSize, int cashSize) {
 		super(inputtedText, textSize, cashSize);
 		addChild(mRight);
 		addChild(mLeft);
@@ -126,8 +121,8 @@ public class CursorableLineView extends LineView {
 
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
-		try {
-			lock();
+//		try {
+//			lock();
 			super.paint(graphics);
 			if (null == getBreakText()) {
 				return;
@@ -138,14 +133,14 @@ public class CursorableLineView extends LineView {
 			graphics.setTextSize(30);
 			graphics.drawText(mMode, 20, this.getHeight() - 50);
 			drawBGForSelect(graphics);
-		} finally {
-			releaseLock();
-		}
+//		} finally {
+//			releaseLock();
+//		}
 	}
 
 	private void drawBGForSelect(SimpleGraphics graphics) {
-		try {
-			lock();
+		//try {
+		//	lock();
 		if (mLeft.enable() && mRight.enable()) {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
@@ -174,10 +169,10 @@ public class CursorableLineView extends LineView {
 				graphics.drawLine(b.getX(), b.getY(), e.getX(), e.getY());
 			}
 		}
-		}
-		finally {
-			releaseLock();
-		}
+		//}
+		//finally {
+		//	releaseLock();
+		///}
 	}
 
 }

@@ -20,20 +20,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 			mR = new WeakReference<LineView>(v);
 		}
 		public int getPoint() {
-			LineView v = mR.get();
-			if(v != null) {
-				return mPoint;// - v.getLineViewBuffer().getNumOfAdd();
-			} else {
-				return mPoint;
-			}
+			return mPoint;
 		}
 		public void setPoint(int point) {
-			LineView v = mR.get();
-			if(v != null&& mR.get().isOver()) {
-				mPoint = point;//- v.getLineViewBuffer().getNumOfAdd();
-			} else {
-				mPoint = point;
-			}
+			mPoint = point;
 		}
 		private int mPoint = 0;
 	}
@@ -46,8 +36,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public BreakText getBreakText() {
 		return getLineViewBuffer().getBreakText();
 	}
-	private int s = 0;
 
+	private int s = 0;
 	public synchronized Point getPoint(int num) {
 		Point point = new Point(num, this);
 		mPoint.put(s++, point);
@@ -65,6 +55,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (isOver()) {
 			for (Point p : mPoint.values()) {
 				p.mPoint -= num;
+				if(p.mPoint < 0){
+					p.mPoint = 0; 
+				}
 			}
 		}
 	}
@@ -360,18 +353,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 		// update status
 		try {
-			if (showingText instanceof SimpleLockInter) {
-				((SimpleLockInter) showingText).beginLock();
-			}
+			lock();
 			// update statusr
 			_updateStatus(showingText);
 			// get buffer
 			len = _getBuffer(showingText);
 			list = mCashBuffer;
 		} finally {
-			if (showingText instanceof SimpleLockInter) {
-				((SimpleLockInter) showingText).endLock();
-			}
+			releaseLock();
 		}
 
 		// show buffer
@@ -382,7 +371,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 		{// bg
 			drawBG(graphics);
 		}
-
 		{// line number
 			int s = graphics.getTextSize();
 			graphics.setTextSize(s * 3);
@@ -391,7 +379,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 					+ getShowingTextEndPosition(), 30, s * 4);
 			graphics.setTextSize(s);
 		}
-
 		{// scale in out animation
 			if (mScaleTime > 0) {
 				graphics.setColor(Color.argb(mScaleTime, 0xff, 0xff, 0x00));
@@ -399,12 +386,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 				mScaleTime -= 3;
 			}
 		}
-
 		// draw content
 		if (list != null) {// bug fix
 			showLineDate(graphics, list, len);
 		}
-
 		// fin
 		super.paint(graphics);
 	}
@@ -429,20 +414,24 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	protected void _updateStatus(LineViewBufferSpec showingText) {
 		mNumOfLine = (int) (getHeight() / (getShowingTextSize() * 1.2));// todo
-		if (!mIsTail || mPositionY > 1) {
-			mPositionY += showingText.getNumOfAdd();
-			addPoint(showingText.getNumOfAdd());
-		}
-		showingText.clearNumOfAdd();
+		try {
+			lock();
+			if (!mIsTail || mPositionY > 1) {
+				mPositionY += showingText.getNumOfAdd();
+				addPoint(showingText.getNumOfAdd());
+			}
+			showingText.clearNumOfAdd();
 
-		int blankSpace = mNumOfLine / 2;
-		if (mPositionY < -(mNumOfLine - blankSpace)) {
-			setPositionY(-(mNumOfLine - blankSpace) - 1);
-		} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
-			setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
+			int blankSpace = mNumOfLine / 2;
+			if (mPositionY < -(mNumOfLine - blankSpace)) {
+				setPositionY(-(mNumOfLine - blankSpace) - 1);
+			} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
+				setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
+			}
+			mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize, mScale,showingText);
+		} finally {
+			releaseLock();
 		}
-		mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize, mScale,
-				showingText);
 	}
 
 	private void drawBG(SimpleGraphics graphics) {

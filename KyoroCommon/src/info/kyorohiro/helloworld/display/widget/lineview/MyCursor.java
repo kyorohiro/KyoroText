@@ -56,8 +56,6 @@ public class MyCursor extends SimpleDisplayObject {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-		try {
-			mParent.get().lock();
 		if (!mEnable) {
 			return;
 		}
@@ -71,16 +69,7 @@ public class MyCursor extends SimpleDisplayObject {
 		drawCursor(graphics, 0, 0);
 
 		graphics.setTextSize(26);
-		graphics.drawText("x=" + cursorRow + ",y=" + cursorCol.getPoint(), 100, 100);
-		try {
-			android.util.Log.v("kiyo","x=" + cursorRow + ",y=" + cursorCol.getPoint()+",:"+ (mX - px)+","+ (mY - py)+":,"+mParent.get().getLineViewBuffer().get(cursorCol.getPoint()));
-		} catch(Throwable e){
-			android.util.Log.v("kiyo","x=" + cursorRow + ",y=" + cursorCol.getPoint()+""+e.toString());
-			e.printStackTrace();
-		}
-		}finally {
-			mParent.get().releaseLock();
-		}
+		graphics.drawText("x=" + cursorRow + ",y=" + cursorCol.getPoint(), 10, 100);
 	}
 
 	private void drawCursor(SimpleGraphics graphics, int x, int y) {
@@ -96,8 +85,8 @@ public class MyCursor extends SimpleDisplayObject {
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		try {
-			mParent.get().lock();
+		//try {
+		//	mParent.get().lock();
 
 		if (!mEnable) {
 			return false;
@@ -127,16 +116,19 @@ public class MyCursor extends SimpleDisplayObject {
 					l.lock();
 					cursorCol.setPoint(getYToPosY(y - py + getY()));
 					cursorRow = getXToPosX(cursorCol.getPoint(), x - px + getX(), cursorRow);
-				} finally {
+				} 
+				catch(Exception e){
+					// todo
+				}finally {
 					l.releaseLock();
 				}
 				//updateCursor(this);
 			}
 		}
 		return focus;
-		}finally {
-				mParent.get().releaseLock();
-		}
+		//}finally {
+		//		mParent.get().releaseLock();
+		//}
 	}
 
 	private int getYToPosY(int y) {
@@ -162,40 +154,46 @@ public class MyCursor extends SimpleDisplayObject {
 		return false;
 	}
 	public synchronized void updateCursor() {
-		{
-			int y = 0;
-			float x = 0.0f;
-			int l = 0;
-			mParent.get().lock();
-			if (this.getCursorCol() < mParent.get().getShowingTextStartPosition()
-					|| this.getCursorCol() > mParent.get().getShowingTextEndPosition()) {
-				// TextViewerとのキャッシュの取り合いで、画面が点滅してしまう。
-				// todo 後で対策を考える。
-				// LineView側がバッファの中身について知らなくても良いようにする。、
-			} else {
-				try {
-					int yy = this.getCursorCol();
-					if(mParent.get().isOver()){
-						yy-=mParent.get().getLineViewBuffer().getNumOfAdd();
-					}
-					LineViewData d = mParent.get().getLineViewData(yy);
-					if (d != null) {
-						l = mParent.get().getBreakText().getTextWidths(d, 0,
-								this.getCursorRow(), mParent.get().widths,
-								mParent.get().getShowingTextSize());
-						for (int i = 0; i < l; i++) {
-							x += mParent.get().widths[i];
-						}
-					}
-				} catch (Exception e) {
+		int y = 0;
+		float x = 0.0f;
+		int l = 0;
+		if (this.getCursorCol() < mParent.get().getShowingTextStartPosition()
+				|| this.getCursorCol() > mParent.get().getShowingTextEndPosition()) {
+			// TextViewerとのキャッシュの取り合いで、画面が点滅してしまう。
+			// todo 後で対策を考える。
+			// LineView側がバッファの中身について知らなくても良いようにする。、
+		} else {
+			LineViewData d = null;
+			try {
+				mParent.get().lock();
+				int yy = this.getCursorCol();
+				if(mParent.get().isOver()){
+					yy-=mParent.get().getLineViewBuffer().getNumOfAdd();
 				}
+				d = mParent.get().getLineViewData(yy);
+			} finally {
+				mParent.get().releaseLock();
 			}
 
-			y = mParent.get().getYForStartDrawLine(this.getCursorCol()
-					- mParent.get().getShowingTextStartPosition()
-					);
+			try {
+				if (d != null) {
+					l = mParent.get().getBreakText().getTextWidths(d, 0,
+							this.getCursorRow(), mParent.get().widths,
+							mParent.get().getShowingTextSize());
+					for (int i = 0; i < l; i++) {
+						x += mParent.get().widths[i];
+					}
+				}
+			} catch(Throwable t){
+				// todo refactaring BreakTextは他者が定義するので、念のため
+			}
+		}
 
+		try {
+			mParent.get().lock();
+			y = mParent.get().getYForStartDrawLine(this.getCursorCol()-mParent.get().getShowingTextStartPosition());
 			this.setPoint((int) x + mParent.get().getLeftForStartDrawLine(), y);
+		} finally {
 			mParent.get().releaseLock();
 		}
 	}

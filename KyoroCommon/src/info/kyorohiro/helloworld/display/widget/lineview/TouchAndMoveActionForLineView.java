@@ -63,34 +63,14 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 																				// 2.5f
 			boolean ret = false;
 			{
-				//todo refactaring
 				double tS = textSize*1.2;
 				if((mMovingY/tS)>=1 || (mMovingY/tS)<=-1) {
 					mViewer.setPositionY(mViewer.getPositionY()+ (int)(mMovingY/tS));
 					mMovingY = mMovingY%(int)tS;
-					//int a = mViewer.getTodoExtra();
-//					mMoveYY +=a-(int)(mMovingY/tS);
-//					mViewer.setTodoExtra((int)((mViewer.getPositionY()+ mMoveYY)%tS));
-					//if((mMovingY/tS)>=1){
-/*
-					if(mViewer.getTodoExtra()>=0){
-						mMoveYY=(mMoveYY-tS+todoY)%tS;
-					//	mViewer.setTodoExtra((int)mMoveYY);
-//						mViewer.setTodoExtra((int)((mViewer.getTodoExtra()-tS+(todoY))%tS));
-					} else {
-						mMoveYY=(mMoveYY+tS+todoY)%tS;
-					//	mViewer.setTodoExtra((int)mMoveYY);
-//						mViewer.setTodoExtra((int)((mViewer.getTodoExtra()+tS+(todoY))%tS));						
-					}*/
 				} else {
-//					mViewer.setTodoExtra((int)((mViewer.getPositionY()+ mMoveYY)%tS));					
 					mMoveYY =(mMoveYY+todoY)%tS;
-					//mViewer.setTodoExtra((int)mMoveYY);
-//					mViewer.setTodoExtra((int)((mViewer.getTodoExtra()+(todoY))%tS));
 				}
-				// until here 				
 			}
-
 
 			if (mMovingX < textSize || textSize < mMovingX) {
 				int notMuchValue = mMovingX % textSize;
@@ -99,18 +79,15 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 				mMovingX = notMuchValue;
 				ret = true;
 			}
-			//
 			return ret;
 		} else if (action == MotionEvent.ACTION_DOWN) {
 			mHeavyX = 0;
 			mHeavyY = 0;
-//			mMovingY = mViewer.getTodoExtra();;
 			mMoveYY = mMovingY; 
 			mMovingX = 0;
 			mPrevY = -999;
 			mPrevX = -999;
 		} else if (action == MotionEvent.ACTION_UP) {
-			//android.util.Log.v("kiyohiro", "power=" + mPower_prevY);
 			mHeavyX = mPowerX * 8;
 			mHeavyY = mPowerY * 8;
 			mPrevY = -999;
