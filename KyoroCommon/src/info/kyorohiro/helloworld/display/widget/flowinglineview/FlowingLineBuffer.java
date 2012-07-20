@@ -147,16 +147,26 @@ implements SimpleLockInter {
 		// ever time return false;
 		return false;
 	}
+	private int num = 0;
 	@Override
 	public synchronized void beginLock() {
-		locked = true;
-		cThread = Thread.currentThread();
+		if(!locked){
+			locked = true;
+			cThread = Thread.currentThread();
+			num++;
+		}
 	}
 
 	@Override
 	public synchronized void endLock() {
-		locked = false;
-		notifyAll();
+		if(locked&& cThread == Thread.currentThread()){
+			num--;
+			if(num <=0){
+				locked = false;
+				num =0;
+				notifyAll();
+			}
+		}
 	}
 
 	private synchronized void lock() {

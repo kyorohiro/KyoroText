@@ -1,40 +1,68 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
 import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
+import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObjectContainer {
 	// extends SimpleDisplayObject {
 	public static class Point {
-		public Point(int point) {
+		WeakReference<LineView> mR;
+		private Point(int point, LineView v) {
 			mPoint = point;
+			mR = new WeakReference<LineView>(v);
 		}
-
 		public int getPoint() {
-			return mPoint;
+			LineView v = mR.get();
+			if(v != null) {
+				return mPoint;// - v.getLineViewBuffer().getNumOfAdd();
+			} else {
+				return mPoint;
+			}
 		}
-
+		public void setPoint(int point) {
+			LineView v = mR.get();
+			if(v != null&& mR.get().isOver()) {
+				mPoint = point;//- v.getLineViewBuffer().getNumOfAdd();
+			} else {
+				mPoint = point;
+			}
+		}
 		private int mPoint = 0;
 	}
-
+	// setScaleÇ∆setTextSize()Ç≈ägëÂó¶Çê›íËÇµÇƒÇ¢ÇÈÅB
+	// å„Ç≈Ç«ÇøÇÁÇ©Ç…ìùàÍÇ∑ÇÈÅH
+	protected float getSclaeFromTextSize() {
+		float scale = (getTextSize() / getBreakText().getTextSize());
+		return scale;
+	}
+	public BreakText getBreakText() {
+		return getLineViewBuffer().getBreakText();
+	}
 	private int s = 0;
 
 	public synchronized Point getPoint(int num) {
-		Point point = new Point(num);
+		Point point = new Point(num, this);
 		mPoint.put(s++, point);
 		return point;
 	}
 
+	public boolean isOver() {
+		if (this.isTail()&& mInputtedText.getMaxOfStackedElement() <= mInputtedText.getNumberOfStockedElement()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	private synchronized void addPoint(int num) {
-		if (this.isTail()
-				&& mInputtedText.getMaxOfStackedElement() <= mInputtedText
-						.getNumberOfStockedElement()) {
+		if (isOver()) {
 			for (Point p : mPoint.values()) {
 				p.mPoint -= num;
 			}
@@ -57,7 +85,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
 	private LineViewData[] mCashBuffer = new LineViewData[0];
-	private float[] widths = new float[1024];// <---refataging
+	public static float[] widths = new float[1024];// <---refataging
 	// todo refactaring
 	private int mTestTextColor = Color.parseColor("#33FFFF00");
 
@@ -170,12 +198,12 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mImage = image;
 	}
 
-	public int getXForShowLine(int x, int y) {
+	public int getLeftForStartDrawLine() {
 		return (getWidth()) / 20 + mPositionX * 19 / 20;
 	}
 
-	public int getYForShowLine(int textSize, int cursurCol) {
-		int yy = (int) ((int) (textSize * 1.2)) * (getBlinkY() + cursurCol + 1);
+	public int getYForStartDrawLine(int cursurCol) {
+		int yy = (int) ((int) (getShowingTextSize() * 1.2)) * (getBlinkY() + cursurCol + 1);
 		return yy;
 	}
 
@@ -204,7 +232,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	@Deprecated
 	public int getXToPosX(int cursorCol, int xx, int cur) {
 		float x = xx;// /getScale();
-		x -= getXForShowLine(0, cursorCol);
+		x -= getLeftForStartDrawLine();
 		int l = getWidth(cursorCol, widths);
 
 		float ww = 0;
@@ -224,9 +252,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return yy + (getShowingTextStartPosition());
 	}
 
-	public int getLineYForShowLine(int textSize, int cursurRow, int cursurCol) {
-		int yy = getYForShowLine(textSize, cursurCol);
-		int yyy = yy + (int) (textSize * 0.2);
+	public int getLineYForShowLine(int cursurRow, int cursurCol) {
+		int yy = getYForStartDrawLine(cursurCol);
+		int yyy = yy + (int) (getShowingTextSize() * 0.2);
 		return yyy;
 	}
 
@@ -272,9 +300,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 			}
 
 			graphics.setColor(list[i].getColor());
-			int x = getXForShowLine(0, i);
-			int y = getYForShowLine(graphics.getTextSize(), i);
-			int yy = getLineYForShowLine(graphics.getTextSize(), 0, i);
+			int x = getLeftForStartDrawLine();
+			int y = getYForStartDrawLine(i);
+			int yy = getLineYForShowLine(0, i);
 
 			graphics.drawText(list[i], x, y);
 			if (list[i].getStatus() == LineViewData.INCLUDE_END_OF_LINE) {
@@ -287,6 +315,43 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	private boolean lock = false;
+	private Thread currentThread = null;
+	int num = 0;
+	public synchronized void lock() {
+		if (mInputtedText instanceof SimpleLockInter) {
+			((SimpleLockInter) mInputtedText).beginLock();
+		}
+		if(lock) {
+			try {
+				if(currentThread != Thread.currentThread()){
+					wait();
+				} else {
+					num++;
+				}
+			} catch (InterruptedException e) {
+			}
+		} else {
+			currentThread = Thread.currentThread();
+			lock = true;
+			num++;
+		}
+	}
+
+	public synchronized void releaseLock() {
+		if(currentThread == Thread.currentThread()){
+			num--;
+			if(num == 0){
+				notifyAll();
+				lock = false;
+				currentThread = null;
+			}
+		}
+		if (mInputtedText instanceof SimpleLockInter) {
+			((SimpleLockInter) mInputtedText).endLock();
+		}	
+	}
+	
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		LineViewBufferSpec showingText = mInputtedText;
