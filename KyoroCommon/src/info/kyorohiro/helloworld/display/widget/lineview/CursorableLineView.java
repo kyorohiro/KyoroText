@@ -5,14 +5,21 @@ import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 
 public class CursorableLineView extends LineView {
-	private MyCursor mLeft = new MyCursor(this);
-	private MyCursor mRight = new MyCursor(this);
-	private CharSequence mMode = MODE_VIEW;
 
 	public final static String MODE_SELECT = "MODE SELECT";
 	public final static String MODE_VIEW = "MODE VIEW";
 	public final static String MODE_EDIT = "MODE EDIT: NOW CREATING!!";
+
+
+	private MyCursor mLeft = new MyCursor(this);
+	private MyCursor mRight = new MyCursor(this);
+	private CharSequence mMode = MODE_VIEW;
+
 	private int mTestTextColor = Color.parseColor("#66FFFF00");
+	
+	public MyCursor getLeft() {
+		return mLeft;
+	}
 
 	public String copy() {
 		try {
@@ -87,8 +94,8 @@ public class CursorableLineView extends LineView {
 			mRight.enable(false);
 		}
 		if (MODE_EDIT.equals(mode)) {
-			mLeft.enable(false);
-			mRight.enable(true);
+			mLeft.enable(true);
+			mRight.enable(false);
 		}
 	}
 
@@ -100,8 +107,8 @@ public class CursorableLineView extends LineView {
 			if (mMode == MODE_EDIT && action == MotionEvent.ACTION_UP) {
 				try{
 					lock();
-					mRight.setCursorCol(getYToPosY(y));
-					mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), x, mRight.getCursorRow()));
+					mLeft.setCursorCol(getYToPosY(y));
+					mLeft.setCursorRow(getXToPosX(mRight.getCursorCol(), x, mRight.getCursorRow()));
 				}finally{
 					releaseLock();
 				}

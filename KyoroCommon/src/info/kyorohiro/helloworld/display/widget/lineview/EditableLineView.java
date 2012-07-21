@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import android.graphics.Color;
@@ -28,6 +29,15 @@ public class EditableLineView extends CursorableLineView {
 	}
 
 	@Override
+	public synchronized void setLineViewBufferSpec(LineViewBufferSpec inputtedText) {
+		try {
+		lock();
+		super.setLineViewBufferSpec(mTextBuffer =new EditableLineViewBuffer(inputtedText));
+		}finally {
+			releaseLock();
+		}
+	}
+	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		if (0 < x && x < this.getWidth() && 0 < y && y < this.getHeight()) {
 			SimpleStage stage = getStage(this);
@@ -38,6 +48,10 @@ public class EditableLineView extends CursorableLineView {
 
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
+		//
+		mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+
+		//
 		SimpleStage stage = getStage(this);
 		MyInputConnection c = stage.getCurrentInputConnection();
 		if (c == null) {return;}
@@ -57,8 +71,7 @@ public class EditableLineView extends CursorableLineView {
 	//
 	// 親を上書きする。
 	//
-	public static class EditableLineViewBuffer 
-	extends  EditableLineViewBufferA implements LineViewBufferSpec {
+	public static class EditableLineViewBuffer implements LineViewBufferSpec , W {
 
 		private LineViewBufferSpec mOwner = null;
 		public EditableLineViewBuffer(LineViewBufferSpec owner) {
@@ -67,129 +80,72 @@ public class EditableLineView extends CursorableLineView {
 		}
 
 		@Override
-		public int getNumOfAdd() {return 0;}
+		public int getNumOfAdd() {return mOwner.getNumOfAdd();}
 		@Override
-		public void clearNumOfAdd() {}
+		public void clearNumOfAdd() {mOwner.clearNumOfAdd();}
 		@Override
-		public int getNumberOfStockedElement() {return getLines().size();}
+		public int getNumberOfStockedElement() {return mOwner.getNumberOfStockedElement();}
 		@Override
 		public BreakText getBreakText() {return mOwner.getBreakText();}
 
 		@Override
 		public LineViewData[] getElements(LineViewData[] ret, int start, int end) {
-			int j=0;
-			for(int i=start;i<end&&i<getLines().size();i++){
-				ret[j] = new LineViewData(getLines().get(i), Color.YELLOW, LineViewData.INCLUDE_END_OF_LINE);
-				j++;
+			// todo 
+			// refactaring 親クラスがまったく呼ばれない!1
+			for(int i=start,j=0;i<end;i++){
+				ret[j]=get(i);j++;
 			}
 			return ret;
 		}
 
-
 		@Override
 		public LineViewData get(int i) {
-			return new LineViewData(getLines().get(i), Color.YELLOW, LineViewData.INCLUDE_END_OF_LINE);
+			if(mData.containsKey(i)){
+				android.util.Log.v("kiyo","get("+i+")data:"+mData.get(i).toString());
+				return mData.get(i);
+			} else {
+				android.util.Log.v("kiyo","get("+i+")owner:"+mOwner.get(i).toString());
+				return mOwner.get(i);				
+			}
 		}
-
 		@Override
 		public int getMaxOfStackedElement() {
 			return mOwner.getMaxOfStackedElement();
 		}
-	
-	}
-	public static class EditableLineViewBufferA implements W {
-
-		private int cursorRow = 0;// line
-		private int cursorCol = 0;// point
-		private LinkedList<CharSequence> lines = new LinkedList<CharSequence>();
-		private BreakText mBreakText = null;
-		private MyBuilder builder = new MyBuilder();
-
-		protected LinkedList<CharSequence> getLines() {
-			return lines;
+		LineViewBufferSpec getLineViewBufferSpec(){
+			return this;
 		}
-
-		public void paint(SimpleGraphics graphics, int textSize) {
-			int len = lines.size();
-			graphics.setTextSize(textSize);
-			for (int i = 0; i < len; i++) {
-				graphics.drawText(lines.get(i), 20, (int) (20 + textSize * 1.2* i));
-			}
-		}
-		public void setBreakText(BreakText breaktext) {
-			mBreakText = breaktext;
-		}
-
 		@Override
 		public void pushCommit(CharSequence text, int cursor) {
-			builder.clear();
-			pushCommit(text, cursorRow, cursorCol);
-			if (cursor > 0) {
-				moveCursor(text.length() + (cursor - 1));
-			}
-		}
-
-		public void pushCommit(CharSequence text, int row, int col) {
-			CharSequence current = null;
-			if (row < lines.size()) {
-				current = lines.get(row);
-			} else {
-				current = "";
-			}
-			if (current == null) {
-				current = "";
-			}
-
-			for (int i = 0; i < col; i++) {
-				builder.append(current.charAt(i));
-			}
-			for (int i = 0; i < text.length(); i++) {
-				builder.append(text.charAt(i));
-			}
-			for (int i = col; i < current.length(); i++) {
-				builder.append(current.charAt(i));
-			}
-			int breakPoint = mBreakText.breakText(builder);
-			if (row < lines.size()) {
-				lines.set(row, new String(builder.getAllBufferedMoji(), 0,
-						breakPoint));
-			} else {
-				lines.add(new String(builder.getAllBufferedMoji(), 0,
-						breakPoint));
-			}
-			if (breakPoint < builder.getCurrentBufferedMojiSize()) {
-				builder.clearFirst(breakPoint);
-				pushCommit("", row + 1, 0);
-			}
-		}
-
-		@Override
-		public void setCursor(int row, int col) {
-			cursorRow = row;
-			cursorCol = col;
-		}
-
-		private void moveCursor(int move) {
-			if(lines == null || lines.size() == 0){
+			if(cursor < 0){
 				return;
 			}
-			if(cursorRow>=lines.size()){
-				cursorRow = lines.size()-1;
+			if(!mData.containsKey(mCursorCol)){
+				android.util.Log.v("kiyo","containsKey="+mCursorCol);
+				mData.put(mCursorCol, mOwner.get(mCursorCol));
 			}
-			CharSequence c = lines.get(cursorRow);
-			int m = cursorCol + move;
-			if (m < c.length()) {
-				cursorCol = m;
+			LineViewData data = mData.get(mCursorCol);
+			CharSequence c = null;
+			android.util.Log.v("kiyo","if -1-="+mCursorRow+","+data.length());
+			if(mCursorRow < data.length()){
+				CharSequence a = data.subSequence(0, mCursorRow);
+				CharSequence b = data.subSequence(mCursorRow, data.length());
+				c = a.toString()+b.toString()+text;
 			} else {
-				if ((cursorRow + 1) < lines.size()) {
-					cursorCol = 0;
-					cursorRow += 1;
-					moveCursor(m - c.length());
-				} else {
-					cursorRow = c.length();
-				}
+				c = data.toString()+text;				
 			}
+			android.util.Log.v("kiyo","-2-"+mCursorCol+"="+c.toString());
+			mData.put(mCursorCol, new LineViewData(c, data.getColor(), data.getStatus()));
 		}
+		@Override
+		public void setCursor(int row, int col) {
+			mCursorRow = row;
+			mCursorCol = col;
+		}
+
+		private int mCursorRow = 0;// line
+		private int mCursorCol = 0;// point
+		private LinkedHashMap<Integer, LineViewData> mData = new LinkedHashMap<Integer, LineViewData>();
 	}
 
 }
