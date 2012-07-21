@@ -203,7 +203,7 @@ public class EditableLineView extends CursorableLineView {
 				c = data.toString() + text;
 			}
 			android.util.Log.v("kiyo", "LP=" + c.length() + "," + currentCol
-					+ "," + c);
+					+ "," + c+":::"+getBreakText().getWidth());//*9/10);
 			int len = getBreakText().breakText(c, 0, c.length(),
 					getBreakText().getWidth());
 			mData.put(currentCol,
