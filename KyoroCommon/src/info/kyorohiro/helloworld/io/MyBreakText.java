@@ -6,6 +6,10 @@ public class MyBreakText implements BreakText {
 	private Paint mPaint = new Paint();
 	private int mWidth = 400;
 
+	public int getWidth(){
+		return mWidth;
+	}
+
 	@Override
 	public void setTextSize(float textSize) {			
 		mPaint.setTextSize(textSize);

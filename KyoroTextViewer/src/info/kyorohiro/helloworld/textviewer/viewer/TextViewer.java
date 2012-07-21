@@ -116,18 +116,18 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void start() {
-		Resources res = KyoroApplication.getKyoroApplication().getResources();
-		InputStream is = res.openRawResource(R.drawable.tex2res4);
-		mBGImage = new SimpleImage(is);
-		mLineView.setBGImage(mBGImage);
+	//	Resources res = KyoroApplication.getKyoroApplication().getResources();
+	//	InputStream is = res.openRawResource(R.drawable.tex2res4);
+	//	mBGImage = new SimpleImage(is);
+	//	mLineView.setBGImage(mBGImage);
 	}
 
 	@Override
 	public void stop() {
-		mLineView.setBGImage(null);
-		if (!mBGImage.getImage().isRecycled()) {
-			mBGImage.getImage().recycle();
-		}
+	//	mLineView.setBGImage(null);
+	//	if (!mBGImage.getImage().isRecycled()) {
+	//		mBGImage.getImage().recycle();
+	//	}
 	}
 
 	public String getCurrentPath() {

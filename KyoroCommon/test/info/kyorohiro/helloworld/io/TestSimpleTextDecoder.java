@@ -156,5 +156,11 @@ public class TestSimpleTextDecoder extends TestCase {
 			// TODO Auto-generated method stub
 			return 0;
 		}
+
+		@Override
+		public int getWidth() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	}
 }

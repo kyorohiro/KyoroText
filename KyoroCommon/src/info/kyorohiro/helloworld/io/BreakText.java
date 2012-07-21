@@ -4,6 +4,7 @@ import android.graphics.Paint;
 
 //todo android dependent now
 public interface BreakText {
+	public int getWidth();
 	public void setTextSize(float textSize);
 	public float getTextSize();
 	public int breakText(MyBuilder mBuffer);
