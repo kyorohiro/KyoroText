@@ -139,12 +139,12 @@ public class EditableLineView extends CursorableLineView {
 		@Override
 		public LineViewData get(int i) {
 			if (mData.containsKey(i)) {
-				android.util.Log.v("kiyo", "get(" + i + ")data:"
-						+ mData.get(i).toString());
+				android.util.Log.v("kiyo", "get(" + i + ")data:"+ mData.get(i).toString());
 				return mData.get(i);
 			} else {
-				android.util.Log.v("kiyo",
-						"get(" + i + ")owner:" + mOwner.get(i).toString());
+				//getNumber();
+//				android.util.Log.v("kiyo",
+//						"get(" + i + ")owner:" + mOwner.get(i).toString());
 				return mOwner.get(i);
 			}
 		}
@@ -179,6 +179,7 @@ public class EditableLineView extends CursorableLineView {
 			}
 		}
 
+
 		private void pushCommit(CharSequence text, int currentRow,
 				int currentCol) {
 
@@ -207,12 +208,38 @@ public class EditableLineView extends CursorableLineView {
 			int len = getBreakText().breakText(c, 0, c.length(),
 					getBreakText().getWidth());
 			mData.put(currentCol,
-					new LineViewData(c.subSequence(0, len), data.getColor(),
+					new LineViewData(c.subSequence(0, len), Color.BLUE,
 							data.getStatus()));
+
+			android.util.Log.v("kiyo", "MOMO--0--");
 			if (c.length() > len) {
-				android.util.Log.v("kiyo", "LP=" + len + "," + c.length() + ","
-						+ currentCol + "," + c.subSequence(len, c.length()));
-				pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);
+				android.util.Log.v("kiyo", "MOMO--1--");
+				if('\n'==c.charAt(c.length()-1)
+						||data.getStatus() == LineViewData.INCLUDE_END_OF_LINE){
+					android.util.Log.v("kiyo", "MOMO--1_1--");
+					if(!mIndex.containsKey(currentCol)){
+						mIndex.put(currentCol, 0);
+					}
+					android.util.Log.v("kiyo", "MOMO--1_2--");
+					mIndex.put(currentCol,mIndex.get(currentCol)+1);
+
+					android.util.Log.v("kiyo", "MOMO--1_3--");
+					if (!mData.containsKey(currentCol+1)) {
+						mData.put(currentCol+1, mOwner.get(currentCol+1));
+					}
+					android.util.Log.v("kiyo", "MOMO--1_4--");
+					mData.put(currentCol+1,
+							new LineViewData(c.subSequence(len, c.length()), 
+									Color.RED,
+									data.getStatus()));
+					android.util.Log.v("kiyo", "MOMO"+(currentCol+1)+","+c.subSequence(len, c.length()));
+
+				} else {
+					android.util.Log.v("kiyo", "MOMO--2--");
+//					android.util.Log.v("kiyo", "LP=" + len + "," + c.length() + ","
+//							+ currentCol + "," + c.subSequence(len, c.length()));
+					pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);
+				}
 			}
 		}
 
@@ -231,6 +258,7 @@ public class EditableLineView extends CursorableLineView {
 		private int mCursorRow = 0;// line
 		private int mCursorCol = 0;// point
 		private LinkedHashMap<Integer, LineViewData> mData = new LinkedHashMap<Integer, LineViewData>();
+		private LinkedHashMap<Integer, Integer> mIndex = new LinkedHashMap<Integer, Integer>();
 	}
 
 }
