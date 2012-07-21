@@ -118,7 +118,7 @@ public class SimpleStage extends EditableSurfaceView {
 						}
 					}
 					endTimeForSpeedCheck = System.currentTimeMillis();
-					android.util.Log.v("time","time="+(endTimeForSpeedCheck-startTimeForSpeedCheck));
+					//android.util.Log.v("time","time="+(endTimeForSpeedCheck-startTimeForSpeedCheck));
 					logicalSleepForCpuUage();
 				}
 			} catch (InterruptedException e) {

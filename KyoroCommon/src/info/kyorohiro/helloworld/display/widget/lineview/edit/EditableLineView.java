@@ -53,7 +53,7 @@ public class EditableLineView extends CursorableLineView {
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		if (inside(x, y)) {
+		if (editable()&&inside(x, y)) {
 			showIME();
 		}
 		return super.onTouchTest(x, y, action);

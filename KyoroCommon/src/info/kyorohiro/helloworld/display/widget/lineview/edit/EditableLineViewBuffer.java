@@ -5,6 +5,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -16,8 +17,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 	private int mCursorCol = 0;
 
 	private LineViewBufferSpec mOwner = null;
-	private LinkedHashMap<Integer, LineViewData> mDiff = new LinkedHashMap<Integer, LineViewData>();
-	private LinkedHashMap<Integer, Integer> mIndex = new LinkedHashMap<Integer, Integer>();
+	private HashMap<Integer, LineViewData> mDiff = new HashMap<Integer, LineViewData>();
+	private HashMap<Integer, Integer> mIndex = new HashMap<Integer, Integer>();
 
 	public EditableLineViewBuffer(LineViewBufferSpec owner) {
 		super();
@@ -27,14 +28,17 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 	public int getNumOfAdd() {
 		return mOwner.getNumOfAdd();
 	}
+
 	@Override
 	public void clearNumOfAdd() {
 		mOwner.clearNumOfAdd();
 	}
+
 	@Override
 	public int getNumberOfStockedElement() {
-		return mOwner.getNumberOfStockedElement();
+		return mOwner.getNumberOfStockedElement()+numOfAddFromDiff();
 	}
+
 	@Override
 	public BreakText getBreakText() {
 		return mOwner.getBreakText();
@@ -105,6 +109,14 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		return i-plus;
 	}
 
+	private int numOfAddFromDiff(){
+		int plus = 0;
+		Set<Integer> indexs = mIndex.keySet();
+		for(Integer ii : indexs){
+			plus += mIndex.get(ii);
+		}
+		return plus;
+	}
 	private CharSequence extract(CharSequence commit, int currentRow, int currentCol) {
 		LineViewData data = get(currentCol);
 		if (data == null) {
@@ -134,46 +146,64 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 
 		// 再配置する。
 		int len = getBreakText().breakText(c, 0, c.length(),getBreakText().getWidth());
-		mDiff.put(currentCol,new LineViewData(c.subSequence(0, len), Color.BLUE, data.getStatus()));
 		if(c.length() <= len) {
 			// 1行におさまるから何もしない
+			mDiff.put(currentCol,new LineViewData(c.subSequence(0, len), Color.BLUE, data.getStatus()));
 		} else {
+			mDiff.put(currentCol,new LineViewData(c.subSequence(0, len), Color.BLUE, LineViewData.EXCLUDE_END_OF_LINE));
+
 			if('\n'==c.charAt(c.length()-1)||data.getStatus() == LineViewData.INCLUDE_END_OF_LINE){			
-				pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);						
+//				currentCol +=1;
+				if(mIndex.containsKey(toOwnerY(currentCol))){
+					mIndex.put(toOwnerY(currentCol),mIndex.get(toOwnerY(currentCol))+1);
+				} else {
+					mIndex.put(toOwnerY(currentCol), 1);					
+				}
+				insertDiff(currentCol+1,new LineViewData("", Color.YELLOW, LineViewData.INCLUDE_END_OF_LINE));
+				pushCommit(c.subSequence(len, c.length()), 0, currentCol+1);
 			} else {
 				pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);			
 			}
 		}
-/*
-		android.util.Log.v("kiyo", "MOMO--0--");
-		if (c.length() > len) {
-			android.util.Log.v("kiyo", "MOMO--1--");
-			if('\n'==c.charAt(c.length()-1)
-					||data.getStatus() == LineViewData.INCLUDE_END_OF_LINE){
-				android.util.Log.v("kiyo", "MOMO--1_1--");
-				if(!mIndex.containsKey(toOwnerY(currentCol))){
-					mIndex.put(toOwnerY(currentCol), 0);
-				}
-				android.util.Log.v("kiyo", "MOMO--1_2--");
-				mIndex.put(toOwnerY(currentCol),
-						mIndex.get(toOwnerY(currentCol))+1);
+		printIndex();
+		printDiff();
+	}
 
-				android.util.Log.v("kiyo", "MOMO--1_3--");
-				if (!mDiff.containsKey(currentCol+1)) {
-					mDiff.put(currentCol+1, get(currentCol+1));
-				}
-				android.util.Log.v("kiyo", "MOMO--1_4--");
-				pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);
-//				mData.put(currentCol+1,
-//						new LineViewData(c.subSequence(len, c.length()), 
-//								Color.RED,
-//								data.getStatus()));
-				android.util.Log.v("kiyo", "MOMO"+(currentCol+1)+","+c.subSequence(len, c.length()));
+	private void printIndex(){
+		Set<Integer> keys = mIndex.keySet();
+		android.util.Log.v("kiyokiyo","pIndex:start-----------------------------");
+		for(Integer k: keys){
+			android.util.Log.v("kiyokiyo","pdiff:["+k+"]:"+mIndex.get(k));
+		}
+		android.util.Log.v("kiyokiyo","pIndex:stop==============================");
+	}
 
+	private void printDiff(){
+		Set<Integer> keys = mDiff.keySet();
+		android.util.Log.v("kiyokiyo","pdiff:start-----------------------------");
+		for(Integer k: keys){
+			android.util.Log.v("kiyokiyo","pdiff:["+k+"]:"+mDiff.get(k));
+		}
+		android.util.Log.v("kiyokiyo","pdiff:stop==============================");
+	}
+	//
+	// よさげでないデータ構造なので、直す。
+	private void insertDiff(int currentCol, LineViewData data) {
+		HashMap<Integer, LineViewData> ret = new HashMap<Integer, LineViewData>();
+		Set<Integer> keys = mDiff.keySet();
+		for(Integer k: keys){
+			if((currentCol)<=k) {
+				if(mDiff.containsKey(k)){
+					ret.put(k+1, mDiff.get(k));
+				}
 			} else {
-				android.util.Log.v("kiyo", "MOMO--2--");
-				pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);
+				if(mDiff.containsKey(k)){
+					ret.put(k, mDiff.get(k));
+				}
 			}
-		}*/
+		}
+		ret.put(currentCol, data);
+		mDiff.clear();
+		mDiff = ret;
 	}
 }
