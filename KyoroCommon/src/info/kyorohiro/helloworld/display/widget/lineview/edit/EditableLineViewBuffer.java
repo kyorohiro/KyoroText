@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 import android.graphics.Color;
+import android.view.View.OnTouchListener;
 
 public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 
@@ -117,6 +118,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		}
 		return plus;
 	}
+
 	private CharSequence extract(CharSequence commit, int currentRow, int currentCol) {
 		LineViewData data = get(currentCol);
 		if (data == null) {
@@ -165,8 +167,41 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 				pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);			
 			}
 		}
-		printIndex();
-		printDiff();
+	//	printIndex();
+	//	printDiff();
+	}
+
+	public void deleteOne() {
+		LineViewData data = get(mCursorCol);
+		if (data == null) {
+			data = new LineViewData("", Color.GREEN, LineViewData.INCLUDE_END_OF_LINE);
+		}
+
+		if(mCursorRow <= 0) {
+			if(mCursorCol>0){
+				mCursorCol--;
+				data = get(mCursorCol);
+				mCursorRow =data.length();
+			}			
+			return;
+		}
+
+		if(mCursorRow >= data.length()){
+			mCursorRow = data.length()-1;
+		}
+
+		CharSequence a = data.subSequence(0, mCursorRow-1);
+		CharSequence b;
+		if(mCursorRow < data.length()){
+			b = data.subSequence(mCursorRow, data.length());
+		} else {
+			b = "";
+		}
+		mDiff.put(mCursorCol, new LineViewData(
+				a.toString()+b.toString(), 
+				data.getColor(),
+				data.getStatus()));
+		mCursorRow--;	
 	}
 
 	private void printIndex(){
@@ -186,6 +221,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		}
 		android.util.Log.v("kiyokiyo","pdiff:stop==============================");
 	}
+
 	//
 	// よさげでないデータ構造なので、直す。
 	private void insertDiff(int currentCol, LineViewData data) {
