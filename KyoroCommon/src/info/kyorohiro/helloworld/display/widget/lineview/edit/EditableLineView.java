@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget.lineview;
+package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -11,19 +11,25 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.CommitText;
 import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.MyInputConnection;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.io.MyBuilder;
 import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
 
+/**
+ * This Class は CursorableLineViewにIMEからの編集機能を追加したものです。
+ * 
+ * [方針]
+ *   LineViewへ渡しているテキストデータのDIFFデータをキャッシュする。
+ *   表示するときは、毎回DIFFデータをマージして、画面に表示する。
+ *
+ */
 public class EditableLineView extends CursorableLineView {
 
 	private EditableLineViewBuffer mTextBuffer = null;
-
-	public EditableLineView(LineViewBufferSpec v) {
-		super(new EditableLineViewBuffer(v), 16, 512);
-		mTextBuffer = (EditableLineViewBuffer) getLineViewBuffer();
-	}
 
 	public EditableLineView(LineViewBufferSpec v, int textSize, int cashSize) {
 		super(new EditableLineViewBuffer(v), textSize, cashSize);
@@ -31,12 +37,10 @@ public class EditableLineView extends CursorableLineView {
 	}
 
 	@Override
-	public synchronized void setLineViewBufferSpec(
-			LineViewBufferSpec inputtedText) {
+	public synchronized void setLineViewBufferSpec(LineViewBufferSpec inputtedText) {
 		try {
 			lock();
-			super.setLineViewBufferSpec(mTextBuffer = new EditableLineViewBuffer(
-					inputtedText));
+			super.setLineViewBufferSpec(mTextBuffer = new EditableLineViewBuffer(inputtedText));
 		} finally {
 			releaseLock();
 		}
@@ -44,55 +48,73 @@ public class EditableLineView extends CursorableLineView {
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		if (0 < x && x < this.getWidth() && 0 < y && y < this.getHeight()) {
-			SimpleStage stage = getStage(this);
-			stage.showInputConnection();
+		if (inside(x, y)) {
+			showIME();
 		}
 		return super.onTouchTest(x, y, action);
 	}
 
-	@Override
-	public boolean onKeyDown(int keycode) {
-		if (keycode == KeyEvent.KEYCODE_BACKSLASH) {
-			android.util.Log.v("kiyo", "NN:BS");
+	private boolean inside(int x, int y) {
+		if (0 < x && x < this.getWidth() && 0 < y && y < this.getHeight()) {
+			return true;
 		} else {
-			android.util.Log.v("kiyo", "NN:" + keycode);
+			return false;
 		}
-		return super.onKeyDown(keycode);
+	}
+
+	private void showIME() {
+		SimpleStage stage = getStage(this);
+		stage.showInputConnection();		
+	}
+
+	private boolean editable() {
+		if (getMode() == CursorableLineView.MODE_EDIT||getMode().equals(CursorableLineView.MODE_EDIT)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private MyInputConnection getMyInputConnection() {
+		SimpleStage stage = getStage(this);
+		MyInputConnection c = stage.getCurrentInputConnection();
+		return c;
+	}
+
+	private void updateOnIMEOutput() {
+		MyInputConnection c = getMyInputConnection();
+		if (c == null) {return;} // <-- ここをとおることはない
+
+		while (true) {
+			CommitText text = c.popFirst();
+			if (text != null) {
+				mTextBuffer.pushCommit(text.getText(),
+						text.getNewCursorPosition());
+				getStage(this).resetTimer();
+			} else {
+				break;
+			}
+		}
 	}
 
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
-
-		SimpleStage stage = getStage(this);
-		MyInputConnection c = stage.getCurrentInputConnection();
-		if (c == null) {
-			return;
-		}
-
-		try {
-			mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft()
-					.getCursorCol());
-			while (true) {
-				CommitText text = c.popFirst();
-				if (text != null) {
-					mTextBuffer.pushCommit(text.getText(),
-							text.getNewCursorPosition());
-					getStage(this).resetTimer();
-				} else {
-					break;
-				}
+		if(editable()) {
+			try {
+				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+				updateOnIMEOutput();
+				getLeft().setCursorRow(mTextBuffer.getRow());
+				getLeft().setCursorCol(mTextBuffer.getCol());
+			} catch (Throwable e) {
+				e.printStackTrace();
 			}
-			
-			getLeft().setCursorRow(mTextBuffer.getRow());
-			getLeft().setCursorCol(mTextBuffer.getCol());
-			android.util.Log.v("kiyo", "row,cor="+getLeft().getCursorRow()+","+ getLeft()
-					.getCursorCol());
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 		super.paint(graphics);
 	}
+
+
+
+	
 
 	//
 	// 親を上書きする。
@@ -100,6 +122,8 @@ public class EditableLineView extends CursorableLineView {
 	public static class EditableLineViewBuffer implements LineViewBufferSpec, W {
 
 		private LineViewBufferSpec mOwner = null;
+		private int mCursorRow = 0;// line
+		private int mCursorCol = 0;// point
 
 		public EditableLineViewBuffer(LineViewBufferSpec owner) {
 			super();
@@ -136,25 +160,48 @@ public class EditableLineView extends CursorableLineView {
 			}
 			return ret;
 		}
+		
+		@Override
+		public void setCursor(int row, int col) {
+			mCursorRow = row;
+			mCursorCol = col;
+		}
+
+		public int getRow(){
+			return mCursorRow;
+		}
+		public int getCol(){
+			return mCursorCol;
+		}
+		
+		
+		
+		
+//
+// following code is now creating
+//f
+		
+		
+
 
 		@Override
 		public LineViewData get(int i) {
-			if (mData.containsKey(i)) {
-				android.util.Log.v("kiyo", "get(" + i + ")data:"+ mData.get(i).toString());
-				return mData.get(i);
+			if (__mData__.containsKey(i)) {
+				return __mData__.get(i);
 			} else {
-				int plus = 0;
-				Set<Integer> indexs = mIndex.keySet();
-				for(Integer ii : indexs){
-					if(i<ii){
-						plus += mIndex.get(ii);
-					}
-				}
-				//getNumber();
-//				android.util.Log.v("kiyo",
-//						"get(" + i + ")owner:" + mOwner.get(i).toString());
-				return mOwner.get(i+plus);
+				return mOwner.get(getOwnerY(i));
 			}
+		}
+
+		private int getOwnerY(int i){
+			int plus = 0;
+			Set<Integer> indexs = mIndex.keySet();
+			for(Integer ii : indexs){
+				if(i<ii){
+					plus += mIndex.get(ii);
+				}
+			}
+			return i-plus;
 		}
 
 		@Override
@@ -188,17 +235,20 @@ public class EditableLineView extends CursorableLineView {
 		}
 
 
-		private void pushCommit(CharSequence text, int currentRow,
-				int currentCol) {
-
-			if (currentCol < 0) {
-				return;
+		private void currentDataToCash(int currentCol) {
+			if (!__mData__.containsKey(currentCol)) {
+				__mData__.put(currentCol, get(currentCol));
 			}
-			if (!mData.containsKey(currentCol)) {
-				mData.put(currentCol, mOwner.get(currentCol));
+			
+		}
+
+		private void pushCommit(CharSequence text, int currentRow, int currentCol) {
+			if (currentCol < 0) {return;}
+			if (!__mData__.containsKey(currentCol)) {
+				__mData__.put(currentCol, get(currentCol));
 			}
 
-			LineViewData data = mData.get(currentCol);
+			LineViewData data = get(currentCol);
 			if (data == null) {
 				data = new LineViewData("", Color.GREEN,
 						LineViewData.INCLUDE_END_OF_LINE);
@@ -215,7 +265,7 @@ public class EditableLineView extends CursorableLineView {
 					+ "," + c+":::"+getBreakText().getWidth());//*9/10);
 			int len = getBreakText().breakText(c, 0, c.length(),
 					getBreakText().getWidth());
-			mData.put(currentCol,
+			__mData__.put(currentCol,
 					new LineViewData(c.subSequence(0, len), Color.BLUE,
 							data.getStatus()));
 
@@ -225,47 +275,33 @@ public class EditableLineView extends CursorableLineView {
 				if('\n'==c.charAt(c.length()-1)
 						||data.getStatus() == LineViewData.INCLUDE_END_OF_LINE){
 					android.util.Log.v("kiyo", "MOMO--1_1--");
-					if(!mIndex.containsKey(currentCol)){
-						mIndex.put(currentCol, 0);
+					if(!mIndex.containsKey(getOwnerY(currentCol))){
+						mIndex.put(getOwnerY(currentCol), 0);
 					}
 					android.util.Log.v("kiyo", "MOMO--1_2--");
-					mIndex.put(currentCol,mIndex.get(currentCol)+1);
+					mIndex.put(getOwnerY(currentCol),
+							mIndex.get(getOwnerY(currentCol))+1);
 
 					android.util.Log.v("kiyo", "MOMO--1_3--");
-					if (!mData.containsKey(currentCol+1)) {
-						mData.put(currentCol+1, mOwner.get(currentCol+1));
+					if (!__mData__.containsKey(currentCol+1)) {
+						__mData__.put(currentCol+1, get(currentCol+1));
 					}
 					android.util.Log.v("kiyo", "MOMO--1_4--");
-					mData.put(currentCol+1,
-							new LineViewData(c.subSequence(len, c.length()), 
-									Color.RED,
-									data.getStatus()));
+					pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);
+//					mData.put(currentCol+1,
+//							new LineViewData(c.subSequence(len, c.length()), 
+//									Color.RED,
+//									data.getStatus()));
 					android.util.Log.v("kiyo", "MOMO"+(currentCol+1)+","+c.subSequence(len, c.length()));
 
 				} else {
 					android.util.Log.v("kiyo", "MOMO--2--");
-//					android.util.Log.v("kiyo", "LP=" + len + "," + c.length() + ","
-//							+ currentCol + "," + c.subSequence(len, c.length()));
 					pushCommit(c.subSequence(len, c.length()), 0, currentCol + 1);
 				}
 			}
 		}
 
-		@Override
-		public void setCursor(int row, int col) {
-			mCursorRow = row;
-			mCursorCol = col;
-		}
-
-		public int getRow(){
-			return mCursorRow;
-		}
-		public int getCol(){
-			return mCursorCol;
-		}
-		private int mCursorRow = 0;// line
-		private int mCursorCol = 0;// point
-		private LinkedHashMap<Integer, LineViewData> mData = new LinkedHashMap<Integer, LineViewData>();
+		private LinkedHashMap<Integer, LineViewData> __mData__ = new LinkedHashMap<Integer, LineViewData>();
 		private LinkedHashMap<Integer, Integer> mIndex = new LinkedHashMap<Integer, Integer>();
 	}
 

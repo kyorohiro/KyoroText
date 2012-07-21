@@ -77,6 +77,10 @@ public class CursorableLineView extends LineView {
 		}
 	}
 
+	public CharSequence getMode() {
+		return mMode;
+	}
+
 	public void setMode(String mode) {
 		mMode = mode;
 		if (MODE_SELECT.equals(mode)) {
