@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Set;
 
 import android.graphics.Color;
 import android.view.KeyEvent;
@@ -142,10 +143,17 @@ public class EditableLineView extends CursorableLineView {
 				android.util.Log.v("kiyo", "get(" + i + ")data:"+ mData.get(i).toString());
 				return mData.get(i);
 			} else {
+				int plus = 0;
+				Set<Integer> indexs = mIndex.keySet();
+				for(Integer ii : indexs){
+					if(i<ii){
+						plus += mIndex.get(ii);
+					}
+				}
 				//getNumber();
 //				android.util.Log.v("kiyo",
 //						"get(" + i + ")owner:" + mOwner.get(i).toString());
-				return mOwner.get(i);
+				return mOwner.get(i+plus);
 			}
 		}
 
