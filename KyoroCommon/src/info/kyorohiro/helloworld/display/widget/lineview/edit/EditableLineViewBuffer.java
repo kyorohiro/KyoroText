@@ -176,6 +176,31 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		return plus;
 	}
 
+	public void crlfOne() {
+		int currentCol = mCursorCol;
+		int currentRow =  mCursorRow;
+		LineViewData d = get(currentCol);
+		if(currentRow > d.length()){
+			currentRow = d.length();
+		}
+
+		CharSequence c = d.subSequence(currentRow, d.length());
+		mDiff.put(currentCol,
+				new LineViewData(d.subSequence(0, currentRow),Color.CYAN,
+				LineViewData.INCLUDE_END_OF_LINE));
+
+		// currentCol +=1;
+		if (mIndex.containsKey(toOwnerY(currentCol))) {
+			mIndex.put(toOwnerY(currentCol),
+					mIndex.get(toOwnerY(currentCol)) + 1);
+		} else {
+			mIndex.put(toOwnerY(currentCol), 1);
+		}
+		insertDiff(currentCol + 1, new LineViewData(c, Color.YELLOW,
+				LineViewData.INCLUDE_END_OF_LINE));
+		mCursorCol +=1;
+		mCursorRow = 0;
+	}
 
 	public void deleteOne() {
 		LineViewData data = get(mCursorCol);

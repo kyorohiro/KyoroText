@@ -128,7 +128,10 @@ public class EditableLineView extends CursorableLineView {
 					getLeft().setCursorCol(mTextBuffer.getCol());
 				}
 				if(keycode == KeyEvent.KEYCODE_ENTER) {
-					//mTextBuffer.crlfOne();			
+					mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());			
+					mTextBuffer.crlfOne();			
+					getLeft().setCursorRow(mTextBuffer.getRow());
+					getLeft().setCursorCol(mTextBuffer.getCol());
 				}
 				return super.onKeyDown(keycode);
 			}finally {
