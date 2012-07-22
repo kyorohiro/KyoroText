@@ -114,18 +114,26 @@ public class EditableLineView extends CursorableLineView {
 
 	@Override
 	public boolean onKeyDown(int keycode) {
-		//
-		// 本来ならば、MyInputConnectionでするべき処理
-		// ちょっと動作確認したいだけなので、
-		// ここに書く。
-		if(keycode == KeyEvent.KEYCODE_DEL || keycode == KeyEvent.KEYCODE_BACK) {
-			mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());			
-			mTextBuffer.deleteOne();
-			getLeft().setCursorRow(mTextBuffer.getRow());
-			getLeft().setCursorCol(mTextBuffer.getCol());
-		}
-		if(keycode == KeyEvent.KEYCODE_ENTER) {
-			//mTextBuffer.crlfOne();			
+		if(editable()){
+			try {
+				lock();
+				//
+				// 本来ならば、MyInputConnectionでするべき処理
+				// ちょっと動作確認したいだけなので、
+				// ここに書く。
+				if(keycode == KeyEvent.KEYCODE_DEL || keycode == KeyEvent.KEYCODE_BACK) {
+					mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());			
+					mTextBuffer.deleteOne();
+					getLeft().setCursorRow(mTextBuffer.getRow());
+					getLeft().setCursorCol(mTextBuffer.getCol());
+				}
+				if(keycode == KeyEvent.KEYCODE_ENTER) {
+					//mTextBuffer.crlfOne();			
+				}
+				return super.onKeyDown(keycode);
+			}finally {
+				releaseLock();
+			}
 		}
 		return super.onKeyDown(keycode);
 	}
