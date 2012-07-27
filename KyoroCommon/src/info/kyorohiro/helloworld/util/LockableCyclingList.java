@@ -79,16 +79,23 @@ implements SimpleLockInter{
 		}
 	}
 
+	int num = 0;
 	@Override
 	public synchronized void beginLock() {
 		locked = true;
 		cThread = Thread.currentThread();
+		num++;
+		//android.util.Log.v("kiyo","LOCK:"+num);
 	}
 
 	@Override
 	public synchronized void endLock() {
 		locked = false;
-		notifyAll();
+		num--;
+		//android.util.Log.v("kiyo","UNLOCK:"+num);
+		if(num == 0){
+			notifyAll();
+		}
 	}
 
 	private boolean locked = false;

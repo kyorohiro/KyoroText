@@ -15,6 +15,8 @@ public class LookAheadCaching {
 	private ReadBackBuilder mBackBuilder = new ReadBackBuilder();
 	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
 	private Thread mTaskRunnter = null;
+	public static int LOOKAGEAD_lentgth = 2;
+	public static int CHANK_SIZE = 100;
 
 	public LookAheadCaching(TextViewerBuffer buffer) {
 		mBuffer = new WeakReference<TextViewerBuffer>(buffer);
@@ -43,22 +45,29 @@ public class LookAheadCaching {
 			boolean forward = false;
 			boolean back = false;
 
-			if (ep < (cp + chunkSize * 3)) {
+			if (ep<cp+chunkSize*LOOKAGEAD_lentgth) {
 				forward = true;
 			}
-			if (sp > 0 && sp > (cp - chunkSize * 3)) {
+			if (sp > 0 && sp > cp-chunkSize*LOOKAGEAD_lentgth) {
 				back = true;
 			}
 
-			if (forward == true && back == true) {
-				if ((ep - cp) < cp - sp) {
-					startReadForward(ep);
-				} else {
-					startReadBack(sp);
+			if (forward == true&&back == true) {
+				if(cp>ep){
+					forward= true;
+					back= false;
+				} else  {
+					forward = false;
+					back = true;
 				}
-			} else if (forward == true) {
+			}
+
+			if (forward) {
+//				android.util.Log.v("kiyo","ED:::Forward");
 				startReadForward(ep);
-			} else {
+			} 
+			else if(back){
+//				android.util.Log.v("kiyo","ED:::Back");
 				startReadBack(sp);
 			}
 		} else {
@@ -71,11 +80,16 @@ public class LookAheadCaching {
 		int ep = buffer.getCurrentBufferEndLinePosition();
 		int cp = buffer.getCurrentPosition();
 		int mx = buffer.getMaxOfStackedElement();
-		int chunkSize = mx / 10;
-		if ((sp - chunkSize * 3) <= cp && cp <= (ep + chunkSize * 3)) {
+		int chunkSize = CHANK_SIZE;//mx / 10;
+		if(cp <0){
+			return true;
+		}
+		if ((sp - chunkSize * LOOKAGEAD_lentgth) <= cp && cp <= (ep + chunkSize * LOOKAGEAD_lentgth)) {
+//			android.util.Log.v("kiyo",":::TRUE("+sp+"- "+chunkSize+" * 3) <= "+cp+" && "+cp +"<= ("+ep +"+"+ chunkSize+" * 3)");
 			return true;
 		} else {
 //			Debug.waitForDebugger();
+//			android.util.Log.v("kiyo",":::FALSE("+sp+"- "+chunkSize+" * 3) <= "+cp+" && "+cp +"<= ("+ep +"+"+ chunkSize+" * 3)");
 			return false;
 		}
 	}
@@ -153,6 +167,7 @@ public class LookAheadCaching {
 		}
 	}
 
+	public static MyBufferDatam[] builder = new MyBufferDatam[BigLineData.FILE_LIME];
 	public class ReadBackFileTask implements Runnable {
 		private int mStartWithoutOwn = 0;
 		private BigLineData mBigLineData = null;
@@ -165,9 +180,9 @@ public class LookAheadCaching {
 		}
 
 		public void run() {
+//			android.util.Log.v("kiyo","SD:::B"+mStartWithoutOwn);
 			try {
-				mBigLineData.moveLine(mStartWithoutOwn - BigLineData.FILE_LIME);
-				MyBufferDatam[] builder = new MyBufferDatam[BigLineData.FILE_LIME];
+				mBigLineData.moveLine(mStartWithoutOwn - BigLineData.FILE_LIME+1);
 
 				int j = 0;
 				for (int i = 0; 
@@ -215,6 +230,7 @@ public class LookAheadCaching {
 		}
 
 		public void run() {
+//			android.util.Log.v("kiyo","SD:::F"+mStartWithoutOwn);
 			try {
 				if (mClear) {
 					mTextViewer.clear();

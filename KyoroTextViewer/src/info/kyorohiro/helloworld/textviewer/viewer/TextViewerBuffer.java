@@ -105,16 +105,18 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 		try {
 			resetBufferedStartEndPosition(i);
-			if(!lineIsLoaded(i)) {
+			if(!lineIsLoaded(i)||super.getNumberOfStockedElement()<=lineNumberToBufferedNumber(i)) {
 				return mLoadingLineMessage;
 			}
 
 			LineViewData bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
 			if (bufferedDataForReturn == null) {
+			//	android.util.Log.v("kiyo","ERROR --2--");
 				return mErrorLineMessage;
 			}
 			return bufferedDataForReturn;
 		} catch (Throwable t) {
+		//	android.util.Log.v("kiyo","ERROR --1--");
 			t.printStackTrace();
 			return mErrorLineMessage;
 		} finally {
@@ -153,7 +155,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		} else {
 			mCurrentBufferStartLinePosition = 0;
 			mCurrentBufferEndLinePosition = 0;
-			android.util.Log.v("kiyo","AA= clear");
+//			android.util.Log.v("kiyo","AA= clear");
 		}
 	}
 

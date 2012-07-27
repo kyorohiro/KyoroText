@@ -317,37 +317,38 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private Thread currentThread = null;
 	int num = 0;
 	public synchronized void lock() {
-		if (mInputtedText instanceof SimpleLockInter) {
-			((SimpleLockInter) mInputtedText).beginLock();
-		}
+/*
 		if(lock) {
 			try {
 				if(currentThread != Thread.currentThread()){
 					wait();
-				} else {
-					num++;
 				}
 			} catch (InterruptedException e) {
 			}
-		} else {
-			currentThread = Thread.currentThread();
-			lock = true;
-			num++;
 		}
-	}
-
-	public synchronized void releaseLock() {
-		if(currentThread == Thread.currentThread()){
-			num--;
-			if(num == 0){
-				notifyAll();
-				lock = false;
-				currentThread = null;
+		else{
+			lock = true;
+			if (mInputtedText instanceof SimpleLockInter) {
+				((SimpleLockInter) mInputtedText).beginLock();
 			}
 		}
-		if (mInputtedText instanceof SimpleLockInter) {
-			((SimpleLockInter) mInputtedText).endLock();
-		}	
+		currentThread = Thread.currentThread();
+		num++;*/
+	}
+
+	public synchronized void releaseLock() {/*
+		num--;
+		if(num == 0&&currentThread == Thread.currentThread()){
+
+			notifyAll();
+			if (mInputtedText instanceof SimpleLockInter) {
+				((SimpleLockInter) mInputtedText).endLock();
+			}	
+
+			lock = false;
+			currentThread = null;
+		}
+*/
 	}
 	
 	@Override
