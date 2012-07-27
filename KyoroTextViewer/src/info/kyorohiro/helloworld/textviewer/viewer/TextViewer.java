@@ -40,7 +40,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public static int COLOR_FONT1 = Color.parseColor("#ff20aaee");
 			//Color.parseColor("#ff80c9f4");
 	public static int COLOR_FONT2 = Color.parseColor("#ffee20aa");
-	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFFF00");
+	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFAA44");
 
 	private String mCurrentCharset = "utf8";
 

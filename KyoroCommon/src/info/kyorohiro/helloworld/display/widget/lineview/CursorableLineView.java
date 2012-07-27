@@ -15,7 +15,9 @@ public class CursorableLineView extends LineView {
 	private MyCursor mRight = new MyCursor(this);
 	private CharSequence mMode = MODE_VIEW;
 
-	private int mTestTextColor = Color.parseColor("#66FFFF00");
+	public static int __CURSOR__COLOR =
+			Color.parseColor("#44FFAA44");
+			//Color.parseColor("#66FFFF00");
 	
 	public MyCursor getLeft() {
 		return mLeft;
@@ -140,7 +142,7 @@ public class CursorableLineView extends LineView {
 			}
 			mRight.updateCursor();
 			mLeft.updateCursor();
-			graphics.setColor(mTestTextColor);
+			graphics.setColor(__CURSOR__COLOR);
 			graphics.setTextSize(30);
 			graphics.drawText(mMode, 20, this.getHeight() - 50);
 			drawBGForSelect(graphics);
@@ -162,7 +164,7 @@ public class CursorableLineView extends LineView {
 				e = mLeft;
 			}
 
-			graphics.setColor(mTestTextColor);
+			graphics.setColor(__CURSOR__COLOR);
 			graphics.setStrokeWidth(10);
 			if (b.getY() != e.getY()) {
 				graphics.drawLine(b.getX(), b.getY(),

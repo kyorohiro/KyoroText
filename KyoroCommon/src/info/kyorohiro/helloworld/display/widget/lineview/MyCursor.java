@@ -60,7 +60,7 @@ public class MyCursor extends SimpleDisplayObject {
 			return;
 		}
 		if (!focus) {
-			graphics.setColor(Color.parseColor("#AAFFFF00"));
+			graphics.setColor(CursorableLineView.__CURSOR__COLOR);
 		} else {
 			graphics.setColor(Color.parseColor("#AA00FFFF"));
 			drawCursor(graphics, mX - px, mY - py);
