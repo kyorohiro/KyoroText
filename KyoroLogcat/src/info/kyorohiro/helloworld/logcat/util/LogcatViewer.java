@@ -26,7 +26,7 @@ public class LogcatViewer extends SimpleFilterableLineView {
     public static int COLOR_S = Color.parseColor("#ffff8080");
 	
 	public LogcatViewer(int baseWidth) {
-		super(new LogcatViewerBuffer(2000, 1000, 16), baseWidth);
+		super(new LogcatViewerBuffer(5000, 1000, 16), baseWidth);
 		mCircleControllerAction = new MyCircleControllerEvent();
 		getLineView().setBgColor(Color.parseColor("#FF101030"));
 	}
@@ -35,6 +35,11 @@ public class LogcatViewer extends SimpleFilterableLineView {
 	protected void onAddViewer() {
 	}
 
+	@Override
+	public void start() {
+		super.start();
+		this.getStage(this).setColor(COLOR_BG);
+	}
 	public CircleControllerAction getCircleControllerAction() {
 		return mCircleControllerAction;
 	}
