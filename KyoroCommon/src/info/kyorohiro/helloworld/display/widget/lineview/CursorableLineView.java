@@ -131,7 +131,7 @@ public class CursorableLineView extends LineView {
 	}
 
 	@Override
-	public synchronized void paint(SimpleGraphics graphics) {
+	public void paint(SimpleGraphics graphics) {
 //		try {
 //			lock();
 			super.paint(graphics);

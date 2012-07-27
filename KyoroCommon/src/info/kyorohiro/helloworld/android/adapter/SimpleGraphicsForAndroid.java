@@ -11,6 +11,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.Typeface;
@@ -68,6 +69,7 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	}
 
 	public void drawBackGround(int color) {
+	//	mCanvas.drawColor(color, PorterDuff.Mode.CLEAR);
 		mCanvas.drawColor(color);
 	}
 

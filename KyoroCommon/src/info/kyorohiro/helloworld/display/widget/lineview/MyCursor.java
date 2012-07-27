@@ -60,11 +60,11 @@ public class MyCursor extends SimpleDisplayObject {
 			return;
 		}
 		if (!focus) {
-			graphics.setColor(Color.parseColor("#66FFFF00"));
+			graphics.setColor(Color.parseColor("#AAFFFF00"));
 		} else {
-			graphics.setColor(Color.parseColor("#3300FFFF"));
+			graphics.setColor(Color.parseColor("#AA00FFFF"));
 			drawCursor(graphics, mX - px, mY - py);
-			graphics.setColor(Color.parseColor("#6600FFFF"));
+			graphics.setColor(Color.parseColor("#AA00FFFF"));
 		}
 		drawCursor(graphics, 0, 0);
 

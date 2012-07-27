@@ -12,6 +12,11 @@ import info.kyorohiro.helloworld.util.CyclingListInter;
 import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObjectContainer {
+	private boolean mIsClearBG = false;
+	public void isClearBG(boolean on){
+		mIsClearBG = on;
+	}
+
 	// extends SimpleDisplayObject {
 	public static class Point {
 		WeakReference<LineView> mR;
@@ -80,7 +85,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private LineViewData[] mCashBuffer = new LineViewData[0];
 	public static float[] widths = new float[1024];// <---refataging
 	// todo refactaring
-	private int mTestTextColor = Color.parseColor("#33FFFF00");
+	private int mTestTextColor = Color.parseColor("#AAFFFF00");
 
 	public LineView(LineViewBufferSpec inputtedText, int textSize) {
 		mInputtedText = inputtedText;
@@ -346,7 +351,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 	
 	@Override
-	public synchronized void paint(SimpleGraphics graphics) {
+	public void paint(SimpleGraphics graphics) {
 		LineViewBufferSpec showingText = mInputtedText;
 		LineViewData[] list = null;
 		int len = 0;
@@ -390,6 +395,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (list != null) {// bug fix
 			showLineDate(graphics, list, len);
 		}
+		//*/
 		// fin
 		super.paint(graphics);
 	}
@@ -435,10 +441,21 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	private void drawBG(SimpleGraphics graphics) {
-		graphics.drawBackGround(mBgColor);
-		if (mImage == null) {
-			return;
+		if(mIsClearBG){			
+			int w = getWidth();
+			int h = getHeight();
+
+			graphics.startPath();
+			graphics.setStyle(SimpleGraphics.STYLE_FILL);
+			graphics.moveTo(0, 0);
+			graphics.lineTo(0, h);
+			graphics.lineTo(w, h);
+			graphics.lineTo(w, 0);
+			graphics.lineTo(0, 0);
+			graphics.endPath();
+			if (mImage != null) {
+				graphics.drawImageAsTile(mImage, 0, 0, getWidth(), getHeight());
+			}
 		}
-		graphics.drawImageAsTile(mImage, 0, 0, getWidth(), getHeight());
 	}
 }

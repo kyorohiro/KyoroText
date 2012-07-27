@@ -76,7 +76,7 @@ implements SimpleLockInter {
 			len = mPaint.breakText(line.toString(), true, mWidth, null);
 			if (len == line.length()) {
 				mNumOfLineAdded++;
-				add(new LineViewData(line, mCurrentColor,
+				add(new LineViewData(line+"\n", mCurrentColor,
 						LineViewData.INCLUDE_END_OF_LINE));
 				break;
 			} else {

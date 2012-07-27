@@ -33,9 +33,14 @@ import info.kyorohiro.helloworld.textviewer.R;
 import info.kyorohiro.helloworld.util.CyclingList;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
-	public static int COLOR_BG = Color.parseColor("#FF000000");
-	public static int COLOR_FONT1 = Color.parseColor("#ff80c9f4");
-	public static int COLOR_FONT2 = Color.parseColor("#fff480c9");
+	public static int COLOR_BG =
+			Color.parseColor("#FFEEEEAA");
+//			Color.parseColor("#FFFFFFAA");
+	//Color.parseColor("#FF000000");
+	public static int COLOR_FONT1 = Color.parseColor("#ff20aaee");
+			//Color.parseColor("#ff80c9f4");
+	public static int COLOR_FONT2 = Color.parseColor("#ffee20aa");
+	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFFF00");
 
 	private String mCurrentCharset = "utf8";
 
@@ -57,8 +62,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
 
-//		mLineView = new CursorableLineView(mBuffer, textSize, 200);
-		mLineView = new EditableLineView(mBuffer, textSize, 200);
+		mLineView = new CursorableLineView(mBuffer, textSize, 200);
+		// mLineView = new EditableLineView(mBuffer, textSize, 200);
 
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
@@ -69,45 +74,70 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		addChild(mLineView);
 		addChild(mCircleController = new SimpleCircleControllerMenuPlus());
 		if (mCircleController instanceof SimpleCircleControllerMenuPlus) {
-			((SimpleCircleControllerMenuPlus) mCircleController).setCircleMenuItem(
-					new CircleMenuItem() {
+			((SimpleCircleControllerMenuPlus) mCircleController)
+					.setCircleMenuItem(new CircleMenuItem() {
 						@Override
 						public boolean selected(int id, String title) {
-							((SimpleCircleControllerMenuPlus) mCircleController).clearCircleMenu();
-							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_EDIT);
-							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_VIEW);
-							((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_SELECT);
-							
-							if(title.equals(CursorableLineView.MODE_EDIT)){
-								((CursorableLineView)mLineView).setMode(CursorableLineView.MODE_EDIT);
-							}else if(title.equals(CursorableLineView.MODE_VIEW)){
-								((CursorableLineView)mLineView).setMode(CursorableLineView.MODE_VIEW);							
-							}else if(title.equals(CursorableLineView.MODE_SELECT)){
-								((CursorableLineView)mLineView).setMode(CursorableLineView.MODE_SELECT);
-								((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,"Copy");
-							}else if(title.equals("Copy")){
-								KyoroApplication.getKyoroApplication().getHanler().post(new Runnable(){
-									public void run(){
-										try{
-											ClipboardManager cm=(ClipboardManager)KyoroApplication.getKyoroApplication().getSystemService(Context.CLIPBOARD_SERVICE);
-											CharSequence copy =  ((CursorableLineView)mLineView).copy();
-											cm.setText(""+copy);
-											((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,"Copy");
-											KyoroApplication.showMessage(""+copy);
-										}catch(Throwable t){
-											t.printStackTrace();
-										}
-									}
-								});
+							((SimpleCircleControllerMenuPlus) mCircleController)
+									.clearCircleMenu();
+							((SimpleCircleControllerMenuPlus) mCircleController)
+									.addCircleMenu(0,
+											CursorableLineView.MODE_EDIT);
+							((SimpleCircleControllerMenuPlus) mCircleController)
+									.addCircleMenu(0,
+											CursorableLineView.MODE_VIEW);
+							((SimpleCircleControllerMenuPlus) mCircleController)
+									.addCircleMenu(0,
+											CursorableLineView.MODE_SELECT);
+
+							if (title.equals(CursorableLineView.MODE_EDIT)) {
+								((CursorableLineView) mLineView)
+										.setMode(CursorableLineView.MODE_EDIT);
+							} else if (title
+									.equals(CursorableLineView.MODE_VIEW)) {
+								((CursorableLineView) mLineView)
+										.setMode(CursorableLineView.MODE_VIEW);
+							} else if (title
+									.equals(CursorableLineView.MODE_SELECT)) {
+								((CursorableLineView) mLineView)
+										.setMode(CursorableLineView.MODE_SELECT);
+								((SimpleCircleControllerMenuPlus) mCircleController)
+										.addCircleMenu(0, "Copy");
+							} else if (title.equals("Copy")) {
+								KyoroApplication.getKyoroApplication()
+										.getHanler().post(new Runnable() {
+											public void run() {
+												try {
+													ClipboardManager cm = (ClipboardManager) KyoroApplication
+															.getKyoroApplication()
+															.getSystemService(
+																	Context.CLIPBOARD_SERVICE);
+													CharSequence copy = ((CursorableLineView) mLineView)
+															.copy();
+													cm.setText("" + copy);
+													((SimpleCircleControllerMenuPlus) mCircleController)
+															.addCircleMenu(0,
+																	"Copy");
+													KyoroApplication
+															.showMessage(""
+																	+ copy);
+												} catch (Throwable t) {
+													t.printStackTrace();
+												}
+											}
+										});
 								return true;
 							}
 
 							return false;
 						}
 					});
-			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_EDIT);
-			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_VIEW);
-			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(0,CursorableLineView.MODE_SELECT);
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(
+					0, CursorableLineView.MODE_EDIT);
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(
+					0, CursorableLineView.MODE_VIEW);
+			((SimpleCircleControllerMenuPlus) mCircleController).addCircleMenu(
+					0, CursorableLineView.MODE_SELECT);
 		}
 		addChild(new LayoutManager());
 		addChild(mScrollBar);
@@ -116,18 +146,22 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void start() {
-	//	Resources res = KyoroApplication.getKyoroApplication().getResources();
-	//	InputStream is = res.openRawResource(R.drawable.tex2res4);
-	//	mBGImage = new SimpleImage(is);
-	//	mLineView.setBGImage(mBGImage);
+		 /*
+		Resources res = KyoroApplication.getKyoroApplication().getResources();
+		InputStream is = res.openRawResource(R.drawable.tex2res4);
+		mBGImage = new SimpleImage(is);
+		mLineView.setBGImage(mBGImage);
+		// */
 	}
 
 	@Override
 	public void stop() {
-	//	mLineView.setBGImage(null);
-	//	if (!mBGImage.getImage().isRecycled()) {
-	//		mBGImage.getImage().recycle();
-	//	}
+		 /*
+		mLineView.setBGImage(null);
+		if (!mBGImage.getImage().isRecycled()) {
+			mBGImage.getImage().recycle();
+		}
+		// */
 	}
 
 	public String getCurrentPath() {
@@ -182,7 +216,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 					mBreakText, file, mCurrentCharset);
 		} catch (FileNotFoundException e) {
 			// don't pass along this code
-			KyoroApplication.showMessage("file can not read null filen --007--");
+			KyoroApplication
+					.showMessage("file can not read null filen --007--");
 			return false;
 		}
 		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView
@@ -211,6 +246,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			setTextViewSize(graphics);
 			updateCircleControllerSize(graphics);
 			paintScroll(graphics);
+			this.getStage(this).setColor(COLOR_BG);
 		}
 
 		private void setTextViewSize(SimpleGraphics graphics) {
@@ -229,15 +265,22 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			if (min < mCircleController.getWidth()) {
 				mCircleController.setRadius(min / 2);
 			}
+			mCircleController.setColorWhenDefault(COLOR_CIRCLE_DEFAULT);
 		}
+		//mCircleController.setColorWhenDefault( Color.parseColor("#44FFFF00"));
 
 		public void paintScroll(SimpleGraphics graphics) {
-			LineViewBufferSpec viewerBuffer = TextViewer.this.mLineView.getLineViewBuffer();
+			LineViewBufferSpec viewerBuffer = TextViewer.this.mLineView
+					.getLineViewBuffer();
 			int bufferSize = viewerBuffer.getNumberOfStockedElement();
-			int beginPosition = TextViewer.this.mLineView.getShowingTextStartPosition();
-			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
+			int beginPosition = TextViewer.this.mLineView
+					.getShowingTextStartPosition();
+			int endPosition = TextViewer.this.mLineView
+					.getShowingTextEndPosition();
 			mScrollBar.setStatus(beginPosition, endPosition, bufferSize);
-			TextViewer.this.mLineView.setRect(graphics.getWidth(),graphics.getHeight());
+			mScrollBar.setColor(COLOR_FONT1);
+			TextViewer.this.mLineView.setRect(graphics.getWidth(),
+					graphics.getHeight());
 		}
 	}
 
@@ -251,13 +294,13 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 
 		public void upButton(int action) {
-			if(action == CircleControllerAction.ACTION_PRESSED) {
+			if (action == CircleControllerAction.ACTION_PRESSED) {
 				getLineView().setPositionY(getLineView().getPositionY() + 1);
 			}
 		}
 
 		public void downButton(int action) {
-			if(action == CircleControllerAction.ACTION_PRESSED) {
+			if (action == CircleControllerAction.ACTION_PRESSED) {
 				getLineView().setPositionY(getLineView().getPositionY() - 1);
 			}
 		}

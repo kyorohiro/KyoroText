@@ -4,6 +4,7 @@ import info.kyorohiro.helloworld.android.adapter.SimpleGraphicsForAndroid;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff.Mode;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -14,6 +15,7 @@ public class SimpleStage extends EditableSurfaceView {
 	private Thread mCurrentThread = null;
 	private SimpleDisplayObjectContainer mRoot = new SimpleDisplayObjectContainer();
 	private int mSleep = 50;
+	private int mBgColor = 0xFFFFFFFF;
 
 	public SimpleStage(Context context) {
 		super(context);
@@ -33,6 +35,9 @@ public class SimpleStage extends EditableSurfaceView {
 		}
 	}
 
+	public synchronized void setColor(int bgcolor) {
+		mBgColor = bgcolor;
+	}
 	public synchronized void start() {
 		if (!isAlive()) {
 			mCurrentThread = new Thread(new Animation());
@@ -118,7 +123,7 @@ public class SimpleStage extends EditableSurfaceView {
 						}
 					}
 					endTimeForSpeedCheck = System.currentTimeMillis();
-					//android.util.Log.v("time","time="+(endTimeForSpeedCheck-startTimeForSpeedCheck));
+					android.util.Log.v("time","time="+(endTimeForSpeedCheck-startTimeForSpeedCheck));
 					logicalSleepForCpuUage();
 				}
 			} catch (InterruptedException e) {
@@ -131,7 +136,7 @@ public class SimpleStage extends EditableSurfaceView {
 	}
 
 	private void doDraw(Canvas canvas) {
-		canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
+		canvas.drawColor(mBgColor,Mode.SRC);
 		mRoot.paint(new SimpleGraphicsForAndroid(canvas, 0, 0));
 	}
 
