@@ -15,8 +15,16 @@ public class LookAheadCaching {
 	private ReadBackBuilder mBackBuilder = new ReadBackBuilder();
 	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
 	private Thread mTaskRunnter = null;
-	public static int LOOKAGEAD_lentgth = 2;
-	public static int CHANK_SIZE = 100;
+	private int mFinalI = 0;
+
+	public static final int LOOKAGEAD_lentgth = 2;
+	public static final int CHANK_SIZE = 100;
+	
+	
+	public static final int MOVE_FORWARD = 1;
+	public static final int CLEAR_AND_MOVE_FORWARD = 2;
+	public static final int MOVE_BACK = 3;
+	public static final int MOVE_KEEP = 4;
 
 	public LookAheadCaching(TextViewerBuffer buffer) {
 		mBuffer = new WeakReference<TextViewerBuffer>(buffer);
@@ -35,12 +43,28 @@ public class LookAheadCaching {
 		if (buffer == null) {
 			return;
 		}
+		int action = nextAction(buffer);
+		int sp = buffer.getCurrentBufferStartLinePosition();
+		int ep = buffer.getCurrentBufferEndLinePosition();
+		int cp = buffer.getCurrentPosition();
+		switch(action) {
+		case MOVE_FORWARD:
+			startReadForward(ep);
+			break;
+		case MOVE_BACK:
+			startReadBack(sp);
+			break;
+		case CLEAR_AND_MOVE_FORWARD:
+			startReadForwardAndClear(cp);
+			break;
+		}
+	}
+	private int nextAction(TextViewerBuffer buffer){
 		int sp = buffer.getCurrentBufferStartLinePosition();
 		int ep = buffer.getCurrentBufferEndLinePosition();
 		int cp = buffer.getCurrentPosition();
 		int mx = buffer.getMaxOfStackedElement();
-		int chunkSize = mx / 10;
-
+		int chunkSize = mx/4;
 		if (bufferIsKeep(buffer)) {
 			boolean forward = false;
 			boolean back = false;
@@ -64,14 +88,20 @@ public class LookAheadCaching {
 
 			if (forward) {
 //				android.util.Log.v("kiyo","ED:::Forward");
-				startReadForward(ep);
+//				startReadForward(ep);
+				return MOVE_FORWARD;
 			} 
 			else if(back){
 //				android.util.Log.v("kiyo","ED:::Back");
-				startReadBack(sp);
+//				startReadBack(sp);
+				return MOVE_BACK;
+			}
+			else {
+				return MOVE_KEEP;				
 			}
 		} else {
-			startReadForwardAndClear(cp);
+//			startReadForwardAndClear(cp);
+			return CLEAR_AND_MOVE_FORWARD;
 		}
 	}
 
@@ -132,6 +162,7 @@ public class LookAheadCaching {
 //			android.util.Log.v("kiyo","="+position+"<"+buffer.getBigLineData().getLinePosition());
 			startTask(mForwardBuilder);
 		} else {
+			startTask(mForwardBuilder);
 //			android.util.Log.v("kiyo","="+position+"NN"+buffer.getBigLineData().getLinePosition()+","+buffer.getBigLineData().isEOF());			
 		}
 	}
@@ -236,6 +267,7 @@ public class LookAheadCaching {
 					mTextViewer.clear();
 				}
 				mBigLineData.moveLine(mStartWithoutOwn);
+				do{
 				for (int i = 0; 
 						!Thread.interrupted() && 
 						i < BigLineData.FILE_LIME && !mBigLineData.isEOF()&&
@@ -254,6 +286,15 @@ public class LookAheadCaching {
 					}
 					Thread.yield();
 				}
+				if(MOVE_FORWARD == nextAction(mTextViewer)){
+					mStartWithoutOwn = mTextViewer.getCurrentBufferEndLinePosition();
+					Thread.sleep(100);
+					Thread.yield();
+				} else {
+					break;
+				}
+				}
+				while(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

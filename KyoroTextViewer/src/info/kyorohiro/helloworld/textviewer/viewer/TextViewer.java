@@ -212,7 +212,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		try {
 			mBreakText.setTextSize(mCurrentFontSize);
 			mBreakText.setBufferWidth(mBufferWidth);
-			mBuffer = new ColorFilteredBuffer(20 * BigLineData.FILE_LIME,
+			mBuffer = new ColorFilteredBuffer(
+					3000,
+					//20 * BigLineData.FILE_LIME,
 					mBreakText, file, mCurrentCharset);
 		} catch (FileNotFoundException e) {
 			// don't pass along this code
