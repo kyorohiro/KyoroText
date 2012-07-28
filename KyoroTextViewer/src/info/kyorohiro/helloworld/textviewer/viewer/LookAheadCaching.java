@@ -64,7 +64,7 @@ public class LookAheadCaching {
 		int ep = buffer.getCurrentBufferEndLinePosition();
 		int cp = buffer.getCurrentPosition();
 		int mx = buffer.getMaxOfStackedElement();
-		int chunkSize = mx/4;
+		int chunkSize = mx/8;
 		if (bufferIsKeep(buffer)) {
 			boolean forward = false;
 			boolean back = false;
@@ -77,7 +77,7 @@ public class LookAheadCaching {
 			}
 
 			if (forward == true&&back == true) {
-				if(cp>ep){
+				if(cp>=ep){
 					forward= true;
 					back= false;
 				} else  {

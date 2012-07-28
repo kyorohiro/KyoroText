@@ -133,8 +133,13 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		int next = i-plus;
 		Set<Integer> deletes = mDelete.keySet();
 		int[] ret = sort(deletes);
+//		android.util.Log.v("kiyo","-------------");
+//		for(int r:ret){
+//			android.util.Log.v("kiyo",""+r);
+//		}
+//		android.util.Log.v("kiyo","=============");
 		for(int dd: ret) {
-			if(dd<next){
+			if(dd<=next){
 				next++;
 			}
 		}
@@ -222,11 +227,13 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 				if (data.length() <= 0) {
 					printDiff();
 					printIndex();
-					if (mDelete.containsKey(toOwnerY(col-1))) {
-						mDelete.put(toOwnerY(col -1), mDelete.get(toOwnerY(col - 1)) - 1);
-					} else {
-						mDelete.put(toOwnerY(col - 1), -1);
-					}
+				//	if (mDelete.containsKey(toOwnerY(col-1))) {
+						//mDelete.put(toOwnerY(col -1), mDelete.get(toOwnerY(col - 1)) - 1);
+					//if (mIndex.containsKey(toOwnerY(col))) {
+					//	mIndex.put(toOwnerY(col),mIndex.get(toOwnerY(col)) - 1);
+					//} else {
+						mDelete.put(toOwnerY(col), -1);
+					//}
 					mDiff.remove(col);
 					printDiff();
 					printIndex();
