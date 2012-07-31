@@ -213,7 +213,7 @@ public class LookAheadCaching {
 		public void run() {
 //			android.util.Log.v("kiyo","SD:::B"+mStartWithoutOwn);
 			try {
-				mBigLineData.moveLine(mStartWithoutOwn - BigLineData.FILE_LIME+1);
+				mBigLineData.moveLine(mStartWithoutOwn - BigLineData.FILE_LIME);
 
 				int j = 0;
 				for (int i = 0; 
@@ -248,6 +248,9 @@ public class LookAheadCaching {
 		private boolean mClear = false;
 
 		public ReadForwardFileTask(TextViewerBuffer textViewer,long startWithoutOwn) {
+			if(startWithoutOwn <0){
+				startWithoutOwn = 0;
+			}
 			mBigLineData = textViewer.getBigLineData();
 			mTextViewer = textViewer;
 			mStartWithoutOwn = startWithoutOwn;

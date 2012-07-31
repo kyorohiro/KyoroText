@@ -37,9 +37,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			Color.parseColor("#FFEEEEAA");
 //			Color.parseColor("#FFFFFFAA");
 	//Color.parseColor("#FF000000");
-	public static int COLOR_FONT1 = Color.parseColor("#ff20aaee");
+	public static int COLOR_FONT1 = Color.parseColor("#ff2099dd");
 			//Color.parseColor("#ff80c9f4");
-	public static int COLOR_FONT2 = Color.parseColor("#ffee20aa");
+	public static int COLOR_FONT2 = Color.parseColor("#ffdd2099");
 	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFAA44");
 
 	private String mCurrentCharset = "utf8";
