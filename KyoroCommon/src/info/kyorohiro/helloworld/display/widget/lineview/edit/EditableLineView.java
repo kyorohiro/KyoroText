@@ -114,6 +114,10 @@ public class EditableLineView extends CursorableLineView {
 
 	@Override
 	public boolean onKeyDown(int keycode) {
+		boolean ret = super.onKeyDown(keycode);
+		MyInputConnection c = getMyInputConnection();
+		if (c == null) {return ret;} // <-- ‚±‚±‚ð‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
+
 		if(editable()){
 			try {
 				lock();
@@ -128,16 +132,18 @@ public class EditableLineView extends CursorableLineView {
 					getLeft().setCursorCol(mTextBuffer.getCol());
 				}
 				if(keycode == KeyEvent.KEYCODE_ENTER) {
-					mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());			
-					mTextBuffer.crlfOne();			
-					getLeft().setCursorRow(mTextBuffer.getRow());
-					getLeft().setCursorCol(mTextBuffer.getCol());
+					if(c.getComposingText() == null || c.getComposingText().length()==0){
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());			
+						mTextBuffer.crlfOne();			
+						getLeft().setCursorRow(mTextBuffer.getRow());
+						getLeft().setCursorCol(mTextBuffer.getCol());
+					}
 				}
 				return super.onKeyDown(keycode);
 			}finally {
 				releaseLock();
 			}
 		}
-		return super.onKeyDown(keycode);
+		return ret;
 	}
 }

@@ -82,6 +82,9 @@ public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
 				
 				@Override
 				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+					if(progress<=0){
+						progress = 2;
+					}
 					mTextSize.setText(""+progress);
 					mTextSize.setTextSize(progress);
 				}

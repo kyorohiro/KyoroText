@@ -5,12 +5,10 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Set;
-
 import android.graphics.Color;
-import android.view.View.OnTouchListener;
 
 public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 
@@ -20,7 +18,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 	private LineViewBufferSpec mOwner = null;
 	private HashMap<Integer, LineViewData> mDiff = new HashMap<Integer, LineViewData>();
 	private HashMap<Integer, Integer> mIndex = new HashMap<Integer, Integer>();
-	private HashMap<Integer, Integer> mDelete = new HashMap<Integer, Integer>();
+// HashMap<Integer, Integer> mDelete = new HashMap<Integer, Integer>();
+	private ArrayList<Integer> mDelete =  new ArrayList<Integer>();
 
 	public EditableLineViewBuffer(LineViewBufferSpec owner) {
 		super();
@@ -131,8 +130,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		//
 		int del = 0;
 		int next = i-plus;
-		Set<Integer> deletes = mDelete.keySet();
-		int[] ret = sort(deletes);
+		//Set<Integer> deletes = mDelete.keySet();
+		int[] ret = sort(mDelete);
 //		android.util.Log.v("kiyo","-------------");
 //		for(int r:ret){
 //			android.util.Log.v("kiyo",""+r);
@@ -148,7 +147,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 
 	//
 	// Ç¢ÇØÇƒÇ»Ç¢É\Å[Ég
-	private int[] sort(Set<Integer> key){
+	private int[] sort(ArrayList<Integer> key){
 		int[] ret = new int[key.size()];
 		int i=0;
 		for(int ii : key){
@@ -227,12 +226,13 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 				if (data.length() <= 0) {
 					printDiff();
 					printIndex();
-				//	if (mDelete.containsKey(toOwnerY(col-1))) {
-						//mDelete.put(toOwnerY(col -1), mDelete.get(toOwnerY(col - 1)) - 1);
 					if (mIndex.containsKey(toOwnerY(col-1))) {
 						mIndex.put(toOwnerY(col-1),mIndex.get(toOwnerY(col-1)) - 1);
 					} else {
-						mDelete.put(toOwnerY(col), -1);
+						int _c = toOwnerY(col);
+						if(!mDelete.contains(_c)){
+							mDelete.add(_c);
+						}
 					}
 					mDiff.remove(col);
 					printDiff();

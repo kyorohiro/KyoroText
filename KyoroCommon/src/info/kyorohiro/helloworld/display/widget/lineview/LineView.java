@@ -13,6 +13,7 @@ import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsClearBG = false;
+	private int mImpedance = 0;
 	public void isClearBG(boolean on){
 		mIsClearBG = on;
 	}
@@ -112,18 +113,21 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public synchronized void setScale(float scale, float sScale, int sGetX,
 			int linePosX, Point linePosY, int baseX, int baseY) {
+		if(mImpedance<6){
+			mImpedance +=2;
+		}
 		mScale = scale;
 		 _updateStatus(mInputtedText);
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
 		mScaleX = baseX;
 		mScaleY = baseY;
 		mScaleTime = 20;
-		setPositionY(mInputtedText.getNumberOfStockedElement()
-				- linePosY.getPoint() - pos - 1);
-
+//		setPositionY(mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1);
+		mPositionY = mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1;
+		
 		float option = baseX-(baseX - sGetX) * scale / sScale;
-//		setPositionX((int) (sGetX * scale / sScale - option));
-		setPositionX((int) (option));
+//		setPositionX((int) (option));
+		mPositionX = (int) option;
 
 	}
 
@@ -163,7 +167,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized void setPositionY(int position) {
-		mPositionY = position;
+		if(mImpedance <= 0) {
+			mPositionY = position;
+		}
 	}
 
 	public synchronized int getPositionY() {
@@ -353,6 +359,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 	
 	@Override
 	public void paint(SimpleGraphics graphics) {
+		if(mImpedance>0){
+			mImpedance--;
+		}
 		LineViewBufferSpec showingText = mInputtedText;
 		LineViewData[] list = null;
 		int len = 0;
