@@ -62,8 +62,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
 
-		//mLineView = new CursorableLineView(mBuffer, textSize, 200);
-		mLineView = new EditableLineView(mBuffer, textSize, 200);
+		mLineView = new CursorableLineView(mBuffer, textSize, 200);
+		//mLineView = new EditableLineView(mBuffer, textSize, 200);
 
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
