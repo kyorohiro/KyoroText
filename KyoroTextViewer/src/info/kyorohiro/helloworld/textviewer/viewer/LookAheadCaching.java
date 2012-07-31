@@ -77,7 +77,7 @@ public class LookAheadCaching {
 			}
 
 			if (forward == true&&back == true) {
-				if(cp>=ep){
+				if(Math.abs(cp-ep)<Math.abs(cp-sp)){
 					forward= true;
 					back= false;
 				} else  {
