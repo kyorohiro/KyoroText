@@ -54,6 +54,16 @@ public class MyCursor extends SimpleDisplayObject {
 		return cursorCol.getPoint();
 	}
 
+	private void lock() {
+	//	android.util.Log.v("kiyo","lock-1-");
+		mParent.get().lock();
+	//	android.util.Log.v("kiyo","lock-2-");
+	}
+	private void releaseLock(){
+	//	android.util.Log.v("kiyo","unlock-1-");
+		mParent.get().releaseLock();		
+	//	android.util.Log.v("kiyo","unlock-2-");
+	}
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		if (!mEnable) {
@@ -113,14 +123,14 @@ public class MyCursor extends SimpleDisplayObject {
 			if (focus == true) {
 				LineView l = mParent.get();
 				try {
-					l.lock();
+					lock();
 					cursorCol.setPoint(getYToPosY(y - py + getY()));
 					cursorRow = getXToPosX(cursorCol.getPoint(), x - px + getX(), cursorRow);
 				} 
 				catch(Exception e){
 					// todo
 				}finally {
-					l.releaseLock();
+					releaseLock();
 				}
 				//updateCursor(this);
 			}
@@ -153,7 +163,7 @@ public class MyCursor extends SimpleDisplayObject {
 	public boolean includeParentRect() {
 		return false;
 	}
-	public synchronized void updateCursor() {
+	public void updateCursor() {
 		int y = 0;
 		float x = 0.0f;
 		int l = 0;
@@ -165,14 +175,14 @@ public class MyCursor extends SimpleDisplayObject {
 		} else {
 			LineViewData d = null;
 			try {
-				mParent.get().lock();
+				lock();
 				int yy = this.getCursorCol();
 				if(mParent.get().isOver()){
 					yy-=mParent.get().getLineViewBuffer().getNumOfAdd();
 				}
 				d = mParent.get().getLineViewData(yy);
 			} finally {
-				mParent.get().releaseLock();
+				releaseLock();
 			}
 
 			try {
@@ -190,11 +200,11 @@ public class MyCursor extends SimpleDisplayObject {
 		}
 
 		try {
-			mParent.get().lock();
+			lock();
 			y = mParent.get().getYForStartDrawLine(this.getCursorCol()-mParent.get().getShowingTextStartPosition());
 			this.setPoint((int) x + mParent.get().getLeftForStartDrawLine(), y);
 		} finally {
-			mParent.get().releaseLock();
+			releaseLock();
 		}
 	}
 }

@@ -317,34 +317,34 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	private boolean lock = false;
 	private Thread currentThread = null;
 	int num = 0;
 	public synchronized void lock() {
-		if (mInputtedText instanceof SimpleLockInter) {
-			((SimpleLockInter) mInputtedText).beginLock();
-		}
-
 		try {
 			while(currentThread != null && currentThread != Thread.currentThread()){
 				wait();
 			}
+			if (mInputtedText instanceof SimpleLockInter) {
+				((SimpleLockInter) mInputtedText).beginLock();
+			}
 		} catch (InterruptedException e) {
+		} finally {
+			currentThread = Thread.currentThread();
+			num++;
 		}
-		currentThread = Thread.currentThread();
-		num++;
+	//	android.util.Log.v("kiyo","lock="+num);
 	}
 
 	public synchronized void releaseLock() {
+		if (mInputtedText instanceof SimpleLockInter) {
+			((SimpleLockInter) mInputtedText).endLock();
+		}
 		num--;
 		if(num == 0&&currentThread == Thread.currentThread()){
 			notifyAll();
-			lock = false;
 			currentThread = null;
 		}
-		if (mInputtedText instanceof SimpleLockInter) {
-			((SimpleLockInter) mInputtedText).endLock();
-		}	
+	//	android.util.Log.v("kiyo","unlock="+num);
 	}
 	
 	@Override
