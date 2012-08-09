@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="my_activity_theme" parent="android:Theme">
-        <item name="android:windowBackground">@drawable/backtile</item>
-    </style>
-    <!-- item name="android:windowBackground">@null</item -->
-</resources>

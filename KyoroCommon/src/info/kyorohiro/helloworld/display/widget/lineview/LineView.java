@@ -177,7 +177,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public void setPositionX(int x) {
-		mPositionX = x;
+		if(mImpedance <= 0) {
+			mPositionX = x;
+		}
 	}
 
 	public int getPositionX() {
@@ -270,17 +272,13 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 		LineViewBufferSpec showingText = mInputtedText;
 		try {
-			if (showingText instanceof SimpleLockInter) {
-				((SimpleLockInter) showingText).beginLock();
-			}
+			lock();
 			LineViewData data = mInputtedText.get(cursorCol);
 			return data;
 		} catch (Exception e) {
 			return null;
 		} finally {
-			if (showingText instanceof SimpleLockInter) {
-				((SimpleLockInter) showingText).endLock();
-			}
+			releaseLock();
 		}
 	}
 
@@ -323,38 +321,30 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private Thread currentThread = null;
 	int num = 0;
 	public synchronized void lock() {
-/*
-		if(lock) {
-			try {
-				if(currentThread != Thread.currentThread()){
-					wait();
-				}
-			} catch (InterruptedException e) {
-			}
+		if (mInputtedText instanceof SimpleLockInter) {
+			((SimpleLockInter) mInputtedText).beginLock();
 		}
-		else{
-			lock = true;
-			if (mInputtedText instanceof SimpleLockInter) {
-				((SimpleLockInter) mInputtedText).beginLock();
+
+		try {
+			while(currentThread != null && currentThread != Thread.currentThread()){
+				wait();
 			}
+		} catch (InterruptedException e) {
 		}
 		currentThread = Thread.currentThread();
-		num++;*/
+		num++;
 	}
 
-	public synchronized void releaseLock() {/*
+	public synchronized void releaseLock() {
 		num--;
 		if(num == 0&&currentThread == Thread.currentThread()){
-
 			notifyAll();
-			if (mInputtedText instanceof SimpleLockInter) {
-				((SimpleLockInter) mInputtedText).endLock();
-			}	
-
 			lock = false;
 			currentThread = null;
 		}
-*/
+		if (mInputtedText instanceof SimpleLockInter) {
+			((SimpleLockInter) mInputtedText).endLock();
+		}	
 	}
 	
 	@Override

@@ -34,6 +34,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		mTextViewer.setRect(mViewerWidth, mViewerHeight);
 		mStage = new SimpleStage(this);
 		mStage.getRoot().addChild(mTextViewer);
+		//mStage.getRoot().addChild(newTextViewer());
 		int modeForDisableSoftKeyboard = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
 		getWindow().setSoftInputMode(modeForDisableSoftKeyboard);
 		setContentView(mStage);

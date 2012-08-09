@@ -16,12 +16,12 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
+public class MainActivitySearchText implements MainActivityMenuAction {
 
-	public static String TITLE = "search";
+	public static String TITLE = "font size";
 	private TextViewer mDisplayedTextViewer = null;
 
-	public MainActivitySetTextSizeAction(TextViewer viewer) {
+	public MainActivitySearchText(TextViewer viewer) {
 		mDisplayedTextViewer = viewer;
 	}
 

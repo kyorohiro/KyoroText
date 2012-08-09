@@ -40,7 +40,7 @@ public class BigLineData {
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
-		mReader = new VirtualMemory(mPath, 1024*4);
+		mReader = new VirtualMemory(mPath, 1024*2);
 		mPositionPer100Line.add(0l);
 		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
 	}

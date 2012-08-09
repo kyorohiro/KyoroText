@@ -327,6 +327,11 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
+
+
+	//
+	// =======================================================
+	//
 	private LineViewBuffer getStartupMessageBuffer() {
 		String[] message = { "Please open file\n",
 				"Current charset is " + mCurrentCharset + "\n", "..\n",
