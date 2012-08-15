@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
 
-	public static String TITLE = "search";
+	public static String TITLE = "font size";
 	private TextViewer mDisplayedTextViewer = null;
 
 	public MainActivitySetTextSizeAction(TextViewer viewer) {
