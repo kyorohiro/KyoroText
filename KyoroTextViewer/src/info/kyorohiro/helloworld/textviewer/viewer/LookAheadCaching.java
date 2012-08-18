@@ -264,7 +264,6 @@ public class LookAheadCaching {
 		}
 
 		public void run() {
-//			android.util.Log.v("kiyo","SD:::F"+mStartWithoutOwn);
 			try {
 				if (mClear) {
 					mTextViewer.clear();
@@ -275,7 +274,6 @@ public class LookAheadCaching {
 						!Thread.interrupted() && 
 						i < BigLineData.FILE_LIME && !mBigLineData.isEOF()&&
 						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
-						
 						i++) {
 					TODOCRLFString lineWP = (TODOCRLFString) mBigLineData.readLine();
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;

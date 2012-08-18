@@ -7,6 +7,14 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 	private ArrayList<SimpleDisplayObject> mMyChildren = new ArrayList<SimpleDisplayObject>();
 	private SimpleGraphics mCashGraphics = null;
 	
+	public int numOfChild() {
+		return mMyChildren.size();
+	}
+
+	public SimpleDisplayObject getChild(int index) {
+		return mMyChildren.get(index);
+	}
+
 	/**
 	 * 
 	 */

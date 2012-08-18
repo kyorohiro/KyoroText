@@ -156,12 +156,12 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return mInputtedText;
 	}
 
-	@Deprecated
+//	@Deprecated
 	public synchronized int getShowingTextStartPosition() {
 		return mDrawingPosition.getStart();
 	}
 
-	@Deprecated
+//	@Deprecated
 	public synchronized int getShowingTextEndPosition() {
 		return mDrawingPosition.getEnd();
 	}
