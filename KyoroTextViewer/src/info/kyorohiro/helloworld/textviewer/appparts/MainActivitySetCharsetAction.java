@@ -5,6 +5,7 @@ import java.util.SortedMap;
 
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.app.Dialog;
@@ -19,9 +20,9 @@ import android.widget.ListView;
 public class MainActivitySetCharsetAction implements MainActivityMenuAction {
 
 	public static String TITLE = "charset all";
-	private TextViewer mDisplayedTextViewer = null;
+	private LineViewManager mDisplayedTextViewer = null;
 
-	public MainActivitySetCharsetAction(TextViewer viewer) {
+	public MainActivitySetCharsetAction(LineViewManager viewer) {
 		mDisplayedTextViewer = viewer;
 	}
 
@@ -60,12 +61,13 @@ public class MainActivitySetCharsetAction implements MainActivityMenuAction {
 					ListView charsetListUIParts = (ListView) parent;
 					String selectedCharset = (String)charsetListUIParts.getItemAtPosition(position);
 
-					mDisplayedTextViewer.setCharset(selectedCharset);
+					TextViewer viewer = mDisplayedTextViewer.getFocusingTextViewer();
+					viewer.setCharset(selectedCharset);
 					
 					// save selected charset in setting file.
 					if(selectedCharset != null && !selectedCharset.equals("")){
 						KyoroSetting.setCurrentCharset(selectedCharset);
-						mDisplayedTextViewer.restart();
+						viewer.restart();
 					}
 
 					// 

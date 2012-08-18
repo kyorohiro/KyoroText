@@ -4,6 +4,7 @@ import java.io.File;
 
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.util.CharsetDetectorSample;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
@@ -19,9 +20,9 @@ import android.widget.ListView;
 public class MainActivitySetCharsetDetectionAction implements MainActivityMenuAction {
 
 	public static String TITLE = "charset auto detection";
-	private TextViewer mDisplayedTextViewer = null;
+	private LineViewManager mDisplayedTextViewer = null;
 
-	public MainActivitySetCharsetDetectionAction(TextViewer viewer) {
+	public MainActivitySetCharsetDetectionAction(LineViewManager viewer) {
 		mDisplayedTextViewer = viewer;
 	}
 
@@ -58,10 +59,11 @@ public class MainActivitySetCharsetDetectionAction implements MainActivityMenuAc
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					ListView charsetListUIParts = (ListView) parent;
 					String selectedCharset = (String)charsetListUIParts.getItemAtPosition(position);
-					mDisplayedTextViewer.setCharset(selectedCharset);					
+					TextViewer viewer = mDisplayedTextViewer.getFocusingTextViewer();
+					viewer.setCharset(selectedCharset);					
 					if(selectedCharset != null && !selectedCharset.equals("")){
 						KyoroSetting.setCurrentCharset(selectedCharset);
-						mDisplayedTextViewer.restart();
+						viewer.restart();
 					}
 					DialogForShowDeviceSupportCharset.this.dismiss();	            }
 			});
@@ -92,7 +94,8 @@ public class MainActivitySetCharsetDetectionAction implements MainActivityMenuAc
 	public class AutoDetection implements Runnable {
 		@Override
 		public void run() {
-			String path = mDisplayedTextViewer.getCurrentPath();
+			TextViewer viewer = mDisplayedTextViewer.getFocusingTextViewer();
+			String path = viewer.getCurrentPath();
 			if(path == null || path.equals("")){
 				return;
 			}

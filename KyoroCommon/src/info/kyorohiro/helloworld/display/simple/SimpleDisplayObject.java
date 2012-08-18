@@ -24,6 +24,20 @@ public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 		return null;
 	}
 
+	public int[] getGlobalXY(int[] xy) {
+		if(getParent() != null && getParent() instanceof SimpleDisplayObject){
+			SimpleDisplayObject dobject = (SimpleDisplayObject)getParent();
+			dobject.getGlobalXY(xy);
+			xy[0] += getX();
+			xy[1] += getY();
+		} else {
+			xy[0] = getX();
+			xy[1] = getY();
+		}
+		return xy;
+	}
+
+
 	public void dispose() {
 		
 	};

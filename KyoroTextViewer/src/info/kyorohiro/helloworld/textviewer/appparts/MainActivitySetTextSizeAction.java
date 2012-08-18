@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.textviewer.appparts;
 
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.app.Dialog;
@@ -19,9 +20,9 @@ import android.widget.TextView;
 public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
 
 	public static String TITLE = "font size";
-	private TextViewer mDisplayedTextViewer = null;
+	private LineViewManager mDisplayedTextViewer = null;
 
-	public MainActivitySetTextSizeAction(TextViewer viewer) {
+	public MainActivitySetTextSizeAction(LineViewManager viewer) {
 		mDisplayedTextViewer = viewer;
 	}
 
@@ -96,8 +97,9 @@ public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
 					int textSize = mBar.getProgress();
 					try {
 						KyoroSetting.setCurrentFontSize(""+textSize);
-						mDisplayedTextViewer.setCurrentFontSize(textSize);
-						mDisplayedTextViewer.restart();
+						TextViewer viewer = mDisplayedTextViewer.getFocusingTextViewer();
+						viewer.setCurrentFontSize(textSize);
+						viewer.restart();
 						dismiss();
 					} catch(Throwable t){
 

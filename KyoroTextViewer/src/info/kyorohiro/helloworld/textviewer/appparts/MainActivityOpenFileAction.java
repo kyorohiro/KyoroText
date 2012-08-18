@@ -8,6 +8,7 @@ import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
+import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -20,9 +21,9 @@ import android.view.MenuItem;
 public class MainActivityOpenFileAction implements MainActivityMenuAction {
 
 	public static String TITLE = "open";
-	private TextViewer mViewer = null;
+	private LineViewManager mViewer = null;
 
-	public MainActivityOpenFileAction(TextViewer viewer) {
+	public MainActivityOpenFileAction(LineViewManager viewer) {
 		mViewer = viewer;
 	}
 
@@ -64,7 +65,7 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 			@Override
 			public boolean onSelectedFile(File file, String action) {
 				if (file.exists() && file.isFile()) {
-					if(mViewer.readFile(file)&& mRefActivity!=null){
+					if(mViewer.getFocusingTextViewer().readFile(file)&& mRefActivity!=null){
 						Activity a = mRefActivity.get();
 						if(a!=null){
 							// todo refactraing 
