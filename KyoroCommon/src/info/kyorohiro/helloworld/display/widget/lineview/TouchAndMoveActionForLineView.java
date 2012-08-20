@@ -42,6 +42,16 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 	private double mMoveYY =0;
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
+		boolean focusIn = false;
+		if(0<x&&x<mViewer.getWidth()&&0<y&&y<mViewer.getHeight()){
+			focusIn = true;
+		} else {
+			focusIn = false;
+		}
+		if(!focusIn){
+			action = MotionEvent.ACTION_UP;
+		}
+
 		if (mPrevY == -999 || mPrevX == -999) {
 			mPrevY = y;
 			mPrevX = x;

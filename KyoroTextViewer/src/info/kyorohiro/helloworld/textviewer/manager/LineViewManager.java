@@ -163,7 +163,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			if(-height<y&& y<height){
 				isInsideAboutH = true;
 			}
-			return isInsideAboutW&isInsideAboutW;
+			return isInsideAboutW&isInsideAboutH;
 		}
 	}
 

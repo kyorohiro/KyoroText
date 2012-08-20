@@ -61,6 +61,12 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 
 	@Override
 	public synchronized boolean onTouchTest(int x, int y, int action) {
+		boolean focusIn = false;
+		if(0<x&&x<mLineViewer.getWidth()&&0<y&&y<mLineViewer.getHeight()){
+			focusIn = true;
+		} else {
+			focusIn = false;
+		}
 		SimpleStage stage = SimpleDisplayObject.getStage(this);
 
 		if (stage != null && stage.isSupportMultiTouch()) {
@@ -76,7 +82,10 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 					return false;
 				}
 			}
-			if (mStartZoom == false) {
+			//
+			// todo focusIn
+			//
+			if (focusIn &&mStartZoom == false) {
 				try {
 					if (mLineViewer instanceof SimpleLockInter) {
 						((SimpleLockInter) mLineViewer).beginLock();
@@ -99,6 +108,13 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 						((SimpleLockInter) mLineViewer).endLock();
 					}					
 				}
+			}
+			
+			//
+			// mStartZoom
+			//
+			if(!mStartZoom){
+				return false;
 			}
 
 			int currentLength = getLength();// xx*xx + yy*yy;
