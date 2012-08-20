@@ -41,10 +41,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mMergine = mergine;
 
 		mLineView = new CursorableLineView(mBuffer, textSize, 200);
-
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
-
+		setRect(width, width/2);
 		mScrollBar = new ScrollBar(mLineView);
 		addChild(new TouchAndMoveActionForLineView(mLineView));
 		addChild(new TouchAndZoomForLineView(mLineView));
@@ -144,8 +143,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
 			mScrollBar.setStatus(beginPosition, endPosition, bufferSize);
 			mScrollBar.setColor(COLOR_FONT1);
-			TextViewer.this.mLineView.setRect(graphics.getWidth(),
-					graphics.getHeight());
+//			TextViewer.this.mLineView.setRect(graphics.getWidth(),
+//					graphics.getHeight());
 		}
 	}
 
