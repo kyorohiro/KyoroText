@@ -30,14 +30,22 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	private int getCenterX() {
 		SimpleStage stage = SimpleDisplayObject.getStage(this);
 		SimplePoint[] p = stage.getMultiTouchEvent();
-		int ret = (p[0].getX() + p[1].getX()) / 2;
+		//
+		int[] xy = new int[2];
+		this.getGlobalXY(xy);
+		//
+		int ret = (p[0].getX()-xy[0] + p[1].getX()-xy[0]) / 2;
 		return ret;
 	}
 
 	private int getCenterY() {
 		SimpleStage stage = SimpleDisplayObject.getStage(this);
 		SimplePoint[] p = stage.getMultiTouchEvent();
-		int ret = (p[0].getY() + p[1].getY()) / 2;
+		//
+		int[] xy = new int[2];
+		this.getGlobalXY(xy);
+		//
+		int ret = (p[0].getY()-xy[1] + p[1].getY()-xy[1]) / 2;
 		return ret;
 	}
 

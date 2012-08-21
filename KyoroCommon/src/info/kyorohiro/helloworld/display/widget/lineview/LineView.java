@@ -111,7 +111,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mScale = scale;
 	}
 
-	public synchronized void setScale(float scale, float sScale, int sGetX,
+	public synchronized void setScale(
+			float scale, float sScale, int sGetX,
 			int linePosX, Point linePosY, int baseX, int baseY) {
 		if(mImpedance<6){
 			mImpedance +=2;
@@ -121,6 +122,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
 		mScaleX = baseX;
 		mScaleY = baseY;
+		android.util.Log.v("kiyo","sxy="+mScaleX+","+mScaleY);
 		mScaleTime = 20;
 //		setPositionY(mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1);
 		mPositionY = mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1;
