@@ -6,23 +6,28 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 
 public class SeparateUI extends SimpleDisplayObject {
-	public static int COLOR = Color.GREEN;
+	public static int COLOR_UNLOCK = Color.GREEN;
+	public static int COLOR_LOCK = Color.RED;
 	private int mPrevTouchDownX = 0;
 	private int mPrevTouchDownY = 0;
 	private int mPrevX = 0;
 	private int mPrevY = 0;
 	private boolean mIsInside = false;
 	private boolean mIsReached = false;
-	private LineViewManager mManager = null;
+	private LineViewGroup mManager = null;
 
-	public SeparateUI(LineViewManager manager) {
+	public SeparateUI(LineViewGroup manager) {
 		setRect(20, 20);
 		mManager = manager;
 	}
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-		graphics.setColor(COLOR);
+		if(mIsReached){
+			graphics.setColor(COLOR_LOCK);			
+		} else {
+			graphics.setColor(COLOR_UNLOCK);		
+		}
 		graphics.drawCircle(0, 0, getWidth()/2);
 		graphics.drawLine(0, 0, -1000, 0);
 	}
@@ -51,6 +56,11 @@ public class SeparateUI extends SimpleDisplayObject {
 						mIsReached = true;
 						mManager.divide(this);
 					}
+				} else {
+					if(isUnreached(x, y)){
+						mIsReached = false;
+						mManager.combine(this);
+					}
 				}
 				return true;
 			}
@@ -70,6 +80,18 @@ public class SeparateUI extends SimpleDisplayObject {
 			return false;
 		}
 	}
+
+	private boolean isUnreached(int x, int y) {
+		SimpleDisplayObject target = this;
+		SimpleDisplayObject parent = (SimpleDisplayObject)getParent();
+		int a = (x+getX()-target.getWidth()*4);
+		if(a<0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	private boolean isInside(int x, int y) {
 		SimpleDisplayObject target = this;

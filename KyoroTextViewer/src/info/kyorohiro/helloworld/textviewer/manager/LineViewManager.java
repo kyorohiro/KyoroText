@@ -25,64 +25,49 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private int mTextSize = 16;
 	private int mMergine = 10;
 	private TextViewer mFocusingViewer = null;
+	private LineViewGroup mRoot = null;
+	private static LineViewManager sInstance = null;
 
+	public static LineViewManager getManager(){
+		return sInstance;
+	}
+
+	//
+	// å„Ç≈SingletoneÇ…Ç∑ÇÈÅB
 	public LineViewManager(int textSize, int width, int height, int mergine) {
+		sInstance = this;
 		mWidth = width;
 		mHeight = height;
 		mTextSize = textSize;
 		mMergine = mergine;
-		mFocusingViewer = new TextViewer(textSize, width, mergine);
-		addChild(mFocusingViewer);
-		addChild(new SeparateUI(this));
+		mFocusingViewer = newTextViewr();
+		mRoot = new LineViewGroup(mFocusingViewer);
+		addChild(mRoot);
 	}
-	
+
+	public TextViewer newTextViewr(){
+		return new TextViewer(mTextSize, mWidth, mMergine);
+	}
+	@Override
+	public void paint(SimpleGraphics graphics) {
+		mRoot.setRect(graphics.getWidth(), graphics.getHeight());
+		super.paint(graphics);
+	}
+
+	public int getMergine() {
+		return mMergine;
+	}
+
+	public int getTextSize() {
+		return mTextSize;
+	}
+
+	public void changeFocus(TextViewer textViewer) {
+		mFocusingViewer = textViewer;
+	}
+
 	public TextViewer getFocusingTextViewer() {
 		return mFocusingViewer;
 	}
 
-	@Override
-	public void paint(SimpleGraphics graphics) {
-		int y=0;
-		for(int i=0;i<numOfChild();i++) {
-			if(getChild(i) instanceof TextViewer) {
-				getChild(i).setPoint(0, y);
-				getChild(i).setRect(graphics.getWidth(), graphics.getHeight()/(numOfChild()-1));
-				y +=graphics.getHeight()/(numOfChild()-1);
-			}
-		}
-		super.paint(graphics);
-	}
-
-	@Override
-	public boolean onTouchTest(int x, int y, int action) {
-		if(MotionEvent.ACTION_DOWN == action){
-			focusTest(x, y);
-		}
-		return super.onTouchTest(x, y, action);
-	}
-
-	private void focusTest(int x, int y) {
-		for(int i=0;i<numOfChild();i++) {
-			if(getChild(i) instanceof TextViewer) {
-				int cx = ((TextViewer)getChild(i)).getX();
-				int cy = ((TextViewer)getChild(i)).getY();
-				int cw = ((TextViewer)getChild(i)).getWidth();
-				int ch = ((TextViewer)getChild(i)).getHeight();
-				if(cx<x&&x<cx+cw) {
-					if(cy<y&&y<cy+ch){
-						mFocusingViewer = (TextViewer)getChild(i);
-						break;
-					}
-				}
-			}
-		}		
-	}
-
-	public void divide(SeparateUI separate) {
-		addChild(new TextViewer(mTextSize, mWidth, mMergine));
-	}
-
-//
-//
-//
 }

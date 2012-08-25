@@ -6,14 +6,6 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 
 	private ArrayList<SimpleDisplayObject> mMyChildren = new ArrayList<SimpleDisplayObject>();
 	private SimpleGraphics mCashGraphics = null;
-	
-	public int numOfChild() {
-		return mMyChildren.size();
-	}
-
-	public SimpleDisplayObject getChild(int index) {
-		return mMyChildren.get(index);
-	}
 
 	/**
 	 * 
@@ -91,15 +83,48 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		return touched;
 	}
 
+	public int numOfChild() {
+		return mMyChildren.size();
+	}
+
+	public SimpleDisplayObject getChild(int index) {
+		return mMyChildren.get(index);
+	}
+
 	public void removeChild(SimpleDisplayObject child) {
 		mMyChildren.remove(child);
 	}
 
+	public void insertChild(int index, SimpleDisplayObject child) {
+		mMyChildren.add(index, child);
+		child.setParent(this);
+	}
+
 	public void addChild(SimpleDisplayObject child) {
+		//
+		if(child.getParent() != null) {
+			android.util.Log.v("kiyo","this child has already add another object");
+		}
 		mMyChildren.add(child);
 		child.setParent(this);
 	}
 
+	public int getWidth(boolean isIncludeChild) {
+		if(isIncludeChild){
+			return getWidth();
+		}else {
+			return super.getWidth();			
+		}
+	}
+
+	public int getHeight(boolean isIncludeChild) {
+		if(isIncludeChild){
+			return getHeight();
+		}else {
+			return super.getHeight();			
+		}
+	}
+	
 	@Override
 	public int getWidth() {
 		int[] bound = getBound();
