@@ -25,7 +25,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private int mTextSize = 16;
 	private int mMergine = 10;
 	private TextViewer mFocusingViewer = null;
-	private LineViewGroup mRoot = null;
+//	private LineViewGroup mRoot = null;
 	private static LineViewManager sInstance = null;
 
 	public static LineViewManager getManager(){
@@ -41,8 +41,8 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mTextSize = textSize;
 		mMergine = mergine;
 		mFocusingViewer = newTextViewr();
-		mRoot = new LineViewGroup(mFocusingViewer);
-		addChild(mRoot);
+		addChild(new LineViewGroup(mFocusingViewer));
+//		addChild(mRoot);
 	}
 
 	public TextViewer newTextViewr(){
@@ -50,7 +50,12 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 	@Override
 	public void paint(SimpleGraphics graphics) {
-		mRoot.setRect(graphics.getWidth(), graphics.getHeight());
+		int len = numOfChild();
+		for(int i=0;i<len;i++){
+			if(getChild(i) instanceof LineViewGroup){
+			getChild(i).setRect(graphics.getWidth(), graphics.getHeight());
+			}
+		}
 		super.paint(graphics);
 	}
 

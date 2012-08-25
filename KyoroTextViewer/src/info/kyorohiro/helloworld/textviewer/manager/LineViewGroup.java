@@ -60,11 +60,21 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		Object child = getChild(0);
 		//if(parent instanceof LineViewGroup//&&child instanceof LineViewGroup
 		//		){
-		if(child != null) {
-			// refactaring
-			((SimpleDisplayObjectContainer)parent).removeChild(this);
-			((SimpleDisplayObjectContainer)parent).addChild((SimpleDisplayObject)child);
-		}
+//		if(parent instanceof LineViewGroup){
+			if(child != null){// && child instanceof LineViewGroup) {
+				// refactaring
+				((SimpleDisplayObjectContainer)parent).removeChild(this);
+				((SimpleDisplayObjectContainer)parent).addChild((SimpleDisplayObject)child);
+			} 
+			//else {
+			//	((SimpleDisplayObjectContainer)parent).removeChild(this);			
+			//}
+//		} else {
+			// ココわかりにくい、跡で直す。
+//			if(child instanceof SimpleDisplayObject) {
+//				this.removeChild((SimpleDisplayObject)child);
+//			}
+//		}
 		//}
 	}
 
