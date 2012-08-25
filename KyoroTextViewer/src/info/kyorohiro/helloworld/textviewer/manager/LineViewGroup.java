@@ -9,6 +9,8 @@ import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	private TextViewer mTextViewer = null;
+	private SeparateUI mSeparate = null;
+
 	public LineViewGroup(TextViewer textViewer) {
 		doAddSeparator();
 		addChild(textViewer);
@@ -18,19 +20,35 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		addChild(new SeparateUI(this));
 	}
 
+
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		int y=0;
-		android.util.Log.v("kiyo","num="+numOfChild()+","+graphics.getHeight()+","+getHeight(false));
+		SimpleDisplayObject[] obj = new SimpleDisplayObject[2];
+
+		int j=0;
 		for(int i=0;i<numOfChild();i++) {
 			if(getChild(i) instanceof TextViewer||getChild(i) instanceof LineViewGroup) {
-				getChild(i).setPoint(0, y);
-				getChild(i).setRect(getWidth(false), getHeight(false)/(numOfChild()-1));
-				y +=this.getHeight(false)/(numOfChild()-1);
+				obj[j] = getChild(i);
+				j++;
+				if(j>=2){
+					break;
+				}
 			}
+		}
+		if(j>=2){
+			int z = (int)(getHeight(false)*mSeparate.getPersentY());
+			obj[0].setPoint(0, 0);
+			obj[0].setRect(getWidth(false), z);
+			obj[1].setPoint(0, z);
+			obj[1].setRect(getWidth(false), getHeight(false)-z);
+		} else {
+			obj[0].setPoint(0, 0);
+			obj[0].setRect(getWidth(false), getHeight(false));			
 		}
 		super.paint(graphics);
 	}
+
 
 	@Override
 	public void addChild(SimpleDisplayObject child) {
@@ -43,7 +61,11 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			int num = super.numOfChild()-1;
 		 	if(num<0){num = 0;}
 			super.insertChild(num, child);			
-		}else {
+		} else if(child instanceof SeparateUI) {
+			mSeparate = (SeparateUI)child;
+			super.addChild(child);
+		}
+		else {
 			super.addChild(child);
 		}
 	}
@@ -58,24 +80,11 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	public void combine(SeparateUI separate) {
 		Object parent = getParent();
 		Object child = getChild(0);
-		//if(parent instanceof LineViewGroup//&&child instanceof LineViewGroup
-		//		){
-//		if(parent instanceof LineViewGroup){
-			if(child != null){// && child instanceof LineViewGroup) {
-				// refactaring
-				((SimpleDisplayObjectContainer)parent).removeChild(this);
-				((SimpleDisplayObjectContainer)parent).addChild((SimpleDisplayObject)child);
-			} 
-			//else {
-			//	((SimpleDisplayObjectContainer)parent).removeChild(this);			
-			//}
-//		} else {
-			// ココわかりにくい、跡で直す。
-//			if(child instanceof SimpleDisplayObject) {
-//				this.removeChild((SimpleDisplayObject)child);
-//			}
-//		}
-		//}
+		if(child != null){
+			// refactaring
+			((SimpleDisplayObjectContainer)parent).removeChild(this);
+			((SimpleDisplayObjectContainer)parent).addChild((SimpleDisplayObject)child);
+		} 
 	}
 
 	@Override

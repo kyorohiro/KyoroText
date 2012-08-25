@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.textviewer.manager;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import android.graphics.Color;
 import android.view.MotionEvent;
@@ -16,9 +17,15 @@ public class SeparateUI extends SimpleDisplayObject {
 	private boolean mIsReached = false;
 	private LineViewGroup mManager = null;
 
+	private double mPersentY = 0.5;
+	
 	public SeparateUI(LineViewGroup manager) {
 		setRect(20, 20);
 		mManager = manager;
+	}
+
+	public double getPersentY(){
+		return mPersentY;
 	}
 
 	@Override
@@ -28,8 +35,25 @@ public class SeparateUI extends SimpleDisplayObject {
 		} else {
 			graphics.setColor(COLOR_UNLOCK);		
 		}
+		setPoint(getX(), getY());
 		graphics.drawCircle(0, 0, getWidth()/2);
 		graphics.drawLine(0, 0, -1000, 0);
+	}
+
+	@Override
+	public void setPoint(int x, int y) {
+		Object parent = getParent();
+		if(parent != null &&  parent instanceof SimpleDisplayObjectContainer) {
+			SimpleDisplayObjectContainer parentAtSDO = (SimpleDisplayObjectContainer)parent;
+			int w = parentAtSDO.getWidth(false);
+			int h = parentAtSDO.getHeight(false);
+			if(x>w){x=w;}
+			if(y>h){y=h;}
+			mPersentY=y/(double)h;
+		}
+		if(x < 0) {x=0;}
+		if(y< 0) {y=0;}
+		super.setPoint(x, y);
 	}
 
 	@Override
