@@ -36,17 +36,31 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 				}
 			}
 		}
-		int z = (int)(getHeight(false)*mSeparate.getPersentY());
-		if(j>=2){
-			obj[0].setPoint(0, 0);
-			obj[0].setRect(getWidth(false), z);
-			obj[1].setPoint(0, z);
-			obj[1].setRect(getWidth(false), getHeight(false)-z);
+		if(mSeparate.isVertical()){
+			int z = (int)(getWidth(false)*mSeparate.getPersentY());
+			if(j>=2){
+				obj[0].setPoint(0, 0);
+				obj[0].setRect(z, getHeight(false));
+				obj[1].setPoint(z, 0);
+				obj[1].setRect(getWidth(false)-z, getHeight(false));
+			} else {
+				obj[0].setPoint(0, 0);
+				obj[0].setRect(getWidth(false), getHeight(false));			
+			}
+			mSeparate.setPoint(z, mSeparate.getY());
 		} else {
-			obj[0].setPoint(0, 0);
-			obj[0].setRect(getWidth(false), getHeight(false));			
+			int z = (int)(getHeight(false)*mSeparate.getPersentY());
+			if(j>=2){
+				obj[0].setPoint(0, 0);
+				obj[0].setRect(getWidth(false), z);
+				obj[1].setPoint(0, z);
+				obj[1].setRect(getWidth(false), getHeight(false)-z);
+			} else {
+				obj[0].setPoint(0, 0);
+				obj[0].setRect(getWidth(false), getHeight(false));			
+			}
+			mSeparate.setPoint(mSeparate.getX(), z);
 		}
-		mSeparate.setPoint(mSeparate.getX(), z);
 		super.paint(graphics);
 	}
 

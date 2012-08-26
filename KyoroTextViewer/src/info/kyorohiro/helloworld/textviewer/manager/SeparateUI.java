@@ -13,6 +13,9 @@ public class SeparateUI extends SimpleDisplayObject {
 	private int mPrevTouchDownY = 0;
 	private int mPrevX = 0;
 	private int mPrevY = 0;
+	public static final int MODE_SEPARATE_ORIENTATION = 0;
+	public static final int MODE_SEPARATE_VERTICAL = 1;
+	private int mModeSeparate = MODE_SEPARATE_ORIENTATION;
 	private boolean mIsInside = false;
 	private boolean mIsReached = false;
 	private LineViewGroup mManager = null;
@@ -28,6 +31,13 @@ public class SeparateUI extends SimpleDisplayObject {
 		return mPersentY;
 	}
 
+	public boolean isVertical(){
+		if(mModeSeparate == MODE_SEPARATE_ORIENTATION){
+			return false;
+		} else {
+			return true;
+		}
+	}
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		if(mIsReached){
@@ -37,7 +47,11 @@ public class SeparateUI extends SimpleDisplayObject {
 		}
 		setPoint(getX(), getY());
 		graphics.drawCircle(0, 0, getWidth()/2);
-		graphics.drawLine(0, 0, -1000, 0);
+		if(mModeSeparate == MODE_SEPARATE_VERTICAL) {
+			graphics.drawLine(0, 0, 0, -2000);			
+		} else {
+			graphics.drawLine(0, 0, -2000, 0);
+		}
 	}
 
 	@Override
@@ -49,7 +63,11 @@ public class SeparateUI extends SimpleDisplayObject {
 			int h = parentAtSDO.getHeight(false);
 			if(x>w){x=w;}
 			if(y>h){y=h;}
-			mPersentY=y/(double)h;
+			if(isVertical()){
+				mPersentY=x/(double)w;				
+			} else {
+				mPersentY=y/(double)h;
+			}
 		}
 		if(x < 0) {x=0;}
 		if(y< 0) {y=0;}
@@ -58,6 +76,13 @@ public class SeparateUI extends SimpleDisplayObject {
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
+		if(mIsInside&&!mIsReached){
+			if(isVertical(x, y)){
+				mModeSeparate = MODE_SEPARATE_VERTICAL;					
+			} else {
+				mModeSeparate = MODE_SEPARATE_ORIENTATION;
+			}
+		}
 		if(action == MotionEvent.ACTION_DOWN){
 			if(isInside(x, y)){
 				mIsInside = true;
@@ -94,10 +119,35 @@ public class SeparateUI extends SimpleDisplayObject {
 		return super.onTouchTest(x, y, action);
 	}
 
+	private boolean isVertical(int x, int y){
+		SimpleDisplayObject _target = this;
+		SimpleDisplayObject _parent = (SimpleDisplayObject)getParent();
+		
+		int _x = _target.getX() + x;
+		int _y = _target.getY() + y;
+		int _w = _parent.getWidth();
+		int _h = _parent.getHeight();
+		// use current value 
+		if(_x > _w/4 && _y > _h/4) {
+			return mModeSeparate==MODE_SEPARATE_VERTICAL;
+		}
+
+		if(_x/(double)_w > _y/(double)_h) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	private boolean isReached(int x, int y) {
 		SimpleDisplayObject target = this;
 		SimpleDisplayObject parent = (SimpleDisplayObject)getParent();
-		int a = parent.getWidth()-(x+getX()+target.getWidth()*4);
+		int a = 0;
+		if(mModeSeparate == MODE_SEPARATE_ORIENTATION){
+			a = parent.getWidth()-(x+getX()+target.getWidth()*4);
+		} else {
+			a = parent.getHeight()-(y+getY()+target.getHeight()*4);
+		}
 		if(a<0) {
 			return true;
 		} else {
@@ -108,14 +158,18 @@ public class SeparateUI extends SimpleDisplayObject {
 	private boolean isUnreached(int x, int y) {
 		SimpleDisplayObject target = this;
 		SimpleDisplayObject parent = (SimpleDisplayObject)getParent();
-		int a = (x+getX()-target.getWidth()*4);
+		int a = 0;
+		if(isVertical()){
+			a = (y+getY()-target.getHeight()*4);			
+		} else {
+			a = (x+getX()-target.getWidth()*4);
+		}
 		if(a<0) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
 
 	private boolean isInside(int x, int y) {
 		SimpleDisplayObject target = this;
