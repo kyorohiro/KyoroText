@@ -351,6 +351,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	
 	@Override
 	public void paint(SimpleGraphics graphics) {
+		graphics.clipRect(0, 0, getWidth(), getHeight());
 		if(mImpedance>0){
 			mImpedance--;
 		}

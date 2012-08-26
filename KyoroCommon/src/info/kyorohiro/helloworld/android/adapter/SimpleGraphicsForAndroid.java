@@ -1,7 +1,6 @@
 package info.kyorohiro.helloworld.android.adapter;
 
 import java.io.InputStream;
-
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
@@ -13,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.Region;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 
@@ -176,6 +176,9 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		mPaint.setStrokeWidth(w);
 	}
 
+	public void clipRect(int left, int top, int right, int bottom) {
+		mCanvas.clipRect(mGlobalX+left, mGlobalY+top, mGlobalX+right, mGlobalY+bottom, Region.Op.REPLACE);
+	}
 	public int getTextWidth(String line) {
 		float[] w = new float[line.length()];
 		mPaint.getTextWidths(line, w);
