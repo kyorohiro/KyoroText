@@ -177,7 +177,11 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	}
 
 	public void clipRect(int left, int top, int right, int bottom) {
-		mCanvas.clipRect(mGlobalX+left, mGlobalY+top, mGlobalX+right, mGlobalY+bottom, Region.Op.REPLACE);
+		if(left ==right&& top == bottom && left == -1&& top == -1){
+			mCanvas.clipRect(0,0,getWidth(),getHeight(),Region.Op.REPLACE);
+		} else {
+			mCanvas.clipRect(mGlobalX+left, mGlobalY+top, mGlobalX+right, mGlobalY+bottom, Region.Op.REPLACE);
+		}
 	}
 	public int getTextWidth(String line) {
 		float[] w = new float[line.length()];

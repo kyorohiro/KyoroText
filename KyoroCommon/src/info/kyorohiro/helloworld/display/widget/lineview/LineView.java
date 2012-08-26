@@ -401,6 +401,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		//*/
 		// fin
 		super.paint(graphics);
+		graphics.clipRect(-1, -1, -1, -1);
 	}
 
 	private int _getBuffer(LineViewBufferSpec showingText) {
