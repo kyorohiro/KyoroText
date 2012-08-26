@@ -36,8 +36,8 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 				}
 			}
 		}
+		int z = (int)(getHeight(false)*mSeparate.getPersentY());
 		if(j>=2){
-			int z = (int)(getHeight(false)*mSeparate.getPersentY());
 			obj[0].setPoint(0, 0);
 			obj[0].setRect(getWidth(false), z);
 			obj[1].setPoint(0, z);
@@ -46,6 +46,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			obj[0].setPoint(0, 0);
 			obj[0].setRect(getWidth(false), getHeight(false));			
 		}
+		mSeparate.setPoint(mSeparate.getX(), z);
 		super.paint(graphics);
 	}
 
