@@ -48,9 +48,9 @@ public class SeparateUI extends SimpleDisplayObject {
 		setPoint(getX(), getY());
 		graphics.drawCircle(0, 0, getWidth()/2);
 		if(mModeSeparate == MODE_SEPARATE_VERTICAL) {
-			graphics.drawLine(0, 0, 0, -2000);			
+			graphics.drawLine(0, 0, 0, -getY());
 		} else {
-			graphics.drawLine(0, 0, -2000, 0);
+			graphics.drawLine(0, 0, -getX(), 0);
 		}
 	}
 
@@ -141,13 +141,14 @@ public class SeparateUI extends SimpleDisplayObject {
 
 	private boolean isReached(int x, int y) {
 		SimpleDisplayObject target = this;
-		SimpleDisplayObject parent = (SimpleDisplayObject)getParent();
+		SimpleDisplayObjectContainer parent = (SimpleDisplayObjectContainer)getParent();
 		int a = 0;
 		if(mModeSeparate == MODE_SEPARATE_ORIENTATION){
-			a = parent.getWidth()-(x+getX()+target.getWidth()*4);
+			a = parent.getWidth(false)-(x+getX()+target.getWidth()*4);
 		} else {
-			a = parent.getHeight()-(y+getY()+target.getHeight()*4);
+			a = parent.getHeight(false)-(y+getY()+target.getHeight()*4);
 		}
+//		android.util.Log.v("kiyo","a="+a+","+parent.getWidth()+","+parent.getHeight());
 		if(a<0) {
 			return true;
 		} else {

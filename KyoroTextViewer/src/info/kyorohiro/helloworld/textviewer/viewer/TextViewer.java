@@ -143,8 +143,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
 			mScrollBar.setStatus(beginPosition, endPosition, bufferSize);
 			mScrollBar.setColor(COLOR_FONT1);
-//			TextViewer.this.mLineView.setRect(graphics.getWidth(),
-//					graphics.getHeight());
 		}
 	}
 

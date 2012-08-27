@@ -95,6 +95,9 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		mMyChildren.remove(child);
 	}
 
+	public int getIndex(SimpleDisplayObject child) {
+		return mMyChildren.indexOf(child);
+	}
 	public void insertChild(int index, SimpleDisplayObject child) {
 		mMyChildren.add(index, child);
 		child.setParent(this);

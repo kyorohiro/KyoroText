@@ -94,11 +94,17 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	public void combine(SeparateUI separate) {
 		Object parent = getParent();
-		Object child = getChild(0);
+		Object child = null;
+		if(separate.getPersentY()>0.5){
+			child = getChild(0);
+		} else{
+			child = getChild(1);
+		}
 		if(child != null){
 			// refactaring
+			int index = ((SimpleDisplayObjectContainer)parent).getIndex(this);
+			((SimpleDisplayObjectContainer)parent).insertChild(index, (SimpleDisplayObject)child);//addChild((SimpleDisplayObject)child);
 			((SimpleDisplayObjectContainer)parent).removeChild(this);
-			((SimpleDisplayObjectContainer)parent).addChild((SimpleDisplayObject)child);
 		} 
 	}
 
