@@ -119,9 +119,32 @@ public class CursorableLineView extends LineView {
 					releaseLock();
 				}
 			}
+//			if(mMode != MODE_SELECT){
+				if(action == MotionEvent.ACTION_DOWN&&
+						0<x&&x<getWidth()&&0<y&&y<getHeight()) {
+					prevX = x;
+					prevY = y;
+				}
+				else if(action == MotionEvent.ACTION_MOVE){
+					if(20>Math.abs(prevX-x)+Math.abs(prevY-y)){
+					}else {
+						time = 0;
+						prevX = -1;
+						prevY = -1;	
+					}
+				}
+				else if(action == MotionEvent.ACTION_UP){
+					prevX = -1;
+					prevY = -1;					
+				}
+//			}
 			return false;
 		}
 	}
+	//todo refactaring following field
+	private int prevX = -1;
+	private int prevY = -1;
+	private int time = 0;
 
 	public CursorableLineView(LineViewBufferSpec inputtedText, int textSize, int cashSize) {
 		super(inputtedText, textSize, cashSize);
@@ -149,6 +172,20 @@ public class CursorableLineView extends LineView {
 //		} finally {
 //			releaseLock();
 //		}
+			//todo refactaring
+			if(prevX !=-1&&prevY!=-1){
+				time++;
+				if(time >= 10){
+					if(mMode == MODE_SELECT){
+						setMode(MODE_VIEW);
+					} else {
+						setMode(MODE_SELECT);
+					}
+					prevX=-1;
+					prevY=-1;
+					time=0;
+				}
+			}
 	}
 
 	private void drawBGForSelect(SimpleGraphics graphics) {
