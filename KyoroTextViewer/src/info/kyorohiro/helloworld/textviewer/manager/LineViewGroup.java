@@ -103,8 +103,11 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		if(child != null){
 			// refactaring
 			int index = ((SimpleDisplayObjectContainer)parent).getIndex(this);
+			this.removeChild((SimpleDisplayObject)child);
 			((SimpleDisplayObjectContainer)parent).insertChild(index, (SimpleDisplayObject)child);//addChild((SimpleDisplayObject)child);
 			((SimpleDisplayObjectContainer)parent).removeChild(this);
+			
+			dispose();
 		} 
 	}
 

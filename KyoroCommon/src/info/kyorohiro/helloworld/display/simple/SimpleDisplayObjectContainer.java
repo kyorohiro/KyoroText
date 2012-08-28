@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.simple;
 
+
 import java.util.ArrayList;
 
 public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
@@ -99,7 +100,9 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		return mMyChildren.indexOf(child);
 	}
 	public void insertChild(int index, SimpleDisplayObject child) {
+		// refactraing why cannoty following code include in LineViewgroup
 		mMyChildren.add(index, child);
+		child.setPoint(0, 0);
 		child.setParent(this);
 	}
 
@@ -177,6 +180,17 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		return bound;
 	}
 	
+	@Override
+	public void dispose() {
+		for(SimpleDisplayObject child: mMyChildren){
+			if(child != null) {
+				child.dispose();
+				removeChild(this);
+			}
+		}
+		super.dispose();
+	}
+
 	@Override
 	public void start() {
 		super.start();
