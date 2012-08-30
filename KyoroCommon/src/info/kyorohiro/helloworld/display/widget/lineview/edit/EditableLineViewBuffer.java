@@ -257,25 +257,25 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 
 	private void printIndex() {
 		Set<Integer> keys = mIndex.keySet();
-		android.util.Log.v("kiyokiyo",
-				"pIndex:start-----------------------------");
+//		android.util.Log.v("kiyokiyo",
+//				"pIndex:start-----------------------------");
 		for (Integer k : keys) {
 			android.util.Log
 					.v("kiyokiyo", "pindex:[" + k + "]:" + mIndex.get(k));
 		}
-		android.util.Log.v("kiyokiyo",
-				"pIndex:stop==============================");
+//		android.util.Log.v("kiyokiyo",
+//				"pIndex:stop==============================");
 	}
 
 	private void printDiff() {
 		Set<Integer> keys = mDiff.keySet();
-		android.util.Log.v("kiyokiyo",
-				"pdiff:start-----------------------------");
+//		android.util.Log.v("kiyokiyo",
+//				"pdiff:start-----------------------------");
 		for (Integer k : keys) {
 			android.util.Log.v("kiyokiyo", "pdiff:[" + k + "]:" + mDiff.get(k));
 		}
-		android.util.Log.v("kiyokiyo",
-				"pdiff:stop==============================");
+//		android.util.Log.v("kiyokiyo",
+//				"pdiff:stop==============================");
 	}
 
 	//

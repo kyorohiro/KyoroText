@@ -122,7 +122,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
 		mScaleX = baseX;
 		mScaleY = baseY;
-		android.util.Log.v("kiyo","sxy="+mScaleX+","+mScaleY);
+//		android.util.Log.v("kiyo","sxy="+mScaleX+","+mScaleY);
 		mScaleTime = 20;
 //		setPositionY(mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1);
 		mPositionY = mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1;
