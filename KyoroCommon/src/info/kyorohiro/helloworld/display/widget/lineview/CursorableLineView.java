@@ -119,7 +119,7 @@ public class CursorableLineView extends LineView {
 					releaseLock();
 				}
 			}
-//			if(mMode != MODE_SELECT){
+			if(mMode == MODE_SELECT){
 				if(action == MotionEvent.ACTION_DOWN&&
 						0<x&&x<getWidth()&&0<y&&y<getHeight()) {
 					prevX = x;
@@ -137,7 +137,7 @@ public class CursorableLineView extends LineView {
 					prevX = -1;
 					prevY = -1;					
 				}
-//			}
+			}
 			return false;
 		}
 	}
@@ -173,21 +173,23 @@ public class CursorableLineView extends LineView {
 //			releaseLock();
 //		}
 			//todo refactaring
-			if(prevX !=-1&&prevY!=-1){
-				time++;
-				if(time >= 10){
-					if(mMode == MODE_SELECT){
-						setMode(MODE_VIEW);
-					} else {
-						setMode(MODE_SELECT);
-						mLeft.setCursorCol(getYToPosY(prevY));
-						mLeft.setCursorRow(getXToPosX(mLeft.getCursorCol(), prevX, mLeft.getCursorRow()));
-						mRight.setCursorCol(getYToPosY(prevY));
-						mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), prevX+1, mRight.getCursorRow()));
+			if(mMode == MODE_SELECT){
+				if(prevX !=-1&&prevY!=-1){
+					time++;
+					if(time >= 7){
+//						if(mMode == MODE_SELECT){
+//							setMode(MODE_VIEW);
+//						} else {
+							setMode(MODE_SELECT);
+							mLeft.setCursorCol(getYToPosY(prevY));
+							mLeft.setCursorRow(getXToPosX(mLeft.getCursorCol(), prevX, mLeft.getCursorRow()));
+							mRight.setCursorCol(getYToPosY(prevY));
+							mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), prevX+1, mRight.getCursorRow()));
+//						}
+						prevX=-1;
+						prevY=-1;
+						time=0;
 					}
-					prevX=-1;
-					prevY=-1;
-					time=0;
 				}
 			}
 	}

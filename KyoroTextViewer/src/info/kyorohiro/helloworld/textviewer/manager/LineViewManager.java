@@ -73,6 +73,12 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			}
 		}
 		super.paint(graphics);
+		int xy[] = new int[2];
+		getFocusingTextViewer().getGlobalXY(xy);
+		int x = xy[0]+20;
+		int y = xy[1]+getFocusingTextViewer().getHeight(false)-20;
+		graphics.setColor(Color.RED);
+		graphics.drawText("now focusing", x, y);
 	}
 
 	public void setCircleMenuRadius(int radius) {
@@ -84,7 +90,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		int pw = getWidth(false);
 		int ph = getHeight(false);
 		mCircleMenu.setPoint(pw-cr, ph-cr);
-		android.util.Log.v("kiyo","radius="+(pw-cr)+","+(ph-cr));
+	//	android.util.Log.v("kiyo","radius="+(pw-cr)+","+(ph-cr));
 	}
 
 	public int getMergine() {
@@ -96,53 +102,93 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	public void changeFocus(TextViewer textViewer) {
+//		mFocusingViewer.setColor(TextViewer.COLOR_BG);
 		mFocusingViewer = textViewer;
+		if(mFocusingViewer.getLineView() instanceof CursorableLineView){
+			_circleSelected(((CursorableLineView)(mFocusingViewer.getLineView())).getMode());
+		}
+//		mFocusingViewer.setColor(TextViewer.COLOR_BG_FOCUSING);
 	}
 
 	public TextViewer getFocusingTextViewer() {
 		return mFocusingViewer;
 	}
 
+	private boolean _circleSelected(CharSequence title) {
+		 CursorableLineView mLineView = (CursorableLineView)getFocusingTextViewer().getLineView();
+		 if (title.equals(CursorableLineView.MODE_VIEW)&& !CursorableLineView.MODE_VIEW.equals(mLineView.getMode())) {
+			 mCircleMenu.clearCircleMenu();
+			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
+			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+			 mLineView.setMode(CursorableLineView.MODE_VIEW);
+		} else if (title.equals(CursorableLineView.MODE_SELECT)&&!CursorableLineView.MODE_SELECT.equals(mLineView.getMode())) {
+			 mCircleMenu.clearCircleMenu();
+			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
+			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+			mLineView.setMode(CursorableLineView.MODE_SELECT);
+			mCircleMenu.addCircleMenu(0, "Copy");
+		} else if (title.equals("Copy")) {
+			 mCircleMenu.clearCircleMenu();
+			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
+			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+			KyoroApplication.getKyoroApplication().getHanler().post(new Runnable() {
+						public void run() {
+							try {
+								CursorableLineView mLineView = (CursorableLineView)getFocusingTextViewer().getLineView();
+								ClipboardManager cm = (ClipboardManager) KyoroApplication
+								.getKyoroApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+								CharSequence copy = ((CursorableLineView) mLineView).copy();
+								cm.setText("" + copy);
+								((SimpleCircleControllerMenuPlus) mCircleMenu).addCircleMenu(0, "Copy");
+								KyoroApplication.showMessage("" + copy);
+							} catch (Throwable t) {
+								t.printStackTrace();
+							}
+						}
+					});
+			return true;
+		}
+		return false;
+		
+	}
 	private void _circle() {
 		if (mCircleMenu instanceof SimpleCircleControllerMenuPlus) {
 			((SimpleCircleControllerMenuPlus) mCircleMenu)
 					.setCircleMenuItem(new CircleMenuItem() {
 						@Override
 						public boolean selected(int id, String title) {
-							 CursorableLineView mLineView = (CursorableLineView)getFocusingTextViewer().getLineView();
-							 mCircleMenu.clearCircleMenu();
-							 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
-							 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-
-							 if (title.equals(CursorableLineView.MODE_VIEW)) {
-								 mLineView.setMode(CursorableLineView.MODE_VIEW);
-							} else if (title.equals(CursorableLineView.MODE_SELECT)) {
-								mLineView.setMode(CursorableLineView.MODE_SELECT);
-								mCircleMenu.addCircleMenu(0, "Copy");
-							} else if (title.equals("Copy")) {
-								KyoroApplication.getKyoroApplication().getHanler().post(new Runnable() {
-											public void run() {
-												try {
-													 CursorableLineView mLineView = (CursorableLineView)getFocusingTextViewer().getLineView();
-													ClipboardManager cm = (ClipboardManager) KyoroApplication
-															.getKyoroApplication().getSystemService(Context.CLIPBOARD_SERVICE);
-													CharSequence copy = ((CursorableLineView) mLineView).copy();
-													cm.setText("" + copy);
-													((SimpleCircleControllerMenuPlus) mCircleMenu).addCircleMenu(0, "Copy");
-													KyoroApplication.showMessage("" + copy);
-												} catch (Throwable t) {
-													t.printStackTrace();
-												}
-											}
-										});
-								return true;
-							}
-							return false;
+							return _circleSelected(title);
 						}
 					});
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 		}
+		mCircleMenu.setEventListener(new MyCircleControllerEvent());
 	}
+
+	private class MyCircleControllerEvent implements CircleControllerAction {
+		public void moveCircle(int action, int degree, int rateDegree) {
+			if (action == CircleControllerAction.ACTION_MOVE) {
+				getFocusingTextViewer().getLineView().setPositionY(
+						getFocusingTextViewer().getLineView().getPositionY() 
+						+ rateDegree * 2);
+			}
+		}
+
+		public void upButton(int action) {
+			if (action == CircleControllerAction.ACTION_PRESSED) {
+				getFocusingTextViewer().getLineView().setPositionY(
+						getFocusingTextViewer().getLineView().getPositionY() + 1);
+			}
+		}
+
+		public void downButton(int action) {
+			if (action == CircleControllerAction.ACTION_PRESSED) {
+				getFocusingTextViewer().getLineView().setPositionY(
+						getFocusingTextViewer().getLineView().getPositionY() - 1);
+			}
+		}
+	}
+
 }
