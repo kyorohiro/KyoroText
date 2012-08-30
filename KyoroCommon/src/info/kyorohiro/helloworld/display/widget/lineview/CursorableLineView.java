@@ -181,7 +181,7 @@ public class CursorableLineView extends LineView {
 					} else {
 						setMode(MODE_SELECT);
 						mLeft.setCursorCol(getYToPosY(prevY));
-						mLeft.setCursorRow(getXToPosX(mRight.getCursorCol(), prevX, mRight.getCursorRow()));
+						mLeft.setCursorRow(getXToPosX(mLeft.getCursorCol(), prevX, mLeft.getCursorRow()));
 						mRight.setCursorCol(getYToPosY(prevY));
 						mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), prevX+1, mRight.getCursorRow()));
 					}

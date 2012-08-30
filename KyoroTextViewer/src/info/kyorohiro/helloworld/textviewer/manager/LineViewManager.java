@@ -4,7 +4,9 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.text.ClipboardManager;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -12,12 +14,22 @@ import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
+import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus;
+import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus.CircleMenuItem;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.LineView;
+import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 
 
 //
 // first step 
 //   show TextViewer under LineViewManager
+// secound step
+//   separate window
+// third step 
+//   add menu
 //
 public class LineViewManager extends SimpleDisplayObjectContainer {
 	private int mWidth = 100;
@@ -25,8 +37,8 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private int mTextSize = 16;
 	private int mMergine = 10;
 	private TextViewer mFocusingViewer = null;
-//	private LineViewGroup mRoot = null;
 	private static LineViewManager sInstance = null;
+	private SimpleCircleControllerMenuPlus mCircleMenu = new SimpleCircleControllerMenuPlus();
 
 	public static LineViewManager getManager(){
 		return sInstance;
@@ -42,21 +54,37 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mMergine = mergine;
 		mFocusingViewer = newTextViewr();
 		addChild(new LineViewGroup(mFocusingViewer));
-//		addChild(mRoot);
+		addChild(mCircleMenu);
+		_circle();
 	}
 
 	public TextViewer newTextViewr(){
 		return new TextViewer(mTextSize, mWidth, mMergine);
 	}
+
 	@Override
 	public void paint(SimpleGraphics graphics) {
+		setRect(graphics.getWidth(), graphics.getHeight());
+		_layout();
 		int len = numOfChild();
 		for(int i=0;i<len;i++){
 			if(getChild(i) instanceof LineViewGroup){
-			getChild(i).setRect(graphics.getWidth(), graphics.getHeight());
+				getChild(i).setRect(graphics.getWidth(), graphics.getHeight());
 			}
 		}
 		super.paint(graphics);
+	}
+
+	public void setCircleMenuRadius(int radius) {
+		mCircleMenu.setRadius(radius);
+	}
+
+	private void _layout() {
+		int cr = mCircleMenu.getMaxRadius();
+		int pw = getWidth(false);
+		int ph = getHeight(false);
+		mCircleMenu.setPoint(pw-cr, ph-cr);
+		android.util.Log.v("kiyo","radius="+(pw-cr)+","+(ph-cr));
 	}
 
 	public int getMergine() {
@@ -75,4 +103,46 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		return mFocusingViewer;
 	}
 
+	private void _circle() {
+		if (mCircleMenu instanceof SimpleCircleControllerMenuPlus) {
+			((SimpleCircleControllerMenuPlus) mCircleMenu)
+					.setCircleMenuItem(new CircleMenuItem() {
+						@Override
+						public boolean selected(int id, String title) {
+							 CursorableLineView mLineView = (CursorableLineView)getFocusingTextViewer().getLineView();
+							 mCircleMenu.clearCircleMenu();
+							 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
+							 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+
+							 if (title.equals(CursorableLineView.MODE_VIEW)) {
+								 mLineView.setMode(CursorableLineView.MODE_VIEW);
+							} else if (title.equals(CursorableLineView.MODE_SELECT)) {
+								mLineView.setMode(CursorableLineView.MODE_SELECT);
+								mCircleMenu.addCircleMenu(0, "Copy");
+							} else if (title.equals("Copy")) {
+								KyoroApplication.getKyoroApplication().getHanler().post(new Runnable() {
+											public void run() {
+												try {
+													 CursorableLineView mLineView = (CursorableLineView)getFocusingTextViewer().getLineView();
+													ClipboardManager cm = (ClipboardManager) KyoroApplication
+															.getKyoroApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+													CharSequence copy = ((CursorableLineView) mLineView).copy();
+													cm.setText("" + copy);
+													((SimpleCircleControllerMenuPlus) mCircleMenu).addCircleMenu(0, "Copy");
+													KyoroApplication.showMessage("" + copy);
+												} catch (Throwable t) {
+													t.printStackTrace();
+												}
+											}
+										});
+								return true;
+							}
+							return false;
+						}
+					});
+			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
+			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
+			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+		}
+	}
 }

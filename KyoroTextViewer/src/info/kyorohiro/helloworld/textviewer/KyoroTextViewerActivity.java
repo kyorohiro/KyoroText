@@ -10,6 +10,7 @@ import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetActio
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetectionAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.textviewer.util.Util;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +44,10 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivitySetCharsetAction(mViewerManager));
 		setMenuAction(new MainActivitySetTextSizeAction(mViewerManager));
 		setMenuAction(new MainActivitySetCharsetDetectionAction(mViewerManager));
+		
+		
+		mViewerManager.setCircleMenuRadius(
+				(int)Util.inchi2pixel(Util.mm2‚‰nchi(22/2)));
 	}
 
 	public void startStage() {

@@ -86,8 +86,13 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	}
 
 	public void divide(SeparateUI separate) {
-		addChild(new LineViewGroup(mTextViewer));
-		addChild(new LineViewGroup(LineViewManager.getManager().newTextViewr()));
+		if(separate.getPersentY()>0.5){
+			addChild(new LineViewGroup(LineViewManager.getManager().newTextViewr()));
+			addChild(new LineViewGroup(mTextViewer));
+		} else{
+			addChild(new LineViewGroup(mTextViewer));
+			addChild(new LineViewGroup(LineViewManager.getManager().newTextViewr()));
+		}
 		removeChild(mTextViewer);
 		mTextViewer = null;
 	}

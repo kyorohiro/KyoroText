@@ -9,6 +9,7 @@ import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAct
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.textviewer.util.Util;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.content.DialogInterface;
