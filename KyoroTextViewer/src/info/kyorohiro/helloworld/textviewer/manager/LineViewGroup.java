@@ -111,9 +111,41 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			this.removeChild((SimpleDisplayObject)child);
 			((SimpleDisplayObjectContainer)parent).insertChild(index, (SimpleDisplayObject)child);//addChild((SimpleDisplayObject)child);
 			((SimpleDisplayObjectContainer)parent).removeChild(this);
-			
+			if(includeFocusingChild()) {
+				chFocus((SimpleDisplayObject)parent); 
+			}
 			dispose();
 		} 
+	}
+
+	private boolean includeFocusingChild() {
+		SimpleDisplayObject o = LineViewManager.getManager().getFocusingTextViewer();
+		SimpleDisplayObject c = LineViewManager.getManager().getFocusingTextViewer();
+		SimpleDisplayObject root = o.getStage(o).getRoot();
+		while(o != null && o!=root) {
+			if(c == o){
+				return true;
+			}
+			o = (SimpleDisplayObject)o.getParent();
+		}
+		return false;
+	}
+	private boolean  chFocus(SimpleDisplayObject parent) {
+		if(parent instanceof TextViewer) {
+			LineViewManager.getManager().changeFocus((TextViewer)parent);
+			return true;
+		}
+		if(parent instanceof SimpleDisplayObjectContainer){
+			SimpleDisplayObjectContainer _parent = (SimpleDisplayObjectContainer)parent;
+			for(int i=0;i<_parent.numOfChild();i++){
+				if(_parent.getChild(i) instanceof TextViewer || _parent.getChild(i) instanceof LineViewGroup) {
+					if(chFocus(_parent.getChild(i))){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
