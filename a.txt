@@ -1,0 +1,863 @@
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/WindowManager( 1290): No window to dispatch pointer action 1
+W/WindowManager( 1290): No window to dispatch pointer action 0
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/WindowManager( 1290): No window to dispatch pointer action 1
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 3 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 1 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+I/ContactAggregator( 1391): Contact aggregation: 20
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/PowerManagerService( 1290): updateLightsLocked: 35, 0
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 2 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+I/ContactAggregator( 1391): Contact aggregation complete: 20, 133 ms per contact
+W/System.err( 2374): java.io.IOException
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 3 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/wpa_supplicant( 1370): Wireless event: cmd=0x8c02 len=14
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): [FIH66] java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 1 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+W/System.err( 2374): java.io.IOException
+W/System.err( 2374): 	at java.io.RandomAccessFile.openCheck(RandomAccessFile.java:267)
+W/System.err( 2374): 	at java.io.RandomAccessFile.length(RandomAccessFile.java:279)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.VirtualMemory.length(VirtualMemory.java:77)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.io.BigLineData.isEOF(BigLineData.java:63)
+W/System.err( 2374): 	at info.kyorohiro.helloworld.textviewer.viewer.LookAheadCaching$ReadForwardFileTask.run(LookAheadCaching.java:275)
+W/System.err( 2374): 	at java.lang.Thread.run(Thread.java:1096)
+D/KeyguardViewMediator( 1290): setHidden false
+I/ActivityManager( 1290): Process info.kyorohiro.helloworld.textviewer (pid 2374) has died.
+I/WindowManager( 1290): WIN DEATH: Window{3290b090 info.kyorohiro.helloworld.textviewer/info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity paused=false}
+D/KeyguardViewMediator( 1290): setHidden false
+I/WindowManager( 1290): WIN DEATH: Window{329994b8 SurfaceView paused=false}
+D/KeyguardViewMediator( 1290): setHidden false
+I/WindowManager( 1290): Setting rotation to 0, animFlags=0
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+I/ActivityManager( 1290): Config changed: { scale=1.0 imsi=0/0 loc=en_US touch=3 keys=1/1/2 nav=1/1 orien=1 layout=18}
+D/KeyguardViewMediator( 1290): setHidden false
+D/PhoneApp( 1387): updateProximitySensorMode: state = IDLE
+D/PhoneApp( 1387): updateProximitySensorMode: lock already released.
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+I/UsageStats( 1290): Unexpected resume of com.android.launcher2 while already resumed in info.kyorohiro.helloworld.textviewer
+D/KeyguardViewMediator( 1290): setHidden false
+V/RenderScript_jni( 1394): surfaceCreated
+V/RenderScript_jni( 1394): surfaceChanged
+V/RenderScript( 1394): setSurface 320 455 0x493d58
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardUpdateMonitor( 1290): received broadcast android.intent.action.CONFIGURATION_CHANGED
+D/KeyguardUpdateMonitor( 1290): handleConfigurationChangemInPortrait = false; inPortrait = true
+I/KeyguardUpdateMonitor( 1290): LOCKSCREEN_RECREATIONfalse
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+D/KeyguardViewMediator( 1290): setHidden false
+W/InputManagerService( 1290): Got RemoteException sending setActive(false) notification to pid 2374 uid 10083
+D/DeviceStorageMonitorService( 1414): Intent:LowMemory
+E/taco    ( 1414): LowMemory.
+I/Watchdog( 1290): WatchDog monitor -start
+I/Watchdog( 1290): WatchDog monitor -finish
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 2 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 3 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+I/ContactAggregator( 1391): Contact aggregation: 20
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 1 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+I/ContactAggregator( 1391): Contact aggregation complete: 20, 58 ms per contact
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+D/ContactsSyncAdapter( 1410): dropping unparsable extended property: missing value
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 2 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED
+E/wpa_supplicant( 1370): CIP:DRIVER RSSI-APPROX
+E/WifiStateTracker( 1290): RPL(),rssi=-55
+D/WifiStateTracker( 1290): requestPolledInfo, polling 3 times
+E/wpa_supplicant( 1370): CIP:DRIVER LINKSPEED

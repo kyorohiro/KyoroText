@@ -33,6 +33,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		if (mHeavyY < -5 || mHeavyY > 5) {
 			mHeavyY /= 1.2;
 			int textSize = (int) (mViewer.getTextSize() * mViewer.getScale());// todo																				// 2.5f
+
 			// todo refactaring
 			mViewer.setPositionY(mViewer.getPositionY()+mHeavyY/textSize);
 			//mViewer.setTodoExtra((mViewer.getTodoExtra()+mHeavyY/textSize)%textSize);

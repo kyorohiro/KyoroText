@@ -142,11 +142,18 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public int getTextSize() {
+		if(mTextSize<=0) {
+			return 1;
+		}
 		return mTextSize;
 	}
 
 	public int getShowingTextSize() {
-		return (int) (mTextSize * mScale);
+		int ret = (int) (mTextSize * mScale);
+		if(ret < 0) {
+			return 1;
+		}
+		return ret;
 	}
 
 	public synchronized void setLineViewBufferSpec(

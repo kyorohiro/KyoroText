@@ -39,7 +39,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private TextViewer mFocusingViewer = null;
 	private static LineViewManager sInstance = null;
 	private SimpleCircleControllerMenuPlus mCircleMenu = new SimpleCircleControllerMenuPlus();
-
+	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFAA44");
 	public static LineViewManager getManager(){
 		return sInstance;
 	}
@@ -165,6 +165,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 		}
 		mCircleMenu.setEventListener(new MyCircleControllerEvent());
+		mCircleMenu.setColorWhenDefault(COLOR_CIRCLE_DEFAULT);
 	}
 
 	private class MyCircleControllerEvent implements CircleControllerAction {
