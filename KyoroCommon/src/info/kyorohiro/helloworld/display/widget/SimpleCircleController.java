@@ -19,6 +19,18 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		BG bg = new BG();
 		this.addChild(bg);
 	}
+	private boolean mIsMinimize = false;
+	public void minmize() {
+		mIsMinimize = true;
+	}
+
+	public void maxmize() {
+		mIsMinimize = false;
+	}
+
+	public boolean isMinimized() {
+		return mIsMinimize;
+	}
 
 	public void setRadius(int radius) {
 		mMaxRadius = radius;
@@ -34,10 +46,18 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 	}
 
 	public int getCenterX() {
-		return 0;
+		if(isMinimized()) {
+			return getWidth()*1/3;
+		} else {
+			return 0;
+		}
 	}
 	public int getCenterY() {
-		return 0;
+		if(isMinimized()) {
+			return getWidth()*1/3;
+		} else {
+			return 0;
+		}
 	}
 	public int getWidth(){
 		return mMaxRadius*2;
@@ -105,6 +125,20 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 
 		@Override
 		public void paint(SimpleGraphics graphics) {
+			if(isMinimized()){
+				int w = SimpleCircleController.this.getWidth()/2;
+				int h = SimpleCircleController.this.getHeight()/2;
+				graphics.setColor(mColorWhenDefault);
+//				graphics.setStyle(SimpleGraphics.STYLE_FILL);
+				graphics.startPath();
+				graphics.moveTo(w/2, h);
+				graphics.lineTo(w, h/2);
+				graphics.lineTo(w, h);
+				graphics.moveTo(w/2, h);
+				graphics.endPath();
+				return;
+			}
+
 			graphics.setColor(mColorWhenDefault);
 			graphics.setStyle(SimpleGraphics.STYLE_STROKE);
 			graphics.setStrokeWidth(4);
@@ -144,6 +178,9 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		@Override
 		public boolean onTouchTest(int x, int y, int action) {
 			super.onTouchTest(x, y, action);
+			if(isMinimized()) {
+				return false;
+			}
 			mTouchX = x;
 			mTouchY = y;
 			int size = x * x + y * y;
