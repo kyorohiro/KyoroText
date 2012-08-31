@@ -46,7 +46,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 
 	//
 	// å„Ç≈SingletoneÇ…Ç∑ÇÈÅB
-	public LineViewManager(int textSize, int width, int height, int mergine) {
+	public LineViewManager(int textSize, int width, int height, int mergine, int menuWidth) {
 		sInstance = this;
 		mWidth = width;
 		mHeight = height;
@@ -85,12 +85,15 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mCircleMenu.setRadius(radius);
 	}
 
+	public SimpleCircleControllerMenuPlus getCircleMenu() {
+		return mCircleMenu;
+	}
+
 	private void _layout() {
 		int cr = mCircleMenu.getMaxRadius();
 		int pw = getWidth(false);
 		int ph = getHeight(false);
 		mCircleMenu.setPoint(pw-cr, ph-cr);
-	//	android.util.Log.v("kiyo","radius="+(pw-cr)+","+(ph-cr));
 	}
 
 	public int getMergine() {
@@ -102,12 +105,10 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	public void changeFocus(TextViewer textViewer) {
-//		mFocusingViewer.setColor(TextViewer.COLOR_BG);
 		mFocusingViewer = textViewer;
 		if(mFocusingViewer.getLineView() instanceof CursorableLineView){
 			_circleSelected(((CursorableLineView)(mFocusingViewer.getLineView())).getMode());
 		}
-//		mFocusingViewer.setColor(TextViewer.COLOR_BG_FOCUSING);
 	}
 
 	public TextViewer getFocusingTextViewer() {
@@ -160,7 +161,6 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 							return _circleSelected(title);
 						}
 					});
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 		}

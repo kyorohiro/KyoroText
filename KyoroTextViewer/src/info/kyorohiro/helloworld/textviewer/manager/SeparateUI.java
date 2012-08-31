@@ -23,8 +23,10 @@ public class SeparateUI extends SimpleDisplayObject {
 	private double mPersentY = 0.5;
 	
 	public SeparateUI(LineViewGroup manager) {
-		setRect(20, 20);
+		int w = LineViewManager.getManager().getCircleMenu().getMinRadius()/2;
+		setRect(w, w);
 		mManager = manager;
+		super.setPoint(w, 0);
 	}
 
 	public double getPersentY(){

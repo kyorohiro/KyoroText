@@ -43,11 +43,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivityOpenFileAction(mViewerManager));
 		setMenuAction(new MainActivitySetCharsetAction(mViewerManager));
 		setMenuAction(new MainActivitySetTextSizeAction(mViewerManager));
-		setMenuAction(new MainActivitySetCharsetDetectionAction(mViewerManager));
-		
-		
-		mViewerManager.setCircleMenuRadius(
-				(int)Util.inchi2pixel(Util.mm2‚‰nchi(22/2)));
+		setMenuAction(new MainActivitySetCharsetDetectionAction(mViewerManager));		
 	}
 
 	public void startStage() {
@@ -121,7 +117,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		int screenMargine = mViewerWidth*1/20;
 		int screenWidth = mViewerWidth-screenMargine/2; // mod 2 is my feeling value so design only. 
 		int screenHeight = mViewerHeight;
-		return new LineViewManager(textSize, screenWidth,screenHeight, screenMargine);
+		return new LineViewManager(textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2‚‰nchi(22/2)));
 	}
 
 	private void doFileOpenIntentAction() {

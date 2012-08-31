@@ -17,7 +17,8 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	}
 
 	private void doAddSeparator() {
-		addChild(new SeparateUI(this));
+		SeparateUI s=new SeparateUI(this);
+		addChild(s);
 	}
 
 
