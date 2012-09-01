@@ -4,14 +4,12 @@ import java.io.File;
 
 import info.kyorohiro.helloworld.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetectionAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.util.Util;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;

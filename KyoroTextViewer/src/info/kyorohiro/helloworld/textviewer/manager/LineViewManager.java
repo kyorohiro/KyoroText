@@ -1,24 +1,15 @@
 package info.kyorohiro.helloworld.textviewer.manager;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.LinkedList;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.text.ClipboardManager;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 
-import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 
@@ -33,7 +24,7 @@ import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 //
 public class LineViewManager extends SimpleDisplayObjectContainer {
 	private int mWidth = 100;
-	private int mHeight = 100;
+//	private int mHeight = 100;
 	private int mTextSize = 16;
 	private int mMergine = 10;
 	private TextViewer mFocusingViewer = null;
@@ -48,7 +39,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	public LineViewManager(int textSize, int width, int height, int mergine, int menuWidth) {
 		sInstance = this;
 		mWidth = width;
-		mHeight = height;
+//		mHeight = height;
 		mTextSize = textSize;
 		mMergine = mergine;
 		mFocusingViewer = newTextViewr();

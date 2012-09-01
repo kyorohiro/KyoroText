@@ -23,7 +23,6 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-		int y=0;
 		SimpleDisplayObject[] obj = new SimpleDisplayObject[2];
 
 		int j=0;
@@ -121,7 +120,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	private boolean includeFocusingChild() {
 		SimpleDisplayObject o = LineViewManager.getManager().getFocusingTextViewer();
 		SimpleDisplayObject c = LineViewManager.getManager().getFocusingTextViewer();
-		SimpleDisplayObject root = o.getStage(o).getRoot();
+		SimpleDisplayObject root = SimpleDisplayObject.getStage(o).getRoot();
 		while(o != null && o!=root) {
 			if(c == o){
 				return true;

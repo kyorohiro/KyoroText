@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.io.MarkableReader;
 import info.kyorohiro.helloworld.io.SimpleTextDecoder;
 import info.kyorohiro.helloworld.io.MarkableFileReader;

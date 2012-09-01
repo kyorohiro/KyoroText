@@ -8,14 +8,12 @@ import info.kyorohiro.helloworld.textviewer.viewer.TextViewerBuffer.MyBufferData
 import java.lang.ref.WeakReference;
 
 import android.graphics.Color;
-import android.os.Debug;
 
 public class LookAheadCaching {
 	private WeakReference<TextViewerBuffer> mBuffer = null;
 	private ReadBackBuilder mBackBuilder = new ReadBackBuilder();
 	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
 	private Thread mTaskRunnter = null;
-	private int mFinalI = 0;
 
 	public static final int LOOKAGEAD_lentgth = 2;
 	public static final int CHANK_SIZE = 100;
@@ -109,7 +107,6 @@ public class LookAheadCaching {
 		int sp = buffer.getCurrentBufferStartLinePosition();
 		int ep = buffer.getCurrentBufferEndLinePosition();
 		int cp = buffer.getCurrentPosition();
-		int mx = buffer.getMaxOfStackedElement();
 		int chunkSize = CHANK_SIZE;//mx / 10;
 		if(cp <0){
 			return true;

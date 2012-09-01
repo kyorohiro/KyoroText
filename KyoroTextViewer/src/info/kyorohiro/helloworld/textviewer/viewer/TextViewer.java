@@ -17,7 +17,6 @@ import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
-import info.kyorohiro.helloworld.textviewer.manager.LineViewGroup;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
 	public static int COLOR_BG = Color.parseColor("#FFFFFFBB");

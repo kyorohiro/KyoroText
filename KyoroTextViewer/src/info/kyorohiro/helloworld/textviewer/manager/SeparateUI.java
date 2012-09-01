@@ -160,7 +160,6 @@ public class SeparateUI extends SimpleDisplayObject {
 
 	private boolean isUnreached(int x, int y) {
 		SimpleDisplayObject target = this;
-		SimpleDisplayObject parent = (SimpleDisplayObject)getParent();
 		int a = 0;
 		if(isVertical()){
 			a = (y+getY()-target.getHeight()*4);			
