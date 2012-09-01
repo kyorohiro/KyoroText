@@ -21,7 +21,6 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		addChild(s);
 	}
 
-
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		int y=0;

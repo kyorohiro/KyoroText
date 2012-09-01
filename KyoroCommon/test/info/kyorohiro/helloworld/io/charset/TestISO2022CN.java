@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.io.charset;
 
-import info.kyorohiro.helloworld.io.VirtualMemory;
+import info.kyorohiro.helloworld.io.MarkableFileReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +14,7 @@ public class TestISO2022CN extends TestCase {
 
 	public void testFindESC() throws FileNotFoundException, IOException {
 		File f = getTestFile("iso_2022_cn_crlf_001.txt");
-		VirtualMemory vm = new VirtualMemory(f, 64);
+		MarkableFileReader vm = new MarkableFileReader(f, 64);
 		vm.seek(0);
 		ISO2022CN iso2022CN = new ISO2022CN();
 		iso2022CN.update(vm);

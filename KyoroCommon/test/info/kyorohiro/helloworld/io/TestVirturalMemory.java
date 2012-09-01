@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.io;
-import info.kyorohiro.helloworld.io.VirtualMemory;
-import info.kyorohiro.helloworld.io.VirtualMemory.CyclingByteArrayException;
+import info.kyorohiro.helloworld.io.MarkableFileReader;
+import info.kyorohiro.helloworld.io.MarkableFileReader.CyclingByteArrayException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +21,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 	}
 
 	public void testCyclingByteArray_initialize() {
-		VirtualMemory.CyclingByteArray array = new VirtualMemory.CyclingByteArray(1000);
+		MarkableFileReader.CyclingByteArray array = new MarkableFileReader.CyclingByteArray(1000);
 		assertEquals(0, array.getPointer());
 		assertEquals(false, array.isBuffered(0));
 		try {
@@ -32,7 +32,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 	}
 
 	public void testCyclingByteArray_setData_first() {
-		VirtualMemory.CyclingByteArray array = new VirtualMemory.CyclingByteArray(100);
+		MarkableFileReader.CyclingByteArray array = new MarkableFileReader.CyclingByteArray(100);
 		String message = "abcdefg";
 		byte[] buffer = message.getBytes();
 		try {
@@ -58,7 +58,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 	}
 
 	public void testCyclingByteArray_setData_refresh() {
-		VirtualMemory.CyclingByteArray array = new VirtualMemory.CyclingByteArray(100);
+		MarkableFileReader.CyclingByteArray array = new MarkableFileReader.CyclingByteArray(100);
 		String prevMessge = "zzzzzzzzzz";
 		String message    = "abcdefg";
 		byte[] prevBuffer = prevMessge.getBytes();
@@ -88,7 +88,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 	}
 
 	public void testCyclingByteArray_setData_recycle() {
-		VirtualMemory.CyclingByteArray array = new VirtualMemory.CyclingByteArray(100);
+		MarkableFileReader.CyclingByteArray array = new MarkableFileReader.CyclingByteArray(100);
 		String prevMessge = "zzzzzzzzzz";
 		String message    = "abcdefg";
 		byte[] prevBuffer = prevMessge.getBytes();
@@ -118,7 +118,7 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 	}	
 
 	public void testCyclingByteArray_setData_exception() {
-		VirtualMemory.CyclingByteArray array = new VirtualMemory.CyclingByteArray(10);
+		MarkableFileReader.CyclingByteArray array = new MarkableFileReader.CyclingByteArray(10);
 		String prevMessge = "012345678";
 		String message    = "abc";
 		byte[] prevBuffer = prevMessge.getBytes();
@@ -158,9 +158,9 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 
 	public void testVirtualMemory_default() {
 		File base = getTestFile();
-		VirtualMemory memory;
+		MarkableFileReader memory;
 		try {
-			memory = new VirtualMemory(base, 128);
+			memory = new MarkableFileReader(base, 128);
 			System.out.println("-a-");
 			assertEquals('a', memory.read());
 			System.out.println("-b-");
@@ -183,9 +183,9 @@ public class TestVirturalMemory extends junit.framework.TestCase {
 
 	public void testVirtualMemory_seek() {
 		File base = getTestFile();
-		VirtualMemory memory;
+		MarkableFileReader memory;
 		try {
-			memory = new VirtualMemory(base, 128);
+			memory = new MarkableFileReader(base, 128);
 			System.out.println("-a-");
 			assertEquals('a', memory.read());
 			System.out.println("-b-");

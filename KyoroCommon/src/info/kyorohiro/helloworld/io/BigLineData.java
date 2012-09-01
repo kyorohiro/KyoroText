@@ -15,7 +15,7 @@ public class BigLineData {
 
 	private File mPath;
 	private String mCharset = "utf8";
-	private VirtualMemory mReader = null;
+	private MarkableFileReader mReader = null;
 	private SimpleTextDecoder mDecoder = null;
 	
 	// todo
@@ -40,7 +40,7 @@ public class BigLineData {
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
-		mReader = new VirtualMemory(mPath, 1024*2);
+		mReader = new MarkableFileReader(mPath, 1024*2);
 		mPositionPer100Line.add(0l);
 		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
 	}

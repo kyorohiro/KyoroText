@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.io.charset;
 
-import info.kyorohiro.helloworld.io.VirtualMemory;
+import info.kyorohiro.helloworld.io.MarkableFileReader;
 
 import java.io.IOException;
 
@@ -33,7 +33,7 @@ public class ISO2022CN extends ISO2022 {
 		return 0;
 	}
 
-	public void update(VirtualMemory v) {
+	public void update(MarkableFileReader v) {
 		try {
 			v.pushMark();
 			if (LF(v)) {;
@@ -46,17 +46,17 @@ public class ISO2022CN extends ISO2022 {
 		}
 	}
 
-	private boolean doG1(VirtualMemory v) {
+	private boolean doG1(MarkableFileReader v) {
 		return mG1.match(v);
 	}
-	private boolean doG2(VirtualMemory v) {
+	private boolean doG2(MarkableFileReader v) {
 		return mG2.match(v);
 	}
-	private boolean doG3(VirtualMemory v) {
+	private boolean doG3(MarkableFileReader v) {
 		return mG3.match(v);
 	}
 
-	private boolean doInvoke(VirtualMemory v) {
+	private boolean doInvoke(MarkableFileReader v) {
 		return mInvoke.match(v);
 	}
 

@@ -31,7 +31,7 @@ public class TestSimpleTextDecoder extends TestCase {
 
 	public void testSJIS001() throws FileNotFoundException, IOException {
 		File f = TestSimpleTextDecoder.getTestFile("test_sjis_crlf_001.txt");
-		VirtualMemory vm = new VirtualMemory(f, 64);
+		MarkableFileReader vm = new MarkableFileReader(f, 64);
 		Charset cs = Charset.forName("Shift_Jis");
 		BreakText br = new MyBreakText(12);
 		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
@@ -44,7 +44,7 @@ public class TestSimpleTextDecoder extends TestCase {
 
 	public void testISO2022JP001() throws FileNotFoundException, IOException {
 		File f = TestSimpleTextDecoder.getTestFile("iso_2022_jp_crlf_001.txt");
-		VirtualMemory vm = new VirtualMemory(f, 64);
+		MarkableFileReader vm = new MarkableFileReader(f, 64);
 		Charset cs = Charset.forName("ISO-2022-JP");
 		BreakText br = new MyBreakText(12);
 		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
@@ -57,7 +57,7 @@ public class TestSimpleTextDecoder extends TestCase {
 
 	public void testISO2022JP002() throws FileNotFoundException, IOException {
 		File f = TestSimpleTextDecoder.getTestFile("iso_2022_jp_crlf_002.txt");
-		VirtualMemory vm = new VirtualMemory(f, 64);
+		MarkableFileReader vm = new MarkableFileReader(f, 64);
 		Charset cs = Charset.forName("ISO-2022-JP");
 		BreakText br = new MyBreakText(12);
 		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
@@ -81,7 +81,7 @@ public class TestSimpleTextDecoder extends TestCase {
 
 	public void testISO2022JP003() throws FileNotFoundException, IOException {
 		File f = TestSimpleTextDecoder.getTestFile("iso_2022_jp_crlf_003.txt");
-		VirtualMemory vm = new VirtualMemory(f, 64);
+		MarkableFileReader vm = new MarkableFileReader(f, 64);
 		Charset cs = Charset.forName("ISO-2022-JP");
 		MyBreakText br = new MyBreakText(12);
 		br.nextBreakText(3);

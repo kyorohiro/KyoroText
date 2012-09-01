@@ -4,10 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class VirtualMemory {
+public class MarkableFileReader implements MarkableReader {
 	private int mBufferLength = 1024;
 	private RandomAccessFile mFile = null;
 	private long mFilePointer = 0;
@@ -37,7 +36,7 @@ public class VirtualMemory {
 		return mMark.removeLast();
 	}
 
-	public VirtualMemory(File base, int cashSize) throws FileNotFoundException {
+	public MarkableFileReader(File base, int cashSize) throws FileNotFoundException {
 		mFile = new RandomAccessFile(base, "r");
 		mBufferLength = cashSize;
 		b = new byte[mBufferLength/4]; 
@@ -174,6 +173,7 @@ public class VirtualMemory {
 	}
 
 	public static class CyclingByteArrayException extends Exception {
+		private static final long serialVersionUID = 1L;
 		public CyclingByteArrayException(String message) {
 			super(message);
 		}

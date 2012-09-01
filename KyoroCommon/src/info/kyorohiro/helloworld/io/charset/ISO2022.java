@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.io.charset;
 
-import info.kyorohiro.helloworld.io.VirtualMemory;
+import info.kyorohiro.helloworld.io.MarkableFileReader;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
 public abstract class ISO2022 {
 
 	public abstract int currentEscape(byte[] escape);
-	public abstract void update(VirtualMemory vm);
+	public abstract void update(MarkableFileReader vm);
 
 	public static byte[] DESIGNATED(byte[] code, char character) {
 		byte[] buffer = new byte[code.length];
@@ -207,7 +207,7 @@ public abstract class ISO2022 {
 			mObserver = observer;
 		}
 
-		boolean match(VirtualMemory v) {
+		boolean match(MarkableFileReader v) {
 			int len = mPattern.length;
 			X: for (int i = 0; i < len; i++) {
 				byte[] tmp = mPattern[i];
@@ -235,7 +235,7 @@ public abstract class ISO2022 {
 		public void matched(byte[] matchedData);
 	}
 
-	protected boolean LF(VirtualMemory v) {
+	protected boolean LF(MarkableFileReader v) {
 		try {
 			v.pushMark();
 			if (0x0a == v.read()) {

@@ -9,14 +9,14 @@ import java.nio.charset.CoderResult;
 
 public class SimpleTextDecoder {
 
-	private VirtualMemory mReader = null;
+	private MarkableReader mReader = null;
 	private MyBuilder mBuffer = new MyBuilder();
-	private Charset mCs = null;
+	private Charset mCharset = null;
 	private BreakText mBreakText;
 
-	public SimpleTextDecoder(Charset _cs, VirtualMemory reader,
+	public SimpleTextDecoder(Charset _cs, MarkableReader reader,
 			BreakText breakText) {
-		mCs = _cs;
+		mCharset = _cs;
 		mReader = reader;
 		mBreakText = breakText;
 	}
@@ -37,15 +37,45 @@ public class SimpleTextDecoder {
 		return decodeLine(null);
 	}
 
+	public char readCharacter() throws IOException {
+		CharsetDecoder decoder = getCharsetDecoder();
+		byte b;
+		do {
+			b = (byte) mReader.read();
+			if(b<0){
+				break;
+			}
+			mByteBuffer.put(b);
+			mByteBuffer.flip();
+			CoderResult cr = decoder.decode(mByteBuffer, mCharBuffer, false);
+			mCharBuffer.flip();
+		} while (!mCharBuffer.hasRemaining());
+
+		if(0 !=mCharBuffer.length()) {
+			return mCharBuffer.get();
+		} else {
+			return '\0';
+		}
+	}
+
+	private CharsetDecoder mDecoder = null;
+	private ByteBuffer mByteBuffer = ByteBuffer.allocateDirect(32); // bbは書き込める状態
+	private CharBuffer mCharBuffer = CharBuffer.allocate(16); // cbは書き込める状態
+
+	public CharsetDecoder getCharsetDecoder() {
+		if (mDecoder == null) {
+			mDecoder = mCharset.newDecoder();
+		}
+		return mDecoder;
+	}
+
 	public CharSequence decodeLine(byte[] escape) throws IOException {
 		mBuffer.clear();
-		CharsetDecoder decoder = mCs.newDecoder();
+		CharsetDecoder decoder = getCharsetDecoder();
 		boolean end = false;
-		ByteBuffer bb = ByteBuffer.allocateDirect(32); // bbは書き込める状態
-		CharBuffer cb = CharBuffer.allocate(16); // cbは書き込める状態
 
 		if (escape != null) {
-			bb.put(escape);
+			mByteBuffer.put(escape);
 		}
 
 		// todo
@@ -54,36 +84,38 @@ public class SimpleTextDecoder {
 		outside: do {
 			int d = mReader.read();
 			if (d >= 0) {
-				bb.put((byte) d); // bbへの書き込み
+				mByteBuffer.put((byte) d); // bbへの書き込み
 			} else {
 				break;
 			}
-			bb.flip();
-			CoderResult cr = decoder.decode(bb, cb, end);
+			mByteBuffer.flip();
+			CoderResult cr = decoder.decode(mByteBuffer, mCharBuffer, end);
 
-			cb.flip();
+			mCharBuffer.flip();
 			char c = ' ';
 			boolean added = false;
-			while (cb.hasRemaining()) {
+			while (mCharBuffer.hasRemaining()) {
 				added = true;
-				bb.clear();
-				c = cb.get();
+				mByteBuffer.clear();
+				c = mCharBuffer.get();
 				mBuffer.append(c);
 				{
-				// following code maby out of memor error , you must change kb
-				int len = Integer.MAX_VALUE;// example -->1024*4;// force crlf 12kb 
-				if(mBreakText != null){
-					len = mBreakText.breakText(mBuffer);
-				}
-				if (len < mBuffer.getCurrentBufferedMojiSize()) {
-					// ひとつ前で改行
-					mBuffer.removeLast();
-					mReader.seek(todoPrevPosition);
-					mode = TODOCRLFString.MODE_EXCLUDE_LF;
-					break outside;
-				} else {
-					todoPrevPosition = mReader.getFilePointer();
-				}
+					// following code maby out of memor error , you must change
+					// kb
+					int len = Integer.MAX_VALUE;// example -->1024*4;// force
+												// crlf 12kb
+					if (mBreakText != null) {
+						len = mBreakText.breakText(mBuffer);
+					}
+					if (len < mBuffer.getCurrentBufferedMojiSize()) {
+						// ひとつ前で改行
+						mBuffer.removeLast();
+						mReader.seek(todoPrevPosition);
+						mode = TODOCRLFString.MODE_EXCLUDE_LF;
+						break outside;
+					} else {
+						todoPrevPosition = mReader.getFilePointer();
+					}
 				}
 			}
 			if (c == '\n') {
@@ -91,9 +123,9 @@ public class SimpleTextDecoder {
 			}
 
 			if (!added) {
-				bb.compact();
+				mByteBuffer.compact();
 			}
-			cb.clear(); // cbを書き込み状態に変更
+			mCharBuffer.clear(); // cbを書き込み状態に変更
 		} while (!end);
 		return new TODOCRLFString(mBuffer.getAllBufferedMoji(),
 				mBuffer.getCurrentBufferedMojiSize(), mode);
