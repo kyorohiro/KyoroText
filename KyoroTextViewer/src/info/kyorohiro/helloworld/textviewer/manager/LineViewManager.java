@@ -117,17 +117,19 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 
 	private boolean _circleSelected(CharSequence title) {
 		 CursorableLineView mLineView = (CursorableLineView)getFocusingTextViewer().getLineView();
-		 if (title.equals(CursorableLineView.MODE_VIEW)&& !CursorableLineView.MODE_VIEW.equals(mLineView.getMode())) {
+		 if (title.equals(CursorableLineView.MODE_VIEW)) {
 			 mCircleMenu.clearCircleMenu();
 			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 			 mLineView.setMode(CursorableLineView.MODE_VIEW);
-		} else if (title.equals(CursorableLineView.MODE_SELECT)&&!CursorableLineView.MODE_SELECT.equals(mLineView.getMode())) {
+		} else if (title.equals(CursorableLineView.MODE_SELECT)) {
 			 mCircleMenu.clearCircleMenu();
 			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			mLineView.setMode(CursorableLineView.MODE_SELECT);
-			mCircleMenu.addCircleMenu(0, "Copy");
+			 if(!CursorableLineView.MODE_SELECT.equals(mLineView.getMode())) {
+				 mLineView.setMode(CursorableLineView.MODE_SELECT);
+			 }
+			 mCircleMenu.addCircleMenu(0, "Copy");
 		} else if (title.equals("Copy")) {
 			 mCircleMenu.clearCircleMenu();
 			 mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
