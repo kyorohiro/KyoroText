@@ -10,6 +10,9 @@ import info.kyorohiro.helloworld.io.MarkableReader;
 import info.kyorohiro.helloworld.io.SimpleTextDecoder;
 import info.kyorohiro.helloworld.io.MarkableFileReader;
 
+//
+// http://wiki.theory.org/BitTorrentSpecification
+// http://bittorrent.org/beps/bep_0003.html
 public class BEncoding {
 
 	MarkableReader mMemory = null;//new VirtualMemory();
@@ -21,7 +24,9 @@ public class BEncoding {
 	//
 	public Object next() throws IOException {
 		SimpleTextDecoder textDecoder = new SimpleTextDecoder(Charset.forName("utf8"), mMemory, null);
-		textDecoder.readCharacter();
+		if(!textDecoder.isEOF()){
+			textDecoder.readCharacter();
+		}
 		return null;
 	}
 }

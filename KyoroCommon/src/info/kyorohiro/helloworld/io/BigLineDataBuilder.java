@@ -1,6 +1,5 @@
 package info.kyorohiro.helloworld.io;
 
-import info.kyorohiro.helloworld.util.CyclingList;
 
 import java.util.LinkedList;
 

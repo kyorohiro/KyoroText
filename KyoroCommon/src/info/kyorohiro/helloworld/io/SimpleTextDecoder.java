@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
 
 public class SimpleTextDecoder {
 
@@ -47,7 +46,7 @@ public class SimpleTextDecoder {
 			}
 			mByteBuffer.put(b);
 			mByteBuffer.flip();
-			CoderResult cr = decoder.decode(mByteBuffer, mCharBuffer, false);
+			decoder.decode(mByteBuffer, mCharBuffer, false);
 			mCharBuffer.flip();
 		} while (!mCharBuffer.hasRemaining());
 
@@ -89,7 +88,7 @@ public class SimpleTextDecoder {
 				break;
 			}
 			mByteBuffer.flip();
-			CoderResult cr = decoder.decode(mByteBuffer, mCharBuffer, end);
+			decoder.decode(mByteBuffer, mCharBuffer, end);
 
 			mCharBuffer.flip();
 			char c = ' ';

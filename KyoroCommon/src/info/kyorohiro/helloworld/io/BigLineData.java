@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-import android.graphics.Paint;
-import android.graphics.Typeface;
-
 //@Deprecated
 public class BigLineData {
 	public static int FILE_LIME = 100;
@@ -18,9 +15,6 @@ public class BigLineData {
 	private MarkableFileReader mReader = null;
 	private SimpleTextDecoder mDecoder = null;
 	
-	// todo
-//	private Paint mPaint = null;
-//	private int mWidth =800;
 
 	private long mCurrentPosition = 0;
 	private long mLinePosition = 0;
@@ -125,18 +119,10 @@ public class BigLineData {
 		}
 	}
 
-	@Deprecated
-	private long getDataSize() {
-		return mPath.length();
-	}
 
-	@Deprecated
+//	@Deprecated
 	public long getLastLinePosition() {
 		return mLastLinePosition;
 	}
 
-	@Deprecated
-	private int getStackedLinePer100() {
-		return mPositionPer100Line.size();
-	}
 }
