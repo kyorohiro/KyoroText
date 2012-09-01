@@ -1,8 +1,6 @@
 package info.kyorohiro.helloworld.display.widget;
 
 import java.util.ArrayList;
-import java.util.Vector;
-
 import android.graphics.Color;
 import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;

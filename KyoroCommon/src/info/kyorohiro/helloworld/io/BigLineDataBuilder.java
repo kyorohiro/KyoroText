@@ -3,9 +3,9 @@ package info.kyorohiro.helloworld.io;
 
 import java.util.LinkedList;
 
-//
-// BigLineDataにデータ書き込みの機能を追加する。
-//
+// 
+// 近々削除する
+// 
 public class BigLineDataBuilder {
 	private LinkedList<A> mList = new LinkedList<A>();
 

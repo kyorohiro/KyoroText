@@ -1,12 +1,12 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 import android.graphics.Color;
-import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView.Point;
+import info.kyorohiro.helloworld.util.SimpleLockInter;
 
 public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	private LineView mLineViewer = null;

@@ -106,14 +106,14 @@ public class SimpleStage extends EditableSurfaceView {
 				Canvas canvas = null;
 				mCountForLogicalSleep = 0;
 				getRoot().start();
-				long startTimeForSpeedCheck = 0;
-				long endTimeForSpeedCheck = 0;
+//				long startTimeForSpeedCheck = 0;
+//				long endTimeForSpeedCheck = 0;
 				while (true) {
 					if (mCurrentThread == null
 							|| mCurrentThread != Thread.currentThread()) {
 						break;
 					}
-					startTimeForSpeedCheck = System.currentTimeMillis();
+//					startTimeForSpeedCheck = System.currentTimeMillis();
 					try {
 						canvas = holder.lockCanvas();
 						doDraw(canvas);
@@ -122,7 +122,7 @@ public class SimpleStage extends EditableSurfaceView {
 							holder.unlockCanvasAndPost(canvas);
 						}
 					}
-					endTimeForSpeedCheck = System.currentTimeMillis();
+//					endTimeForSpeedCheck = System.currentTimeMillis();
 //					android.util.Log.v("time","time="+(endTimeForSpeedCheck-startTimeForSpeedCheck));
 					logicalSleepForCpuUage();
 				}

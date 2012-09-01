@@ -1,6 +1,5 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView.Point;
@@ -55,15 +54,13 @@ public class MyCursor extends SimpleDisplayObject {
 	}
 
 	private void lock() {
-	//	android.util.Log.v("kiyo","lock-1-");
 		mParent.get().lock();
-	//	android.util.Log.v("kiyo","lock-2-");
 	}
+
 	private void releaseLock(){
-	//	android.util.Log.v("kiyo","unlock-1-");
-		mParent.get().releaseLock();		
-	//	android.util.Log.v("kiyo","unlock-2-");
+		mParent.get().releaseLock();	
 	}
+
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		if (!mEnable) {
@@ -95,9 +92,6 @@ public class MyCursor extends SimpleDisplayObject {
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		//try {
-		//	mParent.get().lock();
-
 		if (!mEnable) {
 			return false;
 		}
@@ -121,24 +115,19 @@ public class MyCursor extends SimpleDisplayObject {
 			}
 		} else if (action == MotionEvent.ACTION_MOVE) {
 			if (focus == true) {
-				LineView l = mParent.get();
 				try {
 					lock();
 					cursorCol.setPoint(getYToPosY(y - py + getY()));
 					cursorRow = getXToPosX(cursorCol.getPoint(), x - px + getX(), cursorRow);
 				} 
 				catch(Exception e){
-					// todo
+					e.printStackTrace();
 				}finally {
 					releaseLock();
 				}
-				//updateCursor(this);
 			}
 		}
 		return focus;
-		//}finally {
-		//		mParent.get().releaseLock();
-		//}
 	}
 
 	private int getYToPosY(int y) {

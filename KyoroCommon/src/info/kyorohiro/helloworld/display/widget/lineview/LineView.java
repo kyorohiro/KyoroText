@@ -3,12 +3,11 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
-import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.io.BreakText;
-import info.kyorohiro.helloworld.util.CyclingListInter;
+import info.kyorohiro.helloworld.util.SimpleLockInter;
 import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObjectContainer {
@@ -207,7 +206,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mIsTail = on;
 	}
 
-	private DrawingPosition mDrawingPosition = new DrawingPosition();
+	private DrawingPositionForLineView mDrawingPosition = new DrawingPositionForLineView();
 
 	public void setBGImage(SimpleImage image) {
 		mImage = image;
@@ -244,7 +243,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return l;
 	}
 
-	@Deprecated
+	//@Deprecated
 	public int getXToPosX(int cursorCol, int xx, int cur) {
 		float x = xx;// /getScale();
 		x -= getLeftForStartDrawLine();
@@ -279,7 +278,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 				|| cursorCol < 0) {
 			return null;
 		}
-		LineViewBufferSpec showingText = mInputtedText;
 		try {
 			lock();
 			LineViewData data = mInputtedText.get(cursorCol);

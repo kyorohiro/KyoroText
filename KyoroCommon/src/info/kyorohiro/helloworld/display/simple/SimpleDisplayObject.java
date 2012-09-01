@@ -90,7 +90,7 @@ public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 	 * @param action
 	 * @return touch point is in a DisplayObject then true, else false. 
 	 */
-	@Deprecated
+//	@Deprecated
 	public boolean onTouchTest(int x, int y, int action) {
 		return false;
 	}

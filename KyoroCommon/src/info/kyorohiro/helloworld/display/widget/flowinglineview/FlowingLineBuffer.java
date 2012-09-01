@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import info.kyorohiro.helloworld.android.util.SimpleLockInter;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
-import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate;
 import info.kyorohiro.helloworld.util.CyclingList;
+import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate;
+import info.kyorohiro.helloworld.util.SimpleLockInter;
 import android.graphics.Color;
 import android.graphics.Paint;
 

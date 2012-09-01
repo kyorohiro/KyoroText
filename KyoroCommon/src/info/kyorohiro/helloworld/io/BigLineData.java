@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+//
+//
 //@Deprecated
 public class BigLineData {
 	public static int FILE_LIME = 100;
