@@ -182,12 +182,12 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 	
 	@Override
 	public void dispose() {
-		for(SimpleDisplayObject child: mMyChildren){
+/*		for(SimpleDisplayObject child: mMyChildren){
 			if(child != null) {
 				child.dispose();
 				removeChild(this);
 			}
-		}
+		}*/
 		super.dispose();
 	}
 

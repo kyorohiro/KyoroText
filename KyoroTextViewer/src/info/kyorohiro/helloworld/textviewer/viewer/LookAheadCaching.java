@@ -293,6 +293,7 @@ public class LookAheadCaching {
 				}
 				}
 				while(true);
+			} catch(InterruptedException e) {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
