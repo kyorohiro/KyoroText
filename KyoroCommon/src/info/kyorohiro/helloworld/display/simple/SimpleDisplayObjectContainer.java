@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.display.simple;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 
@@ -182,13 +183,16 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 	
 	@Override
 	public void dispose() {
-/*		for(SimpleDisplayObject child: mMyChildren){
+		Iterator<SimpleDisplayObject> children = mMyChildren.iterator();
+//		for(SimpleDisplayObject child: mMyChildren){
+		while(children.hasNext()){
+			SimpleDisplayObject child = children.next();
 			if(child != null) {
 				child.dispose();
 				removeChild(this);
 			}
-		}*/
-		super.dispose();
+		}
+//		super.dispose();
 	}
 
 	@Override

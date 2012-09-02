@@ -57,10 +57,12 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	}
 
 	public void dispose() {
+//		android.util.Log.v("kiyo","buffer =dispose()");
 		if (null != mLineManagerFromFile) {
 			try {
 				if(mCashing != null){
-					mCashing.stopTask();
+					mCashing.dispose();
+//					mCashing.stopTask();
 					mCashing = null;
 				}
 				mLineManagerFromFile.close();

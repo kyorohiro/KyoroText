@@ -40,7 +40,11 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return scale;
 	}
 	public BreakText getBreakText() {
-		return getLineViewBuffer().getBreakText();
+		if(getLineViewBuffer() == null){
+			return null;
+		} else {
+			return getLineViewBuffer().getBreakText();
+		}
 	}
 
 	private int s = 0;

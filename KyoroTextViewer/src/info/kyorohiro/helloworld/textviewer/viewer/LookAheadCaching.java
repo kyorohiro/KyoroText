@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference;
 import android.graphics.Color;
 
 public class LookAheadCaching {
+	private boolean mIsDispose = false;
 	private WeakReference<TextViewerBuffer> mBuffer = null;
 	private ReadBackBuilder mBackBuilder = new ReadBackBuilder();
 	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
@@ -121,7 +122,13 @@ public class LookAheadCaching {
 		}
 	}
 
+	public synchronized void dispose() {
+		mIsDispose = true;
+		stopTask();
+	}
+
 	public synchronized void stopTask() {
+//		android.util.Log.v("kiyo","buffer =stop()");
 		if (mTaskRunnter != null && mTaskRunnter.isAlive()) {
 			mTaskRunnter.interrupt();
 			mTaskRunnter = null;
@@ -129,6 +136,9 @@ public class LookAheadCaching {
 	}
 
 	private synchronized void startTask(Builder builder) {
+		if(mIsDispose){
+			return ;
+		}
 		if (mTaskRunnter == null || !mTaskRunnter.isAlive()) {
 			mTaskRunnter = new Thread(builder.create());
 			mTaskRunnter.start();
@@ -213,7 +223,7 @@ public class LookAheadCaching {
 				mBigLineData.moveLine(mStartWithoutOwn - BigLineData.FILE_LIME);
 
 				int j = 0;
-				for (int i = 0; 
+				for (int i = 0;  mIsDispose == false&&
 						!Thread.interrupted()&& i < BigLineData.FILE_LIME  && !mBigLineData.isEOF()
 						&&mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
@@ -267,7 +277,7 @@ public class LookAheadCaching {
 				}
 				mBigLineData.moveLine(mStartWithoutOwn);
 				do{
-				for (int i = 0; 
+				for (int i = 0; mIsDispose == false&&
 						!Thread.interrupted() && 
 						i < BigLineData.FILE_LIME && !mBigLineData.isEOF()&&
 						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();

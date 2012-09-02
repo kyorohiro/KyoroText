@@ -95,6 +95,12 @@ public class KyoroTextViewerActivity extends MainActivity {
 		mStage.stop();
 	}
 
+	@Override
+	protected void onDestroy() {
+		mViewerManager.dispose();
+		super.onDestroy();
+	}
+	
 	private int[] getWindowSize(){
 		WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
