@@ -35,6 +35,9 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		return sInstance;
 	}
 
+	public void setCurrentFontSize(int textSize) {
+		mTextSize = textSize;
+	}
 	// å„Ç≈SingletoneÇ…Ç∑ÇÈÅB
 	public LineViewManager(int textSize, int width, int height, int mergine, int menuWidth) {
 		sInstance = this;

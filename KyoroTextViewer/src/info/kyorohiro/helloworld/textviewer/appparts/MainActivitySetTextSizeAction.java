@@ -98,6 +98,7 @@ public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
 					try {
 						KyoroSetting.setCurrentFontSize(""+textSize);
 						TextViewer viewer = mDisplayedTextViewer.getFocusingTextViewer();
+						mDisplayedTextViewer.setCurrentFontSize(textSize);
 						viewer.setCurrentFontSize(textSize);
 						viewer.restart();
 						dismiss();

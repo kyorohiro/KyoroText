@@ -70,6 +70,8 @@ public class SimpleTextDecoder {
 
 	public CharSequence decodeLine(byte[] escape) throws IOException {
 		mBuffer.clear();
+		mByteBuffer.clear();
+		mCharBuffer.clear();
 		CharsetDecoder decoder = getCharsetDecoder();
 		boolean end = false;
 
