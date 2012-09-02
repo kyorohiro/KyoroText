@@ -41,6 +41,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 	}
 
 	private double mMoveYY =0;
+	private boolean mIsTouched = false;
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		boolean focusIn = false;
@@ -52,14 +53,8 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		if(!focusIn){
 			action = MotionEvent.ACTION_UP;
 		}
-
-		if (mPrevY == -999 || mPrevX == -999) {
-			mPrevY = y;
-			mPrevX = x;
-			return false;
-		}
-
-		if (action == MotionEvent.ACTION_MOVE) {
+		if (action == MotionEvent.ACTION_MOVE&& mIsTouched ==true) {
+//			android.util.Log.v("kiyo","move");
 			mHeavyX = 0;
 			mHeavyY = 0;
 			mMovingY += y - mPrevY;
@@ -92,15 +87,23 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 			}
 			return ret;
 		} else if (action == MotionEvent.ACTION_DOWN) {
+//			android.util.Log.v("kiyo","down");
+			mIsTouched = true;
 			mHeavyX = 0;
 			mHeavyY = 0;
 			mMoveYY = mMovingY; 
 			mMovingX = 0;
-			mPrevY = -999;
-			mPrevX = -999;
+			mPrevY = y;
+			mPrevX = x;
+//			mPrevY = -999;
+//			mPrevX = -999;
 		} else if (action == MotionEvent.ACTION_UP) {
-			mHeavyX = mPowerX * 8;
-			mHeavyY = mPowerY * 8;
+//			android.util.Log.v("kiyo","up");
+			if(mIsTouched){
+				mHeavyX = mPowerX * 8;
+				mHeavyY = mPowerY * 8;
+			}
+			mIsTouched = false;
 			mPrevY = -999;
 			mPrevX = -999;
 			mMovingY = 0;

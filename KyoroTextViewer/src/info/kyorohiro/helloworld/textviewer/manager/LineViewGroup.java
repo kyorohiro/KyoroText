@@ -129,6 +129,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		}
 		return false;
 	}
+
 	private boolean  chFocus(SimpleDisplayObject parent) {
 		if(parent instanceof TextViewer) {
 			LineViewManager.getManager().changeFocus((TextViewer)parent);

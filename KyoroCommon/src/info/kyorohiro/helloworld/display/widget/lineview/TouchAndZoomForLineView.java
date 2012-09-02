@@ -85,7 +85,8 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 					if (mStartLine != null) {
 						mStartLine.setColor(mStartLineBaseColor);
 					}
-					return true;
+					// kiyo checking
+					return false;
 				} else {
 					return false;
 				}
@@ -136,7 +137,10 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 				mCurrentScale = nextScale;
 			}
 			mStartLength = currentLength;
+			//
+			android.util.Log.v("kiyo","zoom true");
 			return true;
+			//return false;
 		}
 		return false;
 	}
