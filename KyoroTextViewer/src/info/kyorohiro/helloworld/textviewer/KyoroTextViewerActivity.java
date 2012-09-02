@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
+
 public class KyoroTextViewerActivity extends MainActivity {
 	private SimpleStage mStage = null;
 //	private TextViewer mTextViewer = null;

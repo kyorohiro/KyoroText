@@ -13,6 +13,7 @@ import android.graphics.Color;
 public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsClearBG = false;
 	private int mImpedance = 0;
+	private int mMergine = 0;//(getWidth()) / 20;
 	public void isClearBG(boolean on){
 		mIsClearBG = on;
 	}
@@ -212,8 +213,18 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mImage = image;
 	}
 
+	public void setMergine(int mergine) {
+		mMergine = mergine;
+	}
+	public int getMergine() {
+		if(mMergine  == -1) {
+			return mMergine = (getWidth()) / 20;
+		} else {
+			return mMergine;
+		}
+	}
 	public int getLeftForStartDrawLine() {
-		return (getWidth()) / 20 + mPositionX * 19 / 20;
+		return getMergine() + mPositionX;
 	}
 
 	public int getYForStartDrawLine(int cursurCol) {
@@ -298,8 +309,16 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (mPositionX > 0) {
 			mPositionX = 0;
 		}
-		if (mPositionX < -1 * (getWidth() * mScale - getWidth())) {
-			mPositionX = -1 * (int) (getWidth() * mScale - getWidth());
+
+		float positionMax = -1 * (getBreakText().getWidth()*getShowingTextSize()/(float)getBreakText().getTextSize());
+		positionMax += getWidth()-getMergine()*2-getMergine()*(mScale);
+/*		android.util.Log.v("kiyo",
+		"positionMax="+positionMax+",w="+getBreakText().getWidth()+","+getWidth()+",t="
+		+mScale+","+getShowingTextSize()+","+getBreakText().getTextSize()+","+
+		getTextSize()+",m="+getMergine()
+		);*/
+		if (mPositionX < positionMax) {
+			mPositionX = (int)positionMax;
 		}
 
 		// int scaleLine = mScaleLine-getShowingTextStartPosition();

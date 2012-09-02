@@ -22,7 +22,7 @@ public class Util {
 
 	public static double mm2‚‰nchi(double from){
 		DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-		android.util.Log.d("test", "ret=" + (from/(metrics.densityDpi/160)/25.4));
+		//android.util.Log.d("test", "ret=" + (from/(metrics.densityDpi/160)/25.4));
 		return (from/25.4);
 	}
 
