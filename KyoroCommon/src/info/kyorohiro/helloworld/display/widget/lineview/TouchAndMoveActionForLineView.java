@@ -2,6 +2,8 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimplePoint;
+import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import android.view.MotionEvent;
 
 public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
@@ -36,7 +38,6 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 
 			// todo refactaring
 			mViewer.setPositionY(mViewer.getPositionY()+mHeavyY/textSize);
-			//mViewer.setTodoExtra((mViewer.getTodoExtra()+mHeavyY/textSize)%textSize);
 		}
 	}
 
@@ -45,6 +46,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		boolean focusIn = false;
+		boolean doubleTouched = doubleTouched();
 		if(0<x&&x<mViewer.getWidth()&&0<y&&y<mViewer.getHeight()){
 			focusIn = true;
 		} else {
@@ -53,6 +55,12 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		if(!focusIn){
 			action = MotionEvent.ACTION_UP;
 		}
+		if(doubleTouched){
+			android.util.Log.v("kiyo","touched");
+			mIsTouched = false;
+			action = MotionEvent.ACTION_UP;
+		}
+		
 		if (action == MotionEvent.ACTION_MOVE&& mIsTouched ==true) {
 //			android.util.Log.v("kiyo","move");
 			mHeavyX = 0;
@@ -102,6 +110,9 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 			if(mIsTouched){
 				mHeavyX = mPowerX * 8;
 				mHeavyY = mPowerY * 8;
+			} else {
+				mHeavyX = 0;
+				mHeavyY = 0;
 			}
 			mIsTouched = false;
 			mPrevY = -999;
@@ -123,6 +134,19 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 			mPower_prevY = y;
 			mPowerX = x - mPower_prevX;
 			mPower_prevX = x;
+		}
+	}
+
+	private boolean doubleTouched() {
+		SimpleStage stage = SimpleDisplayObject.getStage(this);
+		if (stage == null || !stage.isSupportMultiTouch()) {
+			return false;
+		}
+		SimplePoint[] p = stage.getMultiTouchEvent();
+		if (p[0].isVisible() && p[1].isVisible()) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 

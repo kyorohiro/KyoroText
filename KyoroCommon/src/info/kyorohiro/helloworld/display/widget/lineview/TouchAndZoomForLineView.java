@@ -139,8 +139,8 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 			mStartLength = currentLength;
 			//
 //			android.util.Log.v("kiyo","zoom true");
-			return true;
-			//return false;
+			//return true;
+			return false;
 		}
 		return false;
 	}

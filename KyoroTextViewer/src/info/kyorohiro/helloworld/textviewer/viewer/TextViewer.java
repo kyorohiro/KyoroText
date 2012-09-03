@@ -142,8 +142,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			int width = TextViewer.this.mLineView.getWidth();// SimpleDisplayObject.getStage(TextViewer.this).getWidth();//graphics.getWidth();
 			int w = TextViewer.this.mBufferWidth + mMergine * 2;
 			int viewerTextSize = (textSize * width / w);
-			if(viewerTextSize<textSize*2/3) {
-				viewerTextSize = textSize*2/3;
+			if(viewerTextSize<textSize*3/4) {
+				viewerTextSize = textSize*3/4;
 			}
 			TextViewer.this.mLineView.setTextSize(viewerTextSize);
 			TextViewer.this.mLineView.setMergine(mMergine);

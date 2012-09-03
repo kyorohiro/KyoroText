@@ -11,28 +11,30 @@ import info.kyorohiro.helloworld.util.SimpleLockInter;
 import android.graphics.Color;
 
 public class LineView extends SimpleDisplayObjectContainer {
+	public static float[] widths = new float[256];
+	private final static int sTestTextColor = Color.parseColor("#AAFFFF00");
 	private boolean mIsClearBG = false;
-	private int mImpedance = 0;
-	private int mMergine = 0;//(getWidth()) / 20;
-	public void isClearBG(boolean on){
-		mIsClearBG = on;
-	}
+	private int mBiasAboutMoveLine = 0;
+	private int mMergine = -1;
+	private int mPointID = 0;
+	private int mScaleX = 0;
+	private int mScaleY = 0;
+	private int mScaleTime = 0;
 
-	// extends SimpleDisplayObject {
-	public static class Point {
-		WeakReference<LineView> mR;
-		private Point(int point, LineView v) {
-			mPoint = point;
-			mR = new WeakReference<LineView>(v);
-		}
-		public int getPoint() {
-			return mPoint;
-		}
-		public void setPoint(int point) {
-			mPoint = point;
-		}
-		private int mPoint = 0;
-	}
+	private WeakHashMap<Integer, Point> mPoint = new WeakHashMap<Integer, Point>();
+
+	private SimpleImage mImage = null;
+	private int mNumOfLine = 300;
+	private LineViewBufferSpec mInputtedText = null;
+	private int mPositionY = 0;
+	private int mPositionX = 0;
+	private int mTextSize = 16;
+	private float mScale = 1.0f;
+	private int mBgColor = Color.parseColor("#FF000022");
+	private boolean mIsTail = true;
+	private int mDefaultCashSize = 100;
+	private LineViewData[] mCashBuffer = new LineViewData[0];
+
 	// setScaleÇ∆setTextSize()Ç≈ägëÂó¶Çê›íËÇµÇƒÇ¢ÇÈÅB
 	// å„Ç≈Ç«ÇøÇÁÇ©Ç…ìùàÍÇ∑ÇÈÅH
 	protected float getSclaeFromTextSize() {
@@ -47,11 +49,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	private int s = 0;
 	public synchronized Point getPoint(int num) {
 		Point point = new Point(num, this);
-		mPoint.put(s++, point);
+		mPoint.put(mPointID++, point);
 		return point;
+	}
+
+	public void isClearBG(boolean on){
+		mIsClearBG = on;
 	}
 
 	public boolean isOver() {
@@ -61,6 +66,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			return false;
 		}
 	}
+
 	private synchronized void addPoint(int num) {
 		if (isOver()) {
 			for (Point p : mPoint.values()) {
@@ -71,26 +77,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 			}
 		}
 	}
-
-	private WeakHashMap<Integer, Point> mPoint = new WeakHashMap<Integer, Point>();
-	private int mScaleX = 0;
-	private int mScaleY = 0;
-	private int mScaleTime = 0;
-
-	private SimpleImage mImage = null;
-	private int mNumOfLine = 300;
-	private LineViewBufferSpec mInputtedText = null;
-	private int mPositionY = 0;
-	private int mPositionX = 0;
-	private int mTextSize = 16;
-	private float mScale = 1.0f;
-	private int mBgColor = Color.parseColor("#FF000022");
-	private boolean mIsTail = true;
-	private int mDefaultCashSize = 100;
-	private LineViewData[] mCashBuffer = new LineViewData[0];
-	public static float[] widths = new float[1024];// <---refataging
-	// todo refactaring
-	private int mTestTextColor = Color.parseColor("#AAFFFF00");
 
 	public LineView(LineViewBufferSpec inputtedText, int textSize) {
 		mInputtedText = inputtedText;
@@ -118,22 +104,18 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public synchronized void setScale(
 			float scale, float sScale, int sGetX,
 			int linePosX, Point linePosY, int baseX, int baseY) {
-		if(mImpedance<6){
-			mImpedance +=2;
+//		mInputtedText.clearNumOfAdd();
+		 _updateStatus(mInputtedText);
+		if(mBiasAboutMoveLine<6){
+			mBiasAboutMoveLine +=2;
 		}
 		mScale = scale;
-		 _updateStatus(mInputtedText);
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
 		mScaleX = baseX;
 		mScaleY = baseY;
-//		android.util.Log.v("kiyo","sxy="+mScaleX+","+mScaleY);
 		mScaleTime = 20;
-//		setPositionY(mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1);
-		mPositionY = mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1;
-		
-		float option = baseX-(baseX - sGetX) * scale / sScale;
-//		setPositionX((int) (option));
-		mPositionX = (int) option;
+		setPositionY(mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1, true);
+		setPositionX((int) (baseX-(baseX - sGetX) * scale / sScale), true);
 
 	}
 
@@ -180,7 +162,11 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized void setPositionY(int position) {
-		if(mImpedance <= 0) {
+		setPositionY(position, false);
+	}
+
+	public synchronized void setPositionY(int position, boolean ignoreBias) {
+		if(mBiasAboutMoveLine <= 0 ||ignoreBias) {
 			mPositionY = position;
 		}
 	}
@@ -190,7 +176,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public void setPositionX(int x) {
-		if(mImpedance <= 0) {
+		setPositionX(x, false);
+	}
+	public void setPositionX(int x, boolean ignoreBias) {
+		if(mBiasAboutMoveLine <= 0||ignoreBias) {
 			mPositionX = x;
 		}
 	}
@@ -380,8 +369,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		graphics.clipRect(0, 0, getWidth(), getHeight());
-		if(mImpedance>0){
-			mImpedance--;
+		if(mBiasAboutMoveLine>0){
+			mBiasAboutMoveLine--;
 		}
 		LineViewBufferSpec showingText = mInputtedText;
 		LineViewData[] list = null;
@@ -410,7 +399,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		{// line number
 			int s = graphics.getTextSize();
 			graphics.setTextSize(s * 3);
-			graphics.setColor(mTestTextColor);
+			graphics.setColor(sTestTextColor);
 			graphics.drawText("" + getShowingTextStartPosition() + ":"
 					+ getShowingTextEndPosition(), 30, s * 4);
 			graphics.setTextSize(s);
@@ -455,16 +444,18 @@ public class LineView extends SimpleDisplayObjectContainer {
 		try {
 			lock();
 			if (!mIsTail || mPositionY > 1) {
-				mPositionY += showingText.getNumOfAdd();
+				//mPositionY += showingText.getNumOfAdd();
+				setPositionY(mPositionY + showingText.getNumOfAdd(), true);
+
 				addPoint(showingText.getNumOfAdd());
 			}
 			showingText.clearNumOfAdd();
 
 			int blankSpace = mNumOfLine / 2;
 			if (mPositionY < -(mNumOfLine - blankSpace)) {
-				setPositionY(-(mNumOfLine - blankSpace) - 1);
+				setPositionY(-(mNumOfLine - blankSpace) - 1, true);
 			} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
-				setPositionY(showingText.getNumberOfStockedElement() - blankSpace);
+				setPositionY(showingText.getNumberOfStockedElement() - blankSpace, true);
 			}
 			mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize, mScale,showingText);
 		} finally {
@@ -490,4 +481,20 @@ public class LineView extends SimpleDisplayObjectContainer {
 			}
 		}
 	}
+
+	public static class Point {
+		WeakReference<LineView> mR;
+		private Point(int point, LineView v) {
+			mPoint = point;
+			mR = new WeakReference<LineView>(v);
+		}
+		public int getPoint() {
+			return mPoint;
+		}
+		public void setPoint(int point) {
+			mPoint = point;
+		}
+		private int mPoint = 0;
+	}
+
 }
