@@ -41,8 +41,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 		float scale = (getTextSize() / getBreakText().getTextSize());
 		return scale;
 	}
+
 	public BreakText getBreakText() {
-		if(getLineViewBuffer() == null){
+		if (getLineViewBuffer() == null) {
 			return null;
 		} else {
 			return getLineViewBuffer().getBreakText();
@@ -55,12 +56,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return point;
 	}
 
-	public void isClearBG(boolean on){
+	public void isClearBG(boolean on) {
 		mIsClearBG = on;
 	}
 
 	public boolean isOver() {
-		if (this.isTail()&& mInputtedText.getMaxOfStackedElement() <= mInputtedText.getNumberOfStockedElement()) {
+		if (this.isTail()
+				&& mInputtedText.getMaxOfStackedElement() <= mInputtedText
+						.getNumberOfStockedElement()) {
 			return true;
 		} else {
 			return false;
@@ -71,8 +74,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (isOver()) {
 			for (Point p : mPoint.values()) {
 				p.mPoint -= num;
-				if(p.mPoint < 0){
-					p.mPoint = 0; 
+				if (p.mPoint < 0) {
+					p.mPoint = 0;
 				}
 			}
 		}
@@ -101,21 +104,22 @@ public class LineView extends SimpleDisplayObjectContainer {
 		mScale = scale;
 	}
 
-	public synchronized void setScale(
-			float scale, float sScale, int sGetX,
+	public synchronized void setScale(float scale, float sScale, int sGetX,
 			int linePosX, Point linePosY, int baseX, int baseY) {
-//		mInputtedText.clearNumOfAdd();
-		 _updateStatus(mInputtedText);
-		if(mBiasAboutMoveLine<6){
-			mBiasAboutMoveLine +=2;
+		// mInputtedText.clearNumOfAdd();
+		_updateStatus(mInputtedText);
+		if (mBiasAboutMoveLine < 6) {
+			mBiasAboutMoveLine += 2;
 		}
 		mScale = scale;
 		int pos = (int) ((getHeight() - baseY) / (getShowingTextSize() * 1.2));//
 		mScaleX = baseX;
 		mScaleY = baseY;
 		mScaleTime = 20;
-		setPositionY(mInputtedText.getNumberOfStockedElement()- linePosY.getPoint() - pos - 1, true);
-		setPositionX((int) (baseX-(baseX - sGetX) * scale / sScale), true);
+		setPositionY(
+				mInputtedText.getNumberOfStockedElement() - linePosY.getPoint()
+						- pos - 1, true);
+		setPositionX((int) (baseX - (baseX - sGetX) * scale / sScale), true);
 
 	}
 
@@ -128,7 +132,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public int getTextSize() {
-		if(mTextSize<=0) {
+		if (mTextSize <= 0) {
 			return 1;
 		}
 		return mTextSize;
@@ -136,7 +140,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public int getShowingTextSize() {
 		int ret = (int) (mTextSize * mScale);
-		if(ret < 0) {
+		if (ret < 0) {
 			return 1;
 		}
 		return ret;
@@ -151,12 +155,12 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return mInputtedText;
 	}
 
-//	@Deprecated
+	// @Deprecated
 	public synchronized int getShowingTextStartPosition() {
 		return mDrawingPosition.getStart();
 	}
 
-//	@Deprecated
+	// @Deprecated
 	public synchronized int getShowingTextEndPosition() {
 		return mDrawingPosition.getEnd();
 	}
@@ -166,7 +170,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized void setPositionY(int position, boolean ignoreBias) {
-		if(mBiasAboutMoveLine <= 0 ||ignoreBias) {
+		if (mBiasAboutMoveLine <= 0 || ignoreBias) {
 			mPositionY = position;
 		}
 	}
@@ -178,8 +182,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public void setPositionX(int x) {
 		setPositionX(x, false);
 	}
+
 	public void setPositionX(int x, boolean ignoreBias) {
-		if(mBiasAboutMoveLine <= 0||ignoreBias) {
+		if (mBiasAboutMoveLine <= 0 || ignoreBias) {
 			mPositionX = x;
 		}
 	}
@@ -209,19 +214,22 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public void setMergine(int mergine) {
 		mMergine = mergine;
 	}
+
 	public int getMergine() {
-		if(mMergine  == -1) {
+		if (mMergine == -1) {
 			return mMergine = (getWidth()) / 20;
 		} else {
 			return mMergine;
 		}
 	}
+
 	public int getLeftForStartDrawLine() {
 		return getMergine() + mPositionX;
 	}
 
 	public int getYForStartDrawLine(int cursurCol) {
-		int yy = (int) ((int) (getShowingTextSize() * 1.2)) * (getBlinkY() + cursurCol + 1);
+		int yy = (int) ((int) (getShowingTextSize() * 1.2))
+				* (getBlinkY() + cursurCol + 1);
 		return yy;
 	}
 
@@ -247,7 +255,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return l;
 	}
 
-	//@Deprecated
+	// @Deprecated
 	public int getXToPosX(int cursorCol, int xx, int cur) {
 		float x = xx;// /getScale();
 		x -= getLeftForStartDrawLine();
@@ -303,15 +311,26 @@ public class LineView extends SimpleDisplayObjectContainer {
 			mPositionX = 0;
 		}
 
-		float positionMax = -1 * (getBreakText().getWidth()*getShowingTextSize()/(float)getBreakText().getTextSize());
-		positionMax += getWidth()-getMergine()*2-getMergine()*(mScale);
-/*		android.util.Log.v("kiyo",
-		"positionMax="+positionMax+",w="+getBreakText().getWidth()+","+getWidth()+",t="
-		+mScale+","+getShowingTextSize()+","+getBreakText().getTextSize()+","+
-		getTextSize()+",m="+getMergine()
-		);*/
+		float positionMax = -1
+				 * getBreakText().getWidth() * getShowingTextSize() / (float) getBreakText().getTextSize()
+				//* (getBreakText().getWidth() * mScale)
+				//* (getWidth()-getMergine()*2)/ (float) (getBreakText().getWidth())
+				 ;
+
+//		android.util.Log.v("kiyo", "positionMax _=" + positionMax+","+(getWidth() - getMergine() * 2));
+	//	positionMax *= getShowingTextSize() / (float)getBreakText().getTextSize();
+		positionMax += getWidth() - getMergine() * 2;
+//		positionMax += getWidth()*getShowingTextSize() / (float)getBreakText().getTextSize()- getMergine() * 2;
+//		android.util.Log.v("kiyo", "positionMax=" + positionMax);
+//		android.util.Log.v("kiyo",",w="+ getBreakText().getWidth() + "," + getWidth()+ ",m="+ getMergine());
+//		android.util.Log.v("kiyo",",scale=" + mScale);
+//		android.util.Log.v("kiyo","tsize=" + getShowingTextSize() + ","+ getBreakText().getTextSize()+
+//				","+getTextSize() );
+//		android.util.Log.v("kiyo",",logical=" + (getWidth()-getMergine()*2)
+///				/ (float) (getBreakText().getWidth()));
+		
 		if (mPositionX < positionMax) {
-			mPositionX = (int)positionMax;
+			mPositionX = (int) positionMax;
 		}
 
 		// int scaleLine = mScaleLine-getShowingTextStartPosition();
@@ -338,9 +357,11 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	private Thread currentThread = null;
 	int num = 0;
+
 	public synchronized void lock() {
 		try {
-			while(currentThread != null && currentThread != Thread.currentThread()){
+			while (currentThread != null
+					&& currentThread != Thread.currentThread()) {
 				wait();
 			}
 			if (mInputtedText instanceof SimpleLockInter) {
@@ -351,7 +372,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			currentThread = Thread.currentThread();
 			num++;
 		}
-	//	android.util.Log.v("kiyo","lock="+num);
+		// android.util.Log.v("kiyo","lock="+num);
 	}
 
 	public synchronized void releaseLock() {
@@ -359,17 +380,17 @@ public class LineView extends SimpleDisplayObjectContainer {
 			((SimpleLockInter) mInputtedText).endLock();
 		}
 		num--;
-		if(num == 0&&currentThread == Thread.currentThread()){
+		if (num == 0 && currentThread == Thread.currentThread()) {
 			notifyAll();
 			currentThread = null;
 		}
-	//	android.util.Log.v("kiyo","unlock="+num);
+		// android.util.Log.v("kiyo","unlock="+num);
 	}
-	
+
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		graphics.clipRect(0, 0, getWidth(), getHeight());
-		if(mBiasAboutMoveLine>0){
+		if (mBiasAboutMoveLine > 0) {
 			mBiasAboutMoveLine--;
 		}
 		LineViewBufferSpec showingText = mInputtedText;
@@ -415,7 +436,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (list != null) {// bug fix
 			showLineDate(graphics, list, len);
 		}
-		//*/
+		// */
 		// fin
 		super.paint(graphics);
 		graphics.clipRect(-1, -1, -1, -1);
@@ -444,7 +465,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		try {
 			lock();
 			if (!mIsTail || mPositionY > 1) {
-				//mPositionY += showingText.getNumOfAdd();
+				// mPositionY += showingText.getNumOfAdd();
 				setPositionY(mPositionY + showingText.getNumOfAdd(), true);
 
 				addPoint(showingText.getNumOfAdd());
@@ -455,16 +476,18 @@ public class LineView extends SimpleDisplayObjectContainer {
 			if (mPositionY < -(mNumOfLine - blankSpace)) {
 				setPositionY(-(mNumOfLine - blankSpace) - 1, true);
 			} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
-				setPositionY(showingText.getNumberOfStockedElement() - blankSpace, true);
+				setPositionY(showingText.getNumberOfStockedElement()
+						- blankSpace, true);
 			}
-			mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize, mScale,showingText);
+			mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize,
+					mScale, showingText);
 		} finally {
 			releaseLock();
 		}
 	}
 
 	private void drawBG(SimpleGraphics graphics) {
-		if(mIsClearBG){			
+		if (mIsClearBG) {
 			int w = getWidth();
 			int h = getHeight();
 
@@ -484,16 +507,20 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public static class Point {
 		WeakReference<LineView> mR;
+
 		private Point(int point, LineView v) {
 			mPoint = point;
 			mR = new WeakReference<LineView>(v);
 		}
+
 		public int getPoint() {
 			return mPoint;
 		}
+
 		public void setPoint(int point) {
 			mPoint = point;
 		}
+
 		private int mPoint = 0;
 	}
 

@@ -2,6 +2,8 @@ package info.kyorohiro.helloworld.logcat.util;
 
 import java.lang.ref.WeakReference;
 import java.util.regex.Pattern;
+
+import android.view.ViewDebug.ExportedProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -24,15 +26,18 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	private FlowingLineView mViewer = null;
 	private int mTextSize = 16;
 	private int mBaseWidth = 400;
+	private LineViewBufferSpecAdapterForFlowingLineBuffer currentLVBSAFFLB = null;
 
 	public SimpleFilterableLineView(FlowingLineBuffer lineData, int baseWidth) {
 		mInputtedText = lineData;
+		mBaseWidth = baseWidth;
 		if (mInputtedText == null) {
 			mInputtedText = new FlowingLineBuffer(3000, 1000, mTextSize);
 		}
+		
 		mTextSize = mInputtedText.getTextSize();
-		mViewer = new FlowingLineView(new LineViewBufferSpecAdapterForFlowingLineBuffer(mInputtedText), mTextSize);
-		mBaseWidth = baseWidth;
+		mViewer = new FlowingLineView(currentLVBSAFFLB=new LineViewBufferSpecAdapterForFlowingLineBuffer(mInputtedText, mTextSize, mBaseWidth*9/10), 1000);//mTextSize);
+		mViewer.getLineView().setMergine(mBaseWidth/20);
 		addChild(new TouchAndMoveActionForLineView(this.getLineView()));
 		addChild(new TouchAndZoomForLineView(this.getLineView()));	
 		addChild(new Layout());
@@ -52,6 +57,8 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 			fontSize = fontSize*width/(double)mBaseWidth;
 			SimpleFilterableLineView.this.mInputtedText.setWidth((int)(mBaseWidth*9/10));
 			SimpleFilterableLineView.this.getLineView().setTextSize((int)(fontSize));
+			SimpleFilterableLineView.this.getLineView().setMergine((int)(width/20));
+
 		}
 	}
 
@@ -82,8 +89,8 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
 		// 以下はリークしてるかも
 		mViewer.getLineView().setLineViewBufferSpec(
-				new LineViewBufferSpecAdapterForFlowingLineBuffer(mInputtedText.getDuplicatingList()));
-
+				currentLVBSAFFLB=new LineViewBufferSpecAdapterForFlowingLineBuffer(mInputtedText.getDuplicatingList(), 
+						 mInputtedText.getTextSize(), mBaseWidth*9/10));
 	}
 
 	private boolean equalFilter(Pattern currentFilter, Pattern nextFilter) {
@@ -104,17 +111,34 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	@Deprecated
+	public void setFontSize(float size) {
+		currentLVBSAFFLB.setFontSize(size);
+	}
 	//
 	// メモリーリークが発生しそうなので、WeakReferencecを利用している。
+	//
+	// MyBreakText を使うことをやめる。
+	// そうすると、すっきりする部分がある。
+	// とりあえず、setFontxxxはなくセル。
+	@Deprecated
 	public static class LineViewBufferSpecAdapterForFlowingLineBuffer implements LineViewBufferSpec {
+//		private WeakReference<CyclingListInter<LineViewData>> mBuffer = null;
 		private WeakReference<CyclingListInter<LineViewData>> mBuffer = null;
-		public LineViewBufferSpecAdapterForFlowingLineBuffer(CyclingListInter<LineViewData> buffer) {
+		private MyBreakText mBreakText = new MyBreakText();
+
+		public LineViewBufferSpecAdapterForFlowingLineBuffer(CyclingListInter<LineViewData> buffer, int textsize, int width) {
 			mBuffer = new WeakReference<CyclingListInter<LineViewData>>(buffer);
+			mBreakText.setBufferWidth(width);
+			mBreakText.setTextSize(textsize);
 		}
 
+		public void setFontSize(float size){
+			mBreakText.setTextSize(size);
+		}
 		@Override
 		public BreakText getBreakText() {
-			return new MyBreakText();
+			return mBreakText;
 		}
 
 		@Override
