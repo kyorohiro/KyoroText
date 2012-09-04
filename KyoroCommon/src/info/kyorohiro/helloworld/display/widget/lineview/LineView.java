@@ -312,14 +312,15 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 
 		float positionMax = -1
-				 * getBreakText().getWidth() * getShowingTextSize() / (float) getBreakText().getTextSize()
+				 * getBreakText().getWidth() * getShowingTextSize() / 
+				 (float) getBreakText().getTextSize()
 				//* (getBreakText().getWidth() * mScale)
 				//* (getWidth()-getMergine()*2)/ (float) (getBreakText().getWidth())
 				 ;
 
 //		android.util.Log.v("kiyo", "positionMax _=" + positionMax+","+(getWidth() - getMergine() * 2));
 	//	positionMax *= getShowingTextSize() / (float)getBreakText().getTextSize();
-		positionMax += getWidth() - getMergine() * 2;
+		positionMax += getWidth() - getMergine() * 2.2;
 //		positionMax += getWidth()*getShowingTextSize() / (float)getBreakText().getTextSize()- getMergine() * 2;
 //		android.util.Log.v("kiyo", "positionMax=" + positionMax);
 //		android.util.Log.v("kiyo",",w="+ getBreakText().getWidth() + "," + getWidth()+ ",m="+ getMergine());

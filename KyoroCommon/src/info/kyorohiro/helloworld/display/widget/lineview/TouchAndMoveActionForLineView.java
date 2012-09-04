@@ -53,10 +53,12 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 			focusIn = false;
 		}
 		if(!focusIn){
-			action = MotionEvent.ACTION_UP;
+			if(mIsTouched!=true){
+				action = MotionEvent.ACTION_UP;
+			}
 		}
 		if(doubleTouched){
-			android.util.Log.v("kiyo","touched");
+//			android.util.Log.v("kiyo","touched");
 			mIsTouched = false;
 			action = MotionEvent.ACTION_UP;
 		}

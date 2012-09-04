@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.kyorohiro.helloworld.textviewer"
-    android:versionCode="88"
+    android:versionCode="89"
     android:installLocation="auto"
-    android:versionName="0.1853 88 unstable">
+    android:versionName="0.1854 89 unstable">
 
     <uses-sdk android:minSdkVersion="4" />
 	<!--uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/-->
@@ -12,7 +12,7 @@
 
     <application
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" android:name="KyoroApplication" android:debuggable="true">
+        android:label="@string/app_name" android:name="KyoroApplication" android:debuggable="false">
         <activity
             android:label="@string/app_name"
             android:name=".KyoroTextViewerActivity"            
