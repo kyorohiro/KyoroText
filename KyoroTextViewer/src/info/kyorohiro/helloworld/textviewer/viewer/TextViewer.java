@@ -79,6 +79,14 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return mLineView;
 	}
 
+	public TextViewerBuffer getTextViewerBuffer() {
+		if(mBuffer instanceof TextViewerBuffer) {
+			return (TextViewerBuffer)mBuffer;
+		}
+		else {
+			return null;
+		}
+	}
 	public void restart() {
 		if (mCurrentPath != null && !mCurrentPath.equals("")) {
 			readFile(new File(mCurrentPath));

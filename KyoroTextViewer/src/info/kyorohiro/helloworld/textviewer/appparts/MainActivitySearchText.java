@@ -2,6 +2,8 @@ package info.kyorohiro.helloworld.textviewer.appparts;
 
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.textviewer.task.SearchTextTask;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.app.Dialog;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -18,10 +21,10 @@ import android.widget.TextView;
 
 public class MainActivitySearchText implements MainActivityMenuAction {
 
-	public static String TITLE = "font size";
-	private TextViewer mDisplayedTextViewer = null;
+	public static String TITLE = "search";
+	private LineViewManager mDisplayedTextViewer = null;
 
-	public MainActivitySearchText(TextViewer viewer) {
+	public MainActivitySearchText(LineViewManager viewer) {
 		mDisplayedTextViewer = viewer;
 	}
 
@@ -44,60 +47,37 @@ public class MainActivitySearchText implements MainActivityMenuAction {
 	}
 
 	public static LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-	private TextView mSample = null;
-	private TextView mTextSize = null;
-	private Button mOK = null;
-	private SeekBar mBar =null;
+	private EditText mSearchWord = null;
+	private TextView mMessage = null;
+	private Button mNext = null;
 	public class DialogForShowDeviceSupportCharset extends Dialog {
 		public DialogForShowDeviceSupportCharset(Context context) {
 			super(context);
 			int fontSize = KyoroSetting.getCurrentFontSize();
-			mOK = new Button(context);
-			mOK.setText("OK");
-			mSample = new TextView(context);
-			mTextSize = new TextView(context);
-			mSample.setText("Sample: ABCDEFGxyz.01234");
-			mTextSize.setText(""+fontSize);
-			mBar = new SeekBar(context);
+			mNext = new Button(context);
+			mNext.setText("next");
+			mSearchWord = new EditText(context);
+			mMessage = new TextView(context);
+			mSearchWord.setText(".*");
+			mMessage.setText(""+fontSize);
 			LinearLayout layout = new LinearLayout(context);
-			setTitle("------------------font size-----------------------");
-			mBar.setMax(126);
-			mBar.setProgress(fontSize);
+			setTitle("------------------search-----------------------");
 			layout.setOrientation(LinearLayout.VERTICAL);
-			layout.addView(mTextSize, params);
-			layout.addView(mBar, params);
+			layout.addView(mSearchWord, params);
+			layout.addView(mMessage, params);
 			layout.setPadding(40, 40, 40, 40);
-//			layout.addView(mSample,params);
-			layout.addView(mOK);
+			layout.addView(mNext);
 			setContentView(layout,params);
-			mBar.setMinimumWidth(600);
-			
-			mBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-				@Override
-				public void onStopTrackingTouch(SeekBar seekBar) {
-				}
-				@Override
-				public void onStartTrackingTouch(SeekBar seekBar) {
-				}
-				
-				@Override
-				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-					if(progress<=0){
-						progress = 2;
-					}
-					mTextSize.setText(""+progress);
-					mTextSize.setTextSize(progress);
-				}
-			});
-			
-			mOK.setOnClickListener(new View.OnClickListener() {				
+						
+			mNext.setOnClickListener(new View.OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					int textSize = mBar.getProgress();
 					try {
-						KyoroSetting.setCurrentFontSize(""+textSize);
-						mDisplayedTextViewer.setCurrentFontSize(textSize);
-						mDisplayedTextViewer.restart();
+						TextViewer viewer = mDisplayedTextViewer.getFocusingTextViewer();
+						String searchWord = mSearchWord.getText().toString();
+						Thread th = new Thread(
+						SearchTextTask.getSearchTextTask(viewer, searchWord));
+						th.start();
 						dismiss();
 					} catch(Throwable t){
 
