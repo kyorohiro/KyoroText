@@ -13,6 +13,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
+import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineView;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
@@ -33,14 +34,23 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private int mMergine = 0;
 	private MyBreakText mBreakText = new MyBreakText();
 
+	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine) {
+		init(buffer, textSize, width, mergine);
+	}
+
 	public TextViewer(int textSize, int width, int mergine) {
+		init(StartupMessageBuffer.getStartupMessageBuffer(), textSize, width, mergine);
+	}
+
+	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine) {
 		mCurrentFontSize = textSize;
 		mCurrentCharset = KyoroSetting.getCurrentCharset();
 		mBuffer = StartupMessageBuffer.getStartupMessageBuffer();
 		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
 
-		mLineView = new CursorableLineView(mBuffer, textSize, 200);
+//		mLineView = new CursorableLineView(mBuffer, textSize, 200);
+		mLineView = new EditableLineView(mBuffer, textSize, 200);
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
 		setRect(width, width/2);

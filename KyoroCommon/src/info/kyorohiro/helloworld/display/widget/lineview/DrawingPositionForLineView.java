@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 public class DrawingPositionForLineView {
+
+	private boolean mBlinkable = true;
 	private int mPosition = 0;
 	private int mNumOfLine = 0;
 	private int mStart = 0;
@@ -23,18 +25,47 @@ public class DrawingPositionForLineView {
 		return mBlank;
 	}
 
-	public void updateInfo(int position, int height, int textSize, 
+	public void updateInfo(LineView view, int position, int height, int textSize, 
 			double scale,LineViewBufferSpec showingText) {
-		mPosition = position;
 		mNumOfLine = (int)(height / (textSize*1.2*scale));
+		resetInfo(view);
+		
+		if(mBlinkable){
+			// パウンスするようなアニメーションする。
+			mPosition = position;
+			if(Math.abs(view.getPositionY()-mPosition)>mNumOfLine/4) {
+				if(view.getPositionY()>mPosition) {
+					mPosition = view.getPositionY()-mNumOfLine/4;
+				} else {
+					mPosition = view.getPositionY()+mNumOfLine/4;					
+				}
+			}
+		} else {
+			// パウンスするようなアニメーションしない。
+			mPosition = view.getPositionY();
+		}
 		mStart = start(showingText);
 		mEnd = end(showingText);
 		mBlank = blank(showingText);
 	}
 
+	private void resetInfo(LineView view) {
+		int blankSpace = mNumOfLine;
+		if(mBlinkable){
+			blankSpace /=2;
+		}
+		int pos = view.getPositionY();
+		LineViewBufferSpec buffer = view.getLineViewBuffer();
+
+		if (pos <-(mNumOfLine - blankSpace)) {
+			view.setPositionY(-(mNumOfLine - blankSpace) - 1, true);
+		} else if (pos > (buffer.getNumberOfStockedElement() - blankSpace)) {
+			view.setPositionY(buffer.getNumberOfStockedElement()- blankSpace, true);
+		}
+	}
+
 	public int start(LineViewBufferSpec showingText) {
-		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
+		int referPoint = referPoint(showingText);
 		int start = referPoint;
 		if (start < 0) {
 			start = 0;
@@ -42,10 +73,20 @@ public class DrawingPositionForLineView {
 		return start;
 	}
 
+	private int referPoint(LineViewBufferSpec showingText) {
+		int numOfStackedString = showingText.getNumberOfStockedElement();
+		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
+		if(!mBlinkable){
+			if(referPoint < 0) {
+				referPoint = 0;
+			}
+		}
+		return referPoint;
+	}
 
 	public int end(LineViewBufferSpec showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
+		int referPoint = referPoint(showingText);
 		int end = referPoint + mNumOfLine;
 		if (end < 0) {
 			end = 0;
@@ -57,14 +98,17 @@ public class DrawingPositionForLineView {
 	}
 
 	public int blank(LineViewBufferSpec showingText) {
-		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
-		int blank = 0;
-		boolean uppserSideBlankisViewed = (referPoint) < 0;
-		if (uppserSideBlankisViewed) {
-			blank = -1 * referPoint;
+		if(mBlinkable){
+			int referPoint = referPoint(showingText);
+			int blank = 0;
+			boolean uppserSideBlankisViewed = (referPoint) < 0;
+			if (uppserSideBlankisViewed) {
+				blank = -1 * referPoint;
+			}
+			return blank;
+		} else {
+			return 0;
 		}
-		return blank;
 	}
 
 	public int getLen() {

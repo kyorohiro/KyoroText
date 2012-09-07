@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.textviewer.viewer;
+package info.kyorohiro.helloworld.textviewer.manager;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
@@ -7,16 +7,16 @@ import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
 
-public class StartupMessageBuffer extends CyclingList<LineViewData> implements LineViewBufferSpec {
+public class StartupCommandBuffer extends CyclingList<LineViewData> implements LineViewBufferSpec {
 
-	public StartupMessageBuffer(int listSize) {
+	public StartupCommandBuffer(int listSize) {
 		super(listSize);
 	}
 
-	public static StartupMessageBuffer getStartupMessageBuffer() {
+	public static StartupCommandBuffer getStartupCommandBuffer() {
 		String[] message = getStartupMessage();
 		int color[] = getStartgupMessageColor();
-		StartupMessageBuffer startupMessage = new StartupMessageBuffer(100);
+		StartupCommandBuffer startupMessage = new StartupCommandBuffer(100);
 		for (int i = 0; i < message.length; i++) {
 			String m = message[i];
 			int crlf = LineViewData.INCLUDE_END_OF_LINE;
@@ -34,20 +34,12 @@ public class StartupMessageBuffer extends CyclingList<LineViewData> implements L
 	}
 
 	protected static String[] getStartupMessage() {
-		String[] message = {
-				"Sorry, this application is pre-alpha version",
-				"Testing and Developing.. now",
-				"Please mail kyorohiro.android@gmail.com, ",
-				"If you have particular questions or comments, ",
-				"please don't hesitate to contact me. Thank you. \n" };
+		String[] message = {".*" };
 		return message;
 	}
 
 	protected static int[] getStartgupMessageColor() {
-		int color[] = {
-				Color.BLUE,
-				Color.RED, Color.RED, 
-				Color.RED, Color.RED, };
+		int color[] = {Color.BLUE};
 		return color;
 	}
 

@@ -464,7 +464,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 	protected void _updateStatus(LineViewBufferSpec showingText) {
 		mNumOfLine = (int) (getHeight() / (getShowingTextSize() * 1.2));// todo
 		try {
-			android.util.Log.v("test","mPositionY[1]="+mPositionY+","+ showingText.getNumOfAdd());
 			lock();
 			if (!mIsTail || mPositionY > 1) {
 				// mPositionY += showingText.getNumOfAdd();
@@ -473,17 +472,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 				addPoint(showingText.getNumOfAdd());
 			}
 			showingText.clearNumOfAdd();
-			android.util.Log.v("test","mPositionY[2]="+mPositionY);
-
-			int blankSpace = mNumOfLine / 2;
-			if (mPositionY < -(mNumOfLine - blankSpace)) {
-				setPositionY(-(mNumOfLine - blankSpace) - 1, true);
-			} else if (mPositionY > (showingText.getNumberOfStockedElement() - blankSpace)) {
-				setPositionY(showingText.getNumberOfStockedElement()
-						- blankSpace, true);
-			}
-			mDrawingPosition.updateInfo(mPositionY, getHeight(), mTextSize,
-					mScale, showingText);
+			mDrawingPosition.updateInfo(this, mPositionY, getHeight(), mTextSize, mScale, showingText);
 		} finally {
 			releaseLock();
 		}
