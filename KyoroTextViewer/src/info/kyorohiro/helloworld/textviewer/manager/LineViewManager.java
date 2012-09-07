@@ -58,11 +58,13 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	@Override
-	public void addChild(SimpleDisplayObject child) {
+	public void insertChild(int index, SimpleDisplayObject child) {
+		android.util.Log.v("kiyo","---- c");
 		if (child instanceof LineViewGroup) {
 			mRoot = (LineViewGroup) child;
+			android.util.Log.v("kiyo","---- child");
 		}
-		super.addChild(child);
+		super.insertChild(index, child);
 	}
 
 	public LineViewGroup getRoot() {
