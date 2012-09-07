@@ -18,7 +18,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 	private LineViewBufferSpec mOwner = null;
 	private HashMap<Integer, LineViewData> mDiff = new HashMap<Integer, LineViewData>();
 	private HashMap<Integer, Integer> mIndex = new HashMap<Integer, Integer>();
-// HashMap<Integer, Integer> mDelete = new HashMap<Integer, Integer>();
 	private ArrayList<Integer> mDelete =  new ArrayList<Integer>();
 
 	public EditableLineViewBuffer(LineViewBufferSpec owner) {
@@ -73,6 +72,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		return mOwner.getMaxOfStackedElement();
 	}
 
+
+
 	@Override
 	public void pushCommit(CharSequence text, int cursor) {
 		pushCommit(text, mCursorRow, mCursorCol);
@@ -94,6 +95,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		}
 	}
 
+
+
 	@Override
 	public LineViewData get(int i) {
 		if (includeDiff(i)) {
@@ -106,7 +109,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 			}
 		}
 	}
-	private LineViewData end_of_line = new LineViewData("++END OF LINE++", Color.RED, LineViewData.INCLUDE_END_OF_LINE);
 
 
 	private boolean includeDiff(int i) {
@@ -127,16 +129,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 			}
 		}
 
-		//
 		int del = 0;
 		int next = i-plus;
-		//Set<Integer> deletes = mDelete.keySet();
 		int[] ret = sort(mDelete);
-//		android.util.Log.v("kiyo","-------------");
-//		for(int r:ret){
-//			android.util.Log.v("kiyo",""+r);
-//		}
-//		android.util.Log.v("kiyo","=============");
 		for(int dd: ret) {
 			if(dd<=next){
 				next++;
@@ -145,31 +140,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		return next;
 	}
 
-	//
-	// いけてないソート
-	private int[] sort(ArrayList<Integer> key){
-		int[] ret = new int[key.size()];
-		int i=0;
-		for(int ii : key){
-			ret[i++] = ii;
-		}
-
-		int s =0;
-		for(i=0;i<ret.length;i++){
-			s=i;
-			for(int j=i+1;j<ret.length;j++){
-				if(ret[s]>ret[j]){
-					s=j;
-				}
-			}
-			if(s!=i){
-				int t = ret[i];
-				ret[i] = ret[s];
-				ret[s] = t;
-			}
-		}
-		return ret;
-	}
 
 	private int numOfAddFromDiff() {
 		int plus = 0;
@@ -255,29 +225,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		mCursorRow--;
 	}
 
-	private void printIndex() {
-		Set<Integer> keys = mIndex.keySet();
-//		android.util.Log.v("kiyokiyo",
-//				"pIndex:start-----------------------------");
-		for (Integer k : keys) {
-			android.util.Log
-					.v("kiyokiyo", "pindex:[" + k + "]:" + mIndex.get(k));
-		}
-//		android.util.Log.v("kiyokiyo",
-//				"pIndex:stop==============================");
-	}
-
-	private void printDiff() {
-		Set<Integer> keys = mDiff.keySet();
-//		android.util.Log.v("kiyokiyo",
-//				"pdiff:start-----------------------------");
-		for (Integer k : keys) {
-			android.util.Log.v("kiyokiyo", "pdiff:[" + k + "]:" + mDiff.get(k));
-		}
-//		android.util.Log.v("kiyokiyo",
-//				"pdiff:stop==============================");
-	}
-
 	//
 	// よさげでないデータ構造なので、直す。
 	private void insertDiff(int currentCol, LineViewData data) {
@@ -303,17 +250,11 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 
 
 
-//==============================================================================================
-//
-//==============================================================================================
 
-
-	private CharSequence extract(CharSequence commit, int currentRow,
-			int currentCol) {
+	private CharSequence combineTextNoCommit(CharSequence commit, int currentRow, int currentCol) {
 		LineViewData data = get(currentCol);
 		if (data == null) {
-			data = new LineViewData("", Color.GREEN,
-					LineViewData.INCLUDE_END_OF_LINE);
+			data = new LineViewData("\n", Color.GREEN, LineViewData.INCLUDE_END_OF_LINE);
 		}
 
 		CharSequence c = null;
@@ -327,32 +268,37 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		return c;
 	}
 
+
+
+
+	//
+	// テキストがコミットされた!!
+	//
 	private void pushCommit(CharSequence text, int currentRow, int currentCol) {
-		if (currentCol < 0) {
+
+		if (currentCol < 0|| currentRow < 0) {
+			// ???
 			return;
 		}
 
-		LineViewData data = get(currentCol);
-		if (data == null) {
-			data = new LineViewData("", Color.GREEN,
-					LineViewData.INCLUDE_END_OF_LINE);
+		CharSequence c = combineTextNoCommit(text, currentRow, currentCol);
+		int eofStatus = LineViewData.EXCLUDE_END_OF_LINE;
+		if(c.toString().endsWith("\n")){
+			eofStatus = LineViewData.INCLUDE_END_OF_LINE;
 		}
-
-		CharSequence c = extract(text, currentRow, currentCol);
-
+		
 		// 再配置する。
 		int len = getBreakText().breakText(c, 0, c.length(),
 				getBreakText().getWidth());
 		if (c.length() <= len) {
 			// 1行におさまるから何もしない
 			mDiff.put(currentCol, new LineViewData(c.subSequence(0, len),
-					Color.BLUE, data.getStatus()));
+					Color.BLUE, eofStatus));
 		} else {
 			mDiff.put(currentCol, new LineViewData(c.subSequence(0, len),
 					Color.BLUE, LineViewData.EXCLUDE_END_OF_LINE));
 
-			if ('\n' == c.charAt(c.length() - 1)
-					|| data.getStatus() == LineViewData.INCLUDE_END_OF_LINE) {
+			if ('\n' == c.charAt(c.length() - 1)|| eofStatus == LineViewData.INCLUDE_END_OF_LINE) {
 				// currentCol +=1;
 				if (mIndex.containsKey(toOwnerY(currentCol))) {
 					mIndex.put(toOwnerY(currentCol),
@@ -369,6 +315,70 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, W {
 		}
 		// printIndex();
 		// printDiff();
+	}
+
+
+
+
+
+
+
+
+	//
+	// いけてないソート
+	private int[] sort(ArrayList<Integer> key){
+		int[] ret = new int[key.size()];
+		int i=0;
+		for(int ii : key){
+			ret[i++] = ii;
+		}
+
+		int s =0;
+		for(i=0;i<ret.length;i++){
+			s=i;
+			for(int j=i+1;j<ret.length;j++){
+				if(ret[s]>ret[j]){
+					s=j;
+				}
+			}
+			if(s!=i){
+				int t = ret[i];
+				ret[i] = ret[s];
+				ret[s] = t;
+			}
+		}
+		return ret;
+	}
+
+
+
+	//==============================================================================================
+	// following debug code
+	//==============================================================================================
+
+	private LineViewData end_of_line = new LineViewData("++END OF LINE++", Color.RED, LineViewData.INCLUDE_END_OF_LINE);
+
+	private void printIndex() {
+		Set<Integer> keys = mIndex.keySet();
+		android.util.Log.v("kiyokiyo",
+				"pIndex:start-----------------------------");
+		for (Integer k : keys) {
+			android.util.Log
+					.v("kiyokiyo", "pindex:[" + k + "]:" + mIndex.get(k));
+		}
+		android.util.Log.v("kiyokiyo",
+				"pIndex:stop==============================");
+	}
+
+	private void printDiff() {
+		Set<Integer> keys = mDiff.keySet();
+		android.util.Log.v("kiyokiyo",
+				"pdiff:start-----------------------------");
+		for (Integer k : keys) {
+			android.util.Log.v("kiyokiyo", "pdiff:[" + k + "]:" + mDiff.get(k));
+		}
+		android.util.Log.v("kiyokiyo",
+				"pdiff:stop==============================");
 	}
 
 }

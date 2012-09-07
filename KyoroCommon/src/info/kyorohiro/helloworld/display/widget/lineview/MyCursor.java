@@ -34,6 +34,7 @@ public class MyCursor extends SimpleDisplayObject {
 	}
 
 	public void setCursorCol(int col) {
+		if(col<0){col = 0;}//todo
 		cursorCol.setPoint(col);
 	}
 

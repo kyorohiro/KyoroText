@@ -43,9 +43,11 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mTextSize = textSize;
 		mMergine = mergine;
 		mFocusingViewer = newTextViewr();
-		mCommand = new TextViewer(StartupCommandBuffer.getStartupCommandBuffer(),textSize, width, mergine);
-		((EditableLineView) mCommand.getLineView())
-				.setMode(EditableLineView.MODE_EDIT);
+		mCommand = new TextViewer(
+				StartupCommandBuffer.getStartupCommandBuffer(), textSize,
+				width, mergine);
+		// ((EditableLineView) mCommand.getLineView())
+		// .setMode(EditableLineView.MODE_EDIT);
 		addChild(new LineViewGroup(mFocusingViewer));
 		addChild(mCommand);
 		addChild(mCircleMenu);
@@ -59,10 +61,10 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void insertChild(int index, SimpleDisplayObject child) {
-		android.util.Log.v("kiyo","---- c");
+		android.util.Log.v("kiyo", "---- c");
 		if (child instanceof LineViewGroup) {
 			mRoot = (LineViewGroup) child;
-			android.util.Log.v("kiyo","---- child");
+			android.util.Log.v("kiyo", "---- child");
 		}
 		super.insertChild(index, child);
 	}
@@ -91,8 +93,10 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		graphics.setColor(Color.RED);
 		graphics.drawText("now focusing", x, y);
 		graphics.setColor(Color.BLACK);
-		graphics.drawLine(mCommand.getX(), mCommand.getY()+mCommand.getHeight(),
-				mCommand.getX()+ getWidth(false), mCommand.getY()+mCommand.getHeight());
+		graphics.drawLine(mCommand.getX(),
+				mCommand.getY() + mCommand.getHeight(), mCommand.getX()
+						+ getWidth(false),
+				mCommand.getY() + mCommand.getHeight());
 	}
 
 	public void setCircleMenuRadius(int radius) {
@@ -119,6 +123,12 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	public void changeFocus(TextViewer textViewer) {
+		if(mFocusingViewer !=null && mFocusingViewer.getLineView() instanceof CursorableLineView) {
+			if( CursorableLineView.MODE_EDIT.equals(
+					((CursorableLineView)mFocusingViewer.getLineView()).getMergine())){
+				((CursorableLineView)mFocusingViewer.getLineView()).setMode(CursorableLineView.MODE_VIEW);
+			}
+		}
 		mFocusingViewer = textViewer;
 		if (mFocusingViewer.getLineView() instanceof CursorableLineView) {
 			_circleSelected(((CursorableLineView) (mFocusingViewer
@@ -133,18 +143,17 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private boolean _circleSelected(CharSequence title) {
 		CursorableLineView mLineView = (CursorableLineView) getFocusingTextViewer()
 				.getLineView();
-		if (title.equals(CursorableLineView.MODE_VIEW)||
-				title.equals(CursorableLineView.MODE_EDIT)
-				) {
+		if (title.equals(CursorableLineView.MODE_VIEW)
+				|| title.equals(CursorableLineView.MODE_EDIT)) {
 			mCircleMenu.clearCircleMenu();
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			mCircleMenu.addCircleMenu(0, "Search");
-			if(title.equals(CursorableLineView.MODE_EDIT)) {
-			mLineView.setMode(CursorableLineView.MODE_EDIT);
+			if (title.equals(CursorableLineView.MODE_EDIT)) {
+				mLineView.setMode(CursorableLineView.MODE_EDIT);
 			} else {
-				mLineView.setMode(CursorableLineView.MODE_VIEW);				
+				mLineView.setMode(CursorableLineView.MODE_VIEW);
 			}
 
 		} else if (title.equals(CursorableLineView.MODE_SELECT)) {
