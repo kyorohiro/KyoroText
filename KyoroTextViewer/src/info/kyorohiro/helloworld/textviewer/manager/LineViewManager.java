@@ -50,6 +50,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		addChild(mCommand);
 		addChild(mCircleMenu);
 		_circle();
+		mCommand.getLineView().fittableToView(true);
 	}
 
 	public TextViewer newTextViewr() {
@@ -72,7 +73,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	public void paint(SimpleGraphics graphics) {
 		setRect(graphics.getWidth(), graphics.getHeight());
 		_layout();
-		int t = mCircleMenu.getMinRadius() / 2;
+		int t = mCircleMenu.getMinRadius();
 		// mCommand.setPoint(0, graphics.getHeight()-t);
 		// mCommand.setRect(graphics.getWidth(), t);
 		// mRoot.setRect(graphics.getWidth(), graphics.getHeight()-t);

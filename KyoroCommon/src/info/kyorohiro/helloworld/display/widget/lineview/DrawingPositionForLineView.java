@@ -1,13 +1,19 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 public class DrawingPositionForLineView {
-
-	private boolean mBlinkable = true;
+	private boolean mfittableToView = false;
 	private int mPosition = 0;
 	private int mNumOfLine = 0;
 	private int mStart = 0;
 	private int mEnd = 0;
 	private int mBlank = 0;
+
+	public void fittableToView(boolean fit) {
+		mfittableToView = fit;
+	}
+	public boolean fittableToView() {
+		return mfittableToView;
+	}
 
 	public int getNumOfLine() {
 		return mNumOfLine;
@@ -30,7 +36,7 @@ public class DrawingPositionForLineView {
 		mNumOfLine = (int)(height / (textSize*1.2*scale));
 		resetInfo(view);
 		
-		if(mBlinkable){
+		if(!mfittableToView){
 			// パウンスするようなアニメーションする。
 			mPosition = position;
 			if(Math.abs(view.getPositionY()-mPosition)>mNumOfLine/4) {
@@ -51,7 +57,7 @@ public class DrawingPositionForLineView {
 
 	private void resetInfo(LineView view) {
 		int blankSpace = mNumOfLine;
-		if(mBlinkable){
+		if(!mfittableToView){
 			blankSpace /=2;
 		}
 		int pos = view.getPositionY();
@@ -76,7 +82,7 @@ public class DrawingPositionForLineView {
 	private int referPoint(LineViewBufferSpec showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
-		if(!mBlinkable){
+		if(mfittableToView){
 			if(referPoint < 0) {
 				referPoint = 0;
 			}
@@ -98,7 +104,7 @@ public class DrawingPositionForLineView {
 	}
 
 	public int blank(LineViewBufferSpec showingText) {
-		if(mBlinkable){
+		if(!mfittableToView){
 			int referPoint = referPoint(showingText);
 			int blank = 0;
 			boolean uppserSideBlankisViewed = (referPoint) < 0;

@@ -45,7 +45,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine) {
 		mCurrentFontSize = textSize;
 		mCurrentCharset = KyoroSetting.getCurrentCharset();
-		mBuffer = StartupMessageBuffer.getStartupMessageBuffer();
+		mBuffer = buffer;
 		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
 

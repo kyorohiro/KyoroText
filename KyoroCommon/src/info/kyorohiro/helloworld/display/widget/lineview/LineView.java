@@ -81,6 +81,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	public void fittableToView(boolean fit) {
+		mDrawingPosition.fittableToView(fit);
+	}
+
 	public LineView(LineViewBufferSpec inputtedText, int textSize) {
 		mInputtedText = inputtedText;
 		mTextSize = textSize;
