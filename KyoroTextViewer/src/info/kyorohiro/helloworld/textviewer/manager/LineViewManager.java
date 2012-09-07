@@ -133,12 +133,19 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private boolean _circleSelected(CharSequence title) {
 		CursorableLineView mLineView = (CursorableLineView) getFocusingTextViewer()
 				.getLineView();
-		if (title.equals(CursorableLineView.MODE_VIEW)) {
+		if (title.equals(CursorableLineView.MODE_VIEW)||
+				title.equals(CursorableLineView.MODE_EDIT)
+				) {
 			mCircleMenu.clearCircleMenu();
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			mCircleMenu.addCircleMenu(0, "Search");
-			mLineView.setMode(CursorableLineView.MODE_VIEW);
+			if(title.equals(CursorableLineView.MODE_EDIT)) {
+			mLineView.setMode(CursorableLineView.MODE_EDIT);
+			} else {
+				mLineView.setMode(CursorableLineView.MODE_VIEW);				
+			}
 
 		} else if (title.equals(CursorableLineView.MODE_SELECT)) {
 			mCircleMenu.clearCircleMenu();

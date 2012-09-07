@@ -112,7 +112,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		if(child.getParent() != null) {
 			android.util.Log.v("kiyo","this child has already add another object");
 		}
-		insertChild(0,child);
+		insertChild(mMyChildren.size(),child);
 //		mMyChildren.add(child);
 //		child.setParent(this);
 	}
