@@ -1,0 +1,57 @@
+package info.kyorohiro.helloworld.display.widget.lineview.edit;
+
+import java.util.LinkedList;
+
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
+import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.CheckAction;
+import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.Line;
+import android.graphics.Color;
+
+public class DifferGetAction extends CheckAction {
+	private int mIndex = 0;
+	private int mResult = 0;
+	private CharSequence mRe = "";
+	private boolean mIsDiffer = false;
+	public void setIndex(int index) {
+		mIndex = index;
+	}
+	public boolean isDiffer() {
+		return mIsDiffer;
+	}
+
+	public LineViewData get(Differ differ, LineViewBufferSpec spec, int index) {
+		setIndex(index);
+		differ.checkAllSortedLine(this);
+		if(isDiffer()) {
+			return new LineViewData(mRe, Color.BLACK, LineViewData.INCLUDE_END_OF_LINE);
+		} else {
+			android.util.Log.v("text","ll="+mResult+","+mIndex);
+			return spec.get(mResult);
+		}
+	}
+
+	@Override
+	public void init() {
+		mResult = mIndex;
+		mIsDiffer = false;
+	}
+	@Override
+	public boolean check(LinkedList<Line> ll, int x, int start, int end) {
+		boolean repeat = true;
+		Line l = ll.get(x);
+		if (start <= mIndex && mIndex < end) {
+			repeat = false;
+			mRe = l.get(mIndex - start);
+			mIsDiffer = true;
+			mResult -= (end-start);
+		} else if (mIndex < start) {
+			repeat = false;
+			mIsDiffer = false;
+		} else {
+			mResult -= (end-start);
+		}
+		android.util.Log.v("text","la="+mResult);
+		return repeat;
+	}
+}
