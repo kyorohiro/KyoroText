@@ -1,20 +1,16 @@
 package info.kyorohiro.helloworld.android.adapter;
 
-import java.io.InputStream;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.Shader;
-import android.graphics.Typeface;
 
 public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	private Canvas mCanvas = null;

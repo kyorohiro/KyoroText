@@ -1,23 +1,11 @@
 package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Set;
-
-import android.graphics.Color;
-import android.view.KeyEvent;
-
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.CommitText;
 import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.MyInputConnection;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
-import info.kyorohiro.helloworld.io.BreakText;
-import info.kyorohiro.helloworld.io.MyBreakText;
-import info.kyorohiro.helloworld.io.MyBuilder;
-import info.kyorohiro.helloworld.io.BigLineDataBuilder.W;
 
 /**
  * This Class は CursorableLineViewにIMEからの編集機能を追加したものです。
@@ -110,40 +98,5 @@ public class EditableLineView extends CursorableLineView {
 				break;
 			}
 		}
-	}
-
-	@Override
-	public boolean onKeyDown(int keycode) {
-		boolean ret = super.onKeyDown(keycode);
-		MyInputConnection c = getMyInputConnection();
-		if (c == null) {return ret;} // <-- ここをとおることはない
-
-		if(editable()){
-			try {
-				lock();
-				//
-				// 本来ならば、MyInputConnectionでするべき処理
-				// ちょっと動作確認したいだけなので、
-				// ここに書く。
-				if(keycode == KeyEvent.KEYCODE_DEL || keycode == KeyEvent.KEYCODE_BACK) {
-					mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());			
-					mTextBuffer.deleteOne();
-					getLeft().setCursorRow(mTextBuffer.getRow());
-					getLeft().setCursorCol(mTextBuffer.getCol());
-				}
-				if(keycode == KeyEvent.KEYCODE_ENTER) {
-					if(c.getComposingText() == null || c.getComposingText().length()==0){
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());			
-						mTextBuffer.crlfOne();			
-						getLeft().setCursorRow(mTextBuffer.getRow());
-						getLeft().setCursorCol(mTextBuffer.getCol());
-					}
-				}
-				return super.onKeyDown(keycode);
-			}finally {
-				releaseLock();
-			}
-		}
-		return ret;
 	}
 }
