@@ -91,8 +91,12 @@ public class EditableLineView extends CursorableLineView {
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {
-				mTextBuffer.pushCommit(text.getText(),
-						text.getNewCursorPosition());
+				if(text.isDeleted()){
+					mTextBuffer.delete();
+				} else {
+					mTextBuffer.pushCommit(text.getText(),
+							text.getNewCursorPosition());
+				}
 				getStage(this).resetTimer();
 			} else {
 				break;

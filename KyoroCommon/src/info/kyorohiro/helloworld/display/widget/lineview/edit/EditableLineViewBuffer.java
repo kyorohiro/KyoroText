@@ -65,15 +65,25 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		mCursorCol = col;
 	}
 
-	@Override
-	public void pushCommit(CharSequence text, int cursor) {
-		android.util.Log.v("log","col="+mCursorCol + ",row="+mCursorRow);
+	public void delete() {
 		int index = getNumberOfStockedElement();//+1;
 		if(index > mCursorCol) {
 			index = mCursorCol;
 		}
-		mDiffer.addLine(index, text);
-		moveCursor(text.length());
+		android.util.Log.v("log","delete:"+index);
+		mDiffer.deleteLine(index);		
+	}
+
+	@Override
+	public void pushCommit(CharSequence text, int cursor) {
+		//android.util.Log.v("log","col="+mCursorCol + ",row="+mCursorRow);
+		int index = getNumberOfStockedElement();//+1;
+		if(index > mCursorCol) {
+			index = mCursorCol;
+		}
+		mDiffer.setLine(index, text);
+		//mDiffer.addLine(index, text);
+		//moveCursor(text.length());
 	}
 
 	@Override

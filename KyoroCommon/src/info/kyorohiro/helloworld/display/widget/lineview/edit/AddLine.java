@@ -44,5 +44,6 @@ public class AddLine  implements Line {
 
 	@Override
 	public void rm(int index) {
+		mLines.remove(index);
 	}
 }

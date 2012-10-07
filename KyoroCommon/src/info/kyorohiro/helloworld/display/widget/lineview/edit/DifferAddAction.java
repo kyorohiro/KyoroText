@@ -41,12 +41,9 @@ public class DifferAddAction extends CheckAction {
 	@Override
 	public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
 		Line l = ll.get(x);
-		if(l instanceof DeleteLine){
-			return true;
-		}
 		try {
 			// ”ÍˆÍ“à‚©—×Ú‚µ‚Ä‚¢‚éê‡
-			if (start <= mIndex && mIndex <= end) {
+			if (!(l instanceof DeleteLine)&&start <= mIndex && mIndex <= end) {
 				mFind = true;
 				l.insert(mIndex - start, mLine);
 				return false;

@@ -199,6 +199,9 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean sendKeyEvent(KeyEvent event) {
 			log("sendKeyEvent="+event.toString());
+			if(event.getAction() == KeyEvent.ACTION_DOWN ) {
+				mCommitTextList.addLast(new CommitText());
+			}
 			return super.sendKeyEvent(event);
 		}
 		
@@ -237,6 +240,15 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	public static class CommitText {
 		private CharSequence mText = null;
 		private int mNewCursorPosition = 0;
+		//
+		// å„Ç≈èCê≥
+		private boolean mIsDeleted = false;
+
+		@Deprecated
+		public CommitText() {
+			mIsDeleted = true;
+		}
+
 		public CommitText(CharSequence text, int newCursorPosition) {
 			mText = text;
 			mNewCursorPosition = newCursorPosition;
@@ -247,8 +259,11 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		public int getNewCursorPosition() {
 			return mNewCursorPosition;
 		}
+		public boolean isDeleted() {
+			return mIsDeleted;
+		}
 	}
 	public static void log(String log) {
-		//android.util.Log.v("kiyo", ""+log);
+		android.util.Log.v("kiyo", ""+log);
 	}
 }
