@@ -8,7 +8,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	private Differ mDiffer = new Differ();
 	private LineViewBufferSpec mOwner = null;
-	private int mCursorCol = 0;
+	private int mCursorRow = 0;
 	private int mCursorLine = 0;
 
 	public EditableLineViewBuffer(LineViewBufferSpec owner) {
@@ -51,7 +51,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	public int getRow() {
-		return mCursorCol;
+		return mCursorRow;
 	}
 
 	public int getCol() {
@@ -60,7 +60,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	@Override
 	public void setCursor(int row, int col) {
-		mCursorCol = row;
+		mCursorRow = row;
 		mCursorLine = col;
 	}
 
@@ -90,10 +90,10 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	private void commit(CharSequence text, int cursor) {
 		CharSequence ct = get(mCursorLine);
-		if(mCursorCol >= ct.length()) {
-			mCursorCol = ct.length();
+		if(mCursorRow >= ct.length()) {
+			mCursorRow = ct.length();
 		}
-		CharSequence f = composeString(ct, mCursorCol, text);
+		CharSequence f = composeString(ct, mCursorRow, text);
 
 		int w = this.getBreakText().getWidth();
 		int len = 0;
@@ -111,17 +111,19 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				a = false;
 				if(le>len) {
 					mCursorLine+=1;
-					mCursorCol = 0;
+					mCursorRow = 0;
 				} else {
-					mCursorCol += len;
+					mCursorRow += text.length();
+//					mCursorRow = 0;
 				}
 			} else {
 				mDiffer.addLine(mCursorLine, f.subSequence(0, len));				
 				if(le>len) {
 					mCursorLine+=1;
-					mCursorCol = 0;
+					mCursorRow += text.length();;
 				} else {
-					mCursorCol += len;
+					mCursorRow = len;
+//					mCursorRow = 0;
 				}
 			}
 			f = f.subSequence(len, le);
