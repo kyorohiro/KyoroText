@@ -12,6 +12,7 @@ public class Differ {
 	private final DifferGetAction mGetAction = new DifferGetAction();
 	private final DifferAddAction mAddAction = new DifferAddAction();
 	private final DifferSetAction mSetAction = new DifferSetAction();
+	private final DifferDeleteAction mDeleteAction = new DifferDeleteAction();
 
 	private LinkedList<Line> mLine = new LinkedList<Line>();
 	private int mLength = 0;
@@ -32,21 +33,63 @@ public class Differ {
 	public synchronized void setLine(int i, CharSequence line) {
 		mSetAction.set(this, i, line);
 	}
+
+	public synchronized void deleteLine(int i) {
+		mDeleteAction.delete(this, i);
+	}
+
+	public static class DifferDeleteAction extends  CheckAction {
+		private int mIndex = 0;
+		private int mPrevEnd = 0;
+		public void delete(Differ differ, int index) {
+			mIndex = index;
+			differ.checkAllSortedLine(this);
+		}
+
+		@Override
+		public void init() {
+			mPrevEnd = 0;
+		}
+
+		@Override
+		public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
+			if(mIndex < start) {
+				ll.add(x, new DeleteLine(mIndex-mPrevEnd));
+				return false;
+			} else if(start< mIndex && mIndex < end) {
+				// ƒyƒ“ƒh
+				Line l = ll.get(x);
+				l.rm(mIndex-start);
+				if(l.length()==0){
+					ll.remove(x);
+				}
+				return false;
+			} else {
+				return true;				
+			}
+		}		
+	}
 	public void checkAllSortedLine(CheckAction action) {
 		int len = mLine.size();
 		int index = 0;
 		int start = 0;
 		int end = 0;
+		int indexFromBase = 0;
 		try {
 			action.init();
 			for (int x = 0; x < len; x++) {
 				Line l = mLine.get(x);
-				start = index + l.begin();
-				end = start + l.length();
-				if (!action.check(mLine, x, start, end)) {
+				if(l instanceof DeleteLine){
+					indexFromBase += l.length();
+				} else {
+					start = index + l.begin();
+					end = start + l.length();
+					index += l.begin() + l.length();
+					indexFromBase += end-start;
+				}
+				if (!action.check(mLine, x, start, end, indexFromBase)) {
 					return;
 				}
-				index = end;
 			}
 		} finally {
 			action.end(mLine);
@@ -56,25 +99,29 @@ public class Differ {
 	public static abstract class CheckAction {
 		public void init(){};
 		// if return false,  when check action is end. 
-		public abstract boolean check(LinkedList<Line> l, int x, int start, int end);
+		public abstract boolean check(LinkedList<Line> l, int x, int start, int end, int indexFromBase);
 		public void end(LinkedList<Line> ll){};
 	}
 
 	interface Line {
-		public int consume();
+	//	public int consume();
 		public int begin();
 		public int length();
+		public void setStart(int start);
 		public void set(int index, CharSequence line);
+		public void rm(int index);
 		public CharSequence get(int i);
 		public void insert(int index, CharSequence line);
 	}
-	private void debugPrint() {
+	public void debugPrint() {
 		android.util.Log.v("ll", "" + mLine.size());
+		int j=0;
 		for (Line l : mLine) {
 			android.util.Log.v("ll", "" + l.length());
 			for (int i = 0; i < l.length(); i++) {
-				android.util.Log.v("ll", "[" + i + "]=" + l.get(i));
+				android.util.Log.v("ll", "[" + j + "][" + i + "]=" + l.get(i));
 			}
+			j++;
 		}
 	}
 

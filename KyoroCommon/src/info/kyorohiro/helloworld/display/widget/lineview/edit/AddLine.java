@@ -28,6 +28,10 @@ public class AddLine  implements Line {
 		return mLines.size();
 	}
 
+	public void setStart(int start) {
+		mOrifinalInsertIndex = start;
+	}
+
 	@Override
 	public void set(int index, CharSequence line) {
 		mLines.set(index, line);
@@ -39,7 +43,6 @@ public class AddLine  implements Line {
 	}
 
 	@Override
-	public int consume() {
-		return mOrifinalInsertIndex + length();
+	public void rm(int index) {
 	}
 }

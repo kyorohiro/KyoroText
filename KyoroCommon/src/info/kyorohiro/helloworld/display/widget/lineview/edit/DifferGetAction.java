@@ -23,11 +23,15 @@ public class DifferGetAction extends CheckAction {
 	public LineViewData get(Differ differ, LineViewBufferSpec spec, int index) {
 		setIndex(index);
 		differ.checkAllSortedLine(this);
+		try {
 		if(isDiffer()) {
 			return new LineViewData(mRe, Color.BLACK, LineViewData.INCLUDE_END_OF_LINE);
 		} else {
 			android.util.Log.v("text","ll="+mResult+","+mIndex);
 			return spec.get(mResult);
+		}
+		}finally {
+			differ.debugPrint();
 		}
 	}
 
@@ -36,22 +40,25 @@ public class DifferGetAction extends CheckAction {
 		mResult = mIndex;
 		mIsDiffer = false;
 	}
+
 	@Override
-	public boolean check(LinkedList<Line> ll, int x, int start, int end) {
+	public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
 		boolean repeat = true;
 		Line l = ll.get(x);
-		if (start <= mIndex && mIndex < end) {
+		if (!(l instanceof DeleteLine)&&start <= mIndex && mIndex < end) {
 			repeat = false;
 			mRe = l.get(mIndex - start);
 			mIsDiffer = true;
-			mResult -= (end-start);
+			mResult = mIndex-indexFromBase;
+			android.util.Log.v("text","la[1]="+mResult+",s="+start+",e="+end+",i="+indexFromBase);
 		} else if (mIndex < start) {
 			repeat = false;
 			mIsDiffer = false;
+			android.util.Log.v("text","la[2]="+mResult+",s="+start+",e="+end+",i="+indexFromBase);
 		} else {
-			mResult -= (end-start);
+			mResult = mIndex-indexFromBase;
+			android.util.Log.v("text","la[3]="+mResult+",s="+start+",e="+end+",i="+indexFromBase);
 		}
-		android.util.Log.v("text","la="+mResult);
 		return repeat;
 	}
 }

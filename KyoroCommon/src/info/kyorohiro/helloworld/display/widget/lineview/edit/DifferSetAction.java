@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.CheckAction;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.Line;
 
+// now creating
 public class DifferSetAction extends CheckAction {
 	private int mPrevEnd = 0;
 	private int mIndex = 0;
@@ -39,7 +40,7 @@ public class DifferSetAction extends CheckAction {
 	}
 
 	@Override
-	public boolean check(LinkedList<Line> ll, int x, int start, int end) {
+	public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
 		Line l = ll.get(x);
 		try {
 			// ”ÍˆÍ“à‚©—×Ú‚µ‚Ä‚¢‚éê‡

@@ -21,7 +21,7 @@ public class DifferAddAction extends CheckAction {
 
 	@Override
 	public void init() {
-		mFind =false;
+		mFind = false;
 		mPrevEnd = 0;
 	}
 
@@ -39,8 +39,11 @@ public class DifferAddAction extends CheckAction {
 	}
 
 	@Override
-	public boolean check(LinkedList<Line> ll, int x, int start, int end) {
+	public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
 		Line l = ll.get(x);
+		if(l instanceof DeleteLine){
+			return true;
+		}
 		try {
 			// ”ÍˆÍ“à‚©—×Ú‚µ‚Ä‚¢‚éê‡
 			if (start <= mIndex && mIndex <= end) {
@@ -50,7 +53,9 @@ public class DifferAddAction extends CheckAction {
 			}
 			// ‘O‚É‘¶İ‚·‚éê‡
 			else if (mIndex < start) {
-				mLineList.add(x, new AddLine(mIndex - mPrevEnd, mLine));
+//				mLineList.add(x, new AddLine(mIndex - mPrevEnd, mLine));
+				l.setStart(l.begin()-(mIndex - mPrevEnd));
+				ll.add(x, new AddLine(mIndex - mPrevEnd, mLine));
 				mFind = true;
 				return false;
 			}
