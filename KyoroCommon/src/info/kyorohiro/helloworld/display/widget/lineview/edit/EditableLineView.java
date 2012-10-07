@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
+import android.view.KeyEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.CommitText;
@@ -92,8 +93,13 @@ public class EditableLineView extends CursorableLineView {
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {
-				if(text.isDeleted()){
-					mTextBuffer.delete();
+				if(text.isKeyCode()){
+					if(text.getKeyCode() == KeyEvent.KEYCODE_BACK || text.getKeyCode() == KeyEvent.KEYCODE_DEL){
+						mTextBuffer.delete();
+					}
+					else if(text.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+						mTextBuffer.crlf();						
+					}
 				} else {
 					mTextBuffer.pushCommit(text.getText(),
 							text.getNewCursorPosition());

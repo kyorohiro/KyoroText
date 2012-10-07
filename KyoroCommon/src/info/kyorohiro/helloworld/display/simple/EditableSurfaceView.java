@@ -200,7 +200,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		public boolean sendKeyEvent(KeyEvent event) {
 			log("sendKeyEvent="+event.toString());
 			if(event.getAction() == KeyEvent.ACTION_DOWN ) {
-				mCommitTextList.addLast(new CommitText());
+					mCommitTextList.addLast(new CommitText(event.getKeyCode()));
 			}
 			return super.sendKeyEvent(event);
 		}
@@ -242,11 +242,13 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		private int mNewCursorPosition = 0;
 		//
 		// å„Ç≈èCê≥
-		private boolean mIsDeleted = false;
+		private boolean mIsKeyCode = false;
+		private int mKeycode = 0;
 
 		@Deprecated
-		public CommitText() {
-			mIsDeleted = true;
+		public CommitText(int keycode) {
+			mIsKeyCode = true;
+			mKeycode = keycode;
 		}
 
 		public CommitText(CharSequence text, int newCursorPosition) {
@@ -259,8 +261,11 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		public int getNewCursorPosition() {
 			return mNewCursorPosition;
 		}
-		public boolean isDeleted() {
-			return mIsDeleted;
+		public boolean isKeyCode() {
+			return mIsKeyCode;
+		}
+		public int getKeyCode() {
+			return mKeycode;
 		}
 	}
 	public static void log(String log) {

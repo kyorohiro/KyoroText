@@ -64,6 +64,34 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		mCursorLine = col;
 	}
 
+	public void crlf() {
+		int index = getNumberOfStockedElement();//+1;
+		if(index > mCursorLine) {
+			index = mCursorLine;
+		}
+		CharSequence c = get(mCursorLine);
+		int row = c.length();
+		if(row>mCursorRow) {
+			row = mCursorRow;
+		}
+
+		if(row == mCursorRow) {
+			mCursorLine += 1;
+			mDiffer.addLine(mCursorLine, "");
+		}
+		else if(row ==0){
+			mDiffer.setLine(mCursorLine, "");
+			mCursorLine += 1;
+			mDiffer.addLine(mCursorLine, c);
+		}
+		else {
+			mDiffer.setLine(mCursorLine, c.subSequence(0, mCursorRow));
+			mCursorLine += 1;
+			mDiffer.addLine(mCursorLine, c.subSequence(mCursorRow,c.length()));
+			
+		}
+	}
+
 	public void delete() {
 		int index = getNumberOfStockedElement();//+1;
 		if(index > mCursorLine) {

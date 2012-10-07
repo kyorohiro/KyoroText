@@ -11,7 +11,6 @@ import android.graphics.Color;
 public class Differ {
 	private final DifferGetAction mGetAction = new DifferGetAction();
 	private final DifferAddAction mAddAction = new DifferAddAction();
-	private final DifferSetAction mSetAction = new DifferSetAction();
 	private final DifferDeleteAction mDeleteAction = new DifferDeleteAction();
 
 	private LinkedList<Line> mLine = new LinkedList<Line>();
