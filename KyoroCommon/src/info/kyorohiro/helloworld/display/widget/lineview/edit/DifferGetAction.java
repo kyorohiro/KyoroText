@@ -27,7 +27,7 @@ public class DifferGetAction extends CheckAction {
 		if(isDiffer()) {
 			return new LineViewData(mRe, Color.BLACK, LineViewData.INCLUDE_END_OF_LINE);
 		} else {
-			android.util.Log.i("text","lll="+mIndexFromBase+","+mPrevEnd+","+mIndex+","+mDiffLength+","+ mDeleteLength);
+//			android.util.Log.i("text","lll="+mIndexFromBase+","+mPrevEnd+","+mIndex+","+mDiffLength+","+ mDeleteLength);
 			return spec.get(mIndexFromBase);
 		}
 		}finally {
@@ -55,7 +55,7 @@ public class DifferGetAction extends CheckAction {
 			} else {
 				mDeleteLength += l.length();
 				mIndexFromBase = mIndex-mDiffLength+mDeleteLength;
-				android.util.Log.v("text","la[1]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
+//				android.util.Log.v("text","la[1]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
 				return true;
 			}
 		} else {
@@ -64,12 +64,12 @@ public class DifferGetAction extends CheckAction {
 				if (start <= mIndex && mIndex < end) {
 					mRe = l.get(mIndex - start);
 					mIsDiffer = true;
-					android.util.Log.v("text","la[1]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
+//					android.util.Log.v("text","la[1]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
 					return false;
 				} else if (mIndex < start) {
 					mIsDiffer = false;
 					mIndexFromBase = mIndex-mDiffLength+mDeleteLength;
-					android.util.Log.v("text","la[2]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
+//					android.util.Log.v("text","la[2]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
 					return false;
 				} else {
 					mIndexFromBase = mIndex-diffLength+mDeleteLength;

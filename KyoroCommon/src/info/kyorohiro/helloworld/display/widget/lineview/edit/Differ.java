@@ -68,14 +68,14 @@ public class Differ {
 				int indexFromBase) {
 			mPrevEnd = end;
 			if (mIndex < start) {
-				android.util.Log.v("kiyo", "_delete:1");
+//				android.util.Log.v("kiyo", "_delete:1");
 				Line l = ll.get(x);
 				l.setStart(l.length()-(mIndex - mPrevEnd));
 				ll.add(x, new DeleteLine(mIndex - mPrevEnd));
 				mIsDeleted = true;
 				return false;
 			} else if (start <= mIndex && mIndex < end) {
-				android.util.Log.v("kiyo", "_delete:2="+(mIndex - start));
+//				android.util.Log.v("kiyo", "_delete:2="+(mIndex - start));
 				// ƒyƒ“ƒh
 				Line l = ll.get(x);
 				l.rm(mIndex - start);
@@ -150,6 +150,9 @@ public class Differ {
 	}
 
 	public void debugPrint() {
+		if(true){
+			return;
+		}
 		android.util.Log.v("ll", "" + mLine.size());
 		int j = 0;
 		for (Line l : mLine) {
