@@ -34,7 +34,9 @@ public class DeleteLine  implements Line {
 
 	@Override
 	public void set(int index, CharSequence line) {
-		// ‰½‚à‚µ‚È‚¢
+		if(index >=length()){
+			mLength = index+1;
+		}
 	}
 
 	@Override

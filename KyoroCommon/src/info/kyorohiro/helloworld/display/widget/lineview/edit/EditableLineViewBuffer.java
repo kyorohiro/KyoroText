@@ -65,7 +65,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	public void crlf() {
-		int index = getNumberOfStockedElement();//+1;
+		int index = getNumberOfStockedElement()-1;//+1;
 		if(index > mCursorLine) {
 			index = mCursorLine;
 		}
@@ -75,7 +75,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			row = mCursorRow;
 		}
 
-		if(row == mCursorRow) {
+		if(row == c.length()) {
 			mCursorLine += 1;
 			mDiffer.addLine(mCursorLine, "");
 		}
@@ -85,20 +85,76 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			mDiffer.addLine(mCursorLine, c);
 		}
 		else {
-			mDiffer.setLine(mCursorLine, c.subSequence(0, mCursorRow));
+			mDiffer.setLine(mCursorLine, c.subSequence(0, row));
 			mCursorLine += 1;
-			mDiffer.addLine(mCursorLine, c.subSequence(mCursorRow,c.length()));
+			mDiffer.addLine(mCursorLine, c.subSequence(row,c.length()));
 			
 		}
 	}
 
 	public void delete() {
-		int index = getNumberOfStockedElement();//+1;
+		deleteLine();
+		if(true){
+			return;
+		}
+		int index = getNumberOfStockedElement()-1;
 		if(index > mCursorLine) {
 			index = mCursorLine;
 		}
+
+		CharSequence l = get(index);
+		// Žw’è‚³‚ê‚½s‚ª‹ó
+		if(l == null || l.length() == 0||
+		  (l.length()==1&&l.subSequence(0, 1).equals("\n")) || 
+		  (l.length()==2&&l.subSequence(0, 2).equals("\r\n"))
+		  ) {
+			deleteLine();
+			return;
+		} 
+
+		int row = mCursorRow;
+		if(row>=l.length()) {
+			row = l.length();
+		}
+		if((l.length()>=2&&l.length()-2<=row&&row<=l.length()
+				&&l.charAt(l.length()-2) == '\r'
+				&&l.charAt(l.length()-1) == '\n')){
+			row =l.length()-2;
+		}
+		else if((l.length()>=1&&l.length()-1<=row&&row<=l.length()
+				&&l.charAt(l.length()-1) == '\n')){
+			row =l.length()-1;
+		}
+		if(l.charAt(l.length()-1)=='\n'||index==getNumberOfStockedElement()-1) {
+			CharSequence f = l.subSequence(0, row-1);
+			CharSequence e = "";
+			if(row < l.length()){
+				e = l.subSequence(row, l.length());
+			}
+			mDiffer.setLine(index, ""+f+e);
+			mCursorRow =row-1;
+		} else {
+			CharSequence f = l.subSequence(0, row-1);
+			CharSequence e = "";
+			if(row < l.length()){
+				e = l.subSequence(row, l.length());
+			}
+			deleteLine();
+			commit(""+f+e, index);
+		}
+	}
+
+	public void deleteLine() {
+		int index = getNumberOfStockedElement();//+1;
+		if(index >= mCursorLine) {
+			index = mCursorLine;
+		}
 		android.util.Log.v("log","delete:"+index);
-		mDiffer.deleteLine(index);		
+		mDiffer.deleteLine(index);	
+		mCursorLine-=1;
+		if(mCursorLine >=0){
+			mCursorRow = get(mCursorLine).length();
+		}
 	}
 
 	@Override

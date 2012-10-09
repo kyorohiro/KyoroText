@@ -33,7 +33,7 @@ public class EditableLineView extends CursorableLineView {
 				updateOnIMEOutput();
 				getLeft().setCursorRow(mTextBuffer.getRow());
 				getLeft().setCursorCol(mTextBuffer.getCol());
-				android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
+				//android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}

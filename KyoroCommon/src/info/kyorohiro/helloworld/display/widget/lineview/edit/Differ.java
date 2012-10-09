@@ -39,55 +39,6 @@ public class Differ {
 		mLength -= 1;
 	}
 
-	public static class DifferDeleteAction extends CheckAction {
-		private int mIndex = 0;
-		private int mPrevEnd = 0;
-		private boolean mIsDeleted = false;
-
-		public void delete(Differ differ, int index) {
-			mIndex = index;
-			differ.checkAllSortedLine(this);
-		}
-
-		@Override
-		public void init() {
-			mPrevEnd = 0;
-			mIsDeleted = false;
-		}
-
-		@Override
-		public void end(LinkedList<Line> ll) {
-			if(!mIsDeleted) {
-				ll.add( new DeleteLine(mIndex - mPrevEnd));
-			}
-		}
-
-		@Override
-		public boolean check(LinkedList<Line> ll, int x, int start, int end,
-				int indexFromBase) {
-			mPrevEnd = end;
-			if (mIndex < start) {
-//				android.util.Log.v("kiyo", "_delete:1");
-				Line l = ll.get(x);
-				l.setStart(l.length()-(mIndex - mPrevEnd));
-				ll.add(x, new DeleteLine(mIndex - mPrevEnd));
-				mIsDeleted = true;
-				return false;
-			} else if (start <= mIndex && mIndex < end) {
-//				android.util.Log.v("kiyo", "_delete:2="+(mIndex - start));
-				// ƒyƒ“ƒh
-				Line l = ll.get(x);
-				l.rm(mIndex - start);
-				if (l.length() == 0) {
-					ll.remove(x);
-				}
-				mIsDeleted = true;
-				return false;
-			} else {
-				return true;
-			}
-		}
-	}
 
 	public void checkAllSortedLine(CheckAction action) {
 		int len = mLine.size();
@@ -149,15 +100,15 @@ public class Differ {
 	}
 
 	public void debugPrint() {
-		if(true){
-			return;
-		}
+	//	if(true){
+	//		return;
+	//	}
 		android.util.Log.v("ll", "" + mLine.size());
 		int j = 0;
 		for (Line l : mLine) {
 			android.util.Log.v("ll", "" + l.length());
 			for (int i = 0; i < l.length(); i++) {
-				android.util.Log.v("ll", "[" + j + "][" + i + "]=" + l.get(i)+","+l.begin());
+				android.util.Log.v("ll", "[" + j + "][" + i + "]=" + l.get(i)+","+l.begin()+","+l.length());
 			}
 			j++;
 		}

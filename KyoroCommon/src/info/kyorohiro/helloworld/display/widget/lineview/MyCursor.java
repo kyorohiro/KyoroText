@@ -154,7 +154,7 @@ public class MyCursor extends SimpleDisplayObject {
 		return false;
 	}
 	public void updateCursor() {
-		android.util.Log.v("kiyo","cursor:c="+getCursorCol()+",r="+getCursorRow());
+//		android.util.Log.v("kiyo","cursor:c="+getCursorCol()+",r="+getCursorRow());
 		int y = 0;
 		float x = 0.0f;
 		int l = 0;
@@ -175,19 +175,19 @@ public class MyCursor extends SimpleDisplayObject {
 			} finally {
 				releaseLock();
 			}
-			android.util.Log.v("kiyo","cursor:d="+d+","+d.length());
-			android.util.Log.v("kiyo","cursor:d_l="+d.length());
+	//		android.util.Log.v("kiyo","cursor:d="+d+","+d.length());
+	//		android.util.Log.v("kiyo","cursor:d_l="+d.length());
 
 			try {
 				if (d != null) {
 					l = mParent.get().getBreakText().getTextWidths(d, 0,
 							this.getCursorRow(), mParent.get().widths,
 							mParent.get().getShowingTextSize());
-					android.util.Log.v("kiyo","cursor:l="+l);
+				//	android.util.Log.v("kiyo","cursor:l="+l);
 					for (int i = 0; i < l; i++) {
 						x += mParent.get().widths[i];
 					}
-					android.util.Log.v("kiyo","cursor:x="+x);
+					//android.util.Log.v("kiyo","cursor:x="+x);
 				}
 			} catch(Throwable t){
 				// todo refactaring BreakText‚Í‘¼ŽÒ‚ª’è‹`‚·‚é‚Ì‚ÅA”O‚Ì‚½‚ß
