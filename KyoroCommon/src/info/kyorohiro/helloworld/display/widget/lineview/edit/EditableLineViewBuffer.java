@@ -62,6 +62,14 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	public void setCursor(int row, int col) {
 		mCursorRow = row;
 		mCursorLine = col;
+		if(mCursorLine < 0) {
+			mCursorLine = 0;
+		}
+
+		int index = getNumberOfStockedElement()-1;
+		if(index > mCursorLine) {
+			index = mCursorLine;
+		}
 	}
 
 	public void crlf() {
@@ -93,10 +101,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	public void delete() {
-		deleteLine();
-		if(true){
-			return;
-		}
 		int index = getNumberOfStockedElement()-1;
 		if(index > mCursorLine) {
 			index = mCursorLine;

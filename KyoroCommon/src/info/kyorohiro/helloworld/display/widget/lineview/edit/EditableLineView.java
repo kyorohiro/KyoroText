@@ -11,10 +11,8 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 /**
  * This Class は CursorableLineViewにIMEからの編集機能を追加したものです。
  * 
- * [方針]
- *   LineViewへ渡しているテキストデータのDIFFデータをキャッシュする。
- *   表示するときは、毎回DIFFデータをマージして、画面に表示する。
- *
+ * [方針] LineViewへ渡しているテキストデータのDIFFデータをキャッシュする。 表示するときは、毎回DIFFデータをマージして、画面に表示する。
+ * 
  */
 public class EditableLineView extends CursorableLineView {
 
@@ -27,13 +25,14 @@ public class EditableLineView extends CursorableLineView {
 
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
-		if(editable()) {
+		if (editable()) {
 			try {
-				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft()
+						.getCursorCol());
 				updateOnIMEOutput();
 				getLeft().setCursorRow(mTextBuffer.getRow());
 				getLeft().setCursorCol(mTextBuffer.getCol());
-				//android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
+				// android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
@@ -43,17 +42,19 @@ public class EditableLineView extends CursorableLineView {
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		if (editable()&&inside(x, y)) {
+		if (editable() && inside(x, y)) {
 			showIME();
 		}
 		return super.onTouchTest(x, y, action);
 	}
 
 	@Override
-	public synchronized void setLineViewBufferSpec(LineViewBufferSpec inputtedText) {
+	public synchronized void setLineViewBufferSpec(
+			LineViewBufferSpec inputtedText) {
 		try {
 			lock();
-			super.setLineViewBufferSpec(mTextBuffer = new EditableLineViewBuffer(inputtedText));
+			super.setLineViewBufferSpec(mTextBuffer = new EditableLineViewBuffer(
+					inputtedText));
 		} finally {
 			releaseLock();
 		}
@@ -69,11 +70,12 @@ public class EditableLineView extends CursorableLineView {
 
 	private void showIME() {
 		SimpleStage stage = getStage(this);
-		stage.showInputConnection();		
+		stage.showInputConnection();
 	}
 
 	private boolean editable() {
-		if (getMode() == CursorableLineView.MODE_EDIT||getMode().equals(CursorableLineView.MODE_EDIT)) {
+		if (getMode() == CursorableLineView.MODE_EDIT
+				|| getMode().equals(CursorableLineView.MODE_EDIT)) {
 			return true;
 		} else {
 			return false;
@@ -88,17 +90,34 @@ public class EditableLineView extends CursorableLineView {
 
 	private void updateOnIMEOutput() {
 		MyInputConnection c = getMyInputConnection();
-		if (c == null) {return;} // <-- ここをとおることはない
+		if (c == null) {
+			return;
+		} // <-- ここをとおることはない
 
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {
-				if(text.isKeyCode()){
-					if(text.getKeyCode() == KeyEvent.KEYCODE_BACK || text.getKeyCode() == KeyEvent.KEYCODE_DEL){
+				if (text.isKeyCode()) {
+					switch (text.getKeyCode()) {
+					case KeyEvent.KEYCODE_BACK:
+					case KeyEvent.KEYCODE_DEL:
 						mTextBuffer.delete();
-					}
-					else if(text.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-						mTextBuffer.crlf();						
+						break;
+					case KeyEvent.KEYCODE_ENTER:
+						mTextBuffer.crlf();
+						break;
+					case KeyEvent.KEYCODE_DPAD_LEFT:
+						mTextBuffer.setCursor(getLeft().getCursorRow()-1, getLeft().getCursorCol());
+						break;
+					case KeyEvent.KEYCODE_DPAD_RIGHT:
+						mTextBuffer.setCursor(getLeft().getCursorRow()+1, getLeft().getCursorCol());
+						break;
+					case KeyEvent.KEYCODE_DPAD_UP:
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol()+1);
+						break;
+					case KeyEvent.KEYCODE_DPAD_DOWN:
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol()-1);
+						break;
 					}
 				} else {
 					mTextBuffer.pushCommit(text.getText(),
