@@ -110,10 +110,10 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	public void delete() {
-		if(true) {
-			deleteLine();
-			return;
-		}
+		//if(true) {
+		//	deleteLine();
+		//	return;
+		//}
 		int index = getNumberOfStockedElement()-1;
 		if(index > mCursorLine) {
 			index = mCursorLine;
@@ -122,17 +122,21 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		CharSequence l = get(index);
 		// éwíËÇ≥ÇÍÇΩçsÇ™ãÛ
 		if(l == null || l.length() == 0||
-		  (l.length()==1&&l.subSequence(0, 1).equals("\n")) || 
+		  (l.length()==1&&l.subSequence(0, 1).equals("\n")) ||  
 		  (l.length()==2&&l.subSequence(0, 2).equals("\r\n"))
 		  ) {
 			deleteLine();
 			return;
 		} 
+		if(index==0&&mCursorRow<=0){
+			return;
+		}
 
 		int row = mCursorRow;
 		if(row>=l.length()) {
 			row = l.length();
 		}
+		
 		if((l.length()>=2&&l.length()-2<=row&&row<=l.length()
 				&&l.charAt(l.length()-2) == '\r'
 				&&l.charAt(l.length()-1) == '\n')){
@@ -142,8 +146,16 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				&&l.charAt(l.length()-1) == '\n')){
 			row =l.length()-1;
 		}
+
+		//todo;
+		//if(row <=0){
+		//	return;
+		//}
 		if(l.charAt(l.length()-1)=='\n'||index==getNumberOfStockedElement()-1) {
-			CharSequence f = l.subSequence(0, row-1);
+			CharSequence f = "";
+			if(row>1){
+				f= l.subSequence(0, row-1);
+			}
 			CharSequence e = "";
 			if(row < l.length()){
 				e = l.subSequence(row, l.length());
@@ -159,6 +171,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			deleteLine();
 			commit(""+f+e, index);
 		}
+		if(mCursorRow<0){
+			mCursorRow=0;
+		}
 	}
 
 	public void deleteLine() {
@@ -171,6 +186,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		mCursorLine-=1;
 		if(mCursorLine >=0){
 			mCursorRow = get(mCursorLine).length();
+		}else {
+			mCursorRow =0;
 		}
 	}
 

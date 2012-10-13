@@ -42,6 +42,11 @@ public class DifferDeleteAction extends CheckAction {
 			Line l = ll.get(x);
 			l.setStart(l.length()-(mIndex - mPrevEnd));
 			ll.add(x, new DeleteLine(mIndex - mPrevEnd));
+			if(x+1<ll.size()){
+				Line l1 = ll.get(x+1);
+				l1.setStart(l1.begin()-l.begin());
+			}
+			
 			mIsDeleted = true;
 			return false;
 		}
