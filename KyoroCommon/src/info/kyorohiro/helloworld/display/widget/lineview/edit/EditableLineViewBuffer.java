@@ -4,6 +4,9 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BreakText;
 
+//
+// next â¸çséûÇ…CRLFïtÇØÇÈÇÊÇ§Ç…Ç∑ÇÈÅB
+//
 public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	private Differ mDiffer = new Differ();
