@@ -113,10 +113,13 @@ public class EditableLineView extends CursorableLineView {
 						mTextBuffer.setCursor(getLeft().getCursorRow()+1, getLeft().getCursorCol());
 						break;
 					case KeyEvent.KEYCODE_DPAD_UP:
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol()+1);
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol()-1);
 						break;
 					case KeyEvent.KEYCODE_DPAD_DOWN:
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol()-1);
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol()+1);
+						break;
+					case KeyEvent.KEYCODE_SPACE:
+						mTextBuffer.pushCommit(" ",1);
 						break;
 					}
 				} else {

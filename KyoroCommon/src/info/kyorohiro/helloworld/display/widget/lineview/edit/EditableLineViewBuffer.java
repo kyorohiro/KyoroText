@@ -101,6 +101,10 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	public void delete() {
+		if(true) {
+			deleteLine();
+			return;
+		}
 		int index = getNumberOfStockedElement()-1;
 		if(index > mCursorLine) {
 			index = mCursorLine;
