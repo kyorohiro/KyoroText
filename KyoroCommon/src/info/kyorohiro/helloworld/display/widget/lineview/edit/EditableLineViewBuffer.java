@@ -166,10 +166,12 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		if(row<=0&&index !=0) {
 			CharSequence f = get(index-1);
 			CharSequence e = get(index);
-			mCursorLine = index-1;
+			mCursorLine = index;
+			deleteLine();
 			deleteLine();
 			crlf();
-			commit(""+f+e, index-1);
+			//deleteLine();
+			commit(""+f+e, 999);
 			return;
 		}
 

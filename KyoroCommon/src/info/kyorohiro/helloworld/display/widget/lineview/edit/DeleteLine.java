@@ -5,6 +5,8 @@ import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.Line;
 import java.util.ArrayList;
 
 public class DeleteLine  implements Line {
+	public static int ID = 0;
+	private int mID = 0;
 	private int mStart = 0;
 	private int mLength = 0;
 	public static final String RET_STRING = "";
@@ -12,8 +14,16 @@ public class DeleteLine  implements Line {
 	public DeleteLine(int index) {
 		mStart = index;
 		mLength = 1;
+		mID = ID++;
 	}
-
+	@Override
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		for (int i = 0; i < length(); i++) {
+			b.append("del["+i+"]:"+mID+","+ this.get(i)+":"+this.length()+",b="+this.begin());
+		}
+		return b.toString();
+	}
 	@Override
 	public CharSequence get(int i) {
 		return RET_STRING;

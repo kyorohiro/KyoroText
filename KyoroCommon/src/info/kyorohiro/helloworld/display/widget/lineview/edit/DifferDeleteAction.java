@@ -40,12 +40,15 @@ public class DifferDeleteAction extends CheckAction {
 		if (mIndex < start) {
 			android.util.Log.v("kiyo", "_delete:1=");
 			Line l = ll.get(x);
-			l.setStart(l.length()-(mIndex - mPrevEnd));
+			//l.setStart(l.length()-(mIndex - mPrevEnd));
 			ll.add(x, new DeleteLine(mIndex - mPrevEnd));
-			if(x+1<ll.size()){
-				Line l1 = ll.get(x+1);
-				l1.setStart(l1.begin()-l.begin());
-			}
+			l.setStart(l.begin()-(mIndex - mPrevEnd+1));
+
+//	if(x+1<ll.size()){
+//				Line l1 = ll.get(x+1);
+//				l1.setStart(l1.begin()-l.begin());
+//		l.setStart(l.begin()-(mIndex - mPrevEnd));
+//	}
 			
 			mIsDeleted = true;
 			return false;

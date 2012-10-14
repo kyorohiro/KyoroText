@@ -36,6 +36,7 @@ public class DifferAddAction extends CheckAction {
 		this.setIndex(i);
 		this.setLine(line);
 		differ.checkAllSortedLine(this);
+		differ.debugPrint();
 	}
 
 	@Override
