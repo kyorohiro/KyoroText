@@ -94,17 +94,17 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 		if(row == c.length()) {
 			mCursorLine += 1;
-			mDiffer.addLine(mCursorLine, "");
+			mDiffer.addLine(mCursorLine, "\r\n");
 			mCursorRow = 0;
 		}
 		else if(row ==0){
-			mDiffer.setLine(mCursorLine, "");
+			mDiffer.setLine(mCursorLine, "\r\n");
 			mCursorLine += 1;
 			mCursorRow = 0;
 			mDiffer.addLine(mCursorLine, c);
 		}
 		else {
-			mDiffer.setLine(mCursorLine, c.subSequence(0, row));
+			mDiffer.setLine(mCursorLine, c.subSequence(0, row)+"\r\n");
 			mCursorLine += 1;
 			mCursorRow = 0;
 			mDiffer.addLine(mCursorLine, c.subSequence(row,c.length()));
@@ -151,14 +151,21 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 
 		//todo;
-		//if(row <=0){
-		//	return;
-		//}
+		if(row<=0&&index !=0) {
+			CharSequence f = get(index-1);
+			CharSequence e = get(index);
+			mCursorLine = index-1;
+			deleteLine();
+			crlf();
+			commit(""+f+e, index-1);
+			return;
+		}
+
 		if(l.charAt(l.length()-1)=='\n'||index==getNumberOfStockedElement()-1) {
 			CharSequence f = "";
 			if(row>1){
 				f= l.subSequence(0, row-1);
-			}
+			} 
 			CharSequence e = "";
 			if(row < l.length()){
 				e = l.subSequence(row, l.length());
