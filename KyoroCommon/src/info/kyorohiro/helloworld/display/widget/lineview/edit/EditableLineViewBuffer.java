@@ -168,15 +168,18 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			CharSequence f = get(index-1);
 			CharSequence e = get(index);
 			mCursorLine = index;
+			int br = f.length();
+			int bc = mCursorLine-1;
 			deleteLine();
 			deleteLine();
 			crlf();
 			//deleteLine();
 			commit(""+f+e, 999);
+			setCursor(br, bc);
 			return;
 		}
 
-		if(l.charAt(l.length()-1)=='\n'||index==getNumberOfStockedElement()-1) {
+		if(l.charAt(l.length()-1) == '\n'||index==getNumberOfStockedElement()-1) {
 			CharSequence f = "";
 			if(row>1){
 				f= l.subSequence(0, row-1);
@@ -193,8 +196,17 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			if(row < l.length()){
 				e = l.subSequence(row, l.length());
 			}
+			int br = row-1;
+			int bc = mCursorLine;
 			deleteLine();
+			if(mCursorLine+1 < getNumberOfStockedElement()){
+				mCursorLine+=1;
+				mCursorRow = 0;
+			}
+			//crlf();
+//			mCursorC =row-1;
 			commit(""+f+e, index);
+			setCursor(br, bc);
 		}
 		if(mCursorRow<0){
 			mCursorRow=0;
@@ -207,12 +219,19 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			index = mCursorLine;
 		}
 		android.util.Log.v("log","delete:"+index);
+		CharSequence deleted = get(index);
 		mDiffer.deleteLine(index);	
 		mCursorLine-=1;
 		if(mCursorLine >=0){
 			mCursorRow = get(mCursorLine).length();
 		}else {
 			mCursorRow =0;
+		}
+		CharSequence c = get(mCursorLine);
+		if(
+		deleted.charAt(deleted.length()-1) == '\n' &&
+		      c.charAt(c.length()-1)!='\n'){
+			mDiffer.setLine(mCursorLine, ""+c+"\n");
 		}
 	}
 
