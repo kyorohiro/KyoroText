@@ -77,7 +77,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			//ˆÚ“®‚·‚éB
 			if(mCursorLine > 0) {
 				mCursorLine-=1;
-				mCursorRow = c.length();
+				CharSequence cc = get(mCursorLine);
+				mCursorRow = cc.length();
 			} else {
 				mCursorRow = 0;
 			}

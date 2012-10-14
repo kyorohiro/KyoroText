@@ -107,7 +107,9 @@ public class EditableLineView extends CursorableLineView {
 						mTextBuffer.crlf();
 						break;
 					case KeyEvent.KEYCODE_DPAD_LEFT:
+						android.util.Log.v("kiyo","-1-row/col="+mTextBuffer.getRow()+"/"+mTextBuffer.getCol());
 						mTextBuffer.setCursor(getLeft().getCursorRow()-1, getLeft().getCursorCol());
+						android.util.Log.v("kiyo","-2-row/col="+mTextBuffer.getRow()+"/"+mTextBuffer.getCol());
 						break;
 					case KeyEvent.KEYCODE_DPAD_RIGHT:
 						mTextBuffer.setCursor(getLeft().getCursorRow()+1, getLeft().getCursorCol());
