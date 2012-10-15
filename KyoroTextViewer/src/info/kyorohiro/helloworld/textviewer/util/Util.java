@@ -21,7 +21,6 @@ public class Util {
 
 
 	public static double mm2‚‰nchi(double from){
-		DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
 		return (from/25.4);
 	}
 

@@ -29,7 +29,6 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private TextViewer mFocusingViewer = null;
 	private SimpleCircleControllerMenuPlus mCircleMenu = new SimpleCircleControllerMenuPlus();
 	private LineViewGroup mRoot = null;
-//	private TextViewer mCommand = null;
 
 	public void setCurrentFontSize(int textSize) {
 		mTextSize = textSize;
@@ -43,13 +42,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mTextSize = textSize;
 		mMergine = mergine;
 		mFocusingViewer = newTextViewr();
-//		mCommand = new TextViewer(
-//				StartupCommandBuffer.getStartupCommandBuffer(), textSize,
-//				width, mergine);
-		// ((EditableLineView) mCommand.getLineView())
-		// .setMode(EditableLineView.MODE_EDIT);
 		addChild(new LineViewGroup(mFocusingViewer));
-//		addChild(mCommand);
 		addChild(mCircleMenu);
 		_circle();
 //		mCommand.getLineView().fittableToView(true);
@@ -78,11 +71,6 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		setRect(graphics.getWidth(), graphics.getHeight());
 		_layout();
 		int t = mCircleMenu.getMinRadius();
-		// mCommand.setPoint(0, graphics.getHeight()-t);
-		// mCommand.setRect(graphics.getWidth(), t);
-		// mRoot.setRect(graphics.getWidth(), graphics.getHeight()-t);
-//		mCommand.setPoint(0, 0);
-//		mCommand.setRect(graphics.getWidth(), t);
 		mRoot.setPoint(0, t);
 		mRoot.setRect(graphics.getWidth(), graphics.getHeight() - t);
 		super.paint(graphics);
@@ -93,10 +81,6 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		graphics.setColor(Color.RED);
 		graphics.drawText("now focusing", x, y);
 		graphics.setColor(Color.BLACK);
-//		graphics.drawLine(mCommand.getX(),
-//				mCommand.getY() + mCommand.getHeight(), mCommand.getX()
-//						+ getWidth(false),
-//				mCommand.getY() + mCommand.getHeight());
 	}
 
 	public void setCircleMenuRadius(int radius) {

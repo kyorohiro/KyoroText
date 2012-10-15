@@ -1,5 +1,5 @@
 package info.kyorohiro.helloworld.io;
-
+///*
 public class TODOCRLFString  implements CharSequence {
 	public static int MODE_INCLUDE_LF = 1;
 	public static int MODE_EXCLUDE_LF = 0;
@@ -49,3 +49,4 @@ public class TODOCRLFString  implements CharSequence {
 		}
 	}
 }
+//*/
