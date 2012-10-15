@@ -43,6 +43,13 @@ public class DifferAddAction extends CheckAction {
 	public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
 		Line l = ll.get(x);
 		try {
+			 if (mIndex < start) {
+//					mLineList.add(x, new AddLine(mIndex - mPrevEnd, mLine));
+					l.setStart(l.begin()-(mIndex - mPrevEnd));
+					ll.add(x, new AddLine(mIndex - mPrevEnd, mLine));
+					mFind = true;
+					return false;
+			} else 
 			// ”ÍˆÍ“à‚©—×Ú‚µ‚Ä‚¢‚éê‡
 			if (!(l instanceof DeleteLine)&&start <= mIndex && mIndex <= end) {
 				mFind = true;
@@ -50,13 +57,6 @@ public class DifferAddAction extends CheckAction {
 				return false;
 			}
 			// ‘O‚É‘¶Ý‚·‚éê‡
-			else if (mIndex < start) {
-//				mLineList.add(x, new AddLine(mIndex - mPrevEnd, mLine));
-				l.setStart(l.begin()-(mIndex - mPrevEnd));
-				ll.add(x, new AddLine(mIndex - mPrevEnd, mLine));
-				mFind = true;
-				return false;
-			}
 			return true;
 		} finally {
 			mPrevEnd = end;

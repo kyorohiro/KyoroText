@@ -34,45 +34,28 @@ public class DifferDeleteAction extends CheckAction {
 	public boolean check(LinkedList<Line> ll, int x, int start, int end,
 			int _indexFromBase) {
 		try{
-	//	if(ll.get(x) instanceof DeleteLine) {
-	//		return true;
-	//	}
-		if (mIndex < start) {
-			android.util.Log.v("kiyo", "_delete:1=");
 			Line l = ll.get(x);
-			//l.setStart(l.length()-(mIndex - mPrevEnd));
-			ll.add(x, new DeleteLine(mIndex - mPrevEnd));
-			l.setStart(l.begin()-(mIndex - mPrevEnd+1));
-
-//	if(x+1<ll.size()){
-//				Line l1 = ll.get(x+1);
-//				l1.setStart(l1.begin()-l.begin());
-//		l.setStart(l.begin()-(mIndex - mPrevEnd));
-//	}
-			
-			mIsDeleted = true;
-			return false;
-		}
-		else if (start <= mIndex && mIndex < end) {
-			android.util.Log.v("kiyo", "_delete:2=");
-			// ƒyƒ“ƒh
-			Line l = ll.get(x);
-//			if(l instanceof DeleteLine) {
-//				android.util.Log.v("kiyo", "_delete:2-1=");
-//				l.set(l.length(), null);
-//				return false;				
-//			} else {
-				android.util.Log.v("kiyo", "_delete:2-2=");
+			if (mIndex < start) {
+				if(0==l.begin()-(mIndex - mPrevEnd+1)&& l instanceof DeleteLine) {
+					l.setStart(mIndex - mPrevEnd);
+					l.set(l.length(), "");
+				} else {
+					ll.add(x, new DeleteLine(mIndex - mPrevEnd));
+					l.setStart(l.begin()-(mIndex - mPrevEnd+1));
+				}
+				mIsDeleted = true;
+				return false;
+			}
+			else if (start <= mIndex && mIndex < end) {
 				l.rm(mIndex - start);
 				if (l.length() == 0) {
 					ll.remove(x);
 				}
 				mIsDeleted = true;
 				return false;
-//			}
-		} else {
-			return true;
-		}
+			} else {
+				return true;
+			}
 		}finally{
 			mPrevEnd = end;
 

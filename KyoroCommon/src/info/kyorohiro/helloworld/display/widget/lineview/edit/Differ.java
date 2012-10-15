@@ -54,15 +54,20 @@ public class Differ {
 					//indexFromBase += l.length();
 					start = index + l.begin();
 					end = start;// + l.length();
-					index += l.begin();// + l.length();
+					index += l.begin();// - l.length();
+					//for(int i=0;i<l.length();i++){
+						if (!action.check(mLine, x, start, end, indexFromBase)) {
+							return;
+						}
+					//}
 				} else {
 					start = index + l.begin();
 					end = start + l.length();
 					index += l.begin() + l.length();
 					//indexFromBase += end - start;
-				}
-				if (!action.check(mLine, x, start, end, indexFromBase)) {
-					return;
+					if (!action.check(mLine, x, start, end, indexFromBase)) {
+						return;
+					}
 				}
 			}
 		} finally {
@@ -99,10 +104,10 @@ public class Differ {
 		public void insert(int index, CharSequence line);
 	}
 
-	public void debugPrint() {
-	//	if(true){
-	//		return;
-	//	}
+	public void debugPrint() {	
+		if(true){
+			return;
+		}
 		android.util.Log.v("ll", "---start---" + mLine.size());
 		int j = 0;
 		for (Line l : mLine) {
