@@ -93,6 +93,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	public void crlf() {
 		int index = getNumberOfStockedElement() - 1;// +1;
+		if(index<0){
+			index=0;
+		}
 		if (index > mCursorLine) {
 			index = mCursorLine;
 		}
@@ -156,17 +159,42 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 
 		// todo;
-		if (row <= 0 && index != 0) {
+		if (row <= 0 && index > 0) {
 			CharSequence f = get(index - 1);
 			CharSequence e = get(index);
 			mCursorLine = index;
 			int br = f.length();
 			int bc = mCursorLine - 1;
+			if(mCursorLine<0){
+			mCursorLine = 0;
+			}
 			deleteLine();
 			deleteLine();
-			crlf();
+			if(mCursorLine<0){
+				mCursorLine=0;
+				crlf();
+				mCursorLine=0;
+			} else {
+				crlf();
+			}
 			// deleteLine();
-			commit("" + f + e, 999);
+			///*
+			if(f.length()>0&&f.charAt(f.length()-1)=='\n'){
+				if(f.length()>1&&f.charAt(f.length()-2)=='\r'){
+					f = f.subSequence(0, f.length()-2);
+				}else {
+					f = f.subSequence(0, f.length()-1);					
+				}
+				br = f.length();
+			}
+			//if(e.length()>0&&e.charAt(f.length()-1)=='\n'){
+			//	if(e.length()>1&&e.charAt(e.length()-2)=='\r'){
+			//		e = e.subSequence(0, e.length()-2);
+			//	}else {
+			//		e = e.subSequence(0, e.length()-1);					
+			//	}
+			//}
+			commit("" + f + e, 999);//*/
 			setCursor(br, bc);
 			return;
 		}
@@ -208,6 +236,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	public void deleteLine() {
 		int index = getNumberOfStockedElement();// +1;
+		if(index == 0){
+			return;
+		}
 		if (index >= mCursorLine) {
 			index = mCursorLine;
 		}
@@ -250,7 +281,15 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		return mOwner.getMaxOfStackedElement();
 	}
 
+	//commit text‚É\n‚ª‚Ó‚­‚Ü‚ê‚éê‡‚Í‚Ç‚¤‚©‚·‚é‚Í‚Ä‚È
 	private void commit(CharSequence text, int cursor) {
+		if(text.length()>0&&text.charAt(text.length()-1)=='\n'){
+			if(text.length()>1&&text.charAt(text.length()-2)=='\r'){
+				text = text.subSequence(0, text.length()-2);
+			}else {
+				text = text.subSequence(0, text.length()-1);					
+			}
+		}
 		CharSequence ct = get(mCursorLine);
 		if (mCursorRow >= ct.length()) {
 			mCursorRow = ct.length();
