@@ -19,6 +19,9 @@ import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 
+/**
+ * todo Android‚ÉˆË‘¶‚µ‚Ä‚¢‚é•”•ª‚Í•ª—£‚·‚é
+ */
 public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	private InputMethodManager mManager = null;

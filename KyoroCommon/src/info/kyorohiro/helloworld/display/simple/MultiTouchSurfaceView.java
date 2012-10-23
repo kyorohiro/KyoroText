@@ -8,6 +8,9 @@ import android.os.Build;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
+/**
+ * todo Android‚ÉˆË‘¶‚µ‚Ä‚¢‚é•”•ª‚Í•ª—£‚·‚é
+ */
 public class MultiTouchSurfaceView extends SurfaceView {
 
 	final static int MULTI_TOUCH_MAX = 5;

@@ -9,6 +9,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+/**
+ * todo Android‚ÉˆË‘¶‚µ‚Ä‚¢‚é•”•ª‚Í•ª—£‚·‚é
+ */
 public class SimpleStage extends EditableSurfaceView {
 	// SurfaceView {
 	private InitialCallBack mInitialCallBack = null;
