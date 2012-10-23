@@ -7,7 +7,6 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
@@ -15,6 +14,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineView;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBreakText;
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 
@@ -184,13 +184,13 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 
 		@Override
-		public synchronized void head(LineViewData element) {
+		public synchronized void head(KyoroString element) {
 			super.head(element);
 			element.setColor(COLOR_FONT2);
 		}
 
 		@Override
-		public synchronized void add(LineViewData element) {
+		public synchronized void add(KyoroString element) {
 			super.add(element);
 			element.setColor(COLOR_FONT1);
 		}

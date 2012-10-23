@@ -7,6 +7,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
 import android.graphics.Color;
 
@@ -33,7 +34,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private int mBgColor = Color.parseColor("#FF000022");
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
-	private LineViewData[] mCashBuffer = new LineViewData[0];
+	private KyoroString[] mCashBuffer = new KyoroString[0];
 
 	// setScale‚ÆsetTextSize()‚ÅŠg‘å—¦‚ðÝ’è‚µ‚Ä‚¢‚éB
 	// Œã‚Å‚Ç‚¿‚ç‚©‚É“ˆê‚·‚éH
@@ -250,7 +251,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			return -1;
 		}
 
-		LineViewData data = mInputtedText.get(cursorCol);
+		KyoroString data = mInputtedText.get(cursorCol);
 		if (data == null) {
 			return -1;
 		}
@@ -288,7 +289,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return yyy;
 	}
 
-	public LineViewData getLineViewData(int cursorCol) {
+	public KyoroString getLineViewData(int cursorCol) {
 		if (mInputtedText == null
 				|| cursorCol >= mInputtedText.getNumberOfStockedElement()
 				|| cursorCol < 0) {
@@ -296,7 +297,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 		try {
 			lock();
-			LineViewData data = mInputtedText.get(cursorCol);
+			KyoroString data = mInputtedText.get(cursorCol);
 			return data;
 		} catch (Exception e) {
 			return null;
@@ -305,7 +306,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	private void showLineDate(SimpleGraphics graphics, LineViewData[] list,
+	private void showLineDate(SimpleGraphics graphics, KyoroString[] list,
 			int len) {
 		if (len > list.length) {
 			len = list.length;
@@ -350,7 +351,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			int yy = getLineYForShowLine(0, i);
 
 			graphics.drawText(list[i], x, y);
-			if (list[i].getStatus() == LineViewData.INCLUDE_END_OF_LINE) {
+			if (list[i].includeLF()) {
 				int c = list[i].getColor();
 				graphics.setColor(Color.argb(127, Color.red(c), Color.green(c),
 						Color.blue(c)));
@@ -399,7 +400,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			mBiasAboutMoveLine--;
 		}
 		LineViewBufferSpec showingText = mInputtedText;
-		LineViewData[] list = null;
+		KyoroString[] list = null;
 		int len = 0;
 
 		// update status
@@ -459,7 +460,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			if (buffeSize < mDefaultCashSize) {
 				buffeSize = mDefaultCashSize;
 			}
-			mCashBuffer = new LineViewData[buffeSize];
+			mCashBuffer = new KyoroString[buffeSize];
 		}
 		mCashBuffer = showingText.getElements(mCashBuffer, start, end);
 		return len;

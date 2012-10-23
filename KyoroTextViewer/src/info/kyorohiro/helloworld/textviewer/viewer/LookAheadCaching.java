@@ -1,9 +1,7 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewerBuffer.MyBufferDatam;
 
 import java.lang.ref.WeakReference;
 
@@ -205,7 +203,7 @@ public class LookAheadCaching {
 		}
 	}
 
-	public static MyBufferDatam[] builder = new MyBufferDatam[BigLineData.FILE_LIME];
+	public static KyoroString[] builder = new KyoroString[BigLineData.FILE_LIME];
 	public class ReadBackFileTask implements Runnable {
 		private int mStartWithoutOwn = 0;
 		private BigLineData mBigLineData = null;
@@ -229,13 +227,9 @@ public class LookAheadCaching {
 						i++) {
 					CharSequence line = mBigLineData.readLine();
 					KyoroString lineWP = (KyoroString) line;
-					int crlf = LineViewData.INCLUDE_END_OF_LINE;
-					if (!lineWP.includeLF()) {
-						crlf = LineViewData.EXCLUDE_END_OF_LINE;
-					}
-					MyBufferDatam t = new MyBufferDatam(line, Color.WHITE, crlf, (int) lineWP.getLinePosition());
+					lineWP.setColor(Color.WHITE);
 					if (mStartWithoutOwn > (int) lineWP.getLinePosition()) {
-						builder[j++] = t;
+						builder[j++] = lineWP;
 					}
 					Thread.yield();
 				}
@@ -283,14 +277,9 @@ public class LookAheadCaching {
 						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
 					KyoroString lineWP = (KyoroString) mBigLineData.readLine();
-					int crlf = LineViewData.INCLUDE_END_OF_LINE;
-					if (!lineWP.includeLF()) {
-						crlf = LineViewData.EXCLUDE_END_OF_LINE;
-					}
-					MyBufferDatam t = new MyBufferDatam(lineWP, Color.WHITE,crlf,
-							(int) ((KyoroString) lineWP).getLinePosition());
+					lineWP.setColor(Color.WHITE);
 					if (lineWP.getLinePosition() > mStartWithoutOwn) {
-						mTextViewer.add(t);
+						mTextViewer.add(lineWP);
 					}
 					Thread.yield();
 				}

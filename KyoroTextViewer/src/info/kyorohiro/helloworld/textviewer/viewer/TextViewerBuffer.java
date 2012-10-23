@@ -1,9 +1,9 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.LockableCyclingList;
 
 import java.io.File;
@@ -17,10 +17,10 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	private int mCurrentBufferStartLinePosition = 0;
 	private int mCurrentBufferEndLinePosition = 0;
 	private int mCurrentPosition = 0;
-	private LineViewData mErrorLineMessage = new LineViewData("..", Color.RED, LineViewData.INCLUDE_END_OF_LINE);
-	private LineViewData mLoadingLineMessage = new LineViewData("loading..", Color.parseColor("#33FFFF00"),LineViewData.INCLUDE_END_OF_LINE);
+	private KyoroString mErrorLineMessage = new KyoroString("error..\n", Color.RED);
+	private KyoroString mLoadingLineMessage = new KyoroString("loading..\n", Color.parseColor("#33FFFF00"));
 	private LookAheadCaching mCashing = null;
-	private int mNumberOfStockedElement = 0;
+	private long mNumberOfStockedElement = 0;
 
 	public TextViewerBuffer(int listSize, BreakText breakText, File path, String charset) throws FileNotFoundException {
 		super(listSize);
@@ -33,7 +33,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	}
 
 	public synchronized int getNumberOfStockedElement() {
-		return mNumberOfStockedElement;
+		//todo
+		return (int)mNumberOfStockedElement;
 	}
 
 	public synchronized int getCurrentBufferStartLinePosition() {
@@ -76,21 +77,21 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	}
 
 	@Override
-	public synchronized void head(LineViewData element) {
+	public synchronized void head(KyoroString element) {
 		int num = getNumOfAdd();
 		super.head(element);
-		if (element instanceof MyBufferDatam) {
+		if (element instanceof KyoroString) {
 			setNumOfAdd(num);
 		}
 	}
 
 	@Override
-	public synchronized void add(LineViewData element) {
+	public synchronized void add(KyoroString element) {
 		int num = getNumOfAdd();
 		super.add(element);
-		if (element instanceof MyBufferDatam) {
-			MyBufferDatam b = (MyBufferDatam)element;
-			int pos = b.getLinePosition();
+		if (element instanceof KyoroString) {
+			KyoroString b = (KyoroString)element;
+			long pos = b.getLinePosition();
 			if(mNumberOfStockedElement<(pos+1)) {
 				mNumberOfStockedElement = pos+1;
 				setNumOfAdd(num+1);
@@ -101,7 +102,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 	}
 
-	public synchronized LineViewData get(int i) {
+	public synchronized KyoroString get(int i) {
 		if (i < 0) {
 			return mErrorLineMessage;
 		}
@@ -111,7 +112,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 				return mLoadingLineMessage;
 			}
 
-			LineViewData bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
+			KyoroString bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
 			if (bufferedDataForReturn == null) {
 			//	android.util.Log.v("kiyo","ERROR --2--");
 				return mErrorLineMessage;
@@ -149,8 +150,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		if (0 < bufferSize) {
 			CharSequence startLine = super.get(0);
 			CharSequence endLine = super.get(bufferSize - 1);
-			MyBufferDatam startLineWithPosition = (MyBufferDatam) startLine;
-			MyBufferDatam endLineWithPosition = (MyBufferDatam) endLine;
+			KyoroString startLineWithPosition = (KyoroString) startLine;
+			KyoroString endLineWithPosition = (KyoroString) endLine;
 			mCurrentBufferStartLinePosition = (int) startLineWithPosition.getLinePosition();
 			mCurrentBufferEndLinePosition = (int) endLineWithPosition.getLinePosition();
 //			android.util.Log.v("kiyo","AA="+startLine+","+endLine);
@@ -161,18 +162,6 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 	}
 
-	public static class MyBufferDatam extends LineViewData {
-		private int mLinePosition = 0;
-
-		public MyBufferDatam(CharSequence line, int color, int status, int linePosition) {
-			super(line, color, status);
-			mLinePosition = linePosition;
-		}
-
-		public synchronized int getLinePosition() {
-			return mLinePosition;
-		}
-	}
 
 	@Override
 	public BreakText getBreakText() {

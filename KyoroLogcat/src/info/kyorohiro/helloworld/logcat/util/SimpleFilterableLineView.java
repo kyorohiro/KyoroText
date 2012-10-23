@@ -11,13 +11,13 @@ import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffe
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CyclingListInter;
 
 public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
@@ -123,12 +123,12 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	// Ç∆ÇËÇ†Ç¶Ç∏ÅAsetFontxxxÇÕÇ»Ç≠ÉZÉãÅB
 	@Deprecated
 	public static class LineViewBufferSpecAdapterForFlowingLineBuffer implements LineViewBufferSpec {
-//		private WeakReference<CyclingListInter<LineViewData>> mBuffer = null;
-		private WeakReference<CyclingListInter<LineViewData>> mBuffer = null;
+//		private WeakReference<CyclingListInter<KyoroString>> mBuffer = null;
+		private WeakReference<CyclingListInter<KyoroString>> mBuffer = null;
 		private MyBreakText mBreakText = new MyBreakText();
 
-		public LineViewBufferSpecAdapterForFlowingLineBuffer(CyclingListInter<LineViewData> buffer, int textsize, int width) {
-			mBuffer = new WeakReference<CyclingListInter<LineViewData>>(buffer);
+		public LineViewBufferSpecAdapterForFlowingLineBuffer(CyclingListInter<KyoroString> buffer, int textsize, int width) {
+			mBuffer = new WeakReference<CyclingListInter<KyoroString>>(buffer);
 			mBreakText.setBufferWidth(width);
 			mBreakText.setTextSize(textsize);
 		}
@@ -143,7 +143,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
 		@Override
 		public int getNumOfAdd() {
-			CyclingListInter<LineViewData> b = mBuffer.get();
+			CyclingListInter<KyoroString> b = mBuffer.get();
 			if(b != null) {
 				return b.getNumOfAdd();
 			} else  {
@@ -153,7 +153,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
 		@Override
 		public void clearNumOfAdd() {
-			CyclingListInter<LineViewData> b = mBuffer.get();
+			CyclingListInter<KyoroString> b = mBuffer.get();
 			if(b != null) {
 				b.clearNumOfAdd();
 			}
@@ -161,7 +161,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
 		@Override
 		public int getNumberOfStockedElement() {
-			CyclingListInter<LineViewData> b = mBuffer.get();
+			CyclingListInter<KyoroString> b = mBuffer.get();
 			if(b != null) {
 				return b.getNumberOfStockedElement();
 			} else  {
@@ -170,17 +170,17 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		}
 
 		@Override
-		public LineViewData[] getElements(LineViewData[] ret, int start, int end) {
-			CyclingListInter<LineViewData> b = mBuffer.get();
+		public KyoroString[] getElements(KyoroString[] ret, int start, int end) {
+			CyclingListInter<KyoroString> b = mBuffer.get();
 			if(b != null) {
 				return b.getElements(ret, start, end);
 			}
-			return new LineViewData[0];
+			return new KyoroString[0];
 		}
 
 		@Override
-		public LineViewData get(int i) {
-			CyclingListInter<LineViewData> b = mBuffer.get();
+		public KyoroString get(int i) {
+			CyclingListInter<KyoroString> b = mBuffer.get();
 			if(b != null) {
 				return b.get(i);
 			}
@@ -189,7 +189,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 
 		@Override
 		public int  getMaxOfStackedElement() {
-			CyclingListInter<LineViewData> b = mBuffer.get();
+			CyclingListInter<KyoroString> b = mBuffer.get();
 			if(b != null) {
 				return b.getMaxOfStackedElement();
 			}

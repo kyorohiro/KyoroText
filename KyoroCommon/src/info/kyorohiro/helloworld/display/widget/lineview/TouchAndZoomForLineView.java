@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView.Point;
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
 
 public class TouchAndZoomForLineView extends SimpleDisplayObject {
@@ -18,7 +19,7 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 	private Point mStartPosY = null;
 	private int mStartPosX = 0;
 	private int mStartGetX = 0;
-	private LineViewData mStartLine = null;
+	private KyoroString mStartLine = null;
 	private int mStartLineBaseColor = 0;
 	private float mStartLength = 0;
 	private float mCurrentScale = 0;

@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
+import info.kyorohiro.helloworld.text.KyoroString;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -20,7 +20,7 @@ public class Differ {
 		return mLength;
 	}
 
-	public synchronized LineViewData get(LineViewBufferSpec spec, int _index) {
+	public synchronized KyoroString get(LineViewBufferSpec spec, int _index) {
 		return mGetAction.get(this, spec, _index);
 	}
 

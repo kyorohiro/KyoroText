@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CyclingList;
 import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class FlowingLineBuffer extends CyclingListForAsyncDuplicate<LineViewData> 
+public class FlowingLineBuffer extends CyclingListForAsyncDuplicate<KyoroString> 
 implements SimpleLockInter {
 	private Paint mPaint = null;
 	private int mWidth = 1000;
@@ -21,7 +21,7 @@ implements SimpleLockInter {
 	private Thread cThread = null;
 
 	public FlowingLineBuffer(int listSize, int width, int textSize) {
-		super(new CyclingList<LineViewData>(listSize),listSize);
+		super(new CyclingList<KyoroString>(listSize),listSize);
 		mWidth = width;
 		mPaint = new Paint();
 		mPaint.setTextSize(textSize);
@@ -60,8 +60,7 @@ implements SimpleLockInter {
 
 	public synchronized void addLineToHead(CharSequence line) {
 		lock();
-		this.head(new LineViewData(line, mCurrentColor,
-				LineViewData.INCLUDE_END_OF_LINE));
+		this.head(KyoroString.newKyoroStringWithLF(line, mCurrentColor));
 	}
 
 	public synchronized void addLinePerBreakText(CharSequence line) {
@@ -76,40 +75,38 @@ implements SimpleLockInter {
 			len = mPaint.breakText(line.toString(), true, mWidth, null);
 			if (len == line.length()) {
 				mNumOfLineAdded++;
-				add(new LineViewData(line+"\n", mCurrentColor,
-						LineViewData.INCLUDE_END_OF_LINE));
+				add(KyoroString.newKyoroStringWithLF(line+"\n", mCurrentColor));
 				break;
 			} else {
 				mNumOfLineAdded++;
-				add(new LineViewData(line.subSequence(0, len), mCurrentColor,
-						LineViewData.EXCLUDE_END_OF_LINE));
+				add(KyoroString.newKyoroStringWithLF(line.subSequence(0, len), mCurrentColor));
 				line = line.subSequence(len, line.length());
 				// kiyo
 			}
 		}
 	}
 
-	public synchronized LineViewData[] getLastLines(int numberOfRetutnArrayElement) {
+	public synchronized KyoroString[] getLastLines(int numberOfRetutnArrayElement) {
 		lock();
 		if (numberOfRetutnArrayElement < 0) {
-			return new LineViewData[0];
+			return new KyoroString[0];
 		}
-		LineViewData[] ret = new LineViewData[numberOfRetutnArrayElement];
-		return (LineViewData[]) getLast(ret, numberOfRetutnArrayElement);
+		KyoroString[] ret = new KyoroString[numberOfRetutnArrayElement];
+		return (KyoroString[]) getLast(ret, numberOfRetutnArrayElement);
 	}
 
-	public synchronized LineViewData[] getLines(int start, int end) {
+	public synchronized KyoroString[] getLines(int start, int end) {
 		lock();
 		if (start > end) {
-			return new LineViewData[0];
+			return new KyoroString[0];
 		}
-		LineViewData[] ret = new LineViewData[end - start];
+		KyoroString[] ret = new KyoroString[end - start];
 		return getElements(ret, start, end);
 	}
 
-	public synchronized LineViewData getLine(int i) {
+	public synchronized KyoroString getLine(int i) {
 		lock();
-		return (LineViewData) super.get(i);
+		return (KyoroString) super.get(i);
 	}
 
 	private int mCurrentColor = Color.parseColor("#ccc9f486");
@@ -120,23 +117,23 @@ implements SimpleLockInter {
 	protected void setColorPerLine(CharSequence line) {
 	}
 
-	private ArrayList<LineViewData> mCashForFiltering = new ArrayList<LineViewData>();
+	private ArrayList<KyoroString> mCashForFiltering = new ArrayList<KyoroString>();
 	@Override
-	protected boolean filter(LineViewData t) {
+	protected boolean filter(KyoroString t) {
 		if(mFilter == null){
 			return true;
 		}
 		if(t != null) {
 			mCashForFiltering.add(t);
-			if(t.getStatus() == LineViewData.INCLUDE_END_OF_LINE) {
+			if(t.includeLF()) {
 				StringBuilder builder = new StringBuilder("");
-				for(LineViewData d : mCashForFiltering){
+				for(KyoroString d : mCashForFiltering){
 					builder.append(d);
 				}
 				String i = builder.toString();
 				Matcher m = mFilter.matcher(i);
 				if(m.find()){
-					for(LineViewData d: mCashForFiltering) {
+					for(KyoroString d: mCashForFiltering) {
 						getDuplicatingList().add(d);
 					}
 				}

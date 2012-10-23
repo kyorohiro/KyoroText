@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView.Point;
+import info.kyorohiro.helloworld.text.KyoroString;
 
 import java.lang.ref.WeakReference;
 
@@ -164,7 +165,7 @@ public class MyCursor extends SimpleDisplayObject {
 			// todo 後で対策を考える。
 			// LineView側がバッファの中身について知らなくても良いようにする。、
 		} else {
-			LineViewData d = null;
+			KyoroString d = null;
 			try {
 				lock();
 				int yy = this.getCursorCol();

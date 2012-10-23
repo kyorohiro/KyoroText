@@ -1,8 +1,8 @@
 package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.text.KyoroString;
 
 //
 // next â¸çséûÇ…CRLFïtÇØÇÈÇÊÇ§Ç…Ç∑ÇÈÅB
@@ -35,7 +35,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	@Override
-	public LineViewData get(int i) {
+	public KyoroString get(int i) {
 		return mDiffer.get(mOwner, i);
 	}
 
@@ -45,7 +45,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	@Override
-	public LineViewData[] getElements(LineViewData[] ret, int start, int end) {
+	public KyoroString[] getElements(KyoroString[] ret, int start, int end) {
 		for (int i = start, j = 0; i < end; i++, j++) {
 			ret[j] = get(i);
 		}

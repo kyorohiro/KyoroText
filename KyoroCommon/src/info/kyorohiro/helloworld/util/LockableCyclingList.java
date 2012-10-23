@@ -1,15 +1,16 @@
 package info.kyorohiro.helloworld.util;
 
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
+import info.kyorohiro.helloworld.text.KyoroString;
 
-public class LockableCyclingList extends CyclingList<LineViewData>
+
+public class LockableCyclingList extends CyclingList<KyoroString>
 implements SimpleLockInter {
 	public LockableCyclingList(int listSize) {
 		super(listSize);
 	}
 
 	@Override
-	public synchronized LineViewData get(int i) {
+	public synchronized KyoroString get(int i) {
 		lock();
 		return super.get(i);
 	}
@@ -39,7 +40,7 @@ implements SimpleLockInter {
 	}
 
 	@Override
-	public synchronized void add(LineViewData element) {
+	public synchronized void add(KyoroString element) {
 		lock();
 		super.add(element);
 	}
@@ -51,7 +52,7 @@ implements SimpleLockInter {
 	}
 
 	@Override
-	public synchronized void head(LineViewData element) {
+	public synchronized void head(KyoroString element) {
 		lock();
 		super.head(element);
 	}
@@ -63,13 +64,13 @@ implements SimpleLockInter {
 	}
 
 	@Override
-	public synchronized LineViewData[] getLast(LineViewData[] ret, int numberOfRetutnArrayElement) {
+	public synchronized KyoroString[] getLast(KyoroString[] ret, int numberOfRetutnArrayElement) {
 		lock();
 		return super.getLast(ret, numberOfRetutnArrayElement);
 	}
 
 	@Override
-	public synchronized LineViewData[] getElements(LineViewData[] ret, int start,
+	public synchronized KyoroString[] getElements(KyoroString[] ret, int start,
 			int end) {
 		try {
 			lock();

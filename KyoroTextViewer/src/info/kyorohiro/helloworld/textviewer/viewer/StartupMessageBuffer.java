@@ -1,13 +1,13 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBreakText;
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
 
-public class StartupMessageBuffer extends CyclingList<LineViewData> implements LineViewBufferSpec {
+public class StartupMessageBuffer extends CyclingList<KyoroString> implements LineViewBufferSpec {
 
 	public StartupMessageBuffer(int listSize) {
 		super(listSize);
@@ -19,11 +19,7 @@ public class StartupMessageBuffer extends CyclingList<LineViewData> implements L
 		StartupMessageBuffer startupMessage = new StartupMessageBuffer(100);
 		for (int i = 0; i < message.length; i++) {
 			String m = message[i];
-			int crlf = LineViewData.INCLUDE_END_OF_LINE;
-			if (!m.endsWith("\n")) {
-				crlf = LineViewData.EXCLUDE_END_OF_LINE;
-			}
-			startupMessage.add(new LineViewData(m, color[i], crlf));
+			startupMessage.add(new KyoroString(m, color[i]));
 		}
 		return startupMessage;
 	}
