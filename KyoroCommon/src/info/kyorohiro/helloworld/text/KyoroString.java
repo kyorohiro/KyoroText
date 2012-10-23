@@ -1,16 +1,18 @@
 package info.kyorohiro.helloworld.text;
 ///*
 public class KyoroString  implements CharSequence {
-	public static int MODE_INCLUDE_LF = 1;
-	public static int MODE_EXCLUDE_LF = 0;
 	public char[] mContent = null;
-	public int mMode = MODE_EXCLUDE_LF;
 	private long mLinePosition = 0;
+	private boolean mIncludeLF = false;
 
-	public KyoroString(char[] content, int length, int mode) {
+	public KyoroString(char[] content, int length) {
 		mContent = new char[length];
 		System.arraycopy(content, 0, mContent, 0, length);
-		mMode = mode;
+		if(mContent.length >0 && mContent[length-1]=='\n'){
+			mIncludeLF = true;
+		} else {
+			mIncludeLF = false;
+		}
 	}
 
 	@Override
@@ -42,11 +44,7 @@ public class KyoroString  implements CharSequence {
 	}
 
 	public boolean includeLF(){
-		if(mMode == KyoroString.MODE_INCLUDE_LF){
-			return true;
-		} else {
-			return false;
-		}
+		return mIncludeLF;
 	}
 }
 //*/

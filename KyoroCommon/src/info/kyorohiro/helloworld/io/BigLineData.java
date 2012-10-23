@@ -71,7 +71,7 @@ public class BigLineData {
 
 
 	public CharSequence readLine() throws IOException {
-		KyoroString tmp = new KyoroString(new char[]{}, 0,KyoroString.MODE_INCLUDE_LF);
+		KyoroString tmp = new KyoroString(new char[]{}, 0);
 		int lineNumber = (int) mLinePosition;
 		try {
 			tmp = (KyoroString)mDecoder.decodeLine();

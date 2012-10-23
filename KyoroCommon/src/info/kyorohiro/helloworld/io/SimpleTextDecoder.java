@@ -81,8 +81,6 @@ public class SimpleTextDecoder {
 			mByteBuffer.put(escape);
 		}
 
-		// todo
-		int mode = KyoroString.MODE_INCLUDE_LF;
 		long todoPrevPosition = mReader.getFilePointer();
 		outside: do {
 			int d = mReader.read();
@@ -114,7 +112,6 @@ public class SimpleTextDecoder {
 						// ‚Ğ‚Æ‚Â‘O‚Å‰üs
 						mBuffer.removeLast();
 						mReader.seek(todoPrevPosition);
-						mode = KyoroString.MODE_EXCLUDE_LF;
 						break outside;
 					} else {
 						todoPrevPosition = mReader.getFilePointer();
@@ -131,6 +128,6 @@ public class SimpleTextDecoder {
 			mCharBuffer.clear(); // cb‚ğ‘‚«‚İó‘Ô‚É•ÏX
 		} while (!end);
 		return new KyoroString(mBuffer.getAllBufferedMoji(),
-				mBuffer.getCurrentBufferedMojiSize(), mode);
+				mBuffer.getCurrentBufferedMojiSize());
 	}
 }
