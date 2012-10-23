@@ -5,7 +5,6 @@ import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
 
 public class Button extends SimpleDisplayObjectContainer {
 

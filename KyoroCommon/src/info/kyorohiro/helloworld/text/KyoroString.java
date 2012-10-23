@@ -1,13 +1,13 @@
-package info.kyorohiro.helloworld.io;
+package info.kyorohiro.helloworld.text;
 ///*
-public class TODOCRLFString  implements CharSequence {
+public class KyoroString  implements CharSequence {
 	public static int MODE_INCLUDE_LF = 1;
 	public static int MODE_EXCLUDE_LF = 0;
 	public char[] mContent = null;
 	public int mMode = MODE_EXCLUDE_LF;
 	private long mLinePosition = 0;
 
-	public TODOCRLFString(char[] content, int length, int mode) {
+	public KyoroString(char[] content, int length, int mode) {
 		mContent = new char[length];
 		System.arraycopy(content, 0, mContent, 0, length);
 		mMode = mode;
@@ -42,7 +42,7 @@ public class TODOCRLFString  implements CharSequence {
 	}
 
 	public boolean includeLF(){
-		if(mMode == TODOCRLFString.MODE_INCLUDE_LF){
+		if(mMode == KyoroString.MODE_INCLUDE_LF){
 			return true;
 		} else {
 			return false;

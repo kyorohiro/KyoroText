@@ -1,8 +1,9 @@
-package info.kyorohiro.helloworld.display.widget;
+package info.kyorohiro.helloworld.display.simple.sample;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
 import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.MotionEvent;

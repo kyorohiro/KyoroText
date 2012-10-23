@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.textviewer.viewer;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewData;
 import info.kyorohiro.helloworld.io.BigLineData;
-import info.kyorohiro.helloworld.io.TODOCRLFString;
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewerBuffer.MyBufferDatam;
 
 import java.lang.ref.WeakReference;
@@ -228,7 +228,7 @@ public class LookAheadCaching {
 						&&mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
 					CharSequence line = mBigLineData.readLine();
-					TODOCRLFString lineWP = (TODOCRLFString) line;
+					KyoroString lineWP = (KyoroString) line;
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if (!lineWP.includeLF()) {
 						crlf = LineViewData.EXCLUDE_END_OF_LINE;
@@ -282,13 +282,13 @@ public class LookAheadCaching {
 						i < BigLineData.FILE_LIME && !mBigLineData.isEOF()&&
 						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
-					TODOCRLFString lineWP = (TODOCRLFString) mBigLineData.readLine();
+					KyoroString lineWP = (KyoroString) mBigLineData.readLine();
 					int crlf = LineViewData.INCLUDE_END_OF_LINE;
 					if (!lineWP.includeLF()) {
 						crlf = LineViewData.EXCLUDE_END_OF_LINE;
 					}
 					MyBufferDatam t = new MyBufferDatam(lineWP, Color.WHITE,crlf,
-							(int) ((TODOCRLFString) lineWP).getLinePosition());
+							(int) ((KyoroString) lineWP).getLinePosition());
 					if (lineWP.getLinePosition() > mStartWithoutOwn) {
 						mTextViewer.add(t);
 					}

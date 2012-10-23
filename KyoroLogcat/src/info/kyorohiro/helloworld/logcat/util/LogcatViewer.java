@@ -5,8 +5,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.graphics.Color;
-import info.kyorohiro.helloworld.display.widget.SimpleCircleController;
-import info.kyorohiro.helloworld.display.widget.SimpleCircleController.CircleControllerAction;
+import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
+import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;

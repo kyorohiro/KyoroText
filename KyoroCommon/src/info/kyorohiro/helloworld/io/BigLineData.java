@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.io;
 
+import info.kyorohiro.helloworld.text.KyoroString;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -69,10 +71,10 @@ public class BigLineData {
 
 
 	public CharSequence readLine() throws IOException {
-		TODOCRLFString tmp = new TODOCRLFString(new char[]{}, 0,TODOCRLFString.MODE_INCLUDE_LF);
+		KyoroString tmp = new KyoroString(new char[]{}, 0,KyoroString.MODE_INCLUDE_LF);
 		int lineNumber = (int) mLinePosition;
 		try {
-			tmp = (TODOCRLFString)mDecoder.decodeLine();
+			tmp = (KyoroString)mDecoder.decodeLine();
 			mCurrentPosition = mReader.getFilePointer();
 			mLinePosition += 1;
 			if (mLastLinePosition < mLinePosition) {

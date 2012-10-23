@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.io;
 
+import info.kyorohiro.helloworld.text.KyoroString;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -80,7 +82,7 @@ public class SimpleTextDecoder {
 		}
 
 		// todo
-		int mode = TODOCRLFString.MODE_INCLUDE_LF;
+		int mode = KyoroString.MODE_INCLUDE_LF;
 		long todoPrevPosition = mReader.getFilePointer();
 		outside: do {
 			int d = mReader.read();
@@ -112,7 +114,7 @@ public class SimpleTextDecoder {
 						// Ç–Ç∆Ç¬ëOÇ≈â¸çs
 						mBuffer.removeLast();
 						mReader.seek(todoPrevPosition);
-						mode = TODOCRLFString.MODE_EXCLUDE_LF;
+						mode = KyoroString.MODE_EXCLUDE_LF;
 						break outside;
 					} else {
 						todoPrevPosition = mReader.getFilePointer();
@@ -128,7 +130,7 @@ public class SimpleTextDecoder {
 			}
 			mCharBuffer.clear(); // cbÇèëÇ´çûÇ›èÛë‘Ç…ïœçX
 		} while (!end);
-		return new TODOCRLFString(mBuffer.getAllBufferedMoji(),
+		return new KyoroString(mBuffer.getAllBufferedMoji(),
 				mBuffer.getCurrentBufferedMojiSize(), mode);
 	}
 }

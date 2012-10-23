@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.logcat;
 
-import info.kyorohiro.helloworld.display.widget.SimpleCircleControllerMenuPlus;
+import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 import info.kyorohiro.helloworld.logcat.widget.KyoroSaveWidget;

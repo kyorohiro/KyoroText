@@ -1,10 +1,12 @@
-package info.kyorohiro.helloworld.display.widget;
+package info.kyorohiro.helloworld.display.simple.sample;
 
 import java.util.ArrayList;
 import android.graphics.Color;
 import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
+import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 
 public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 
