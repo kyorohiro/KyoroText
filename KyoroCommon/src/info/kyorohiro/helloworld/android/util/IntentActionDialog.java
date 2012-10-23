@@ -2,7 +2,6 @@ package info.kyorohiro.helloworld.android.util;
 
 
 import java.io.File;
-import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
