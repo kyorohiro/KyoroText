@@ -75,11 +75,11 @@ implements SimpleLockInter {
 			len = mPaint.breakText(line.toString(), true, mWidth, null);
 			if (len == line.length()) {
 				mNumOfLineAdded++;
-				add(KyoroString.newKyoroStringWithLF(line+"\n", mCurrentColor));
+				add(new KyoroString(line+"\n", mCurrentColor));
 				break;
 			} else {
 				mNumOfLineAdded++;
-				add(KyoroString.newKyoroStringWithLF(line.subSequence(0, len), mCurrentColor));
+				add(new KyoroString(line.subSequence(0, len), mCurrentColor));
 				line = line.subSequence(len, line.length());
 				// kiyo
 			}
