@@ -73,9 +73,13 @@ public class BigLineData {
 	public CharSequence readLine() throws IOException {
 		KyoroString tmp = new KyoroString(new char[]{}, 0);
 		int lineNumber = (int) mLinePosition;
+		long begin = 0;
+		long end = 0;
 		try {
+			begin = mReader.getFilePointer();
 			tmp = (KyoroString)mDecoder.decodeLine();
-			mCurrentPosition = mReader.getFilePointer();
+			end = mCurrentPosition = mReader.getFilePointer();
+
 			mLinePosition += 1;
 			if (mLastLinePosition < mLinePosition) {
 				mLastLinePosition = mLinePosition;
@@ -85,6 +89,8 @@ public class BigLineData {
 			e.printStackTrace();
 		}
 		tmp.setLinePosition(lineNumber);
+		tmp.setBeginPointer(begin);
+		tmp.setEndPointer(end);
 		return tmp;
 	}
 
