@@ -24,21 +24,28 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//
+// çÏÇËíºÇ∑
+//
 public class SimpleFileExplorer extends Dialog {
 
-	public static final int MODE_FILE_SELECT = 0;
-	public static final int MODE_DIR_SELECT = 1;
+	public static final int MODE_FILE_SELECT = 1;
+	public static final int MODE_DIR_SELECT = 3;
+	public static final int MODE_NEW_FILE = 5;	
 	private Activity mOwnerActivity =  null; 
 	private ListView mCurrentFileList = null;
 	private SelectedFileAction mAction = null;
 	private EditText mEdit = null;
 	private Button mSelectButton = null;
+	private ImageButton mNewButton = null;
+	private ImageButton mSearchButton = null;
 	private int mModeDirectory = 0;
 	private LinearLayout mLayout = null;
 	private File mDir = null;
@@ -68,10 +75,15 @@ public class SimpleFileExplorer extends Dialog {
 		mDir = dir;
 		mModeDirectory = mode;
 
-		if(mModeDirectory == MODE_DIR_SELECT) {
+		if((mModeDirectory&MODE_DIR_SELECT) == MODE_DIR_SELECT) {
 			mSelectButton = new Button(getContext());		
 			mSelectButton.setText("select");
 		}
+
+		mNewButton = new ImageButton(getContext());
+		mNewButton.setImageResource(android.R.drawable.ic_input_add);
+		mSearchButton = new ImageButton(getContext());
+		mSearchButton.setImageResource(android.R.drawable.ic_media_play);
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 		init();
@@ -83,25 +95,28 @@ public class SimpleFileExplorer extends Dialog {
 		mAction = action;
 	}
 
+	private void startSearchTask(){
+		String find = mEdit.getText().toString();
+		if(find == null || find.equals("")){
+			startUpdateTask(mDir);
+		}
+		else {
+			try {
+				startUpdateTask(new UpdateListFromSearchTask(mDir, Pattern.compile(find)));
+			} catch(Exception e){
+				
+			}
+		}
+	}
 	private void init() {
 		mEdit.setSelected(false);
 		mEdit.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		mEdit.setHint("search file : regex(find)");
+		mEdit.setHint("search file : regex(find) or new");
 		mEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				// All IME Application take that actionId become imeoption's value.
-				String find = v.getText().toString();
-				if(find == null || find.equals("")){
-					startUpdateTask(mDir);
-				}
-				else {
-					try {
-						startUpdateTask(new UpdateListFromSearchTask(mDir, Pattern.compile(find)));
-					} catch(Exception e){
-						
-					}
-				}
+				startSearchTask();
 				return false;
 			}
 		});
@@ -110,8 +125,16 @@ public class SimpleFileExplorer extends Dialog {
 		 new ArrayAdapter<ListItemWithFile>(
 				getContext(),
 				android.R.layout.simple_list_item_1);
-
-		mLayout.addView(mEdit, mParams);
+		{
+			LinearLayout sub = new LinearLayout(getContext()) ;
+			sub.setOrientation(LinearLayout.HORIZONTAL);
+			sub.addView(mSearchButton);
+			if((mModeDirectory&MODE_NEW_FILE) == MODE_NEW_FILE) {
+				sub.addView(mNewButton);
+			}
+			sub.addView(mEdit);
+			mLayout.addView(sub, mParams);
+		}
 		//ScrollView s = new ScrollView(getContext());
 		//s.addView(mCurrentFileList,mParams2);
 		if (mSelectButton != null) {
@@ -171,6 +194,31 @@ public class SimpleFileExplorer extends Dialog {
 				public void onClick(View v) {
 					if(mAction != null) {
 						if(mAction.onSelectedFile(mDir, SelectedFileAction.PUSH_SELECT)) {
+							try {
+								SimpleFileExplorer.this.dismiss();
+							} catch (Throwable e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			});
+		}
+		if(mSearchButton != null) {
+			mSearchButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startSearchTask();
+				}
+			});
+		}
+		if(mNewButton != null) {
+			mNewButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(mAction != null&&mEdit != null && mEdit.getText()!=null) {
+						
+						if(mAction.onSelectedFile(new File(mDir,""+mEdit.getText().toString()), SelectedFileAction.PUSH_SELECT)) {
 							try {
 								SimpleFileExplorer.this.dismiss();
 							} catch (Throwable e) {
@@ -259,7 +307,7 @@ public class SimpleFileExplorer extends Dialog {
 						if(!f.exists()){
 							continue;
 						}
-						if(mModeDirectory == MODE_DIR_SELECT&&!f.isDirectory()){
+						if((mModeDirectory&MODE_DIR_SELECT) == MODE_DIR_SELECT&&!f.isDirectory()){
 							continue;
 						}
 						if(f.isDirectory()){
@@ -317,7 +365,7 @@ public class SimpleFileExplorer extends Dialog {
 					if(checkEnding()){
 						return;
 					}
-					if(mModeDirectory == MODE_DIR_SELECT&& !f.isDirectory()) {
+					if((mModeDirectory&MODE_DIR_SELECT) == MODE_DIR_SELECT&& !f.isDirectory()) {
 						continue;
 					}
 					adapter.add(new ListItemWithFile(f));
