@@ -84,6 +84,10 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	public String getCharset() {
+		return mCurrentCharset;
+	}
+
 	public LineView getLineView() {
 		return mLineView;
 	}

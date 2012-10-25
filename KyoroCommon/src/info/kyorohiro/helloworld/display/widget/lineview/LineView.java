@@ -189,6 +189,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized void setPositionY(int position, boolean ignoreBias) {
+		if(mIsLockScreen){
+		// lock
+			return;
+		}
 		if (mBiasAboutMoveLine <= 0 || ignoreBias) {
 			mPositionY = position;
 		}
@@ -199,6 +203,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public void setPositionX(int x) {
+		if(mIsLockScreen){
+		// lock
+			return;
+		}
 		setPositionX(x, false);
 	}
 
@@ -414,7 +422,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 			mBiasAboutMoveLine--;
 		}
 		if(mIsLockScreen){
-			// lock
+		// lock
+			graphics.drawText("now lockscreen",100, 100);
 			return;
 		}
 		LineViewBufferSpec showingText = mInputtedText;

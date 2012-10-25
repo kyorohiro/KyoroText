@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.android.util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 
@@ -96,6 +97,12 @@ public class SimpleFileExplorer extends Dialog {
 	}
 
 	private void startSearchTask(){
+		if((mModeDirectory&MODE_NEW_FILE) != MODE_NEW_FILE) {
+			return;
+		}
+		if((mModeDirectory&MODE_FILE_SELECT) != MODE_FILE_SELECT) {			
+			return;
+		}
 		String find = mEdit.getText().toString();
 		if(find == null || find.equals("")){
 			startUpdateTask(mDir);
@@ -125,14 +132,17 @@ public class SimpleFileExplorer extends Dialog {
 		 new ArrayAdapter<ListItemWithFile>(
 				getContext(),
 				android.R.layout.simple_list_item_1);
-		{
+		if((mModeDirectory&MODE_DIR_SELECT) != MODE_DIR_SELECT){
 			LinearLayout sub = new LinearLayout(getContext()) ;
 			sub.setOrientation(LinearLayout.HORIZONTAL);
-			sub.addView(mSearchButton);
 			if((mModeDirectory&MODE_NEW_FILE) == MODE_NEW_FILE) {
 				sub.addView(mNewButton);
+				sub.addView(mEdit);
+			} 
+			else if((mModeDirectory&MODE_FILE_SELECT) == MODE_FILE_SELECT) {			
+				sub.addView(mSearchButton);
+				sub.addView(mEdit);
 			}
-			sub.addView(mEdit);
 			mLayout.addView(sub, mParams);
 		}
 		//ScrollView s = new ScrollView(getContext());
@@ -361,6 +371,7 @@ public class SimpleFileExplorer extends Dialog {
 				if(list == null){
 					return;
 				}
+				Arrays.sort(list);
 				for( File f : list) {
 					if(checkEnding()){
 						return;

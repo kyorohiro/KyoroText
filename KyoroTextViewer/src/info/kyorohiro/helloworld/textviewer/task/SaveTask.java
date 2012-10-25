@@ -17,8 +17,9 @@ public class SaveTask implements Runnable {
 	private EditableLineView mEditor = null;
 	private EditableLineViewBuffer mBuffer = null;
 	private File mSaveFilePath = null;
+	private String mCharset = "UTF8";
 
-	public SaveTask(EditableLineView editor, File path) {
+	public SaveTask(EditableLineView editor, String charset, File path) {
 		mEditor = editor;
 		mBuffer = (EditableLineViewBuffer)editor.getLineViewBuffer();
 		mSaveFilePath = path;
@@ -42,8 +43,9 @@ public class SaveTask implements Runnable {
 			init();
 			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);
-				byte[] b = (""+str).getBytes();
+				byte[] b = (""+str).getBytes(mCharset);
 				mStream.write(b, 0, b.length);
+				Thread.yield();
 			}
 		}
 		finally {

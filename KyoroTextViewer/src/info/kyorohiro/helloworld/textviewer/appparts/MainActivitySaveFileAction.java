@@ -79,12 +79,13 @@ public class MainActivitySaveFileAction implements MainActivityMenuAction {
 				if(mViewer.getFocusingTextViewer() == null){
 					return false;
 				}
+				TextViewer tViewr = mViewer.getFocusingTextViewer();
 				LineView viewer = mViewer.getFocusingTextViewer().getLineView();
 				if(!(viewer instanceof EditableLineView)){
 					return false;
 				}
 				EditableLineView editer = (EditableLineView)viewer;
-				Thread th = new Thread(new SaveTask(editer, file));
+				Thread th = new Thread(new SaveTask(editer, tViewr.getCharset(),file));
 				th.start();
 				return true;
 			}
