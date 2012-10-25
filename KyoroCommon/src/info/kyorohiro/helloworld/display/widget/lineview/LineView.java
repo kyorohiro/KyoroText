@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.io.BreakText;
@@ -11,6 +12,10 @@ import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
 import android.graphics.Color;
 
+//
+// このクラスはでかすぎるので、小さくする。
+//
+//
 public class LineView extends SimpleDisplayObjectContainer {
 	public static float[] widths = new float[256];
 	private final static int sTestTextColor = Color.parseColor("#AAFFFF00");
@@ -88,9 +93,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private synchronized void addPoint(int num) {
 		if (isOver()) {
 			for (Point p : mPoint.values()) {
-				p.mPoint -= num;
-				if (p.mPoint < 0) {
-					p.mPoint = 0;
+				p.setPoint(p.getPoint()-num);
+				if(p.getPoint() < 0){
+					p.setPoint(0);
 				}
 			}
 		}
@@ -514,38 +519,11 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (mIsClearBG) {
 			int w = getWidth();
 			int h = getHeight();
-
-			graphics.startPath();
-			graphics.setStyle(SimpleGraphics.STYLE_FILL);
-			graphics.moveTo(0, 0);
-			graphics.lineTo(0, h);
-			graphics.lineTo(w, h);
-			graphics.lineTo(w, 0);
-			graphics.lineTo(0, 0);
-			graphics.endPath();
+			SimpleGraphicUtil.fillRect(graphics, w, h);
 			if (mImage != null) {
 				graphics.drawImageAsTile(mImage, 0, 0, getWidth(), getHeight());
 			}
 		}
-	}
-
-	public static class Point {
-		WeakReference<LineView> mR;
-
-		private Point(int point, LineView v) {
-			mPoint = point;
-			mR = new WeakReference<LineView>(v);
-		}
-
-		public int getPoint() {
-			return mPoint;
-		}
-
-		public void setPoint(int point) {
-			mPoint = point;
-		}
-
-		private int mPoint = 0;
 	}
 
 }

@@ -2,7 +2,6 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.widget.lineview.LineView.Point;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 import java.lang.ref.WeakReference;

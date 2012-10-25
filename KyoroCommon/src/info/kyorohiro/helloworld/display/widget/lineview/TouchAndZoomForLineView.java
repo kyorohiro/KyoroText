@@ -5,7 +5,6 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.widget.lineview.LineView.Point;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
 
