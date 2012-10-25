@@ -105,7 +105,7 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 					mStartCenterX = getCenterX();
 					mStartCenterY = getCenterY();
 					mStartPosY = mLineViewer.getPoint(mLineViewer.getYToPosY(mStartCenterY));
-					mStartLine = mLineViewer.getLineViewData(mStartPosY.getPoint());
+					mStartLine = mLineViewer.getKyoroString(mStartPosY.getPoint());
 					mStartPosX = mLineViewer.getXToPosX(mStartPosY.getPoint(), mStartCenterX, 0);
 					mStartGetX = mLineViewer.getPositionX();
 					if (mStartLine != null) {

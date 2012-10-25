@@ -171,7 +171,7 @@ public class MyCursor extends SimpleDisplayObject {
 				if(mParent.get().isOver()){
 					yy-=mParent.get().getLineViewBuffer().getNumOfAdd();
 				}
-				d = mParent.get().getLineViewData(yy);
+				d = mParent.get().getKyoroString(yy);
 			} finally {
 				releaseLock();
 			}

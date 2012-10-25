@@ -44,11 +44,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public void isLockScreen(boolean lock) {
 		mIsLockScreen = lock;
-		//if(lock==true){
-		//	lock();
-		//} else {
-		//	releaseLock();
-		//}
 	}
 
 	public boolean isLockScreen() {
@@ -316,12 +311,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return yyy;
 	}
 
-	public KyoroString getLineViewData(int cursorCol) {
-		if (mInputtedText == null
-				|| cursorCol >= mInputtedText.getNumberOfStockedElement()
-				|| cursorCol < 0) {
-			return null;
-		}
+	public KyoroString getKyoroString(int cursorCol) {
+		if (!withinKyoroString(cursorCol)){return null;}
 		try {
 			lock();
 			KyoroString data = mInputtedText.get(cursorCol);
@@ -333,8 +324,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	private void showLineDate(SimpleGraphics graphics, KyoroString[] list,
-			int len) {
+	private void showLineDate(SimpleGraphics graphics, KyoroString[] list, int len) {
 		if (len > list.length) {
 			len = list.length;
 		}
@@ -345,28 +335,15 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 		float positionMax = -1
 				 * getBreakText().getWidth() * getShowingTextSize() / 
-				 (float) getBreakText().getTextSize()
-				//* (getBreakText().getWidth() * mScale)
-				//* (getWidth()-getMergine()*2)/ (float) (getBreakText().getWidth())
-				 ;
+				 (float) getBreakText().getTextSize();
 
-//		android.util.Log.v("kiyo", "positionMax _=" + positionMax+","+(getWidth() - getMergine() * 2));
-	//	positionMax *= getShowingTextSize() / (float)getBreakText().getTextSize();
 		positionMax += getWidth() - getMergine() * 2.2;
-//		positionMax += getWidth()*getShowingTextSize() / (float)getBreakText().getTextSize()- getMergine() * 2;
-//		android.util.Log.v("kiyo", "positionMax=" + positionMax);
-//		android.util.Log.v("kiyo",",w="+ getBreakText().getWidth() + "," + getWidth()+ ",m="+ getMergine());
-//		android.util.Log.v("kiyo",",scale=" + mScale);
-//		android.util.Log.v("kiyo","tsize=" + getShowingTextSize() + ","+ getBreakText().getTextSize()+
-//				","+getTextSize() );
-//		android.util.Log.v("kiyo",",logical=" + (getWidth()-getMergine()*2)
-///				/ (float) (getBreakText().getWidth()));
+
 		
 		if (mPositionX < positionMax) {
 			mPositionX = (int) positionMax;
 		}
 
-		// int scaleLine = mScaleLine-getShowingTextStartPosition();
 		for (int i = 0; i < len; i++) {
 			if (list[i] == null) {
 				continue;
@@ -417,7 +394,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 			notifyAll();
 			currentThread = null;
 		}
-		// android.util.Log.v("kiyo","unlock="+num);
 	}
 
 	@Override
@@ -503,9 +479,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		try {
 			lock();
 			if (!mIsTail || mPositionY > 1) {
-				// mPositionY += showingText.getNumOfAdd();
 				setPositionY(mPositionY + showingText.getNumOfAdd(), true);
-
 				addPoint(showingText.getNumOfAdd());
 			}
 			showingText.clearNumOfAdd();
@@ -517,13 +491,21 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	private void drawBG(SimpleGraphics graphics) {
 		if (mIsClearBG) {
-			int w = getWidth();
-			int h = getHeight();
-			SimpleGraphicUtil.fillRect(graphics, w, h);
+			SimpleGraphicUtil.fillRect(graphics, getWidth(), getHeight());
 			if (mImage != null) {
 				graphics.drawImageAsTile(mImage, 0, 0, getWidth(), getHeight());
 			}
 		}
 	}
 
+	private boolean withinKyoroString(int cursorCol) {
+		if (mInputtedText == null){
+			return false;
+		}else if(cursorCol >= mInputtedText.getNumberOfStockedElement()){
+			return false;
+		}else if(cursorCol < 0) {
+			return false;
+		}
+		return true;
+	}
 }
