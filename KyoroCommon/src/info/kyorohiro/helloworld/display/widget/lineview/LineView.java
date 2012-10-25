@@ -65,7 +65,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	public synchronized Point getPoint(int num) {
-		Point point = new Point(num, this);
+		Point point = new Point(num);
 		mPoint.put(mPointID++, point);
 		return point;
 	}

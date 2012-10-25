@@ -9,15 +9,13 @@ public class CursorableLineView extends LineView {
 	public final static String MODE_SELECT = "MODE SELECT";
 	public final static String MODE_VIEW = "MODE VIEW";
 	public final static String MODE_EDIT = "MODE EDIT: NOW CREATING!!";
+	public final static int __CURSOR__COLOR = Color.parseColor("#44FFAA44");
 
 
 	private MyCursor mLeft = new MyCursor(this);
 	private MyCursor mRight = new MyCursor(this);
 	private CharSequence mMode = MODE_VIEW;
 
-	public static int __CURSOR__COLOR =
-			Color.parseColor("#44FFAA44");
-			//Color.parseColor("#66FFFF00");
 	
 	public MyCursor getLeft() {
 		return mLeft;
@@ -195,8 +193,6 @@ public class CursorableLineView extends LineView {
 	}
 
 	private void drawBGForSelect(SimpleGraphics graphics) {
-		//try {
-		//	lock();
 		if (mLeft.enable() && mRight.enable()) {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
@@ -225,10 +221,6 @@ public class CursorableLineView extends LineView {
 				graphics.drawLine(b.getX(), b.getY(), e.getX(), e.getY());
 			}
 		}
-		//}
-		//finally {
-		//	releaseLock();
-		///}
 	}
 
 }
