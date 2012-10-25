@@ -1,6 +1,5 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
@@ -18,6 +17,8 @@ import android.graphics.Color;
 //
 public class LineView extends SimpleDisplayObjectContainer {
 	public static float[] widths = new float[256];
+
+	private KyoroString[] mCashBuffer = new KyoroString[0];
 	private final static int sTestTextColor = Color.parseColor("#AAFFFF00");
 	private boolean mIsClearBG = false;
 	private int mBiasAboutMoveLine = 0;
@@ -26,20 +27,19 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private int mScaleX = 0;
 	private int mScaleY = 0;
 	private int mScaleTime = 0;
-
-	private WeakHashMap<Integer, Point> mPoint = new WeakHashMap<Integer, Point>();
-
-	private SimpleImage mImage = null;
-	private int mNumOfLine = 300;
-	private LineViewBufferSpec mInputtedText = null;
 	private int mPositionY = 0;
 	private int mPositionX = 0;
 	private int mTextSize = 16;
 	private float mScale = 1.0f;
+
+	private WeakHashMap<Integer, Point> mPoint = new WeakHashMap<Integer, Point>();
+
+	private SimpleImage mBGImage = null;
 	private int mBgColor = Color.parseColor("#FF000022");
+
+	private LineViewBufferSpec mInputtedText = null;
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
-	private KyoroString[] mCashBuffer = new KyoroString[0];
 	private boolean mIsLockScreen = false;
 
 	public void isLockScreen(boolean lock) {
@@ -53,8 +53,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	// setScaleÇ∆setTextSize()Ç≈ägëÂó¶Çê›íËÇµÇƒÇ¢ÇÈÅB
 	// å„Ç≈Ç«ÇøÇÁÇ©Ç…ìùàÍÇ∑ÇÈÅH
 	protected float getSclaeFromTextSize() {
-		float scale = (getTextSize() / getBreakText().getTextSize());
-		return scale;
+		return (getTextSize() / getBreakText().getTextSize());
 	}
 
 	public BreakText getBreakText() {
@@ -71,9 +70,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return point;
 	}
 
-	public void isClearBG(boolean on) {
-		mIsClearBG = on;
-	}
 
 	public boolean isOver() {
 		if (this.isTail()
@@ -125,7 +121,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public synchronized void setScale(float scale, float sScale, int sGetX,
 			int linePosX, Point linePosY, int baseX, int baseY) {
-		// mInputtedText.clearNumOfAdd();
 		_updateStatus(mInputtedText);
 		if (mBiasAboutMoveLine < 6) {
 			mBiasAboutMoveLine += 2;
@@ -190,7 +185,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public synchronized void setPositionY(int position, boolean ignoreBias) {
 		if(mIsLockScreen){
-		// lock
 			return;
 		}
 		if (mBiasAboutMoveLine <= 0 || ignoreBias) {
@@ -224,6 +218,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return mDrawingPosition.getBlank();
 	}
 
+	//
+	// show line like tail command 
 	public boolean isTail() {
 		return mIsTail;
 	}
@@ -235,7 +231,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private DrawingPositionForLineView mDrawingPosition = new DrawingPositionForLineView();
 
 	public void setBGImage(SimpleImage image) {
-		mImage = image;
+		mBGImage = image;
 	}
 
 	public void setMergine(int mergine) {
@@ -301,7 +297,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public int getYToPosY(int y) {
 		int n = (int) (y / (int) ((getShowingTextSize() * 1.2)));
 		int yy = n - getBlinkY() - 1;
-		// android.util.Log.v("kiyo","DD="+getBlinkY()+","+n+","+getScale()+","+getShowingTextSize());
 		return yy + (getShowingTextStartPosition());
 	}
 
@@ -366,7 +361,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	private Thread currentThread = null;
-	int num = 0;
+	private int num = 0;
 
 	public synchronized void lock() {
 		try {
@@ -382,7 +377,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 			currentThread = Thread.currentThread();
 			num++;
 		}
-		// android.util.Log.v("kiyo","lock="+num);
 	}
 
 	public synchronized void releaseLock() {
@@ -475,7 +469,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 	}
 
 	protected void _updateStatus(LineViewBufferSpec showingText) {
-		mNumOfLine = (int) (getHeight() / (getShowingTextSize() * 1.2));// todo
 		try {
 			lock();
 			if (!mIsTail || mPositionY > 1) {
@@ -489,11 +482,15 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	public void isClearBG(boolean on) {
+		mIsClearBG = on;
+	}
+
 	private void drawBG(SimpleGraphics graphics) {
 		if (mIsClearBG) {
 			SimpleGraphicUtil.fillRect(graphics, getWidth(), getHeight());
-			if (mImage != null) {
-				graphics.drawImageAsTile(mImage, 0, 0, getWidth(), getHeight());
+			if (mBGImage != null) {
+				graphics.drawImageAsTile(mBGImage, 0, 0, getWidth(), getHeight());
 			}
 		}
 	}
