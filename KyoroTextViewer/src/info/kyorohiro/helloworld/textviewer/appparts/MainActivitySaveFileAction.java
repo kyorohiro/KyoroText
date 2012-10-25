@@ -84,7 +84,7 @@ public class MainActivitySaveFileAction implements MainActivityMenuAction {
 					return false;
 				}
 				EditableLineView editer = (EditableLineView)viewer;
-				Thread th = new Thread(new SaveTask((EditableLineViewBuffer)editer.getLineViewBuffer(), file));
+				Thread th = new Thread(new SaveTask(editer, file));
 				th.start();
 				return true;
 			}

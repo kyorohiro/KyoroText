@@ -35,6 +35,20 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
 	private KyoroString[] mCashBuffer = new KyoroString[0];
+	private boolean mIsLockScreen = false;
+
+	public void isLockScreen(boolean lock) {
+		mIsLockScreen = lock;
+		//if(lock==true){
+		//	lock();
+		//} else {
+		//	releaseLock();
+		//}
+	}
+
+	public boolean isLockScreen() {
+		return mIsLockScreen;
+	}
 
 	// setScale‚ÆsetTextSize()‚ÅŠg‘å—¦‚ðÝ’è‚µ‚Ä‚¢‚éB
 	// Œã‚Å‚Ç‚¿‚ç‚©‚É“ˆê‚·‚éH
@@ -398,6 +412,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 		graphics.clipRect(0, 0, getWidth(), getHeight());
 		if (mBiasAboutMoveLine > 0) {
 			mBiasAboutMoveLine--;
+		}
+		if(mIsLockScreen){
+			// lock
+			return;
 		}
 		LineViewBufferSpec showingText = mInputtedText;
 		KyoroString[] list = null;

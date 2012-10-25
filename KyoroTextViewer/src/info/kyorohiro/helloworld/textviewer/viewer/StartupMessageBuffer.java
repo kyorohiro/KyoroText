@@ -47,4 +47,9 @@ public class StartupMessageBuffer extends CyclingList<KyoroString> implements Li
 		return color;
 	}
 
+	@Override
+	public void isSync(boolean isSync) {
+		// èÌÇ…SYNC
+	}
+
 }

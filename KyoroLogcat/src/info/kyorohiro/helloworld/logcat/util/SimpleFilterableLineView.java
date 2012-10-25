@@ -197,6 +197,11 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 				return -1;
 			}
 		}
+
+		@Override
+		public void isSync(boolean isSync) {
+			// èÌÇ…SYNC
+		}
 		
 	}
 }

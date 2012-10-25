@@ -48,6 +48,9 @@ public class BigLineData {
 	}
 
 	public void moveLine(long lineNumber) throws IOException {
+		if(lineNumber == getNextLinePosition()){
+			return;
+		}
 		long index = lineNumber/FILE_LIME;
 		long number = lineNumber%FILE_LIME;
 		moveLinePer100((int)index);
@@ -70,7 +73,7 @@ public class BigLineData {
 	}
 
 
-	public CharSequence readLine() throws IOException {
+	public KyoroString readLine() throws IOException {
 		KyoroString tmp = new KyoroString(new char[]{}, 0);
 		int lineNumber = (int) mLinePosition;
 		long begin = 0;
@@ -130,6 +133,9 @@ public class BigLineData {
 	}
 
 
+	public long getNextLinePosition() {
+		return mLinePosition;
+	}
 //	@Deprecated
 	public long getLastLinePosition() {
 		return mLastLinePosition;

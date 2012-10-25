@@ -20,6 +20,11 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	@Override
+	public void isSync(boolean isSync) {
+		mOwner.isSync(isSync);
+	}
+
+	@Override
 	public int getNumOfAdd() {
 		return mOwner.getNumOfAdd();
 	}

@@ -6,7 +6,7 @@ import info.kyorohiro.helloworld.text.KyoroString;
 public interface LineViewBufferSpec {
 	public int getNumOfAdd();
 	public void clearNumOfAdd();
-	// KyoroString getSync(int i);
+	public void isSync(boolean isSync);
 	public KyoroString get(int i);
 	public int getNumberOfStockedElement();
 	public int getMaxOfStackedElement();

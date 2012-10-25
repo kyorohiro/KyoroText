@@ -21,6 +21,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	private KyoroString mLoadingLineMessage = new KyoroString("loading..\n", Color.parseColor("#33FFFF00"));
 	private LookAheadCaching mCashing = null;
 	private long mNumberOfStockedElement = 0;
+	private boolean mIsSync = false;
 
 	public TextViewerBuffer(int listSize, BreakText breakText, File path, String charset) throws FileNotFoundException {
 		super(listSize);
@@ -102,7 +103,27 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 	}
 
-	public synchronized KyoroString get(int i) {
+	private KyoroString getSync(int i) {
+		if (i < 0) {
+			return mErrorLineMessage;
+		}
+		else if(i>=getNumberOfStockedElement()) {
+			return mErrorLineMessage;
+		}
+		try {
+			mLineManagerFromFile.moveLine(i);
+			mNumberOfStockedElement = mLineManagerFromFile.getLastLinePosition();
+			if(!mLineManagerFromFile.isEOF()){
+				mNumberOfStockedElement++;
+			}
+			return mLineManagerFromFile.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return mErrorLineMessage;
+		}
+		
+	}
+	private KyoroString getAsync(int i) {
 		if (i < 0) {
 			return mErrorLineMessage;
 		}
@@ -126,6 +147,14 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			if (mCashing != null) {
 				mCashing.updateBufferedStatus();
 			}
+		}		
+	}
+
+	public synchronized KyoroString get(int i) {
+		if(mIsSync) {
+			return getSync(i);			
+		} else {
+			return getAsync(i);
 		}
 	}
 
@@ -162,9 +191,13 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 	}
 
-
 	@Override
 	public BreakText getBreakText() {
 		return mLineManagerFromFile.getBreakText();
+	}
+
+	@Override
+	public void isSync(boolean isSync) {
+		 mIsSync = isSync;
 	}
 }

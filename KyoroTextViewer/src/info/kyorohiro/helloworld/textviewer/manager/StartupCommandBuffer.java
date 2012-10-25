@@ -7,6 +7,8 @@ import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CyclingList;
 import android.graphics.Color;
 
+//
+// ãﬂÅXÇ≈çÌèúÇ∑ÇÈÅB
 public class StartupCommandBuffer extends CyclingList<KyoroString> implements LineViewBufferSpec {
 
 	public StartupCommandBuffer(int listSize) {
@@ -37,6 +39,11 @@ public class StartupCommandBuffer extends CyclingList<KyoroString> implements Li
 	protected static int[] getStartgupMessageColor() {
 		int color[] = {Color.BLUE};
 		return color;
+	}
+
+	@Override
+	public void isSync(boolean isSync) {
+		// èÌÇ…SYNC
 	}
 
 }

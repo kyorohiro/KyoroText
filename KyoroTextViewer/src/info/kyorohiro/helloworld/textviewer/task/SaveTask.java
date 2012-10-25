@@ -7,17 +7,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 
 public class SaveTask implements Runnable {
 
+	private EditableLineView mEditor = null;
 	private EditableLineViewBuffer mBuffer = null;
 	private File mSaveFilePath = null;
 
-	public SaveTask(EditableLineViewBuffer buffer, File path) {
-		mBuffer = buffer;
+	public SaveTask(EditableLineView editor, File path) {
+		mEditor = editor;
+		mBuffer = (EditableLineViewBuffer)editor.getLineViewBuffer();
 		mSaveFilePath = path;
 	}
 
@@ -34,15 +37,18 @@ public class SaveTask implements Runnable {
 	}
 	public void action() throws IOException {
 		try {
+			mEditor.isLockScreen(true);
+			mBuffer.isSync(true);
 			init();
-			int len = mBuffer.getNumberOfStockedElement();
-			for(int i=0;i<len;i++) {
+			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);
 				byte[] b = (""+str).getBytes();
 				mStream.write(b, 0, b.length);
 			}
 		}
 		finally {
+			mEditor.isLockScreen(false);
+			mBuffer.isSync(false);
 			end();
 		}
 	}
