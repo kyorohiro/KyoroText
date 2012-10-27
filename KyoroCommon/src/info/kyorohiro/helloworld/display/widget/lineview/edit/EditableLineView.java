@@ -34,7 +34,8 @@ public class EditableLineView extends CursorableLineView {
 			try {
 				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft()
 						.getCursorCol());
-				updateOnIMEOutput();
+				updateCommitTextFromIME();
+				updateComposingTextFromIME();
 				getLeft().setCursorRow(mTextBuffer.getRow());
 				getLeft().setCursorCol(mTextBuffer.getCol());
 				// android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
@@ -93,7 +94,14 @@ public class EditableLineView extends CursorableLineView {
 		return c;
 	}
 
-	private void updateOnIMEOutput() {
+	private void updateComposingTextFromIME() {
+		MyInputConnection c = getMyInputConnection();
+		if (c == null) {
+			return;
+		} // <-- ‚±‚±‚ð‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
+		getLeft().setMessage(c.getComposingText());
+	}
+	private void updateCommitTextFromIME() {
 		MyInputConnection c = getMyInputConnection();
 		if (c == null) {
 			return;

@@ -19,6 +19,7 @@ public class MyCursor extends SimpleDisplayObject {
 	private boolean focus = false;
 	private boolean mEnable = false;
 	private WeakReference<LineView> mParent;
+	private CharSequence mMessage = "";
 
 	public MyCursor(LineView lineview) {
 		mParent = new WeakReference<LineView>(lineview);
@@ -31,6 +32,10 @@ public class MyCursor extends SimpleDisplayObject {
 
 	public void enable(boolean enable) {
 		mEnable = enable;
+	}
+
+	public void setMessage(CharSequence message) {
+		mMessage = message;
 	}
 
 	public void setCursorCol(int col) {
@@ -78,6 +83,10 @@ public class MyCursor extends SimpleDisplayObject {
 
 		graphics.setTextSize(26);
 		graphics.drawText("x=" + cursorRow + ",y=" + cursorCol.getPoint(), 10, 100);
+		if(mMessage != null){
+			graphics.setColor(Color.parseColor("#AA005555"));
+			graphics.drawText(mMessage, 20, 20);
+		}
 	}
 
 	private void drawCursor(SimpleGraphics graphics, int x, int y) {
