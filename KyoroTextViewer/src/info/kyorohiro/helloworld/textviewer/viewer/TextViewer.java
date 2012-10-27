@@ -2,13 +2,14 @@ package info.kyorohiro.helloworld.textviewer.viewer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+
 import android.graphics.Color;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
+import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
@@ -25,7 +26,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public static int COLOR_FONT2 = Color.parseColor("#ffdd1188");
 
 	private String mCurrentCharset = "utf8";
-	private LineViewBufferSpec mBuffer = null;
+	private ManagedLineViewBuffer mBuffer = null;
 	private LineView mLineView = null;
 	private int mBufferWidth = 0;
 	private ScrollBar mScrollBar = null;
@@ -41,12 +42,11 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine) {
 		mCurrentFontSize = textSize;
 		mCurrentCharset = KyoroSetting.getCurrentCharset();
-		mBuffer = buffer;
+		mBuffer = new ManagedLineViewBuffer(buffer);
 		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
 
-//		mLineView = new CursorableLineView(mBuffer, textSize, 200);
-		mLineView = new EditableLineView(mBuffer, textSize, 200);
+		mLineView = new EditableLineView(mBuffer.getBase(), textSize, 200);
 		mLineView.isTail(false);
 		mLineView.setBgColor(COLOR_BG);
 		setRect(width, width/2);
@@ -89,13 +89,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return mLineView;
 	}
 
-	public TextViewerBuffer getTextViewerBuffer() {
-		if(mBuffer instanceof TextViewerBuffer) {
-			return (TextViewerBuffer)mBuffer;
-		}
-		else {
-			return null;
-		}
+	public ManagedLineViewBuffer getManagedLineViewBuffer() {
+		return mBuffer;
 	}
 
 	public void restart() {
@@ -104,8 +99,12 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	
 	public boolean readFile(File file) {
+		return readFile(file, true);
+	}
+
+	public boolean readFile(File file, boolean updataCurrentPath) {
+
 		if (file == null) {
 			KyoroApplication.showMessage("file can not read null file");
 			return false;
@@ -115,11 +114,13 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			return false;
 		}
 		mCurrentPath = file.getAbsolutePath();
-		KyoroSetting.setCurrentFile(file.getAbsolutePath());
+		if(updataCurrentPath){
+			KyoroSetting.setCurrentFile(file.getAbsolutePath());
+		}
 		try {
 			mBreakText.setTextSize(mCurrentFontSize);
 			mBreakText.setBufferWidth(mBufferWidth);
-			mBuffer = new TextViewerBufferWithColorFilter(3000, mBreakText, file, mCurrentCharset);
+			mBuffer = new ManagedLineViewBuffer(new TextViewerBufferWithColorFilter(3000, mBreakText, file, mCurrentCharset));
 		} catch (FileNotFoundException e) {
 			// don't pass along this code
 			KyoroApplication.showMessage("file can not read null filen --007--");
@@ -131,8 +132,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			((TextViewerBuffer) prevBuffer).clear();
 
 		}
-		if (mBuffer instanceof TextViewerBuffer) {
-			((TextViewerBuffer) mBuffer).startReadFile();
+		if (mBuffer.getBase() instanceof TextViewerBuffer) {
+			((TextViewerBuffer) mBuffer.getBase()).startReadFile();
 		}
 		if (prevBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) prevBuffer).dispose();
@@ -143,10 +144,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	@Override
 	public void dispose() {
 		super.dispose();
-		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView.getLineViewBuffer();
-		if (prevBuffer instanceof TextViewerBuffer) {
-			((TextViewerBuffer) prevBuffer).dispose();
-		}
+		LineViewBufferSpec prevBuffer = getLineView().getLineViewBuffer();
+		prevBuffer.dispose();
 	}
 
 	private class LayoutManager extends SimpleDisplayObject {

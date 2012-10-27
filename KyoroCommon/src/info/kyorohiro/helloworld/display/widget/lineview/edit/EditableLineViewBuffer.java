@@ -355,4 +355,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
+	@Override
+	public void dispose() {
+		mOwner.dispose();
+	}
+
 }

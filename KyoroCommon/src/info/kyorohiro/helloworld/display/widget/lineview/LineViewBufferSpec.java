@@ -12,4 +12,5 @@ public interface LineViewBufferSpec {
 	public int getMaxOfStackedElement();
 	public KyoroString[] getElements(KyoroString[] ret, int start, int end) ;
 	public BreakText getBreakText();
+	public void dispose();
 }

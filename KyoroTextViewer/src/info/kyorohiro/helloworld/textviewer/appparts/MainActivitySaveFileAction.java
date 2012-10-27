@@ -80,12 +80,7 @@ public class MainActivitySaveFileAction implements MainActivityMenuAction {
 					return false;
 				}
 				TextViewer tViewr = mViewer.getFocusingTextViewer();
-				LineView viewer = mViewer.getFocusingTextViewer().getLineView();
-				if(!(viewer instanceof EditableLineView)){
-					return false;
-				}
-				EditableLineView editer = (EditableLineView)viewer;
-				Thread th = new Thread(new SaveTask(editer, tViewr.getCharset(),file));
+				Thread th = new Thread(new SaveTask(tViewr,file));
 				th.start();
 				return true;
 			}

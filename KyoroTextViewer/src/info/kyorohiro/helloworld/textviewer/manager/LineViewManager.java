@@ -35,8 +35,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	// å„Ç≈SingletoneÇ…Ç∑ÇÈÅB
-	public LineViewManager(int textSize, int width, int height, int mergine,
-			int menuWidth) {
+	public LineViewManager(int textSize, int width, int height, int mergine, int menuWidth) {
 		sInstance = this;
 		mWidth = width;
 		mTextSize = textSize;
@@ -49,8 +48,9 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	public TextViewer newTextViewr() {
-//		return new TextViewer(mTextSize, mWidth, mMergine);
-		return new StartupCommandBuffer(mTextSize, mWidth, mMergine);
+		TextViewer viewer = new StartupCommandBuffer(mTextSize, mWidth, mMergine);
+		//viewer.getLineView().fittableToView(true);
+		return viewer;
 	}
 
 	@Override

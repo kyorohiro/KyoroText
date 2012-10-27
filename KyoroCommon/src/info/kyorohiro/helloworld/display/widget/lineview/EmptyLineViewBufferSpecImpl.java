@@ -44,4 +44,10 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 		return new MyBreakText();
 	}
 
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

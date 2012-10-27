@@ -7,19 +7,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
+import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 
 public class SaveTask implements Runnable {
 
+	private TextViewer mViewer = null;
 	private EditableLineView mEditor = null;
 	private EditableLineViewBuffer mBuffer = null;
 	private File mSaveFilePath = null;
 	private String mCharset = "UTF8";
 
-	public SaveTask(EditableLineView editor, String charset, File path) {
+	public SaveTask(TextViewer viewer, File path){//EditableLineView editor, String charset, File path) {
+		LineView _viewer = viewer.getLineView();
+		EditableLineView editor = (EditableLineView)_viewer;
+		mViewer = viewer;
 		mEditor = editor;
 		mBuffer = (EditableLineViewBuffer)editor.getLineViewBuffer();
 		mSaveFilePath = path;
@@ -36,10 +42,12 @@ public class SaveTask implements Runnable {
 			KyoroApplication.showMessage("failed save "+e);
 		}
 	}
+
 	public void action() throws IOException {
 		try {
 			mEditor.isLockScreen(true);
 			mBuffer.isSync(true);
+			mViewer.getManagedLineViewBuffer().reserve();
 			init();
 			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);
@@ -51,6 +59,7 @@ public class SaveTask implements Runnable {
 		finally {
 			mEditor.isLockScreen(false);
 			mBuffer.isSync(false);
+			mViewer.getManagedLineViewBuffer().release();
 			end();
 		}
 	}

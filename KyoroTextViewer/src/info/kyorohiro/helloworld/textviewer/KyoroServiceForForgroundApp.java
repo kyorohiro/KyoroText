@@ -6,13 +6,14 @@ import android.os.IBinder;
 import info.kyorohiro.helloworld.android.base.ForegroundService;
 
 public class KyoroServiceForForgroundApp extends ForegroundService {
+	private static Intent sCurrentIntent = null; 
 	public KyoroServiceForForgroundApp() {
 		super(1);
 	}
 
 	public static Intent startForgroundService(Context context, String message) {
-		Intent startIntent = new Intent(context,
-				KyoroServiceForForgroundApp.class);
+		Intent startIntent = new Intent(context, KyoroServiceForForgroundApp.class);
+		sCurrentIntent = startIntent;
 		if (message != null) {
 			startIntent.putExtra("message", message);
 		}
@@ -20,8 +21,13 @@ public class KyoroServiceForForgroundApp extends ForegroundService {
 		return startIntent;
 	}
 
-	public void stopForgroundService(Context context, Intent intent) {
-		context.stopService(intent);
+	public static void stopForgroundService(Context context, Intent intent) {
+		if(intent == null){
+			intent = sCurrentIntent;
+		}
+		if(intent != null) {
+			context.stopService(intent);
+		}
 	}
 
 	@Override

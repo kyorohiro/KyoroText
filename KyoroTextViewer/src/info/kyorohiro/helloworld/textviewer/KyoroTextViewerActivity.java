@@ -11,7 +11,9 @@ import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetec
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.util.Util;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -71,12 +73,17 @@ public class KyoroTextViewerActivity extends MainActivity {
 		startStage();
 		return super.onTrackballEvent(event);
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		startStage();
-		return super.onKeyDown(keyCode, event);
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			showDialog();
+			return true;
+		} else {
+			return super.onKeyDown(keyCode, event);
+		}
 	}
-	
 
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -104,6 +111,8 @@ public class KyoroTextViewerActivity extends MainActivity {
 	@Override
 	protected void onDestroy() {
 		mViewerManager.dispose();
+		// 編集中のBufferを管理するクラスがstart/stopするタイミングを決める。
+		KyoroServiceForForgroundApp.stopForgroundService(this, null);
 		super.onDestroy();
 	}
 
@@ -148,4 +157,25 @@ public class KyoroTextViewerActivity extends MainActivity {
 			t.printStackTrace();
 		}
 	}
+	
+	public void showDialog() {
+		AlertDialog.Builder b = new AlertDialog.Builder(this);
+		b.setMessage("if delete editing/viewing data ");
+		b.setPositiveButton("finish", new P1());
+		b.setNegativeButton("back", new P2());
+		b.show();
+	}
+
+	private class P1 implements DialogInterface.OnClickListener {
+		@Override
+		public void onClick(DialogInterface arg0, int arg1) {
+			KyoroTextViewerActivity.this.finish();
+		}
+	}
+
+	private class P2 implements DialogInterface.OnClickListener {
+		@Override
+		public void onClick(DialogInterface arg0, int arg1) {
+		}
+	}	
 }
