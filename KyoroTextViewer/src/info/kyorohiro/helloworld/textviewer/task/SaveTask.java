@@ -49,7 +49,13 @@ public class SaveTask implements Runnable {
 			mEditor.isLockScreen(true);
 			mBuffer.isSync(true);
 			mViewer.getManagedLineViewBuffer().reserve();
-			Utility.copyTransfer(new File(mViewer.getCurrentPath()), getBackupFile());
+			if(mViewer.getCurrentPath() !=null) {
+				File src = new File(mViewer.getCurrentPath());
+				File dist = getBackupFile();
+				if(src.exists()&& dist != null){
+					Utility.copyTransfer(src, getBackupFile());
+				}
+			}
 			save_init();
 			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);

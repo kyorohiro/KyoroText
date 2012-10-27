@@ -129,10 +129,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	public void delete() {
-		// if(true) {
-		// deleteLine();
-		// return;
-		// }
 		int index = getNumberOfStockedElement() - 1;
 		if (index > mCursorLine) {
 			index = mCursorLine;
@@ -247,7 +243,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		if (index >= mCursorLine) {
 			index = mCursorLine;
 		}
-		android.util.Log.v("log", "delete:" + index);
 		CharSequence deleted = get(index);
 		mDiffer.deleteLine(index);
 		mCursorLine -= 1;
@@ -261,6 +256,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				&& c.charAt(c.length() - 1) != '\n') {
 			mDiffer.setLine(mCursorLine, "" + c + "\n");
 		}
+		setCursor(mCursorRow, mCursorLine);
+
 	}
 
 	@Override
@@ -270,8 +267,11 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		if (index > mCursorLine) {
 			index = mCursorLine;
 		}
-		CharSequence l = get(index);
 
+		CharSequence l = "";
+		if(0<getNumberOfStockedElement()){
+			l = get(index);
+		}
 		if(mCursorRow > l.length()){
 			mCursorRow = l.length();
 		}
@@ -288,6 +288,17 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	//commit text‚É\n‚ª‚Ó‚­‚Ü‚ê‚éê‡‚Í‚Ç‚¤‚©‚·‚é‚Í‚Ä‚È
 	private void commit(CharSequence text, int cursor) {
+		//---------
+		if(mCursorLine<=0) {
+			mCursorLine = 0;
+		}
+		if(mCursorRow<=0){
+			mCursorRow = 0;
+		}
+		//---------
+		int cursorRow = mCursorRow;
+		int cursorLine = mCursorLine;
+		try {
 		if(text.length()>0&&text.charAt(text.length()-1)=='\n'){
 			if(text.length()>1&&text.charAt(text.length()-2)=='\r'){
 				text = text.subSequence(0, text.length()-2);
@@ -295,11 +306,18 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				text = text.subSequence(0, text.length()-1);					
 			}
 		}
-		CharSequence ct = get(mCursorLine);
+		if(0>=getNumberOfStockedElement()){
+			mDiffer.addLine(0, "\n");
+		}
+		CharSequence ct = "";
+		if(0<getNumberOfStockedElement()){
+			ct=get(mCursorLine);
+		}
 		if (mCursorRow >= ct.length()) {
 			mCursorRow = ct.length();
 		}
 		CharSequence f = composeString(ct, mCursorRow, text);
+		android.util.Log.v("kiyo", "_f0=" + f+","+mCursorLine);
 
 		int w = this.getBreakText().getWidth();
 		int len = 0;
@@ -309,11 +327,10 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		do {
 			android.util.Log.v("kiyo", "_aaa0=" + i);
 			i++;
-			android.util.Log.v("kiyo", "_aaa1=" + f.length() + "," + w + ","
-					+ f);
+			//android.util.Log.v("kiyo", "_aaa1=" + f.length() + "," + w + ","+ f);
 			len = getBreakText().breakText(f, 0, f.length(), w);
 			le = f.length();
-			android.util.Log.v("kiyo", "_aaa2=" + len + "," + le);
+			//android.util.Log.v("kiyo", "_aaa2=" + len + "," + le);
 			if (a) {
 				mDiffer.setLine(mCursorLine, f.subSequence(0, len));
 				a = false;
@@ -337,6 +354,12 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			}
 			f = f.subSequence(len, le);
 		} while (le > len);
+		} finally {
+			if(cursor == 0) {
+				mCursorRow =  cursorRow;
+				mCursorLine = cursorLine;
+			}
+		}
 	}
 
 	public static CharSequence composeString(CharSequence b, int i,
@@ -344,6 +367,11 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		if (i >= b.length()) {
 			i = b.length();
 		}
+		//----------
+		//if(i<0){
+		//	i=0;
+		//}
+		//------
 		if (i == 0) {
 			return "" + s + b;
 		} else if (i == b.length()) {
