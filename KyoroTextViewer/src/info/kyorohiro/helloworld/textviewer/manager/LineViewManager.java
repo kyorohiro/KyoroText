@@ -134,7 +134,6 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-			mCircleMenu.addCircleMenu(0, "Search");
 			if (title.equals(CursorableLineView.MODE_EDIT)) {
 				mLineView.setMode(CursorableLineView.MODE_EDIT);
 			} else {
@@ -145,6 +144,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			mCircleMenu.clearCircleMenu();
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			if (!CursorableLineView.MODE_SELECT.equals(mLineView.getMode())) {
 				mLineView.setMode(CursorableLineView.MODE_SELECT);
 			}
@@ -152,6 +152,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		} else if (title.equals("Copy")) {
 			mCircleMenu.clearCircleMenu();
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
+			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 			KyoroApplication.getKyoroApplication().getHanler()
 					.post(new Runnable() {
@@ -191,7 +192,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 					});
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			mCircleMenu.addCircleMenu(0, "Search");
+			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 		}
 		mCircleMenu.setEventListener(new MyCircleControllerEvent());
 		mCircleMenu.setColorWhenDefault(COLOR_CIRCLE_DEFAULT);
