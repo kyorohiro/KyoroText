@@ -1,49 +1,63 @@
 package info.kyorohiro.helloworld.textviewer.manager;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
+import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.textviewer.KyoroApplication;
+import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.util.CyclingList;
+import android.content.Context;
 import android.graphics.Color;
 
 //
 // ãﬂÅXÇ≈çÌèúÇ∑ÇÈÅB
-public class StartupCommandBuffer extends CyclingList<KyoroString> implements LineViewBufferSpec {
+public class StartupCommandBuffer extends TextViewer {
 
-	public StartupCommandBuffer(int listSize) {
-		super(listSize);
+	public StartupCommandBuffer(int textSize, int width, int mergine) {
+		super(new EmptyLineViewBufferSpecImpl(),textSize, width, mergine);
+		readStartupMessage();
 	}
 
-	public static StartupCommandBuffer getStartupCommandBuffer() {
-		String[] message = getStartupMessage();
-		int color[] = getStartgupMessageColor();
-		StartupCommandBuffer startupMessage = new StartupCommandBuffer(100);
-		for (int i = 0; i < message.length; i++) {
-			String m = message[i];
-			startupMessage.add(new KyoroString(m, color[i]));
+	public void readStartupMessage() {
+		try {
+			Context c = KyoroApplication.getKyoroApplication().getApplicationContext();
+			File dir = c.getFilesDir();
+			File filePathOfStartMessage = new File(dir, "startup_message.txt");
+			createStartupMessageIfNonExist(filePathOfStartMessage);
+			readFile(filePathOfStartMessage);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return startupMessage;
 	}
 
-	@Override
-	public BreakText getBreakText() {
-		return new MyBreakText();
+	public void createStartupMessageIfNonExist(File f) throws IOException {
+		if(f.exists()) {
+			return;
+		}
+		f.createNewFile();
+		FileOutputStream output = new FileOutputStream(f);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
+		for(String s : message) {
+			writer.write(s);
+		}
+		writer.close();
+		output.close();
 	}
 
-	protected static String[] getStartupMessage() {
-		String[] message = {".*" };
-		return message;
-	}
-
-	protected static int[] getStartgupMessageColor() {
-		int color[] = {Color.BLUE};
-		return color;
-	}
-
-	@Override
-	public void isSync(boolean isSync) {
-		// èÌÇ…SYNC
-	}
-
+	String[] message = {
+			"Sorry, this application is pre-alpha version\n",
+			"Testing and Developing.. now\n",
+			"Please mail kyorohiro.android@gmail.com, \n",
+			"If you have particular questions or comments, \n",
+			"please don't hesitate to contact me. Thank you. \n" };
 }

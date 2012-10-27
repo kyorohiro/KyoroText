@@ -6,6 +6,7 @@ import android.graphics.Color;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
@@ -35,10 +36,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine) {
 		init(buffer, textSize, width, mergine);
-	}
-
-	public TextViewer(int textSize, int width, int mergine) {
-		init(StartupMessageBuffer.getStartupMessageBuffer(), textSize, width, mergine);
 	}
 
 	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine) {
@@ -100,12 +97,14 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			return null;
 		}
 	}
+
 	public void restart() {
 		if (mCurrentPath != null && !mCurrentPath.equals("")) {
 			readFile(new File(mCurrentPath));
 		}
 	}
 
+	
 	public boolean readFile(File file) {
 		if (file == null) {
 			KyoroApplication.showMessage("file can not read null file");

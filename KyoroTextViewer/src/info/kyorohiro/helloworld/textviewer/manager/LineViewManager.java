@@ -49,7 +49,8 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	public TextViewer newTextViewr() {
-		return new TextViewer(mTextSize, mWidth, mMergine);
+//		return new TextViewer(mTextSize, mWidth, mMergine);
+		return new StartupCommandBuffer(mTextSize, mWidth, mMergine);
 	}
 
 	@Override

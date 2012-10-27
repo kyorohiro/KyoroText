@@ -90,6 +90,8 @@ public class KyoroTextViewerActivity extends MainActivity {
 		super.onResume();
 		doFileOpenIntentAction();
 		mStage.start();
+		//
+		// 編集中のBufferを管理するクラスがstart/stopするタイミングを決める。
 		KyoroServiceForForgroundApp.startForgroundService(KyoroApplication.getKyoroApplication(), "start");
 	}
 
