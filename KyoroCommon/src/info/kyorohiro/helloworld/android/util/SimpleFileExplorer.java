@@ -97,10 +97,7 @@ public class SimpleFileExplorer extends Dialog {
 	}
 
 	private void startSearchTask(){
-		if((mModeDirectory&MODE_NEW_FILE) != MODE_NEW_FILE) {
-			return;
-		}
-		if((mModeDirectory&MODE_FILE_SELECT) != MODE_FILE_SELECT) {			
+		if((mModeDirectory&MODE_NEW_FILE) == MODE_NEW_FILE) {
 			return;
 		}
 		String find = mEdit.getText().toString();
@@ -177,8 +174,7 @@ public class SimpleFileExplorer extends Dialog {
 		mCurrentFileList.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int pos, long id) {
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
 				ListItemWithFile item = ((ArrayAdapter<ListItemWithFile>)mCurrentFileList.getAdapter()).getItem(pos);
 				File f = item.getFile();
 				if(f.exists() && f.isDirectory()){

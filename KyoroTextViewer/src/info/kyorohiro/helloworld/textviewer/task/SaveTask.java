@@ -13,6 +13,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineViewBu
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.util.Utility;
 
 public class SaveTask implements Runnable {
 
@@ -48,7 +49,8 @@ public class SaveTask implements Runnable {
 			mEditor.isLockScreen(true);
 			mBuffer.isSync(true);
 			mViewer.getManagedLineViewBuffer().reserve();
-			init();
+			Utility.copyTransfer(new File(mViewer.getCurrentPath()), getBackupFile());
+			save_init();
 			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);
 				byte[] b = (""+str).getBytes(mCharset);
@@ -60,20 +62,36 @@ public class SaveTask implements Runnable {
 			mEditor.isLockScreen(false);
 			mBuffer.isSync(false);
 			mViewer.getManagedLineViewBuffer().release();
-			end();
+			save_end();
 		}
 	}
 
 	private OutputStream mStream = null;
-	public void init() throws IOException {
+	public void save_init() throws IOException {
 		if(!mSaveFilePath.exists()){
 			mSaveFilePath.createNewFile();
 		}
 		mStream = new FileOutputStream(mSaveFilePath);
 	}
-	public void end() throws IOException {
+	public void save_end() throws IOException {
 		if(mStream != null) {
 			mStream.close();
 		}
 	}
+
+	public File getBackupFile() {
+		if(!mSaveFilePath.exists()){
+			return null;
+		}
+		int num = 0;
+		File file = null;
+		for(int i=0;i<10;i++){
+			file = new File(mSaveFilePath.getAbsolutePath()+"."+num+".kyorohiro.bak");
+			if(!file.exists()){
+				return file;
+			}
+		}
+		return file;
+	}
+
 }
