@@ -33,7 +33,7 @@ public class TestSimpleTextDecoder extends TestCase {
 		File f = TestSimpleTextDecoder.getTestFile("test_sjis_crlf_001.txt");
 		MarkableFileReader vm = new MarkableFileReader(f, 64);
 		Charset cs = Charset.forName("Shift_Jis");
-		BreakText br = new MyBreakText(12);
+		SimpleTextDecoderBreakText br = new MyBreakText(12);
 		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
 		for (int i = 0; i < expect.length - 1; i++) {
 			CharSequence c = decoder.decodeLine();
@@ -46,7 +46,7 @@ public class TestSimpleTextDecoder extends TestCase {
 		File f = TestSimpleTextDecoder.getTestFile("iso_2022_jp_crlf_001.txt");
 		MarkableFileReader vm = new MarkableFileReader(f, 64);
 		Charset cs = Charset.forName("ISO-2022-JP");
-		BreakText br = new MyBreakText(12);
+		SimpleTextDecoderBreakText br = new MyBreakText(12);
 		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
 		for (int i = 0; i < expect.length - 1; i++) {
 			CharSequence c = decoder.decodeLine();
@@ -59,7 +59,7 @@ public class TestSimpleTextDecoder extends TestCase {
 		File f = TestSimpleTextDecoder.getTestFile("iso_2022_jp_crlf_002.txt");
 		MarkableFileReader vm = new MarkableFileReader(f, 64);
 		Charset cs = Charset.forName("ISO-2022-JP");
-		BreakText br = new MyBreakText(12);
+		SimpleTextDecoderBreakText br = new MyBreakText(12);
 		SimpleTextDecoder decoder = new SimpleTextDecoder(cs, vm, br);
 		{
 			CharSequence c = decoder.decodeLine();
@@ -109,10 +109,9 @@ public class TestSimpleTextDecoder extends TestCase {
 		return path;
 	}
 
-	public static class MyBreakText implements BreakText {
+	public static class MyBreakText implements SimpleTextDecoderBreakText {
 		private float mFontSize = 12;
 		private int mNextBreakText = -1;
-
 		public MyBreakText(float fontSize) {
 			mFontSize = fontSize;
 		}
@@ -124,43 +123,11 @@ public class TestSimpleTextDecoder extends TestCase {
 		public int breakText(MyBuilder mBuffer) {
 			if (mNextBreakText >= 0) {
 				int t = mNextBreakText;
-				//mNextBreakText = -1;
 				return t;
 			}
 			return mBuffer.getCurrentBufferedMojiSize();
 		}
-		@Override
-		public void setTextSize(float textSize) {}
-		@Override
-		public int breakText(MyBuilder mBuffer, int width) {return 0;}
-		@Override
-		public int getTextWidths(char[] text, int index, int count,float[] widths) {return 0;}
-		@Override
-		public int getTextWidths(CharSequence text, int start, int end,float[] widths) {return 0;}
 
-		@Override
-		public int breakText(CharSequence data, int index, int count, int width) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
 
-		@Override
-		public float getTextSize() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public int getTextWidths(CharSequence text, int start, int end,
-				float[] widths, float textSize) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public int getWidth() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
 	}
 }

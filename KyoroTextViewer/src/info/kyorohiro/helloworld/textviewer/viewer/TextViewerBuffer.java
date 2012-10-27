@@ -199,5 +199,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	@Override
 	public void isSync(boolean isSync) {
 		 mIsSync = isSync;
+		 if(isSync){
+			 mCashing.stopTask();
+		 }
 	}
 }

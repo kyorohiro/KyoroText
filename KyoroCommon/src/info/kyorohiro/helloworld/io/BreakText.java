@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.io;
 
 //todo android dependent now
-public interface BreakText {
+public interface BreakText extends SimpleTextDecoderBreakText {
 	public int getWidth();
 
 	public void setTextSize(float textSize);

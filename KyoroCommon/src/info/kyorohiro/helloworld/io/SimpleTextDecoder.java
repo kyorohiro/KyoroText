@@ -13,10 +13,9 @@ public class SimpleTextDecoder {
 	private MarkableReader mReader = null;
 	private MyBuilder mBuffer = new MyBuilder();
 	private Charset mCharset = null;
-	private BreakText mBreakText;
+	private SimpleTextDecoderBreakText mBreakText;
 
-	public SimpleTextDecoder(Charset _cs, MarkableReader reader,
-			BreakText breakText) {
+	public SimpleTextDecoder(Charset _cs, MarkableReader reader, SimpleTextDecoderBreakText breakText) {
 		mCharset = _cs;
 		mReader = reader;
 		mBreakText = breakText;
@@ -38,27 +37,6 @@ public class SimpleTextDecoder {
 		return decodeLine(null);
 	}
 
-	public char readCharacter() throws IOException {
-		CharsetDecoder decoder = getCharsetDecoder();
-		byte b;
-		do {
-			b = (byte) mReader.read();
-			if(b<0){
-				break;
-			}
-			mByteBuffer.put(b);
-			mByteBuffer.flip();
-			decoder.decode(mByteBuffer, mCharBuffer, false);
-			mCharBuffer.flip();
-		} while (!mCharBuffer.hasRemaining());
-
-		if(0 !=mCharBuffer.length()) {
-			return mCharBuffer.get();
-		} else {
-			return '\0';
-		}
-	}
-
 	private CharsetDecoder mDecoder = null;
 	private ByteBuffer mByteBuffer = ByteBuffer.allocateDirect(32); // bb‚Í‘‚«ž‚ß‚éó‘Ô
 	private CharBuffer mCharBuffer = CharBuffer.allocate(16); // cb‚Í‘‚«ž‚ß‚éó‘Ô
@@ -70,7 +48,11 @@ public class SimpleTextDecoder {
 		return mDecoder;
 	}
 
-	public CharSequence decodeLine(byte[] escape) throws IOException {
+//	public char decodeChar(byte[] escape) {
+//		mBuffer.clear();
+//	}
+
+	public synchronized CharSequence decodeLine(byte[] escape) throws IOException {
 		mBuffer.clear();
 		mByteBuffer.clear();
 		mCharBuffer.clear();
@@ -107,6 +89,7 @@ public class SimpleTextDecoder {
 												// crlf 12kb
 					if (mBreakText != null) {
 						len = mBreakText.breakText(mBuffer);
+						
 					}
 					if (len < mBuffer.getCurrentBufferedMojiSize()) {
 						// ‚Ð‚Æ‚Â‘O‚Å‰üs

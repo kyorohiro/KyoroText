@@ -11,9 +11,12 @@ public abstract class ForegroundService extends TestService {
 		super(IdOfStartForeground);
 	}
 
-/*	public void startForground(int resId, String title, String message, PendingIntent contentIntent) {
-		
-}*/
+	public void startForgroundAtOnGoing(int resId, String title, String message, Class clazz) {
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, clazz), 0);
+		startForgroundAtOnGoing(resId, title, message, contentIntent);
+	}
+	
+	// you call this function in onStartHandle and onCreate
 	public void startForgroundAtOnGoing(int resId, String title, String message, PendingIntent contentIntent) {
 		// forground
 		Notification n = new Notification(resId, title, System.currentTimeMillis());

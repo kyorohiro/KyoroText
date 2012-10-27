@@ -90,6 +90,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		super.onResume();
 		doFileOpenIntentAction();
 		mStage.start();
+		KyoroServiceForForgroundApp.startForgroundService(KyoroApplication.getKyoroApplication(), "start");
 	}
 
 	@Override
