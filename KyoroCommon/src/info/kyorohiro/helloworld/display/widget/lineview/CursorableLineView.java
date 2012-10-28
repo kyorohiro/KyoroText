@@ -10,6 +10,7 @@ public class CursorableLineView extends LineView {
 	public final static String MODE_VIEW = "MODE VIEW";
 	public final static String MODE_EDIT = "MODE EDIT: NOW CREATING!!";
 	public final static int __CURSOR__COLOR = Color.parseColor("#44FFAA44");
+	public final static int __CURSOR__COLOR2 = Color.parseColor("#FFBB8811");
 
 
 	private MyCursor mLeft = new MyCursor(this);

@@ -87,6 +87,9 @@ public class MyCursor extends SimpleDisplayObject {
 			graphics.setColor(Color.parseColor("#AA005555"));
 			graphics.drawText(mMessage, 20, 20);
 		}
+		graphics.drawLine(0, 0, 0, -20);
+		graphics.setColor(CursorableLineView.__CURSOR__COLOR2);
+		graphics.drawLine(0, 0, 0, -1*6);
 	}
 
 	private void drawCursor(SimpleGraphics graphics, int x, int y) {
