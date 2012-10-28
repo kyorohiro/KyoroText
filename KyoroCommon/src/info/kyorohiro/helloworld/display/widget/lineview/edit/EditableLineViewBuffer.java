@@ -343,8 +343,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			//android.util.Log.v("kiyo", "_aaa1=" + f.length() + "," + w + ","+ f);
 			breakLinePoint = getBreakText().breakText(f, 0, f.length(), w);
 			currentLineLength = f.length();
-			android.util.Log.v("kiyo", "_aaa0=" + i+",row="+mCursorRow+",col="+mCursorLine);
-			android.util.Log.v("kiyo", "_aaa1=" + i+",row="+(currentLineLength+g)+">"+breakLinePoint+","+g);
+			//android.util.Log.v("kiyo", "_aaa0=" + i+",row="+mCursorRow+",col="+mCursorLine);
+			//android.util.Log.v("kiyo", "_aaa1=" + i+",row="+(currentLineLength+g)+">"+breakLinePoint+","+g);
 			//android.util.Log.v("kiyo", "_aaa0=" + i+","+f);
 			if(f.length()>0&&f.charAt(f.length()-1)=='\n'){
 				if(f.length()>1&&f.charAt(f.length()-2)=='\r'){
@@ -371,21 +371,11 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				} else {
 					mCursorRow += text.length();
 					break;
-					// mCursorRow = 0;
 				}
 			} else {
 				g=0;
-				//break;
-				///*
-
-
 				if (currentLineLength > breakLinePoint) {
-					//if(!hasAlreadyExecuteFirstAction) {
-				//		mDiffer.setLine(mCursorLine, f.subSequence(0, breakLinePoint));					
-				//	} else {
-						mDiffer.addLine(mCursorLine, f.subSequence(0, breakLinePoint));
-				//		hasAlreadyExecuteFirstAction = true;
-				//	}
+					mDiffer.addLine(mCursorLine, f.subSequence(0, breakLinePoint));
 					mCursorLine += 1;
 					mCursorRow += text.length();
 					android.util.Log.v("kiyo", "_aaa2 break=" + breakLinePoint +",curre="+currentLineLength);
@@ -400,7 +390,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 					mCursorRow = breakLinePoint;
 					break;
 				}
-				//*/
 			}
 		} while ((currentLineLength+g) > breakLinePoint&&f.length()>0);
 		} finally {
