@@ -1,4 +1,6 @@
-package info.kyorohiro.helloworld.display.simple;
+package info.kyorohiro.helloworld.android.adapter;
+
+import info.kyorohiro.helloworld.display.simple.SimplePoint;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

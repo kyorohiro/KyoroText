@@ -1,10 +1,10 @@
 package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
 import android.view.KeyEvent;
+import info.kyorohiro.helloworld.android.adapter.EditableSurfaceView.CommitText;
+import info.kyorohiro.helloworld.android.adapter.EditableSurfaceView.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.CommitText;
-import info.kyorohiro.helloworld.display.simple.EditableSurfaceView.MyInputConnection;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 

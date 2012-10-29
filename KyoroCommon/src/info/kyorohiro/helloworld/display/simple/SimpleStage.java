@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.simple;
 
+import info.kyorohiro.helloworld.android.adapter.EditableSurfaceView;
 import info.kyorohiro.helloworld.android.adapter.SimpleGraphicsForAndroid;
 import android.content.Context;
 import android.graphics.Canvas;

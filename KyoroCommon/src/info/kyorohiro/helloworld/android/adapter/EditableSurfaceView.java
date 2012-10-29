@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.simple;
+package info.kyorohiro.helloworld.android.adapter;
 
 
 import java.util.LinkedList;
