@@ -1,5 +1,9 @@
 package info.kyorohiro.helloworld.io;
 
+
+//
+//
+// KyoroString‚É‹zû‚³‚ê‚éB
 public class MyBuilder {
 	private int mPointer = 0;
 	private int mLength = 512;
