@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
+import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
@@ -41,6 +42,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
 	private boolean mIsLockScreen = false;
+	private SimpleTypeface mTypeface = null;
+	public void setSimpleTypeface(SimpleTypeface typeface) {
+		mTypeface = typeface;
+	}	
 
 	public void isLockScreen(boolean lock) {
 		mIsLockScreen = lock;
@@ -422,6 +427,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 		// draw extra
 
+		{//
+			graphics.setTypeface(mTypeface);
+		}
 		{// bg
 			drawBG(graphics);
 		}

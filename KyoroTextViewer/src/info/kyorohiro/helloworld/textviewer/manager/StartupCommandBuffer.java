@@ -6,10 +6,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import info.kyorohiro.helloworld.android.adapter.SimpleTypefaceForAndroid;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.util.Utility;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 
 public class StartupCommandBuffer extends TextViewer {
 
@@ -18,6 +24,17 @@ public class StartupCommandBuffer extends TextViewer {
 		readStartupMessage();
 	}
 
+//
+//	@Override
+//	public void start() {
+//		super.start();
+//		Context c = KyoroApplication.getKyoroApplication().getApplicationContext();
+//		Resources r = c.getResources();
+//		Typeface t = Typeface.createFromAsset(c.getAssets(), "sourcecodepro_roman_blackfont.ttf");
+//		getLineView().setSimpleTypeface(new SimpleTypefaceForAndroid(t));
+//	}
+//
+	
 	public void readStartupMessage() {
 		try {
 			Context c = KyoroApplication.getKyoroApplication().getApplicationContext();
@@ -25,6 +42,7 @@ public class StartupCommandBuffer extends TextViewer {
 			File filePathOfStartMessage = new File(dir, "startup_message.txt");
 			createStartupMessageIfNonExist(filePathOfStartMessage);
 			readFile(filePathOfStartMessage, false);
+//			readFile(filePathOfStartMessage, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

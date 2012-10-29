@@ -192,10 +192,12 @@ public class MyCursor extends SimpleDisplayObject {
 
 			try {
 				if (d != null) {
-					l = mParent.get().getBreakText().getTextWidths(d, 0,
+					l = mParent.get().getBreakText()
+							.getTextWidths(d, 0,
 							this.getCursorRow(), mParent.get().widths,
 							mParent.get().getShowingTextSize());
-				//	android.util.Log.v("kiyo","cursor:l="+l);
+
+					//	android.util.Log.v("kiyo","cursor:l="+l);
 					for (int i = 0; i < l; i++) {
 						x += mParent.get().widths[i];
 					}

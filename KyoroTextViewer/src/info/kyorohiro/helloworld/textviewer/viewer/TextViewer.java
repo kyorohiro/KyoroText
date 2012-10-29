@@ -7,6 +7,7 @@ import android.graphics.Color;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;

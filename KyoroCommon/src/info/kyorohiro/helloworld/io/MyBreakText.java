@@ -10,6 +10,9 @@ public class MyBreakText implements BreakText {
 	private Paint mPaint = new Paint();
 	private int mWidth = 400;
 
+	public MyBreakText() {
+		mPaint.setAntiAlias(true);
+	}
 	public int getWidth(){
 		return mWidth;
 	}
@@ -62,6 +65,7 @@ public class MyBreakText implements BreakText {
 	public int getTextWidths(CharSequence text, int start, int end,
 			float[] widths, float textSize) {
 		try {
+			specialPaint.setAntiAlias(true);
 			specialPaint.setTextSize(textSize);
 			return specialPaint.getTextWidths(text, start, end, widths);
 		}catch(Throwable t){

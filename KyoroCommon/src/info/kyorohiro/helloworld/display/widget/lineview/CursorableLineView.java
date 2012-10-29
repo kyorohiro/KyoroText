@@ -156,41 +156,33 @@ public class CursorableLineView extends LineView {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-//		try {
-//			lock();
-			super.paint(graphics);
-			if (null == getBreakText()) {
-				return;
-			}
-			mRight.updateCursor();
-			mLeft.updateCursor();
-			graphics.setColor(__CURSOR__COLOR);
-			graphics.setTextSize(30);
-			graphics.drawText(mMode, 20, this.getHeight() - 50);
-			drawBGForSelect(graphics);
-//		} finally {
-//			releaseLock();
-//		}
-			//todo refactaring
-			if(mMode == MODE_SELECT){
-				if(prevX !=-1&&prevY!=-1){
-					time++;
-					if(time >= 7){
-//						if(mMode == MODE_SELECT){
-//							setMode(MODE_VIEW);
-//						} else {
-							setMode(MODE_SELECT);
-							mLeft.setCursorCol(getYToPosY(prevY));
-							mLeft.setCursorRow(getXToPosX(mLeft.getCursorCol(), prevX, mLeft.getCursorRow()));
-							mRight.setCursorCol(getYToPosY(prevY));
-							mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), prevX+1, mRight.getCursorRow()));
-//						}
-						prevX=-1;
-						prevY=-1;
-						time=0;
-					}
+		super.paint(graphics);
+		if (null == getBreakText()) {
+			return;
+		}
+		mRight.updateCursor();
+		mLeft.updateCursor();
+		graphics.setColor(__CURSOR__COLOR);
+		graphics.setTextSize(30);
+		graphics.drawText(mMode, 20, this.getHeight() - 50);
+		drawBGForSelect(graphics);
+		//todo refactaring
+		if(mMode == MODE_SELECT){
+			if(prevX !=-1&&prevY!=-1){
+				time++;
+				if(time >= 7){
+					setMode(MODE_SELECT);
+					mLeft.setCursorCol(getYToPosY(prevY));
+					mLeft.setCursorRow(getXToPosX(mLeft.getCursorCol(), prevX, mLeft.getCursorRow()));
+					mRight.setCursorCol(getYToPosY(prevY));
+					mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), prevX+1, mRight.getCursorRow()));
+
+					prevX=-1;
+					prevY=-1;
+					time=0;
 				}
 			}
+		}
 	}
 
 	private void drawBGForSelect(SimpleGraphics graphics) {
@@ -198,8 +190,7 @@ public class CursorableLineView extends LineView {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
 			int textSize = getShowingTextSize();
-			if (b.getY() > e.getY()
-					|| (b.getY() == e.getY() && b.getX() > e.getX())) {
+			if (b.getY() > e.getY() || (b.getY() == e.getY() && b.getX() > e.getX())) {
 				b = mRight;
 				e = mLeft;
 			}
@@ -207,10 +198,8 @@ public class CursorableLineView extends LineView {
 			graphics.setColor(__CURSOR__COLOR);
 			graphics.setStrokeWidth(10);
 			if (b.getY() != e.getY()) {
-				graphics.drawLine(b.getX(), b.getY(),
-						(int) (getWidth() * 0.95), b.getY());
-				graphics.drawLine(this.getLeftForStartDrawLine(), e.getY(),
-						e.getX(), e.getY());
+				graphics.drawLine(b.getX(), b.getY(), (int) (getWidth() * 0.95), b.getY());
+				graphics.drawLine(this.getLeftForStartDrawLine(), e.getY(), e.getX(), e.getY());
 				graphics.startPath();
 				graphics.moveTo((int) (getWidth() * 0.05), b.getY() + textSize);// +getTextSize());
 				graphics.lineTo((int) (getWidth() * 0.95), b.getY());

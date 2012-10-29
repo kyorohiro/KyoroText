@@ -1,8 +1,11 @@
 package info.kyorohiro.helloworld.android.adapter;
 
+import java.io.File;
+
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
+import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -213,4 +216,17 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		}
 	}
 
+	@Override
+	public void setTypeface(SimpleTypeface face) {
+		if(face instanceof SimpleTypefaceForAndroid){
+			mPaint.setTypeface(((SimpleTypefaceForAndroid)face).getTypeface());
+		}
+		else {
+			return;
+		}
+	}
+
+	public SimpleTypeface createSimpleTypeface(File path) {
+		return new SimpleTypefaceForAndroid(path);
+	}
 }
