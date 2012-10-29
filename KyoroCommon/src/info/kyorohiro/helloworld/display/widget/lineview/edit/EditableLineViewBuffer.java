@@ -292,9 +292,12 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			mCursorRow = l.length();
 		}
 		android.util.Log.v("kiyo", "[-d1-]col="+mCursorLine+",row="+mCursorRow);
-		//if (l.length() < mCursorRow || l.charAt(mCursorRow) == '\n') {
-		//	mCursorRow -= 1;
-		//}
+		if (0<=mCursorRow-1&&l.charAt(mCursorRow-1) == '\n') {
+			mCursorRow -= 1;
+			if (0<=mCursorRow-1&&l.charAt(mCursorRow-1) == '\r'){
+				mCursorRow -= 1;				
+			}
+		}
 		android.util.Log.v("kiyo", "[-d1-]col="+mCursorLine+",row="+mCursorRow);
 		android.util.Log.v("kiyo", "[-a-]col="+mCursorLine+",row="+mCursorRow);
 		commit(text, cursor);
