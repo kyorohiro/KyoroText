@@ -24,16 +24,17 @@ public class StartupCommandBuffer extends TextViewer {
 		readStartupMessage();
 	}
 
-//
+
 //	@Override
 //	public void start() {
 //		super.start();
 //		Context c = KyoroApplication.getKyoroApplication().getApplicationContext();
 //		Resources r = c.getResources();
 //		Typeface t = Typeface.createFromAsset(c.getAssets(), "sourcecodepro_roman_blackfont.ttf");
+//		Typeface t = Typeface.createFromAsset(c.getAssets(), "inconsolata.ttf");
 //		getLineView().setSimpleTypeface(new SimpleTypefaceForAndroid(t));
 //	}
-//
+
 	
 	public void readStartupMessage() {
 		try {
