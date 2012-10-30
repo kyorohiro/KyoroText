@@ -265,6 +265,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return getWidth(cursorCol, w, getShowingTextSize());
 	}
 
+	private boolean mCrlfMode = false;
+	public boolean isCrlfMode () {
+		return mCrlfMode;
+	}
 	public int getWidth(int cursorCol, float[] w, int textSize) {
 		LineViewBufferSpec mInputtedText = getLineViewBuffer();
 		if (mInputtedText == null || null == mInputtedText.getBreakText()) {
@@ -278,8 +282,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (data == null) {
 			return -1;
 		}
+		//todo
 		int l = mInputtedText.getBreakText().getTextWidths(data, 0,
-				data.length(), w, textSize);
+				data.lengthWithoutLF(mCrlfMode), w, textSize);
 		return l;
 	}
 

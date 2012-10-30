@@ -4,6 +4,7 @@ public class KyoroString  implements CharSequence {
 	public char[] mContent = null;
 	private long mLinePosition = 0;
 	private boolean mIncludeLF = false;
+	private boolean mIncludeCRLF = false;
 	private int mColor = 0;
 
 	// file buffer
@@ -36,6 +37,9 @@ public class KyoroString  implements CharSequence {
 		System.arraycopy(content, 0, mContent, 0, length);
 		if(mContent.length >0 && mContent[length-1]=='\n'){
 			mIncludeLF = true;
+			if(mContent.length>1&&mContent[length-2]=='\r') {
+				mIncludeCRLF = true;
+			}
 		} else {
 			mIncludeLF = false;
 		}
@@ -46,6 +50,16 @@ public class KyoroString  implements CharSequence {
 		return mContent[index];
 	}
 
+	public int lengthWithoutLF(boolean includeCR) {
+		if(includeCR&&includeCRLF()){
+			return length()-2;
+		}
+		else if(includeLF()) {
+			return length()-1;
+		} else {
+			return length();
+		}
+	}
 	@Override
 	public int length() {
 		return mContent.length;
@@ -59,6 +73,10 @@ public class KyoroString  implements CharSequence {
 	@Override
 	public String toString() {
 		return new String(mContent, 0, mContent.length);
+	}
+
+	public boolean includeCRLF(){
+		return mIncludeCRLF;
 	}
 
 	public boolean includeLF(){
@@ -97,4 +115,22 @@ public class KyoroString  implements CharSequence {
 		mColor = color;
 	}
 
+//
+//	private int mPointer = 0;
+//	private int mLength = 512;
+//	private char[] mBuffer = new char[mLength];
+//
+//	public void append(char moji){
+//		if(mPointer >= mLength){
+//			mLength *=2;
+//			char[] tmp = new char[mLength*2];
+//			for(int i=0;i<mBuffer.length;i++) {
+//				tmp[i] = mBuffer[i];
+//			}
+//			mBuffer = tmp;
+//		}
+//		mBuffer[mPointer] = moji;
+//		mPointer++;
+//	}
+//
 }

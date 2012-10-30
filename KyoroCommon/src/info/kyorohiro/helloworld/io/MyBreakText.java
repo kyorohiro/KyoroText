@@ -30,7 +30,7 @@ public class MyBreakText implements BreakText {
 	public void setBufferWidth(int w){
 		mWidth = w;
 	}
-	@Override
+
 	public int breakText(MyBuilder b, int width) {
 		int len = mPaint.breakText(b.getAllBufferedMoji(), 0,
 				b.getCurrentBufferedMojiSize(), width, null);

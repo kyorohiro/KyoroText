@@ -14,6 +14,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	private LineViewBufferSpec mOwner = null;
 	private int mCursorRow = 0;
 	private int mCursorLine = 0;
+	private boolean mIsCrlfMode = false; // ココでよいかは検討が必要
 
 	public EditableLineViewBuffer(LineViewBufferSpec owner) {
 		super();
@@ -68,6 +69,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	@Override
 	public void setCursor(int row, int col) {
+		// this method Should belong to LIneView
 		mCursorRow = row;
 		mCursorLine = col;
 		if (mCursorLine < 0) {
@@ -76,23 +78,23 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			mCursorLine = getNumberOfStockedElement() - 1;
 		}
 
-		CharSequence c = get(mCursorLine);
+		KyoroString c = get(mCursorLine);
 		if (mCursorRow < 0) {
 			// 移動する。
 			if (mCursorLine > 0) {
 				mCursorLine -= 1;
-				CharSequence cc = get(mCursorLine);
-				mCursorRow = cc.length();
+				KyoroString cc = get(mCursorLine);
+				mCursorRow = cc.lengthWithoutLF(mIsCrlfMode);
 			} else {
 				mCursorRow = 0;
 			}
-		} else if (mCursorRow > c.length()) {
+		} else if (mCursorRow > c.lengthWithoutLF(mIsCrlfMode)) {
 			// 移動する。
 			if (mCursorLine < getNumberOfStockedElement() - 1) {
 				mCursorRow = 0;
 				mCursorLine += 1;
 			} else {
-				mCursorRow = c.length();
+				mCursorRow = c.lengthWithoutLF(mIsCrlfMode);
 			}
 		}
 	}
