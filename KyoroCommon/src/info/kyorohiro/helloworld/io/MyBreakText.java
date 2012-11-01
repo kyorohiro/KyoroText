@@ -8,7 +8,7 @@ import android.graphics.Paint;
 //　このコードから、いらない機能を削除する必要がある。
 //　--> LineViewのカーソル関連のコードを修正するタイミングが
 //     よさげ
-public class MyBreakText implements BreakText {
+public class MyBreakText extends BreakText {
 	private Paint mPaint = new Paint();
 	private int mWidth = 400;
 

@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
+import android.graphics.Color;
 import android.test.MoreAsserts;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.io.BreakText;
@@ -371,7 +372,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			if (cursorRow >= ct.length()) {
 				cursorRow = ct.length();
 			}
-			CharSequence f = composeString(ct, cursorRow, text);
+			KyoroString f = composeString(ct, cursorRow, text);
 			android.util.Log.v("kiyo", "_f0=" + f+","+cursorLine+"."+cursor);
 
 			int w = this.getBreakText().getWidth();
@@ -406,9 +407,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 						cursorLine += 1;
 						cursorRow = 0;
 						android.util.Log.v("kiyo", "_aaa2 break=" + breakLinePoint +",curre="+currentLineLength);
-						f = f.subSequence(breakLinePoint, currentLineLength);
+						f = f.newKyoroString(breakLinePoint, currentLineLength);
 						if(f.length()>0&&f.charAt(f.length()-1)!='\n'&&cursorLine<getNumberOfStockedElement()) {
-							f = ""+f+get(cursorLine);
+							f = new KyoroString(""+f+get(cursorLine));
 						}
 					} else {
 						cursorRow += text.length();
@@ -421,7 +422,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 						cursorLine += 1;
 						cursorRow += text.length();
 						android.util.Log.v("kiyo", "_aaa2 break=" + breakLinePoint +",curre="+currentLineLength);
-						f = f.subSequence(breakLinePoint, currentLineLength);
+						f = f.newKyoroString(breakLinePoint, currentLineLength);
 					} else {
 						if(!hasAlreadyExecuteFirstAction) {
 							mDiffer.setLine(cursorLine, f.subSequence(0, breakLinePoint));					
@@ -439,7 +440,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
-	public static CharSequence composeString(CharSequence b, int i,
+	public static KyoroString composeString(CharSequence b, int i,
 			CharSequence s) {
 		if (i >= b.length()) {
 			i = b.length();
@@ -450,13 +451,13 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		//}
 		//------
 		if (i == 0) {
-			return "" + s + b;
+			return new KyoroString("" + s + b);
 		} else if (i == b.length()) {
-			return "" + b + s;
+			return new KyoroString("" + b + s);
 		} else {
 			CharSequence f = b.subSequence(0, i);
 			CharSequence e = b.subSequence(i, b.length());
-			return "" + f + s + e;
+			return new KyoroString("" + f + s + e);
 		}
 	}
 

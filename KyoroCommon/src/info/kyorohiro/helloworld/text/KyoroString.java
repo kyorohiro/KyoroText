@@ -1,4 +1,5 @@
 package info.kyorohiro.helloworld.text;
+
 ///*
 public class KyoroString  implements CharSequence {
 	public char[] mContent = null;
@@ -11,6 +12,7 @@ public class KyoroString  implements CharSequence {
 	private long mBeginPoint = -1;
 	private long mEndPoint = -1;
 
+	
 	public static KyoroString newKyoroStringWithLF(CharSequence content, int color) {
 		if(content.charAt(content.length()-1)!='\n'){
 			content = ""+content+"\n";//todo \r\n or \n
@@ -18,23 +20,35 @@ public class KyoroString  implements CharSequence {
 		return new KyoroString(content, color);
 	}
 
+	public KyoroString(CharSequence content) {
+		init(content, 0x000000);
+	}
+
 	public KyoroString(CharSequence content, int color) {
+		init(content, color);
+	}
+
+	public KyoroString(char[] content, int length) {
+		init(content, 0, length);
+	}
+
+	public KyoroString(char[] content, int start, int end) {
+		init(content, start, end);
+	}
+
+	private void init(CharSequence content, int color) {
 		int len = content.length();
 		char[] contentBuffer = new char[len];
 		for(int i=0;i<len;i++){
 			contentBuffer[i] = content.charAt(i);
 		}
-		init(contentBuffer, len);
-		mColor = color;
+		init(contentBuffer, 0, len);
+		mColor = color;		
 	}
-
-	public KyoroString(char[] content, int length) {
-		init(content, length);
-	}
-
-	private void init(char[] content, int length) {
+	private void init(char[] content, int start, int end) {
+		int length = end-start;
 		mContent = new char[length];
-		System.arraycopy(content, 0, mContent, 0, length);
+		System.arraycopy(content, start, mContent, 0, length);
 		if(mContent.length >0 && mContent[length-1]=='\n'){
 			mIncludeLF = true;
 			if(mContent.length>1&&mContent[length-2]=='\r') {
@@ -70,9 +84,15 @@ public class KyoroString  implements CharSequence {
 		return mContent.length;
 	}
 
+	public KyoroString newKyoroString(int start, int end) {
+		KyoroString ret = new KyoroString(mContent, start, end);
+		ret.setColor(getColor());
+		return ret;
+	}
+
 	@Override
 	public CharSequence subSequence(int start, int end) {
-		return new String(mContent, start, end-start);
+		return newKyoroString(start, end);
 	}
 
 	@Override
