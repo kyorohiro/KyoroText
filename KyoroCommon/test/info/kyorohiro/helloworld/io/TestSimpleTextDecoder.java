@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.io;
 
+import info.kyorohiro.helloworld.util.CharArrayBuilder;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -120,7 +122,7 @@ public class TestSimpleTextDecoder extends TestCase {
 			mNextBreakText = nextBreakText;
 		}
 
-		public int breakText(MyBuilder mBuffer) {
+		public int breakText(CharArrayBuilder mBuffer) {
 			if (mNextBreakText >= 0) {
 				int t = mNextBreakText;
 				return t;

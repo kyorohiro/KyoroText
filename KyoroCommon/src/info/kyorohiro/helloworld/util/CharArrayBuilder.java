@@ -1,12 +1,10 @@
-package info.kyorohiro.helloworld.io;
+package info.kyorohiro.helloworld.util;
 
-
-//
 //
 // KyoroStringÇ…ãzé˚Ç≥ÇÍÇÈÅB
-public class MyBuilder {
+public class CharArrayBuilder {
 	private int mPointer = 0;
-	private int mLength = 512;
+	private int mLength = 256;
 	private char[] mBuffer = new char[mLength];
 
 	public void append(char moji){
@@ -53,7 +51,4 @@ public class MyBuilder {
 		}
 	}
 
-	public String toString(){
-		return new String(mBuffer, 0, mPointer);
-	}
 }

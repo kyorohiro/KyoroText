@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.io;
 
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.util.CharArrayBuilder;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -11,7 +12,7 @@ import java.nio.charset.CharsetDecoder;
 public class SimpleTextDecoder {
 
 	private MarkableReader mReader = null;
-	private MyBuilder mBuffer = new MyBuilder();
+	private CharArrayBuilder mBuffer = new CharArrayBuilder();
 	private Charset mCharset = null;
 	private SimpleTextDecoderBreakText mBreakText;
 

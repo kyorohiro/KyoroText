@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.io;
 
+import info.kyorohiro.helloworld.util.CharArrayBuilder;
 import android.graphics.Paint;
 
 //
@@ -31,14 +32,14 @@ public class MyBreakText implements BreakText {
 		mWidth = w;
 	}
 
-	public int breakText(MyBuilder b, int width) {
+	public int breakText(CharArrayBuilder b, int width) {
 		int len = mPaint.breakText(b.getAllBufferedMoji(), 0,
 				b.getCurrentBufferedMojiSize(), width, null);
 		return len;
 	}
 
 	@Override
-	public int breakText(MyBuilder mBuffer) {
+	public int breakText(CharArrayBuilder mBuffer) {
 		return breakText(mBuffer, mWidth);
 	}
 	
