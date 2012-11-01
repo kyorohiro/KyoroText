@@ -384,7 +384,13 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			do {
 				i++;
 				//android.util.Log.v("kiyo", "_aaa1=" + f.length() + "," + w + ","+ f);
-				breakLinePoint = getBreakText().breakText(f, 0, f.length(), w);
+				//breakLinePoint = getBreakText().breakText(f, 0, f.length(), w);
+
+				//todo
+				//
+				// ‚Æ‚è‚ ‚¦‚¸AŠú‘Ò’Ê‚è‚É“®‚­‚©“®ìŠm”F‚©‚é‚±‚Æ!!
+				//
+				breakLinePoint = BreakText.breakText(getBreakText(), f, 0, f.length());
 				currentLineLength = f.length();
 				//android.util.Log.v("kiyo", "_aaa0=" + i+",row="+mCursorRow+",col="+mCursorLine);
 				//android.util.Log.v("kiyo", "_aaa1=" + i+",row="+(currentLineLength+g)+">"+breakLinePoint+","+g);

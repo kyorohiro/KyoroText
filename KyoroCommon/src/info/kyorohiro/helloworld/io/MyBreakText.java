@@ -43,14 +43,16 @@ public class MyBreakText extends BreakText {
 	public int breakText(CharArrayBuilder mBuffer) {
 		return breakText(mBuffer, mWidth);
 	}
-	
-	@Override
-	public int breakText(CharSequence data, int index, int count, int width) {
-//		int len = mPaint.breakText(data, 0, count, width, null);
-		int len = mPaint.breakText(data, 0, count, false, width, null);
-		return len;
-	}
 
+//
+//	@Override
+//	public int breakText(CharSequence data, int index, int count, int width) {
+//		int len = mPaint.breakText(data, 0, count, width, null);
+//		int len = mPaint.breakText(data, 0, count, false, width, null);
+//		return len;
+//	}
+//
+	
 	private Paint specialPaint = new Paint();
 	@Override
 	public int getTextWidths(KyoroString text, int start, int end,
