@@ -14,11 +14,21 @@ public abstract class BreakText implements SimpleTextDecoderBreakText {
 	public abstract int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize);
 
 	private static FloatArrayBuilder mWidths = new FloatArrayBuilder();
+	//
+	// todo
 	public static synchronized int breakText(BreakText breaktext, KyoroString text, int index, int count, int width) {
-		int w = breaktext.getWidth();
+//		int w = breaktext.getWidth();
 		float s = breaktext.getTextSize();
 		mWidths.setLength(count);
-		breaktext.getTextWidths(text, index, index+count, mWidths.getAllBufferedMoji(), s);
-		return 0;
+		float[] ws = mWidths.getAllBufferedMoji();
+		breaktext.getTextWidths(text, index, index+count, ws, s);
+		float l=0;
+		for(int i=0;i<ws.length;i++) {
+			l+=ws[i];
+			if(l>=width){
+				return  (i<=0?0:i-1);
+			}
+		}
+		return ws.length;
 	}
 }
