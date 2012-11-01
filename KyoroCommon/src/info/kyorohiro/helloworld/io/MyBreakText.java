@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.io;
 
+import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 import android.graphics.Paint;
 
@@ -52,7 +53,7 @@ public class MyBreakText implements BreakText {
 
 	private Paint specialPaint = new Paint();
 	@Override
-	public int getTextWidths(CharSequence text, int start, int end,
+	public int getTextWidths(KyoroString text, int start, int end,
 			float[] widths, float textSize) {
 		try {
 			specialPaint.setAntiAlias(true);

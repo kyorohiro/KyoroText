@@ -49,9 +49,6 @@ public class SimpleTextDecoder {
 		return mDecoder;
 	}
 
-//	public char decodeChar(byte[] escape) {
-//		mBuffer.clear();
-//	}
 
 	public synchronized CharSequence decodeLine(byte[] escape) throws IOException {
 		mBuffer.clear();
