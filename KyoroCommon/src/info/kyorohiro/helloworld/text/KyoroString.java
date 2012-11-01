@@ -50,6 +50,10 @@ public class KyoroString  implements CharSequence {
 		return mContent[index];
 	}
 
+	public char[] getChars() {
+		return mContent;
+	}
+
 	public int lengthWithoutLF(boolean includeCR) {
 		if(includeCR&&includeCRLF()){
 			return length()-2;
@@ -60,6 +64,7 @@ public class KyoroString  implements CharSequence {
 			return length();
 		}
 	}
+
 	@Override
 	public int length() {
 		return mContent.length;
