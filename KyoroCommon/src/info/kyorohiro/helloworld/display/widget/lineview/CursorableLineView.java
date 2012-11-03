@@ -217,10 +217,10 @@ public class CursorableLineView extends LineView {
 
 
 	public void front() {
-		setCursorAndCRLF(getLeft(),getLeft().getCursorRow()+1, getLeft().getCursorCol());
+		setCursorFront(getLeft(),getLeft().getCursorRow()+1, getLeft().getCursorCol());
 	}
 	public void back() {
-		setCursorAndCRLF(getLeft(),getLeft().getCursorRow()-1, getLeft().getCursorCol());
+		setCursorBack(getLeft(),getLeft().getCursorRow()-1, getLeft().getCursorCol());
 	}
 	public void next() {
 		setCursorAndCRLF(getLeft(),getLeft().getCursorRow(), getLeft().getCursorCol()+1);
@@ -229,18 +229,11 @@ public class CursorableLineView extends LineView {
 		setCursorAndCRLF(getLeft(),getLeft().getCursorRow(), getLeft().getCursorCol()-1);
 	}
 
-	public void setCursorAndCRLF(MyCursor cursor, int row, int col) {
-		// this method Should belong to LIneView
+	
+	public void setCursorBack(MyCursor cursor, int row, int col) {
 		int _rowTmp = row;
 		int _colTmp = col;
 		LineViewBufferSpec spec= this.getLineViewBuffer();
-		if (_colTmp < 0) {
-			_colTmp = 0;
-		} else if (_colTmp >= spec.getNumberOfStockedElement()) {
-			_colTmp = spec.getNumberOfStockedElement() - 1;
-		}
-
-		KyoroString c = spec.get(_colTmp);
 		if (_rowTmp < 0) {
 			// 移動する。
 			if (_colTmp > 0) {
@@ -250,7 +243,15 @@ public class CursorableLineView extends LineView {
 			} else {
 				_rowTmp = 0;
 			}
-		} else if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
+		} 
+		setCursorAndCRLF(cursor, _rowTmp, _colTmp);
+	}
+	public void setCursorFront(MyCursor cursor, int row, int col) {
+		int _rowTmp = row;
+		int _colTmp = col;
+		LineViewBufferSpec spec= this.getLineViewBuffer();
+		KyoroString c = spec.get(_colTmp);
+		if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
 			// 移動する。
 			if (_colTmp < spec.getNumberOfStockedElement() - 1) {
 				_rowTmp = 0;
@@ -259,7 +260,62 @@ public class CursorableLineView extends LineView {
 				_rowTmp = c.lengthWithoutLF(isCrlfMode());
 			}
 		}
+		setCursorAndCRLF(cursor, _rowTmp, _colTmp);
+	}
+	public void setCursorAndCRLF(MyCursor cursor, int row, int col) {
+		// this method Should belong to LIneView
+		int _rowTmp = row;
+		int _colTmp = col;
+		LineViewBufferSpec spec= this.getLineViewBuffer();
+		if (_colTmp < 0) {
+			_colTmp = 0;
+		} else if (_colTmp >= spec.getNumberOfStockedElement()) {
+			_colTmp = spec.getNumberOfStockedElement();
+		}
+
+		KyoroString c = spec.get(_colTmp);
+		if (_rowTmp < 0) {
+			_rowTmp = 0;
+		} else if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
+			_rowTmp = c.lengthWithoutLF(isCrlfMode());
+		}
 		cursor.setCursorCol(_colTmp);
 		cursor.setCursorRow(_rowTmp);
 	}
 }
+
+/*
+public void setCursorAndCRLF(MyCursor cursor, int row, int col) {
+// this method Should belong to LIneView
+int _rowTmp = row;
+int _colTmp = col;
+LineViewBufferSpec spec= this.getLineViewBuffer();
+if (_colTmp < 0) {
+	_colTmp = 0;
+} else if (_colTmp >= spec.getNumberOfStockedElement()) {
+	_colTmp = spec.getNumberOfStockedElement();
+}
+
+KyoroString c = spec.get(_colTmp);
+if (_rowTmp < 0) {
+	// 移動する。
+	if (_colTmp > 0) {
+		_colTmp -= 1;
+		KyoroString cc = spec.get(_colTmp);
+		_rowTmp = cc.lengthWithoutLF(isCrlfMode());
+	} else {
+		_rowTmp = 0;
+	}
+} else if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
+	// 移動する。
+	if (_colTmp < spec.getNumberOfStockedElement() - 1) {
+		_rowTmp = 0;
+		_colTmp += 1;
+	} else {
+		_rowTmp = c.lengthWithoutLF(isCrlfMode());
+	}
+}
+cursor.setCursorCol(_colTmp);
+cursor.setCursorRow(_rowTmp);
+}
+*/
