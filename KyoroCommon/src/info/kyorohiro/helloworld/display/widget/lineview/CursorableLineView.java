@@ -1,8 +1,10 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 import android.graphics.Color;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.text.KyoroString;
 
 public class CursorableLineView extends LineView {
 
@@ -213,4 +215,51 @@ public class CursorableLineView extends LineView {
 		}
 	}
 
+
+	public void front() {
+		setCursorAndCRLF(getLeft(),getLeft().getCursorRow()+1, getLeft().getCursorCol());
+	}
+	public void back() {
+		setCursorAndCRLF(getLeft(),getLeft().getCursorRow()-1, getLeft().getCursorCol());
+	}
+	public void next() {
+		setCursorAndCRLF(getLeft(),getLeft().getCursorRow(), getLeft().getCursorCol()+1);
+	}
+	public void prev() {
+		setCursorAndCRLF(getLeft(),getLeft().getCursorRow(), getLeft().getCursorCol()-1);
+	}
+
+	public void setCursorAndCRLF(MyCursor cursor, int row, int col) {
+		// this method Should belong to LIneView
+		int _rowTmp = row;
+		int _colTmp = col;
+		LineViewBufferSpec spec= this.getLineViewBuffer();
+		if (_colTmp < 0) {
+			_colTmp = 0;
+		} else if (_colTmp >= spec.getNumberOfStockedElement()) {
+			_colTmp = spec.getNumberOfStockedElement() - 1;
+		}
+
+		KyoroString c = spec.get(_colTmp);
+		if (_rowTmp < 0) {
+			// à⁄ìÆÇ∑ÇÈÅB
+			if (_colTmp > 0) {
+				_colTmp -= 1;
+				KyoroString cc = spec.get(_colTmp);
+				_rowTmp = cc.lengthWithoutLF(isCrlfMode());
+			} else {
+				_rowTmp = 0;
+			}
+		} else if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
+			// à⁄ìÆÇ∑ÇÈÅB
+			if (_colTmp < spec.getNumberOfStockedElement() - 1) {
+				_rowTmp = 0;
+				_colTmp += 1;
+			} else {
+				_rowTmp = c.lengthWithoutLF(isCrlfMode());
+			}
+		}
+		cursor.setCursorCol(_colTmp);
+		cursor.setCursorRow(_rowTmp);
+	}
 }

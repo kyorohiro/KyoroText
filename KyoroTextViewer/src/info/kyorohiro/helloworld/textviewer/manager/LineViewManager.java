@@ -198,38 +198,5 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mCircleMenu.setColorWhenDefault(COLOR_CIRCLE_DEFAULT);
 	}
 
-	private class MyCircleControllerEvent implements CircleControllerAction {
-		public void moveCircle(int action, int degree, int rateDegree) {
-			if (action == CircleControllerAction.ACTION_MOVE) {
-				getFocusingTextViewer().getLineView().setPositionY(
-						getFocusingTextViewer().getLineView().getPositionY()
-								+ rateDegree * 2);
-			}
-		}
-
-		public void upButton(int action) {
-			if(!CursorableLineView.MODE_EDIT.equals(
-					((CursorableLineView)mFocusingViewer.getLineView()).getMode())){
-				if (action == CircleControllerAction.ACTION_PRESSED) {
-					getFocusingTextViewer().getLineView()
-					.setPositionY(
-							getFocusingTextViewer().getLineView()
-							.getPositionY() + 1);
-				}
-			}
-		}
-
-		public void downButton(int action) {
-			if(!CursorableLineView.MODE_EDIT.equals(
-					((CursorableLineView)mFocusingViewer.getLineView()).getMode())){
-				if (action == CircleControllerAction.ACTION_PRESSED) {
-					getFocusingTextViewer().getLineView()
-					.setPositionY(
-							getFocusingTextViewer().getLineView()
-							.getPositionY() - 1);
-				}
-			}
-		}
-	}
 
 }
