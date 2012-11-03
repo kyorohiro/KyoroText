@@ -81,22 +81,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 		KyoroString c = get(mCursorLine);
 		if (mCursorRow < 0) {
-			// ˆÚ“®‚·‚éB
-			if (mCursorLine > 0) {
-				mCursorLine -= 1;
-				KyoroString cc = get(mCursorLine);
-				mCursorRow = cc.lengthWithoutLF(mIsCrlfMode);
-			} else {
-				mCursorRow = 0;
-			}
+			mCursorRow = 0;
 		} else if (mCursorRow > c.lengthWithoutLF(mIsCrlfMode)) {
-			// ˆÚ“®‚·‚éB
-			if (mCursorLine < getNumberOfStockedElement() - 1) {
-				mCursorRow = 0;
-				mCursorLine += 1;
-			} else {
-				mCursorRow = c.lengthWithoutLF(mIsCrlfMode);
-			}
+			mCursorRow = c.lengthWithoutLF(mIsCrlfMode);
 		}
 	}
 
