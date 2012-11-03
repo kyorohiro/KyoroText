@@ -167,6 +167,10 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		if (deleteTargetIsEmpty()) {
 			return;
 		}
+//		if(true){
+//			deleteLinePerVisible();
+//			return;
+//		}
 
 		int index = getNumberOfStockedElement() - 1;
 		if (index > mCursorLine) {
@@ -180,33 +184,36 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			return;
 		}
 
-		if(false){//true){
-			deleteLinePerVisible();
-		}
-
 		int row = mCursorRow;
 		if (row >= currentLineText.lengthWithoutLF(true)) {
 			row = currentLineText.lengthWithoutLF(true);
 		}
 
 		if (mCursorRow <= 0&&index>0) {
-			android.util.Log.v("kiyo", "msg-------");
+			android.util.Log.v("kiyo", "msg-------(1)");
 			KyoroString prevLine = get(index-1);
-			mCursorLine-=1;
+			mCursorLine = index;
 			deleteLinePerVisible();
 			deleteLinePerVisible();
-			if(currentLineText.includeLF()){
-				crlf(true);
-			}else {
-				crlf(false);//falseの時の現在位置について、検討すること
-			}
 			mCursorLine=index-1;
+			if(currentLineText.includeLF()){
+				android.util.Log.v("kiyo", "msg-------(1-1-1)");
+				crlf(true);
+				mCursorLine=index-1;
+			}else {
+				android.util.Log.v("kiyo", "msg-------(1-1-2)");
+				crlf(false);//falseの時の現在位置について、検討すること
+				mCursorLine=index-1;
+			}
+
 			if(prevLine.includeLF()) {
+				android.util.Log.v("kiyo", "msg-------(1-2-1)");
 				prevLine.pargeLF(true);
 				commit(""+prevLine+currentLineText, 0);//crlfを除く処理が必要
 				moveCursor(prevLine.length());
 				prevLine.releaseParge();
 			} else {
+				android.util.Log.v("kiyo", "msg-------(1-2-2)");
 				prevLine.pargeLF(true);
 				prevLine.pargeEnd();
 				commit(""+prevLine+currentLineText, 0);//crlfを除く処理が必要
@@ -215,6 +222,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			}
 			return;
 		} else if (currentLineText.includeLF()){
+			
+			android.util.Log.v("kiyo", "msg-------(2)");
 			CharSequence f = "";
 			if (row > 1) {
 				f = currentLineText.subSequence(0, row - 1);
@@ -226,6 +235,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			mDiffer.setLine(index, "" + f + e);
 			mCursorRow = row - 1;
 		} else {
+			
 			CharSequence f = currentLineText.subSequence(0, row - 1);
 			CharSequence e = "";
 			if (row < currentLineText.length()) {
@@ -259,16 +269,16 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		CharSequence deleted = get(index);
 		mDiffer.deleteLine(index);
 		mCursorLine -= 1;
-		if (mCursorLine >= 0) {
-			mCursorRow = get(mCursorLine).length();
-		} else {
+		//if (mCursorLine >= 0) {
+		//	mCursorRow = get(mCursorLine).length();
+		//} else {
 			mCursorRow = 0;
-		}
-		CharSequence c = get(mCursorLine);
+		//}
+		/*CharSequence c = get(mCursorLine);
 		if (deleted.charAt(deleted.length() - 1) == '\n'
 				&& c.charAt(c.length() - 1) != '\n') {
 			mDiffer.setLine(mCursorLine, "" + c + "\n");
-		}
+		}*/
 		setCursor(mCursorRow, mCursorLine);
 
 	}
