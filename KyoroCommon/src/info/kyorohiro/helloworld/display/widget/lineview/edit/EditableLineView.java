@@ -120,18 +120,20 @@ public class EditableLineView extends CursorableLineView {
 						mTextBuffer.crlf();
 						break;
 					case KeyEvent.KEYCODE_DPAD_LEFT:
-						android.util.Log.v("kiyo","-1-row/col="+mTextBuffer.getRow()+"/"+mTextBuffer.getCol());
-						mTextBuffer.setCursor(getLeft().getCursorRow()-1, getLeft().getCursorCol());
-						android.util.Log.v("kiyo","-2-row/col="+mTextBuffer.getRow()+"/"+mTextBuffer.getCol());
+						back();
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 						break;
 					case KeyEvent.KEYCODE_DPAD_RIGHT:
-						mTextBuffer.setCursor(getLeft().getCursorRow()+1, getLeft().getCursorCol());
+						front();
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 						break;
 					case KeyEvent.KEYCODE_DPAD_UP:
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol()-1);
+						next();
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 						break;
 					case KeyEvent.KEYCODE_DPAD_DOWN:
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol()+1);
+						prev();
+						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 						break;
 					case KeyEvent.KEYCODE_SPACE:
 						mTextBuffer.pushCommit(" ",1);
