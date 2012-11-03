@@ -48,6 +48,7 @@ public class KyoroString  implements CharSequence {
 	private void init(char[] content, int start, int end) {
 		int length = end-start;
 		mContent = new char[length];
+		android.util.Log.v("kiyo","dd="+start+",end="+end+","+length+",c="+content.length);
 		System.arraycopy(content, start, mContent, 0, length);
 		if(mContent.length >0 && mContent[length-1]=='\n'){
 			mIncludeLF = true;
@@ -59,6 +60,19 @@ public class KyoroString  implements CharSequence {
 		}
 	}
 
+	private int mPargedLF_CRLF = 0;
+	private int mPargedEND = 0;
+	public void pargeLF(boolean includeCR) {
+		mPargedLF_CRLF = length()-lengthWithoutLF(includeCR)+mPargedEND;
+	}
+	public void pargeEnd() {
+		mPargedEND++;
+	}
+
+	public void releaseParge() {
+		mPargedLF_CRLF = 0;
+		mPargedEND = 0;
+	}
 	@Override
 	public char charAt(int index) {
 		return mContent[index];
@@ -81,7 +95,7 @@ public class KyoroString  implements CharSequence {
 
 	@Override
 	public int length() {
-		return mContent.length;
+		return mContent.length-mPargedLF_CRLF-mPargedEND;
 	}
 
 	public KyoroString newKyoroString(int start, int end) {
@@ -97,7 +111,7 @@ public class KyoroString  implements CharSequence {
 
 	@Override
 	public String toString() {
-		return new String(mContent, 0, mContent.length);
+		return new String(mContent, 0, length());
 	}
 
 	public boolean includeCRLF(){

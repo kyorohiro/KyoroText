@@ -140,99 +140,96 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
+	private boolean lineIsEmpty(CharSequence line) {
+		if (line == null || line.length() == 0){
+			return true;
+		}
+		else if(line.length() == 1 && line.subSequence(0, 1).equals("\n")){
+			return true;
+		}
+		else if(line.length() == 2 && line.subSequence(0, 2).equals("\r\n")){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	private boolean deleteTargetIsEmpty() {
+		if (mCursorLine == 0 && mCursorRow <= 0) {
+			return true;
+		} else if(0==getNumberOfStockedElement()){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	public void delete() {
+
+		if (deleteTargetIsEmpty()) {
+			return;
+		}
+
 		int index = getNumberOfStockedElement() - 1;
 		if (index > mCursorLine) {
 			index = mCursorLine;
 		}
 
-		CharSequence l = get(index);
-		// 指定された行が空
-		if (l == null || l.length() == 0
-				|| (l.length() == 1 && l.subSequence(0, 1).equals("\n"))
-				|| (l.length() == 2 && l.subSequence(0, 2).equals("\r\n"))) {
+		KyoroString currentLineText = get(index);
+		if (lineIsEmpty(currentLineText)){
 			deleteLinePerVisible();
+			// カーソルの位置は検討する。
 			return;
 		}
-		if (index == 0 && mCursorRow <= 0) {
-			return;
+
+		if(false){//true){
+			deleteLinePerVisible();
 		}
 
 		int row = mCursorRow;
-		if (row >= l.length()) {
-			row = l.length();
+		if (row >= currentLineText.lengthWithoutLF(true)) {
+			row = currentLineText.lengthWithoutLF(true);
 		}
 
-		if ((l.length() >= 2 && l.length() - 2 <= row && row <= l.length()
-				&& l.charAt(l.length() - 2) == '\r' && l.charAt(l.length() - 1) == '\n')) {
-			row = l.length() - 2;
-		} else if ((l.length() >= 1 && l.length() - 1 <= row
-				&& row <= l.length() && l.charAt(l.length() - 1) == '\n')) {
-			row = l.length() - 1;
-		}
-
-		// todo;
-		if (row <= 0 && index > 0) {
-			CharSequence f = get(index - 1);
-			CharSequence e = get(index);
-			mCursorLine = index;
-			int br = f.length();
-			int bc = mCursorLine - 1;
-			if(mCursorLine<0){
-			mCursorLine = 0;
+		if (mCursorRow <= 0&&index>0) {
+			android.util.Log.v("kiyo", "msg-------");
+			KyoroString prevLine = get(index-1);
+			mCursorLine-=1;
+			deleteLinePerVisible();
+			deleteLinePerVisible();
+			if(currentLineText.includeLF()){
+				crlf(true);
+			}else {
+				crlf(false);//falseの時の現在位置について、検討すること
 			}
-			deleteLinePerVisible();
-			deleteLinePerVisible();
-			if(mCursorLine<0){
-				mCursorLine=0;
-				crlf();
-				mCursorLine=0;
+			mCursorLine=index-1;
+			if(prevLine.includeLF()) {
+				prevLine.pargeLF(true);
+				commit(""+prevLine+currentLineText, 0);//crlfを除く処理が必要
+				moveCursor(prevLine.length());
+				prevLine.releaseParge();
 			} else {
-				if(f.length()>1&&f.charAt(f.length()-1)=='\n'){
-					crlf();
-				} else {
-					crlf(false);
-				}
+				prevLine.pargeLF(true);
+				prevLine.pargeEnd();
+				commit(""+prevLine+currentLineText, 0);//crlfを除く処理が必要
+				moveCursor(prevLine.length());
+				prevLine.releaseParge();
 			}
-			// deleteLine();
-			///*
-			if(f.length()>0&&f.charAt(f.length()-1)=='\n'){
-				if(f.length()>1&&f.charAt(f.length()-2)=='\r'){
-					f = f.subSequence(0, f.length()-2);
-				}else {
-					f = f.subSequence(0, f.length()-1);					
-				}
-				br = f.length();
-			}
-			//if(e.length()>0&&e.charAt(f.length()-1)=='\n'){
-			//	if(e.length()>1&&e.charAt(e.length()-2)=='\r'){
-			//		e = e.subSequence(0, e.length()-2);
-			//	}else {
-			//		e = e.subSequence(0, e.length()-1);					
-			//	}
-			//}
-			commit("" + f + e, 999);//*/
-			setCursor(br, bc);
 			return;
-		}
-
-		if (l.charAt(l.length() - 1) == '\n'
-				|| index == getNumberOfStockedElement() - 1) {
+		} else if (currentLineText.includeLF()){
 			CharSequence f = "";
 			if (row > 1) {
-				f = l.subSequence(0, row - 1);
+				f = currentLineText.subSequence(0, row - 1);
 			}
 			CharSequence e = "";
-			if (row < l.length()) {
-				e = l.subSequence(row, l.length());
+			if (row < currentLineText.length()) {
+				e = currentLineText.subSequence(row, currentLineText.length());
 			}
 			mDiffer.setLine(index, "" + f + e);
 			mCursorRow = row - 1;
 		} else {
-			CharSequence f = l.subSequence(0, row - 1);
+			CharSequence f = currentLineText.subSequence(0, row - 1);
 			CharSequence e = "";
-			if (row < l.length()) {
-				e = l.subSequence(row, l.length());
+			if (row < currentLineText.length()) {
+				e = currentLineText.subSequence(row, currentLineText.length());
 			}
 			int br = row - 1;
 			int bc = mCursorLine;

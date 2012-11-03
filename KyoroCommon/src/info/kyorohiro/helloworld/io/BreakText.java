@@ -23,12 +23,15 @@ public abstract class BreakText implements SimpleTextDecoderBreakText {
 		float[] ws = mWidths.getAllBufferedMoji();
 		breaktext.getTextWidths(text, index, index+count, ws, s);
 		float l=0;
-		for(int i=0;i<ws.length;i++) {
+		int len = text.length();
+		for(int i=0;i<len;i++) {
 			l+=ws[i];
 			if(l>=width){
+				//android.util.Log.v("kiyo","ret1="+i);
 				return  (i<=0?0:i-1);
 			}
 		}
-		return ws.length;
+		//android.util.Log.v("kiyo","ret2="+len);
+		return len;
 	}
 }
