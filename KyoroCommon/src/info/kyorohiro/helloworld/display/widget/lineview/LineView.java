@@ -60,7 +60,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	// setScaleとsetTextSize()で拡大率を設定している。
 	// 後でどちらかに統一する？
 	protected float getSclaeFromTextSize() {
-		return (getTextSize() / getBreakText().getTextSize());
+		return (getTextSize() / getBreakText().getSimpleFont().getFontSize());
 	}
 
 	public BreakText getBreakText() {
@@ -347,7 +347,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 		float positionMax = -1
 				 * getBreakText().getWidth() * getShowingTextSize() / 
-				 (float) getBreakText().getTextSize();
+				 (float) getBreakText().getSimpleFont().getFontSize();
 
 		positionMax += getWidth() - getMergine() * 2.2;
 
@@ -420,6 +420,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.drawText("now lockscreen",100, 100);
 			return;
 		}
+		// todo 下記コードに違和感
+		graphics.setSimpleFont(getBreakText().getSimpleFont());
 		LineViewBufferSpec showingText = mInputtedText;
 		KyoroString[] list = null;
 		int len = 0;

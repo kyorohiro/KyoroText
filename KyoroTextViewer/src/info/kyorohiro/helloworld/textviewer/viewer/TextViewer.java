@@ -119,7 +119,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			KyoroSetting.setCurrentFile(file.getAbsolutePath());
 		}
 		try {
-			mBreakText.setTextSize(mCurrentFontSize);
+			mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);
 			mBreakText.setBufferWidth(mBufferWidth);
 			mBuffer = new ManagedLineViewBuffer(new TextViewerBufferWithColorFilter(3000, mBreakText, file, mCurrentCharset));
 		} catch (FileNotFoundException e) {

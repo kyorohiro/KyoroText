@@ -130,11 +130,11 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		public LineViewBufferSpecAdapterForFlowingLineBuffer(CyclingListInter<KyoroString> buffer, int textsize, int width) {
 			mBuffer = new WeakReference<CyclingListInter<KyoroString>>(buffer);
 			mBreakText.setBufferWidth(width);
-			mBreakText.setTextSize(textsize);
+			mBreakText.getSimpleFont().setFontSize(textsize);
 		}
 
 		public void setFontSize(float size){
-			mBreakText.setTextSize(size);
+			mBreakText.getSimpleFont().setFontSize(size);
 		}
 		@Override
 		public BreakText getBreakText() {

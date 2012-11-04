@@ -32,4 +32,6 @@ public abstract class SimpleFont {
 	}
 
 	public abstract int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize);
+	public abstract int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize);
+
 }

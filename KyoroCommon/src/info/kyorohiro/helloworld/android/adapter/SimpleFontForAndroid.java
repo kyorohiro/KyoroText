@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.android.adapter;
 
 import android.graphics.Paint;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.text.KyoroString;
 
@@ -41,4 +42,8 @@ public class SimpleFontForAndroid extends SimpleFont {
 		return mPaint.getTextWidths(text.getChars(), start, end-start, widths);
 	}
 
+	@Override
+	public int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize) {
+		return mPaint.getTextWidths(buffer, start, end-start, widths);
+	}
 }

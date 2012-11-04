@@ -1,28 +1,48 @@
 package info.kyorohiro.helloworld.io;
 
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 
 //todo android dependent now
 public abstract class BreakText implements SimpleTextDecoderBreakText {
-	public abstract int getWidth();
-	public abstract void setTextSize(float textSize);
-	public abstract float getTextSize();
+	private SimpleFont mFont = null;
+	private int mWidth = 100;
 	public abstract int breakText(CharArrayBuilder mBuffer);
 	public abstract int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize);
-
+	public abstract int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize);
 	private static FloatArrayBuilder mWidths = new FloatArrayBuilder();
-	//
-	// todo
-	public static synchronized int breakText(BreakText breaktext, KyoroString text, int index, int count) {
+
+	public BreakText(SimpleFont font, int width) {
+		setSimpleFont(font);
+		mWidth = width;
+	}
+
+	public void setSimpleFont(SimpleFont font) {
+		mFont = font;
+	}
+
+	public int getWidth() {
+		return mWidth;
+	}
+
+	public void setWidth(int width) {
+		mWidth = width;
+	}
+
+	public SimpleFont getSimpleFont() {
+		return mFont;
+	}
+
+	public static synchronized int breakText(BreakText breaktext, char[] text, int index, int count) {
 		int width = breaktext.getWidth();
-		float s = breaktext.getTextSize();
+		float s = breaktext.getSimpleFont().getFontSize();
 		mWidths.setLength(count);
 		float[] ws = mWidths.getAllBufferedMoji();
 		breaktext.getTextWidths(text, index, index+count, ws, s);
 		float l=0;
-		int len = text.length();
+		int len = text.length;
 		for(int i=0;i<len;i++) {
 			l+=ws[i];
 			if(l>=width){
@@ -32,5 +52,9 @@ public abstract class BreakText implements SimpleTextDecoderBreakText {
 		}
 		//android.util.Log.v("kiyo","ret2="+len);
 		return len;
+	}
+
+	public static synchronized int breakText(BreakText breaktext, KyoroString text, int index, int count) {
+		return  breakText(breaktext, text.getChars(), index, count);
 	}
 }

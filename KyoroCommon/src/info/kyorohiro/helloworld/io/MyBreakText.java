@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.io;
 
+import info.kyorohiro.helloworld.android.adapter.SimpleFontForAndroid;
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 import android.graphics.Paint;
@@ -9,60 +11,37 @@ import android.graphics.Paint;
 //　--> LineViewのカーソル関連のコードを修正するタイミングが
 //     よさげ
 public class MyBreakText extends BreakText {
-	private Paint mPaint = new Paint();
-	private int mWidth = 400;
 
 	public MyBreakText() {
-		mPaint.setAntiAlias(true);
-	}
-	public int getWidth(){
-		return mWidth;
-	}
-
-	@Override
-	public void setTextSize(float textSize) {			
-		mPaint.setTextSize(textSize);
-	}
-
-	@Override
-	public float getTextSize() {			
-		return mPaint.getTextSize();
+		super(new SimpleFontForAndroid(), 400);
 	}
 	
 	public void setBufferWidth(int w){
-		mWidth = w;
+		setWidth(w);
 	}
 
 	public int breakText(CharArrayBuilder b, int width) {
-		int len = mPaint.breakText(b.getAllBufferedMoji(), 0,
-				b.getCurrentBufferedMojiSize(), width, null);
+		int len = BreakText.breakText(this, b.getAllBufferedMoji(), 0, width);
 		return len;
 	}
 
 	@Override
 	public int breakText(CharArrayBuilder mBuffer) {
-		return breakText(mBuffer, mWidth);
+		return breakText(mBuffer, getWidth());
+	}
+	
+
+	@Override
+	public int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize) {
+		return getTextWidths(text.getChars(), start, end, widths, textSize);
 	}
 
-//
-//	@Override
-//	public int breakText(CharSequence data, int index, int count, int width) {
-//		int len = mPaint.breakText(data, 0, count, width, null);
-//		int len = mPaint.breakText(data, 0, count, false, width, null);
-//		return len;
-//	}
-//
-	
-	private Paint specialPaint = new Paint();
 	@Override
-	public int getTextWidths(KyoroString text, int start, int end,
-			float[] widths, float textSize) {
+	public int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize) {
+		SimpleFont font = getSimpleFont();
 		try {
-			specialPaint.setAntiAlias(true);
-			specialPaint.setTextSize(textSize);
-			return specialPaint.getTextWidths(text, start, end, widths);
+			return font.getTextWidths(buffer, start, end, widths,textSize);
 		}catch(Throwable t){
-			//todo refactaring
 			return 0;
 		}
 	}

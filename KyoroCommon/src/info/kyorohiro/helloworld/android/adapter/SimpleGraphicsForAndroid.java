@@ -269,6 +269,9 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	@Override
 	public void setSimpleFont(SimpleFont f) {
 		mFont = f;
+		mPaint.setAntiAlias(mFont.getAntiAlias());
+		mPaint.setTextSize(mFont.getFontSize());
+		setTypeface(mFont.getSimpleTypeface());
 	}
 
 	@Override
