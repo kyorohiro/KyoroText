@@ -1,5 +1,5 @@
 package info.kyorohiro.helloworld.io;
-
+/*
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 
 import java.io.File;
@@ -133,3 +133,4 @@ public class TestSimpleTextDecoder extends TestCase {
 
 	}
 }
+*/
