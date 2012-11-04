@@ -51,7 +51,7 @@ public class SimpleGraphicUtil {
 			for(int i=0;i<t;i++){
 				xPlus +=widths[i];
 			}
-			//xPlus += 
+			xPlus +=// widths[end];
 			drawControlCode(graphics, buffer[end], x+xPlus, y, textSize);
 			//
 			start = end+1;
