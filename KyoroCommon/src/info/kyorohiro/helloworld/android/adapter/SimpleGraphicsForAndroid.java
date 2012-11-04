@@ -253,25 +253,17 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	}
 
 	@Override
-	public void setTypeface(SimpleTypeface face) {
-		if(face instanceof SimpleTypefaceForAndroid){
-			mPaint.setTypeface(((SimpleTypefaceForAndroid)face).getTypeface());
-		}
-		else {
-			return;
-		}
-	}
-
-	public SimpleTypeface createSimpleTypeface(File path) {
-		return new SimpleTypefaceForAndroid(path);
-	}
-
-	@Override
 	public void setSimpleFont(SimpleFont f) {
 		mFont = f;
+		//todo 以下のメソッドの管理はどこ？
 		mPaint.setAntiAlias(mFont.getAntiAlias());
 		mPaint.setTextSize(mFont.getFontSize());
-		setTypeface(mFont.getSimpleTypeface());
+		
+		SimpleTypeface st = mFont.getSimpleTypeface();
+		if(st instanceof SimpleTypefaceForAndroid) {
+			SimpleTypefaceForAndroid stfa = (SimpleTypefaceForAndroid)mFont.getSimpleTypeface();
+			mPaint.setTypeface(stfa.getTypeface());
+		}
 	}
 
 	@Override

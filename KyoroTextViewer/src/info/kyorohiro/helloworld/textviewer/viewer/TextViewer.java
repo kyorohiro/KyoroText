@@ -120,6 +120,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 		try {
 			mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);
+			mBreakText.getSimpleFont().setAntiAlias(true);
 			mBreakText.setBufferWidth(mBufferWidth);
 			mBuffer = new ManagedLineViewBuffer(new TextViewerBufferWithColorFilter(3000, mBreakText, file, mCurrentCharset));
 		} catch (FileNotFoundException e) {
@@ -168,7 +169,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			TextViewer.this.mLineView.setTextSize(viewerTextSize);
 			TextViewer.this.mLineView.setMergine(mMergine);
 		}
-
 
 		public void paintScroll(SimpleGraphics graphics) {
 			LineViewBufferSpec viewerBuffer = TextViewer.this.mLineView.getLineViewBuffer();

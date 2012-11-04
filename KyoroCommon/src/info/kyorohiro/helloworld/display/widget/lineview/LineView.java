@@ -44,10 +44,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
 	private boolean mIsLockScreen = false;
-	private SimpleTypeface mTypeface = null;
-	public void setSimpleTypeface(SimpleTypeface typeface) {
-		mTypeface = typeface;
-	}	
+	//private SimpleTypeface mTypeface = null;
+	//public void setSimpleTypeface(SimpleTypeface typeface) {
+	//	mTypeface = typeface;
+	//}	
 
 	public void isLockScreen(boolean lock) {
 		mIsLockScreen = lock;
@@ -444,7 +444,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		// draw extra
 
 		{//
-			graphics.setTypeface(mTypeface);
+			//graphics.setTypeface(mTypeface);
 		}
 		{// bg
 			drawBG(graphics);
