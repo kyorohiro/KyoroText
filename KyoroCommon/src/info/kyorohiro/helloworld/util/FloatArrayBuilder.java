@@ -8,7 +8,7 @@ public class FloatArrayBuilder {
 	private float[] mBuffer = new float[mLength];
 
 	public void setLength(int length) {
-		if(mLength > length) {
+		if(mLength < length) {
 			updateBuffer();
 		}
 	}
