@@ -62,6 +62,10 @@ public class SimpleGraphicUtil {
 		int size = graphics.getSimpleFont().lengthOfControlCode(code, textSize);
 		if(size != 0) {
 			SimpleGraphicUtil.drawRect(graphics, x, y, size, -textSize);
+			int ts = graphics.getTextSize();
+			graphics.setTextSize(ts/3);
+			graphics.drawText(""+Integer.toHexString((int)code), x, y);
+			graphics.setTextSize(ts);
 		}
 		return size;
 	}
