@@ -30,6 +30,7 @@ public class SaveTask implements Runnable {
 		mEditor = editor;
 		mBuffer = (EditableLineViewBuffer)editor.getLineViewBuffer();
 		mSaveFilePath = path;
+		mCharset = viewer.getCharset();
 	}
 
 	@Override

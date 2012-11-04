@@ -106,7 +106,7 @@ public class EditableLineView extends CursorableLineView {
 		if (c == null) {
 			return;
 		} // <-- ‚±‚±‚ð‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
-
+		mTextBuffer.IsCrlfMode(this.isCrlfMode());
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {

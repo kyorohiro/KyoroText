@@ -22,6 +22,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		mOwner = owner;
 	}
 
+	public void IsCrlfMode(boolean isCrlfMode) {
+		mIsCrlfMode = isCrlfMode;
+	}
 	@Override
 	public void isSync(boolean isSync) {
 		mOwner.isSync(isSync);
@@ -93,7 +96,11 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	public void crlf(boolean addLf) {
 		String lf = "";
 		if(addLf){
-			lf = "\r\n";
+			if(mIsCrlfMode) {
+				lf = "\r\n";
+			} else {
+				lf = "\n";				
+			}
 		}
 
 		int index = getNumberOfStockedElement() - 1;// +1;
@@ -123,7 +130,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			mCursorLine += 1;
 			mCursorRow = 0;
 			mDiffer.addLine(mCursorLine, c.subSequence(row, c.length()));
-
 		}
 	}
 
@@ -134,7 +140,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		else if(line.length() == 1 && line.subSequence(0, 1).equals("\n")){
 			return true;
 		}
-		else if(line.length() == 2 && line.subSequence(0, 2).equals("\r\n")){
+		else if(mIsCrlfMode&&line.length() == 2 && line.subSequence(0, 2).equals("\r\n")){
 			return true;
 		} else {
 			return false;
@@ -172,8 +178,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 
 		int row = mCursorRow;
-		if (row >= currentLineText.lengthWithoutLF(true)) {
-			row = currentLineText.lengthWithoutLF(true);
+		if (row >= currentLineText.lengthWithoutLF(mIsCrlfMode)) {
+			row = currentLineText.lengthWithoutLF(mIsCrlfMode);
 		}
 
 		if (mCursorRow <= 0&&index>0) {
@@ -195,13 +201,13 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 			if(prevLine.includeLF()) {
 //				android.util.Log.v("kiyo", "msg-------(1-2-1)");
-				prevLine.pargeLF(true);
+				prevLine.pargeLF(mIsCrlfMode);
 				commit(""+prevLine+currentLineText, 0);//crlfを除く処理が必要
 				moveCursor(prevLine.length());
 				prevLine.releaseParge();
 			} else {
 //				android.util.Log.v("kiyo", "msg-------(1-2-2)");
-				prevLine.pargeLF(true);
+				prevLine.pargeLF(mIsCrlfMode);
 				prevLine.pargeEnd();
 				commit(""+prevLine+currentLineText, 0);//crlfを除く処理が必要
 				moveCursor(prevLine.length());
@@ -291,7 +297,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 //		android.util.Log.v("kiyo", "[-d1-]col="+mCursorLine+",row="+mCursorRow);
 		if (0<=mCursorRow-1&&l.charAt(mCursorRow-1) == '\n') {
 			mCursorRow -= 1;
-			if (0<=mCursorRow-1&&l.charAt(mCursorRow-1) == '\r'){
+			if (mIsCrlfMode&&0<=mCursorRow-1&&l.charAt(mCursorRow-1) == '\r'){
 				mCursorRow -= 1;				
 			}
 		}
@@ -349,14 +355,18 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		int cursorLine = mCursorLine;
 		try {
 			if(text.length()>0&&text.charAt(text.length()-1)=='\n'){
-				if(text.length()>1&&text.charAt(text.length()-2)=='\r'){
+				if(mIsCrlfMode&&text.length()>1&&text.charAt(text.length()-2)=='\r'){
 					text = text.subSequence(0, text.length()-2);
 				}else {
 					text = text.subSequence(0, text.length()-1);					
 				}
 			}
 			if(0>=getNumberOfStockedElement()){
-				mDiffer.addLine(0, "\n");
+				if(mIsCrlfMode) {
+					mDiffer.addLine(0, "\r\n");
+				} else {
+					mDiffer.addLine(0, "\n");
+				}
 			}
 
 			CharSequence ct = "";
@@ -390,7 +400,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				//android.util.Log.v("kiyo", "_aaa1=" + i+",row="+(currentLineLength+g)+">"+breakLinePoint+","+g);
 				//android.util.Log.v("kiyo", "_aaa0=" + i+","+f);
 				if(f.length()>0&&f.charAt(f.length()-1)=='\n'){
-					if(f.length()>1&&f.charAt(f.length()-2)=='\r'){
+					if(mIsCrlfMode&&f.length()>1&&f.charAt(f.length()-2)=='\r'){
 						g=-2;
 					}else {
 						g=-1;				
