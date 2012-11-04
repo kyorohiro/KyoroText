@@ -21,8 +21,8 @@ public class MyBreakText extends BreakText {
 
 	public int breakText(CharArrayBuilder b, int width) {
 
-		long time1 = 0;
-		long time2 = 0;
+		//long time1 = 0;
+		//long time2 = 0;
 		//time1 = System.currentTimeMillis();		
 		int len = BreakText.breakText(this, b.getAllBufferedMoji(), 0, b.getCurrentBufferedMojiSize(), width);
 		//time2 = System.currentTimeMillis();
@@ -53,9 +53,9 @@ public class MyBreakText extends BreakText {
 	@Override
 	public int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize) {
 		SimpleFont font = getSimpleFont();
-		long time1 = 0;
-		long time2 = 0;
-		long time3 = 0;
+	//	long time1 = 0;
+	//	long time2 = 0;
+	//	long time3 = 0;
 		try {
 //			time1 = System.currentTimeMillis();
 			int ret = 0;

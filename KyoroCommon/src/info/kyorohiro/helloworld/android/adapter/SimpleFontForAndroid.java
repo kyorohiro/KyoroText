@@ -39,7 +39,10 @@ public class SimpleFontForAndroid extends SimpleFont {
 
 	@Override
 	public int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize) {
-		return mPaint.getTextWidths(text.getChars(), start, end-start, widths);
+		float _textSize = mPaint.getTextSize();
+		int ret = mPaint.getTextWidths(text.getChars(), start, end-start, widths);
+		mPaint.setTextSize(textSize);
+		return ret;
 	}
 
 	public int getControlCode(char[] buffer, int len, int start ) {

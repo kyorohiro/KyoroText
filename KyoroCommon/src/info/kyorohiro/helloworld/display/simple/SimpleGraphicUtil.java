@@ -15,8 +15,9 @@ public class SimpleGraphicUtil {
 	
 	public static void drawRect(SimpleGraphics graphics,int style, int x, int y, int w, int h) {
 		int s = graphics.getStyle();
-		graphics.startPath();
+		graphics.setStrokeWidth(1);
 		graphics.setStyle(style);
+		graphics.startPath();
 		graphics.moveTo(x, y);
 		graphics.lineTo(x, h+y);
 		graphics.lineTo(x+w, h+y);
