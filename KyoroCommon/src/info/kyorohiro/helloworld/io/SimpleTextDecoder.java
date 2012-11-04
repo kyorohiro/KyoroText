@@ -51,6 +51,10 @@ public class SimpleTextDecoder {
 
 
 	public synchronized CharSequence decodeLine(byte[] escape) throws IOException {
+		long time1 = 0;
+		long time2 = 0;
+		time1 = System.currentTimeMillis();
+
 		mBuffer.clear();
 		mByteBuffer.clear();
 		mCharBuffer.clear();
@@ -108,7 +112,10 @@ public class SimpleTextDecoder {
 			}
 			mCharBuffer.clear(); // cb‚ğ‘‚«‚İó‘Ô‚É•ÏX
 		} while (!end);
-		return new KyoroString(mBuffer.getAllBufferedMoji(),
+		KyoroString ret =new KyoroString(mBuffer.getAllBufferedMoji(),
 				mBuffer.getCurrentBufferedMojiSize());
+		time2 = System.currentTimeMillis();
+		android.util.Log.v("kiyo","time a="+(time2-time1));
+		return ret;
 	}
 }
