@@ -192,14 +192,15 @@ public class MyCursor extends SimpleDisplayObject {
 
 			try {
 				if (d != null) {
+					float[] ws = mParent.get().widths.getAllBufferedMoji();
 					l = mParent.get().getBreakText()
 							.getTextWidths(d, 0,
-							this.getCursorRow(), mParent.get().widths,
+							this.getCursorRow(), ws,
 							mParent.get().getShowingTextSize());
 
 					//	android.util.Log.v("kiyo","cursor:l="+l);
 					for (int i = 0; i < l; i++) {
-						x += mParent.get().widths[i];
+						x += ws[i];
 					}
 					//android.util.Log.v("kiyo","cursor:x="+x);
 				}

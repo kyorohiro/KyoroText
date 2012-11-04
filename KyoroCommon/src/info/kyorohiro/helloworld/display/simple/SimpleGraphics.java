@@ -15,6 +15,7 @@ public abstract class SimpleGraphics {
 	public abstract void drawCircle(int x, int y, int radius);	
 	public abstract void drawLine(int startX, int startY, int stopX, int stopY);	
 	public abstract void drawBackGround(int color);
+	public abstract void drawText(char[] text, int start, int end, int x, int y);
 	public abstract void drawText(CharSequence text, int x, int y);
 	public abstract int getTextSize();
 	public abstract void startPath();
@@ -26,6 +27,7 @@ public abstract class SimpleGraphics {
 	public abstract void setColor(int color);
 	public abstract void setTextSize(int size);
 	public abstract void setStyle(int style);
+	public abstract int getStyle();
 	public abstract void setStrokeWidth(int w);
 	public abstract int getTextWidth(String line);
 	public abstract SimpleDisplayObject createImage(byte[] data, int offset, int length);
@@ -33,4 +35,7 @@ public abstract class SimpleGraphics {
 	public abstract void clipRect(int left, int top, int right, int bottom); 
 	public abstract void setTypeface(SimpleTypeface face);
 	public abstract SimpleTypeface createSimpleTypeface(File path);
+	public abstract void setSimpleFont(SimpleFont f);
+	public abstract SimpleFont getSimpleFont();
+
 }

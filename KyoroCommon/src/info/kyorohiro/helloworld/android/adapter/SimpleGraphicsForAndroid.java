@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.android.adapter;
 import java.io.File;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.Region;
@@ -20,6 +22,7 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	private Paint mPaint = null;
 	private int mGlobalX = 0;
 	private int mGlobalY = 0;
+	private SimpleFont mFont = new SimpleFontForAndroid();
 	public final static int STYLE_STROKE = 1;
 	public final static int STYLE_FILL = 2;
 
@@ -74,6 +77,12 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 
 	public void drawText(CharSequence text, int x, int y) {
 		mCanvas.drawText(text, 0, text.length(), x + mGlobalX, y + mGlobalY,
+				mPaint);
+	}
+
+	@Override
+	public void drawText(char[] text, int start, int end, int x, int y) {
+		mCanvas.drawText(text, start, end-start, x + mGlobalX, y + mGlobalY,
 				mPaint);
 	}
 
@@ -158,6 +167,33 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	public void setTextSize(int size) {
 		mPaint.setTextSize(size);
 	}
+	@Override
+	public int getStyle() {
+		return AtoKStyle(mPaint.getStyle());
+	}
+
+	private Style KtoAStyle(int style) {
+		if (style == (STYLE_STROKE | STYLE_FILL)) {
+			return Paint.Style.FILL_AND_STROKE;
+		} else if (style == (STYLE_STROKE)) {
+			return Paint.Style.STROKE;
+		} else if (style == (STYLE_FILL)) {
+			return Paint.Style.FILL;
+		}
+		return Paint.Style.STROKE;
+	}
+	private int AtoKStyle(Style style) {
+		if(Paint.Style.FILL_AND_STROKE.equals(style)){
+			return STYLE_STROKE | STYLE_FILL;
+		}
+		if(Paint.Style.STROKE.equals(style)){
+			return STYLE_STROKE;
+		}
+		if(Paint.Style.FILL.equals(style)){
+			return STYLE_FILL;
+		}
+		return STYLE_LINE;
+	}
 
 	public void setStyle(int style) {
 		Paint.Style paintStyle = Paint.Style.FILL;
@@ -228,5 +264,15 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 
 	public SimpleTypeface createSimpleTypeface(File path) {
 		return new SimpleTypefaceForAndroid(path);
+	}
+
+	@Override
+	public void setSimpleFont(SimpleFont f) {
+		mFont = f;
+	}
+
+	@Override
+	public SimpleFont getSimpleFont() {
+		return mFont;
 	}
 }

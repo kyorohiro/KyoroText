@@ -9,6 +9,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
 import android.graphics.Color;
 
@@ -17,7 +18,8 @@ import android.graphics.Color;
 //
 //
 public class LineView extends SimpleDisplayObjectContainer {
-	public static float[] widths = new float[256];
+//	public static float[] widths = new float[256];
+	public static FloatArrayBuilder widths = new FloatArrayBuilder();
 
 	private KyoroString[] mCashBuffer = new KyoroString[0];
 	private final static int sTestTextColor = Color.parseColor("#AAFFFF00");
@@ -295,11 +297,13 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public int getXToPosX(int cursorCol, int xx, int cur) {
 		float x = xx;// /getScale();
 		x -= getLeftForStartDrawLine();
-		int l = getWidth(cursorCol, widths);
+		float[] ws = widths.getAllBufferedMoji();
+		int l = getWidth(cursorCol, ws);
 
 		float ww = 0;
 		for (int i = 0; i < l; i++) {
-			ww += widths[i];// * getSclaeFromTextSize();
+			ww += ws[i];
+			//ww += widths.get[i];// * getSclaeFromTextSize();
 			if (ww > x) {
 				return i;
 			}
@@ -363,12 +367,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 			int yy = getLineYForShowLine(0, i);
 
 			graphics.drawText(list[i], x, y);
+//			SimpleGraphicUtil.drawString(graphics, list[i], x, y, widths);
+
 			if (list[i].includeLF()) {
 				int c = list[i].getColor();
 				graphics.setColor(Color.argb(127, Color.red(c), Color.green(c),
 						Color.blue(c)));
 				graphics.setStrokeWidth(1);
-				graphics.drawLine(10, yy, graphics.getWidth() - 10, yy);
+				graphics.drawLine(10, yy, graphics.getWidth() - 10, yy);				
 			}
 		}
 	}
@@ -504,7 +510,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	private void drawBG(SimpleGraphics graphics) {
 		if (mIsClearBG) {
-			SimpleGraphicUtil.fillRect(graphics, getWidth(), getHeight());
+			SimpleGraphicUtil.fillRect(graphics, 0, 0, getWidth(), getHeight());
 			if (mBGImage != null) {
 				graphics.drawImageAsTile(mBGImage, 0, 0, getWidth(), getHeight());
 			}
