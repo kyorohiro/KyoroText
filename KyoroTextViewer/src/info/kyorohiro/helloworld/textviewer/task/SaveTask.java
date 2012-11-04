@@ -21,6 +21,9 @@ public class SaveTask implements Runnable {
 	private EditableLineView mEditor = null;
 	private EditableLineViewBuffer mBuffer = null;
 	private File mSaveFilePath = null;
+	private File mTmpFilePath = null;
+	private File mBakFilePath = null;
+	private File mCurrentFilePath = null;
 	private String mCharset = "UTF8";
 
 	public SaveTask(TextViewer viewer, File path){//EditableLineView editor, String charset, File path) {
@@ -50,20 +53,24 @@ public class SaveTask implements Runnable {
 			mEditor.isLockScreen(true);
 			mBuffer.isSync(true);
 			mViewer.getManagedLineViewBuffer().reserve();
-			if(mViewer.getCurrentPath() !=null) {
-				File src = new File(mViewer.getCurrentPath());
-				File dist = getBackupFile();
-				if(src.exists()&& dist != null){
-					Utility.copyTransfer(src, getBackupFile());
-				}
-			}
 			save_init();
+
+			
+			// 一時保存
+			mStream = new FileOutputStream(mTmpFilePath);
 			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);
 				byte[] b = (""+str).getBytes(mCharset);
 				mStream.write(b, 0, b.length);
 				Thread.yield();
 			}
+
+			// 同名のファイル名を別名で記録しておく
+			mBakFilePath.delete();
+			mSaveFilePath.renameTo(mBakFilePath.getAbsoluteFile());
+			
+			// 一時保存したファイルを移動する。
+			mTmpFilePath.renameTo(mSaveFilePath.getAbsoluteFile());
 		}
 		finally {
 			mEditor.isLockScreen(false);
@@ -71,32 +78,54 @@ public class SaveTask implements Runnable {
 			mViewer.getManagedLineViewBuffer().release();
 			save_end();
 		}
+		if(mSaveFilePath.getAbsolutePath().equals(mCurrentFilePath.getAbsolutePath())) {
+			mViewer.readFile(mCurrentFilePath);
+		}
 	}
 
 	private OutputStream mStream = null;
 	public void save_init() throws IOException {
-		if(!mSaveFilePath.exists()){
-			mSaveFilePath.createNewFile();
+		mTmpFilePath = getTmpFile();
+		mBakFilePath = getBackupFile();
+		mCurrentFilePath = new File(mViewer.getCurrentPath());
+		if(!mTmpFilePath.exists()){
+			mTmpFilePath.createNewFile();
 		}
-		mStream = new FileOutputStream(mSaveFilePath);
+		if(!mBakFilePath.exists()){
+			mBakFilePath.createNewFile();
+		}
+		
 	}
 	public void save_end() throws IOException {
 		if(mStream != null) {
+			try{
 			mStream.close();
+			}catch(Throwable t){
+				t.printStackTrace();
+			}
 		}
 	}
 
 	public File getBackupFile() {
-		if(!mSaveFilePath.exists()){
-			return null;
-		}
+		return getSubFile(".kyorohiro.bak");
+	}
+
+	public File getTmpFile() {
+		return getSubFile(".kyorohiro.tmp");
+	}
+
+	public File getSubFile(String subExt) {
+		//if(!mSaveFilePath.exists()){
+		//	return null;
+		//}
 		int num = 0;
 		File file = null;
 		for(int i=0;i<10;i++){
-			file = new File(mSaveFilePath.getAbsolutePath()+"."+num+".kyorohiro.bak");
+			file = new File(mSaveFilePath.getAbsolutePath()+"."+num+subExt);
 			if(!file.exists()){
 				return file;
 			}
+			num++;
 		}
 		return file;
 	}
