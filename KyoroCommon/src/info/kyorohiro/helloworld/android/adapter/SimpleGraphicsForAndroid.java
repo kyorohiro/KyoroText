@@ -196,15 +196,7 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	}
 
 	public void setStyle(int style) {
-		Paint.Style paintStyle = Paint.Style.FILL;
-		if (style == (STYLE_STROKE | STYLE_FILL)) {
-			paintStyle = Paint.Style.FILL_AND_STROKE;
-		} else if (style == (STYLE_STROKE)) {
-			paintStyle = Paint.Style.STROKE;
-		} else if (style == (STYLE_FILL)) {
-			paintStyle = Paint.Style.FILL;
-		}
-		mPaint.setStyle(paintStyle);
+		mPaint.setStyle(KtoAStyle(style));
 	}
 
 	public void setStrokeWidth(int w) {

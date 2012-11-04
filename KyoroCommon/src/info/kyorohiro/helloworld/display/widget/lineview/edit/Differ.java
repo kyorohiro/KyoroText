@@ -111,15 +111,15 @@ public class Differ {
 		android.util.Log.v("ll", "---start---" + mLine.size());
 		int j = 0;
 		for (Line l : mLine) {
-			android.util.Log.v("ll", "" + l.length());
-			android.util.Log.v("ll", "" + l.toString());
+		//	android.util.Log.v("ll", "" + l.length());
+	//		android.util.Log.v("ll", "" + l.toString());
 			
 			//for (int i = 0; i < l.length(); i++) {
 //				android.util.Log.v("ll", "[" + j + "][" + i + "]=" + l.get(i)+","+l.begin()+","+l.length());
 //			}
 			j++;
 		}
-		android.util.Log.v("ll", "---end---" + mLine.size());
+//		android.util.Log.v("ll", "---end---" + mLine.size());
 	}
 
 }

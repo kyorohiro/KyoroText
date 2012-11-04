@@ -66,11 +66,11 @@ public class MainActivitySetCRLFAction implements MainActivityMenuAction {
 			rb1.setSelected(false);
 			rb2.setSelected(false);
 			if(KyoroSetting.VALUE_CRLF.equals(KyoroSetting.getCurrentCRLF())){
-				android.util.Log.v("kiyo","kkk=sdf -1-");
+//				android.util.Log.v("kiyo","kkk=sdf -1-");
 				rb1.setSelected(true);
 				l.check(rb1.getId());
 			} else {
-				android.util.Log.v("kiyo","kkk=sdf -2-");
+//				android.util.Log.v("kiyo","kkk=sdf -2-");
 				rb2.setSelected(true);
 				l.check(rb2.getId());
 			}
@@ -80,13 +80,13 @@ public class MainActivitySetCRLFAction implements MainActivityMenuAction {
 				public void onCheckedChanged(RadioGroup group, int checkedId) {
 					TextViewer tv = LineViewManager.getManager().getFocusingTextViewer();
 					LineView v = tv.getLineView();
-					android.util.Log.v("kiyo","kkk=sdf"+checkedId);
+//					android.util.Log.v("kiyo","kkk=sdf"+checkedId);
 					if(checkedId == rb1.getId()) {
-						android.util.Log.v("kiyo","kkk=sdf -3-");
+//						android.util.Log.v("kiyo","kkk=sdf -3-");
 						KyoroSetting.setCurrentCRLF(KyoroSetting.VALUE_CRLF);
 						v.isCrlfMode(true);
 					} else {
-						android.util.Log.v("kiyo","kkk=sdf -4-");
+//						android.util.Log.v("kiyo","kkk=sdf -4-");
 						KyoroSetting.setCurrentCRLF(KyoroSetting.VALUE_LF);
 						v.isCrlfMode(false);
 					}

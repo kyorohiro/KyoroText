@@ -31,6 +31,24 @@ public abstract class SimpleFont {
 		return mTypeface;
 	}
 
+	public static int lengthOfControlCode(char code, int textSize) {
+		if(code == 9) {//tab
+			return textSize*2;
+		} else if(code<=31||code==127){
+			return textSize/2;
+		}  else {
+			return 0;
+		}
+	}
+	public int getControlCode(char[] buffer, int len, int start ) {
+		for(int i=start;i<len;i++) {
+			if(buffer[i]<=31||buffer[i]==127){
+				return i;
+			}
+		}
+		return len;
+	}
+
 	public abstract int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize);
 	public abstract int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize);
 

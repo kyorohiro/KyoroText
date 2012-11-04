@@ -48,7 +48,7 @@ public class KyoroString  implements CharSequence {
 	private void init(char[] content, int start, int end) {
 		int length = end-start;
 		mContent = new char[length];
-		android.util.Log.v("kiyo","dd="+start+",end="+end+","+length+",c="+content.length);
+//		android.util.Log.v("kiyo","dd="+start+",end="+end+","+length+",c="+content.length);
 		System.arraycopy(content, start, mContent, 0, length);
 		if(mContent.length >0 && mContent[length-1]=='\n'){
 			mIncludeLF = true;

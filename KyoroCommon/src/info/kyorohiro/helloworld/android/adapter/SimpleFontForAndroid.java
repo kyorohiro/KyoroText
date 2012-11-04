@@ -42,6 +42,15 @@ public class SimpleFontForAndroid extends SimpleFont {
 		return mPaint.getTextWidths(text.getChars(), start, end-start, widths);
 	}
 
+	public int getControlCode(char[] buffer, int len, int start ) {
+		for(int i=start;i<len;i++) {
+			if(buffer[i]<=31||buffer[i]==127){
+				return i;
+			}
+		}
+		return len;
+	}
+
 	@Override
 	public int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize) {
 		return mPaint.getTextWidths(buffer, start, end-start, widths);

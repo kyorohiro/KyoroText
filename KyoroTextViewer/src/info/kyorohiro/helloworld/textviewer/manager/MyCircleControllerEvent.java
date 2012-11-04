@@ -27,7 +27,7 @@ public class MyCircleControllerEvent implements CircleControllerAction {
 				else if(mCurrentDegree<-150||mCurrentDegree>150) {
 					cv.back();
 				}
-				android.util.Log.v("kiyo","degree2="+mCurrentDegree);				
+//				android.util.Log.v("kiyo","degree2="+mCurrentDegree);				
 			}
 		}
 		if (action == CircleControllerAction.ACTION_MOVE) {

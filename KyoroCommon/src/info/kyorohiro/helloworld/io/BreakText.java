@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.io;
 
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;
@@ -35,14 +37,15 @@ public abstract class BreakText implements SimpleTextDecoderBreakText {
 		return mFont;
 	}
 
-	public static synchronized int breakText(BreakText breaktext, char[] text, int index, int count) {
-		int width = breaktext.getWidth();
+	public static synchronized int breakText(BreakText breaktext, char[] text, int index, int count, int width) {
 		float s = breaktext.getSimpleFont().getFontSize();
 		mWidths.setLength(count);
+		int len = text.length;
+		
 		float[] ws = mWidths.getAllBufferedMoji();
 		breaktext.getTextWidths(text, index, index+count, ws, s);
 		float l=0;
-		int len = text.length;
+		
 		for(int i=0;i<len;i++) {
 			l+=ws[i];
 			if(l>=width){
@@ -55,6 +58,7 @@ public abstract class BreakText implements SimpleTextDecoderBreakText {
 	}
 
 	public static synchronized int breakText(BreakText breaktext, KyoroString text, int index, int count) {
-		return  breakText(breaktext, text.getChars(), index, count);
+		return  breakText(breaktext, text.getChars(), index, count, breaktext.getWidth());
 	}
+
 }

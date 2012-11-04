@@ -21,6 +21,7 @@ public class FloatArrayBuilder {
 		}
 		mBuffer = tmp;
 	}
+
 	public void append(float moji){
 		if(mPointer >= mLength){
 			updateBuffer();

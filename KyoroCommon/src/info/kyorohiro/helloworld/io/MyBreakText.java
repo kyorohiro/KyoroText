@@ -4,7 +4,6 @@ import info.kyorohiro.helloworld.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
-import android.graphics.Paint;
 
 //
 //　このコードから、いらない機能を削除する必要がある。
@@ -21,7 +20,8 @@ public class MyBreakText extends BreakText {
 	}
 
 	public int breakText(CharArrayBuilder b, int width) {
-		int len = BreakText.breakText(this, b.getAllBufferedMoji(), 0, width);
+		int len = BreakText.breakText(this, b.getAllBufferedMoji(), 0, b.getCurrentBufferedMojiSize(), width);
+		//int len = b.getCurrentBufferedMojiSize();
 		return len;
 	}
 
@@ -40,7 +40,13 @@ public class MyBreakText extends BreakText {
 	public int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize) {
 		SimpleFont font = getSimpleFont();
 		try {
-			return font.getTextWidths(buffer, start, end, widths,textSize);
+			int ret = 0;
+			ret = font.getTextWidths(buffer, start, end, widths,textSize);
+			// 以下のコードはSimpleFontにあるほうがよいかも
+			for(int i=0;i<ret;i++){
+				widths[i] += font.lengthOfControlCode(buffer[i], (int)textSize);
+			}
+			return ret;
 		}catch(Throwable t){
 			return 0;
 		}

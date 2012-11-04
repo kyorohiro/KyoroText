@@ -366,8 +366,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 			int y = getYForStartDrawLine(i);
 			int yy = getLineYForShowLine(0, i);
 
-			graphics.drawText(list[i], x, y);
-//			SimpleGraphicUtil.drawString(graphics, list[i], x, y, widths);
+//			graphics.drawText(list[i], x, y);
+        	SimpleGraphicUtil.drawString(graphics, list[i], x, y, widths);
 
 			if (list[i].includeLF()) {
 				int c = list[i].getColor();
