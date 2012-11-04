@@ -9,10 +9,35 @@ public class KyoroSetting {
 	public static final String TAG_CURRENT_CHARSET = "current charset";
 	public static final String TAG_CURRENT_FILE = "current file";
 	public static final String TAG_CURRENT_FONT_SIZE = "font size";
+	public static final String TAG_DEFAULT_CRLF = "default crlf";
+	public static final String VALUE_CRLF = "CRLF";
+	public static final String VALUE_LF = "LF";
+	public static final String DEFAULT_CRLF = VALUE_CRLF;
+
+
 	public static final String CURRENT_CHARSET_DEFAULT = "utf8";
 	public static final String VALUE_NONE = "none";
 	public static final int CURRENT_FONT_SIZE_DEFAULT = 12;
 	private static Object lock = new Object();
+
+	public static String getCurrentCRLF() {
+		String crlf = DEFAULT_CRLF;
+		try {
+			String t = getData(TAG_DEFAULT_CRLF);
+			if(t != null && !t.equals(VALUE_NONE)){
+				crlf = t;
+			}			
+		} catch(Throwable t) {
+		}
+		return crlf;
+	}
+
+	public static void setCurrentCRLF(String value) {
+		try{
+			setData(TAG_DEFAULT_CRLF, value);
+		} catch (Throwable t){
+		}
+	}
 
 	public static int getCurrentFontSize() {
 		int fontSize = CURRENT_FONT_SIZE_DEFAULT;
