@@ -269,6 +269,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public boolean isCrlfMode () {
 		return mCrlfMode;
 	}
+	public void isCrlfMode(boolean mode) {
+		mCrlfMode = mode;
+	}
 	public int getWidth(int cursorCol, float[] w, int textSize) {
 		LineViewBufferSpec mInputtedText = getLineViewBuffer();
 		if (mInputtedText == null || null == mInputtedText.getBreakText()) {

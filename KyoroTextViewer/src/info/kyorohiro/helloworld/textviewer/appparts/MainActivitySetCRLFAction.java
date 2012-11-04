@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.util.SortedMap;
 
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
+import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
@@ -77,13 +78,17 @@ public class MainActivitySetCRLFAction implements MainActivityMenuAction {
 			l.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(RadioGroup group, int checkedId) {
+					TextViewer tv = LineViewManager.getManager().getFocusingTextViewer();
+					LineView v = tv.getLineView();
 					android.util.Log.v("kiyo","kkk=sdf"+checkedId);
 					if(checkedId == rb1.getId()) {
 						android.util.Log.v("kiyo","kkk=sdf -3-");
 						KyoroSetting.setCurrentCRLF(KyoroSetting.VALUE_CRLF);
+						v.isCrlfMode(true);
 					} else {
 						android.util.Log.v("kiyo","kkk=sdf -4-");
 						KyoroSetting.setCurrentCRLF(KyoroSetting.VALUE_LF);
+						v.isCrlfMode(false);
 					}
 				}
 			});

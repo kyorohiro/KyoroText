@@ -11,6 +11,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
+import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.util.Utility;
 import android.content.Context;
@@ -21,6 +22,11 @@ public class StartupCommandBuffer extends TextViewer {
 
 	public StartupCommandBuffer(int textSize, int width, int mergine) {
 		super(new EmptyLineViewBufferSpecImpl(),textSize, width, mergine);
+		if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
+			getLineView().isCrlfMode(false);
+		} else {
+			getLineView().isCrlfMode(true);
+		}
 		readStartupMessage();
 	}
 
