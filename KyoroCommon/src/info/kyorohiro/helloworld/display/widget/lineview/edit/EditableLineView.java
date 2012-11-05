@@ -46,6 +46,9 @@ public class EditableLineView extends CursorableLineView {
 		super.paint(graphics);
 	}
 
+	public boolean isEdit() {
+		return mTextBuffer.isEdit();
+	}
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		if (editable() && inside(x, y)) {

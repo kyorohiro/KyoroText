@@ -28,7 +28,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	private String mCurrentCharset = "utf8";
 	private ManagedLineViewBuffer mBuffer = null;
-	private LineView mLineView = null;
+	private EditableLineView mLineView = null;
 	private int mBufferWidth = 0;
 	private ScrollBar mScrollBar = null;
 	private int mCurrentFontSize = KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
@@ -59,6 +59,10 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		addChild(mScrollBar);
 	}
 
+	// following code is refactring target
+	public boolean isEdit() {
+		return mLineView.isEdit();
+	}
 	public String getCurrentPath() {
 		return mCurrentPath;
 	}
@@ -115,8 +119,17 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			return false;
 		}
 		mCurrentPath = file.getAbsolutePath();
+		
+		// todo following code dependent application layer.
+		// refactring target
 		if(updataCurrentPath){
-			KyoroSetting.setCurrentFile(file.getAbsolutePath());
+			File datadata = KyoroApplication.getKyoroApplication().getFilesDir();
+			File parent = file.getParentFile();
+			File grandpa = parent.getParentFile();
+			if(!datadata.equals(parent)
+					&&!(grandpa!=null&&grandpa.equals(datadata))){
+				KyoroSetting.setCurrentFile(file.getAbsolutePath());
+			}
 		}
 		try {
 			mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);

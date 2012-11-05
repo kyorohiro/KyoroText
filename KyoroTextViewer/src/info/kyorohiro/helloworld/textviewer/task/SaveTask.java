@@ -78,9 +78,10 @@ public class SaveTask implements Runnable {
 			mViewer.getManagedLineViewBuffer().release();
 			save_end();
 		}
-		if(mSaveFilePath.getAbsolutePath().equals(mCurrentFilePath.getAbsolutePath())) {
-			mViewer.readFile(mCurrentFilePath);
-		}
+//		if(mSaveFilePath.getAbsolutePath().equals(mCurrentFilePath.getAbsolutePath())) {
+//			mViewer.readFile(mCurrentFilePath);
+//		}
+		mViewer.readFile(mSaveFilePath);
 	}
 
 	private OutputStream mStream = null;

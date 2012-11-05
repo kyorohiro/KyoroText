@@ -8,6 +8,7 @@ import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
+import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -34,12 +35,17 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 	public boolean onMenuItemSelected(Activity activity, int featureId,
 			MenuItem item) {
 		if (item.getTitle().equals(TITLE)) {
-			showExplorer(activity);
+			 MenuActionWarningMessagePlus.showDialog(activity, new  MyTask() {
+				 public void run(Activity c){
+					showExplorer(c);
+				 }
+			 }, LineViewManager.getManager().getFocusingTextViewer().isEdit());
+
 			return true;
 		}
 		return false;
 	}
-
+	
 	private WeakReference<Activity> mRefActivity = null;
 	private void showExplorer(Activity activity) {
 		mRefActivity = new WeakReference<Activity>(activity);

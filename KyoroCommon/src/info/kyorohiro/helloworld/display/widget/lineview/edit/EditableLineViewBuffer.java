@@ -22,6 +22,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		mOwner = owner;
 	}
 
+	public boolean isEdit() {
+		return (mDiffer.lengthOfLine()<=0?false:true);
+	}
 	public void IsCrlfMode(boolean isCrlfMode) {
 		mIsCrlfMode = isCrlfMode;
 	}
