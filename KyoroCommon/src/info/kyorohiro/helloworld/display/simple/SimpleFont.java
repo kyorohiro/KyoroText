@@ -40,6 +40,7 @@ public abstract class SimpleFont {
 			return 0;
 		}
 	}
+
 	public int getControlCode(char[] buffer, int len, int start ) {
 		for(int i=start;i<len;i++) {
 			if(buffer[i]<=31||buffer[i]==127){

@@ -103,6 +103,10 @@ public class SimpleTextDecoder {
 						ws[0] = 0;
 						mBreakText.getTextWidths(mBuffer.getAllBufferedMoji(), size-1, size, ws, textSize);
 						textLength += ws[0];
+						//if(c=='\t'){
+						//android.util.Log.v("kiyo","time2 ["+mBuffer.getAllBufferedMoji()[size-1]+"]"+c+"="+width+","+textLength +","+ ws[0]);
+						//}
+
 						if(textLength>width){
 							//android.util.Log.v("kiyo","dd1 s="+textLength+",w="+width+",l="+len+",s="+size);
 							len += 0;

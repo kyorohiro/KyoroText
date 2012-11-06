@@ -63,8 +63,15 @@ public class MyBreakText extends BreakText {
 
 //			time2 = System.currentTimeMillis();
 			// ˆÈ‰º‚ÌƒR[ƒh‚ÍSimpleFont‚É‚ ‚é‚Ù‚¤‚ª‚æ‚¢‚©‚à
-			for(int i=0;i<ret;i++){
-				widths[i] += font.lengthOfControlCode(buffer[i], (int)textSize);
+			int t=0;
+			for(int i=start;i<end;i++){
+				t = font.lengthOfControlCode(buffer[i], (int)textSize);
+				if(t!=0){
+					widths[i-start] = t;
+				}
+			//	if(buffer[i]=='\t'){
+			//		android.util.Log.v("kiyo","time ["+i+"]"+buffer[i]+"="+widths[i-start]);
+			//	}
 			}
 //			time3 = System.currentTimeMillis();
 //			android.util.Log.v("kiyo","time a="+(time2-time1)+",b="+(time3-time2));

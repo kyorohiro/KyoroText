@@ -40,6 +40,7 @@ public class SimpleFontForAndroid extends SimpleFont {
 	@Override
 	public int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize) {
 		float _textSize = mPaint.getTextSize();
+		mPaint.setTextSize(textSize);
 		int ret = mPaint.getTextWidths(text.getChars(), start, end-start, widths);
 		mPaint.setTextSize(textSize);
 		return ret;
