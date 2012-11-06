@@ -90,7 +90,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return mCurrentCharset;
 	}
 
-	public LineView getLineView() {
+	public EditableLineView getLineView() {
 		return mLineView;
 	}
 
