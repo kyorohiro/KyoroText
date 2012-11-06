@@ -71,9 +71,11 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	public void paint(SimpleGraphics graphics) {
 		setRect(graphics.getWidth(), graphics.getHeight());
 		_layout();
-		int t = mCircleMenu.getMinRadius();
-		mRoot.setPoint(0, t);
-		mRoot.setRect(graphics.getWidth(), graphics.getHeight() - t);
+		//int t = mCircleMenu.getMinRadius();
+		//mRoot.setPoint(0, t);
+		mRoot.setPoint(0, 0);
+//		mRoot.setRect(graphics.getWidth(), graphics.getHeight() - t);
+		mRoot.setRect(graphics.getWidth(), graphics.getHeight());
 		super.paint(graphics);
 		int xy[] = new int[2];
 		getFocusingTextViewer().getGlobalXY(xy);
