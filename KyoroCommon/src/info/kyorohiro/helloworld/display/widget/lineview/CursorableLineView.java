@@ -218,9 +218,15 @@ public class CursorableLineView extends LineView {
 
 	public void front() {
 		setCursorFront(getLeft(),getLeft().getCursorRow()+1, getLeft().getCursorCol());
+		if(getLeft().getCursorCol()+1 >getShowingTextEndPosition()) {
+			setPositionY(getPositionY()-1);
+		}
 	}
 	public void back() {
 		setCursorBack(getLeft(),getLeft().getCursorRow()-1, getLeft().getCursorCol());
+		if(getLeft().getCursorCol()-1 <getShowingTextStartPosition()) {
+			setPositionY(getPositionY()+1);
+		}
 	}
 	public void next() {
 		setCursorAndCRLF(getLeft(),getLeft().getCursorRow(), getLeft().getCursorCol()+1);
