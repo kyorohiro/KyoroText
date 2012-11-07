@@ -38,11 +38,11 @@ public class SimpleFontForAndroid extends SimpleFont {
 	}
 
 	@Override
-	public int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize) {
+	public synchronized int getTextWidths(KyoroString text, int start, int end, float[] widths, float textSize) {
 		float _textSize = mPaint.getTextSize();
 		mPaint.setTextSize(textSize);
 		int ret = mPaint.getTextWidths(text.getChars(), start, end-start, widths);
-		mPaint.setTextSize(textSize);
+		mPaint.setTextSize(_textSize);
 		return ret;
 	}
 
@@ -56,7 +56,11 @@ public class SimpleFontForAndroid extends SimpleFont {
 	}
 
 	@Override
-	public int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize) {
-		return mPaint.getTextWidths(buffer, start, end-start, widths);
+	public synchronized int getTextWidths(char[] buffer, int start, int end, float[] widths, float textSize) {
+		float _t = mPaint.getTextSize();
+		mPaint.setTextSize(textSize);
+		int ret = mPaint.getTextWidths(buffer, start, end-start, widths);
+		mPaint.setTextSize(_t);
+		return ret;
 	}
 }
