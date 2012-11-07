@@ -10,7 +10,9 @@ import java.util.regex.Pattern;
 
 import android.R.color;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
@@ -115,7 +117,7 @@ public class SimpleFileExplorer extends Dialog {
 	private void init() {
 		mEdit.setSelected(false);
 		mEdit.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		mEdit.setHint("search file : regex(find) or new");
+		mEdit.setHint("search file : regex(find)");
 		mEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -220,18 +222,47 @@ public class SimpleFileExplorer extends Dialog {
 		}
 		if(mNewButton != null) {
 			mNewButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if(mAction != null&&mEdit != null && mEdit.getText()!=null) {
-						
-						if(mAction.onSelectedFile(new File(mDir,""+mEdit.getText().toString()), SelectedFileAction.PUSH_SELECT)) {
-							try {
-								SimpleFileExplorer.this.dismiss();
-							} catch (Throwable e) {
-								e.printStackTrace();
+				private EditText mNewFileName = null;
+				private AlertDialog mDialog = null;
+				public void showDialog() {
+					AlertDialog.Builder b = new AlertDialog.Builder(getContext());
+					mNewFileName = new EditText(getContext());
+					b.setTitle("new filename----");
+					b.setView(mNewFileName);
+					b.setPositiveButton("OK", new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							if(mNewFileName.getText() == null){
+								return;
+							}
+							String t = mNewFileName.getText().toString();
+							if(mAction.onSelectedFile(new File(mDir,""+t), SelectedFileAction.PUSH_SELECT)) {
+								try {
+									mDialog.dismiss();
+									SimpleFileExplorer.this.dismiss();
+								} catch (Throwable e) {
+									e.printStackTrace();
+								}
 							}
 						}
-					}
+					});
+					mDialog = b.show();
+//					mDialog = b.create();
+//					mDialog.show();
+				}
+				@Override
+				public void onClick(View v) {
+//					if(mAction != null&&mEdit != null && mEdit.getText()!=null) {
+//						
+						//if(mAction.onSelectedFile(new File(mDir,""+mEdit.getText().toString()), SelectedFileAction.PUSH_SELECT)) {
+						//	try {
+								showDialog();
+//								SimpleFileExplorer.this.dismiss();
+//							} catch (Throwable e) {
+	//							e.printStackTrace();
+		//					}
+			//			}
+				//	}
 				}
 			});
 		}
