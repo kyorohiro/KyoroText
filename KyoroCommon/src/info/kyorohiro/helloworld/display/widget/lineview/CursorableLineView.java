@@ -106,18 +106,38 @@ public class CursorableLineView extends LineView {
 		}
 	}
 
+	private boolean mIsEditClickAction = false;
+	private int mIsEditClickActionX = 0;
+	private int mIsEditClickActionY = 0;
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		if (super.onTouchTest(x, y, action)) {
 			return true;
 		} else {
-			if (mMode == MODE_EDIT && action == MotionEvent.ACTION_UP) {
-				try{
-					lock();
-					mLeft.setCursorCol(getYToPosY(y));
-					mLeft.setCursorRow(getXToPosX(mRight.getCursorCol(), x, mRight.getCursorRow()));
-				}finally{
-					releaseLock();
+			if (mMode == MODE_EDIT) {
+				if(action == MotionEvent.ACTION_DOWN) {
+					mIsEditClickActionX = x;
+					mIsEditClickActionY = y; 
+					mIsEditClickAction = true;
+				}
+				else if (action == MotionEvent.ACTION_MOVE) {
+					if(mIsEditClickAction){
+						int ts = 30;
+						if(Math.abs(x-mIsEditClickActionX)>ts|Math.abs(y-mIsEditClickActionY)>ts){
+							mIsEditClickAction = false;
+						}
+					}
+				}
+				else if (action == MotionEvent.ACTION_UP) {
+					if(mIsEditClickAction==true){
+						try{
+							lock();
+							mLeft.setCursorCol(getYToPosY(y));
+							mLeft.setCursorRow(getXToPosX(mRight.getCursorCol(), x, mRight.getCursorRow()));
+						}finally{
+							releaseLock();
+						}
+					}
 				}
 			}
 			if(mMode == MODE_SELECT){
