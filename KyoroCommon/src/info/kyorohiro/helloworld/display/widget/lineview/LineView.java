@@ -345,17 +345,34 @@ public class LineView extends SimpleDisplayObjectContainer {
 			mPositionX = 0;
 		}
 
-		float positionMax = -1
-				 * getBreakText().getWidth() * getShowingTextSize() / 
-				 (float) getBreakText().getSimpleFont().getFontSize();
-
-		positionMax += getWidth() - getMergine() * 2.2;
-
-		
+		float zoom = getShowingTextSize()/(float)getBreakText().getSimpleFont().getFontSize();
+		float textMax = (getBreakText().getWidth())* zoom+getMergine()*2;
+		float viewMax = getWidth();
+		float positionMax = 0;
+		if(textMax>viewMax){
+			positionMax = getMergine()+
+					textMax-viewMax;
+		}else {
+			positionMax = //getMergine()+
+					textMax-viewMax
+					+(viewMax-textMax)/2;			
+		}
+//		android.util.Log.v("kiyo","len="+positionMax+","+(getWidth() - getMergine() * 2.0));
+//		positionMax -= (positionMax - getWidth())/2;
+//		if(0>positionMax){
+//			positionMax -= getWidth();// + getMergine();// * 2.0;
+//		} else {
+//			positionMax += getWidth() + getMergine() * 2.2;			
+//		}
+//		if (getWidth()-getMergine()<positionMax){
+			positionMax *= -1;
+//		} else {
+//			positionMax -= getWidth() - getMergine()*2;
+//		}	
+//		android.util.Log.v("kiyo","len ret="+positionMax+","+mPositionX);
 		if (mPositionX < positionMax) {
 			mPositionX = (int) positionMax;
 		}
-
 		for (int i = 0; i < len; i++) {
 			if (list[i] == null) {
 				continue;

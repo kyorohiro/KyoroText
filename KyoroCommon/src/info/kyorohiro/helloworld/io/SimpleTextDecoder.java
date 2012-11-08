@@ -71,7 +71,7 @@ public class SimpleTextDecoder {
 		float textLength = 0;
 		int width = mBreakText.getWidth();
 		float textSize = mBreakText.getSimpleFont().getFontSize();
-		android.util.Log.v("kiyo","textSize="+textSize+","+width);
+	//	android.util.Log.v("kiyo","textSize="+textSize+","+width);
 		int len = 0;
 
 		outside: do {
