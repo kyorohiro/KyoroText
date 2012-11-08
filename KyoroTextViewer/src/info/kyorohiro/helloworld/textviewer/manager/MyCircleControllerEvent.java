@@ -52,16 +52,16 @@ public class MyCircleControllerEvent implements CircleControllerAction {
 		}
 		else if(60<mCurrentDegree&&mCurrentDegree<120) {
 			if(!isReverse){
-				cv.prev();
-			} else {
 				cv.next();
+			} else {
+				cv.prev();
 			}
 		}
 		else if(-120<mCurrentDegree&&mCurrentDegree<-60) {
 			if(!isReverse){
-				cv.next();				
-			} else {
 				cv.prev();
+			} else {
+				cv.next();				
 			}
 		}
 		else if(mCurrentDegree<-150||mCurrentDegree>150) {
