@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import android.view.MotionEvent;
 
+// this class is refactraing target.
 public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 
 	private int mPrevX = 0;
@@ -20,6 +21,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 	private int mPower_prevY = 0;
 	private long mPower_time = 0;
 	private LineView mViewer = null;
+	private TappCheck mTapCheck = new TappCheck();
 
 	public TouchAndMoveActionForLineView(LineView viewer) {
 		mViewer = viewer;
@@ -47,6 +49,8 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 	public boolean onTouchTest(int x, int y, int action) {
 		boolean focusIn = false;
 		boolean doubleTouched = doubleTouched();
+		boolean tapped = mTapCheck.tapped();
+		mTapCheck.onTouchTest(x, y, action);
 		if(0<x&&x<mViewer.getWidth()&&0<y&&y<mViewer.getHeight()){
 			focusIn = true;
 		} else {
@@ -109,7 +113,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 //			mPrevX = -999;
 		} else if (action == MotionEvent.ACTION_UP) {
 //			android.util.Log.v("kiyo","up");
-			if(mIsTouched){
+			if(mIsTouched&&!tapped){
 				mHeavyX = mPowerX * 8;
 				mHeavyY = mPowerY * 8;
 			} else {
@@ -152,4 +156,29 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		}
 	}
 
+	private static class TappCheck {
+		private boolean mIsTap = false;		
+		private int mX = 0;
+		private int mY = 0;
+		private int mLength = 30;
+		public boolean onTouchTest(int x, int y, int action) {
+			switch(action) {
+			case MotionEvent.ACTION_POINTER_DOWN:
+				mIsTap = true;
+				break;
+			case MotionEvent.ACTION_MOVE:
+				if(Math.abs(mX-x)>mLength||Math.abs(mY-y)>mLength){
+					mIsTap = false;
+				}
+				break;
+			case MotionEvent.ACTION_POINTER_UP:
+				mIsTap = false;
+				break;
+			}
+			return false;
+		}
+		public boolean tapped() {
+			return mIsTap;
+		}
+	}
 }
