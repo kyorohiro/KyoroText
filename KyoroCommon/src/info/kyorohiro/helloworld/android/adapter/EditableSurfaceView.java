@@ -56,6 +56,13 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		mManager.showSoftInput(this, 0);
 	}
 
+	public void hideInputConnection() {
+        mManager.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    	mComposingText = "";
+    	mCommitText = "";
+    	mCommitTextList.clear();
+	}
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		boolean ret  = super.onTouchEvent(event);

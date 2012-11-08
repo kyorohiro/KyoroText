@@ -49,6 +49,14 @@ public class EditableLineView extends CursorableLineView {
 	public boolean isEdit() {
 		return mTextBuffer.isEdit();
 	}
+
+	@Override
+	public void setMode(String mode) {
+		super.setMode(mode);
+		if(CursorableLineView.MODE_EDIT!=mode){
+			hideIME();
+		}
+	}
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		if (editable() && inside(x, y)) {
@@ -80,6 +88,11 @@ public class EditableLineView extends CursorableLineView {
 	private void showIME() {
 		SimpleStage stage = getStage(this);
 		stage.showInputConnection();
+	}
+
+	private void hideIME() {
+		SimpleStage stage = getStage(this);
+		stage.hideInputConnection();
 	}
 
 	private boolean editable() {
