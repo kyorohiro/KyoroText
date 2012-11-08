@@ -188,9 +188,15 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 		@Override
 		public CharSequence getTextAfterCursor(int length, int flags) {
-			CharSequence a = super.getTextAfterCursor(length, flags);
-			log("getTextAfterCursor="+a.toString()+","+length+","+flags);
-			return a;
+			try {
+				CharSequence a = super.getTextAfterCursor(length, flags);
+				log("getTextAfterCursor="+a.toString()+","+length+","+flags);
+				return a;
+			} catch(Exception e) {
+				// 某端末で、java.lang.IndexOutOfBoundsExceptionが発生したのでガード
+				e.printStackTrace();
+				return "";
+			}
 		}
 		@Override
 		public CharSequence getTextBeforeCursor(int length, int flags) {
