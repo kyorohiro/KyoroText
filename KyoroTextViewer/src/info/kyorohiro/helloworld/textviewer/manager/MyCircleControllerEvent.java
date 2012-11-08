@@ -84,8 +84,19 @@ public class MyCircleControllerEvent implements CircleControllerAction {
 	}
 
 	public void upButton(int action) {
+		TextViewer viewer = LineViewManager.getManager().getFocusingTextViewer();
+		if(CursorableLineView.MODE_VIEW == viewer.getLineView().getMode()){
+			viewer.getLineView().setPositionY(
+					LineViewManager.getManager().getFocusingTextViewer().getLineView().getPositionY()+1);
+		}
 	}
 
 	public void downButton(int action) {
+		TextViewer viewer = LineViewManager.getManager().getFocusingTextViewer();
+		if(CursorableLineView.MODE_VIEW == viewer.getLineView().getMode()){
+			viewer.getLineView().setPositionY(
+					LineViewManager.getManager().getFocusingTextViewer().getLineView().getPositionY()-1);
+		}
 	}
+	
 }
