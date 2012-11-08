@@ -16,7 +16,7 @@
         <activity
             android:label="@string/app_name"
             android:name=".KyoroTextViewerActivity"            
-            android:configChanges="orientation|keyboardHidden|keyboard|fontScale"
+            android:configChanges="uiMode|fontScale|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@android:style/Theme.Black.NoTitleBar"
