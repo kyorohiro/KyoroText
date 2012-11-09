@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import java.io.ObjectInputStream.GetField;
+
 import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -19,7 +21,15 @@ public class CursorableLineView extends LineView {
 	private MyCursor mRight = new MyCursor(this);
 	private CharSequence mMode = MODE_VIEW;
 
-	
+	private boolean mIsFocus = true;
+	public boolean isFocus(){
+		android.util.Log.v("kiyo","adsdf[1]"+mIsFocus);
+		return mIsFocus;
+	}
+	public void isFocus(boolean isFocus){
+		android.util.Log.v("kiyo","adsdf"+isFocus);
+		mIsFocus = isFocus;
+	}
 	public MyCursor getLeft() {
 		return mLeft;
 	}

@@ -18,11 +18,11 @@ public class MyCursor extends SimpleDisplayObject {
 	private int py = 0;
 	private boolean focus = false;
 	private boolean mEnable = false;
-	private WeakReference<LineView> mParent;
+	private WeakReference<CursorableLineView> mParent;
 	private CharSequence mMessage = "";
 
-	public MyCursor(LineView lineview) {
-		mParent = new WeakReference<LineView>(lineview);
+	public MyCursor(CursorableLineView lineview) {
+		mParent = new WeakReference<CursorableLineView>(lineview);
 		cursorCol = lineview.getPoint(0);
 	}
 
@@ -105,6 +105,10 @@ public class MyCursor extends SimpleDisplayObject {
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
+		// following code is yatuke sigoto
+		if(!mParent.get().isFocus()){
+			return false;
+		}
 		if (!mEnable) {
 			return false;
 		}
@@ -166,6 +170,9 @@ public class MyCursor extends SimpleDisplayObject {
 		return false;
 	}
 	public void updateCursor() {
+		if(!mParent.get().isFocus()){
+			return;
+		}
 //		android.util.Log.v("kiyo","cursor:c="+getCursorCol()+",r="+getCursorRow());
 		int y = 0;
 		float x = 0.0f;

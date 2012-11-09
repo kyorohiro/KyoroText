@@ -117,7 +117,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	public void divide(SeparateUI separate) {
 		
-		// following yaxtuke sigoto
+		// todo following yaxtuke sigoto
 		if(numOfChild()>=3){
 			return;
 		}
@@ -176,7 +176,9 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	private boolean  chFocus(SimpleDisplayObject parent) {
 		if(parent instanceof TextViewer) {
-			LineViewManager.getManager().changeFocus((TextViewer)parent);
+			TextViewer v = (TextViewer)parent;
+			v.getLineView().isFocus(true);
+			LineViewManager.getManager().changeFocus(v);
 			return true;
 		}
 		if(parent instanceof SimpleDisplayObjectContainer){

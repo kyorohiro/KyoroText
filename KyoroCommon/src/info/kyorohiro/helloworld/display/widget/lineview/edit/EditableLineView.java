@@ -118,6 +118,10 @@ public class EditableLineView extends CursorableLineView {
 		getLeft().setMessage(c.getComposingText());
 	}
 	private void updateCommitTextFromIME() {
+		// following code is yaxutuke sigoto
+		if(!isFocus()){
+			return;
+		}
 		MyInputConnection c = getMyInputConnection();
 		if (c == null) {
 			return;

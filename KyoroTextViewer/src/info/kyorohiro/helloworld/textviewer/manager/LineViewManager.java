@@ -110,6 +110,11 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	public void changeFocus(TextViewer textViewer) {
+		TextViewer p = LineViewManager.getManager().getFocusingTextViewer();
+		if(textViewer != p){
+			p.getLineView().isFocus(false);
+		}
+		textViewer.getLineView().isFocus(true);
 		if(mFocusingViewer !=null && mFocusingViewer.getLineView() instanceof CursorableLineView) {
 			if( CursorableLineView.MODE_EDIT.equals(
 					((CursorableLineView)mFocusingViewer.getLineView()).getMergine())){
