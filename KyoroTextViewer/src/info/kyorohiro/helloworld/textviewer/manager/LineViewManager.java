@@ -200,5 +200,25 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mCircleMenu.setColorWhenDefault(COLOR_CIRCLE_DEFAULT);
 	}
 
-
+	private Event mEvent = new EmptyEvent();
+	public void setEvent(Event event){
+		if(event == null){
+			mEvent = new EmptyEvent();
+		}
+		else {
+			mEvent = event;
+		}
+	}
+	public boolean notifyEvent(SimpleDisplayObject alive, SimpleDisplayObject killtarget){
+		return mEvent.startCombine(alive, killtarget);
+	}
+	public static interface Event {
+		boolean startCombine(SimpleDisplayObject alive, SimpleDisplayObject killtarget);
+	}
+	public static class EmptyEvent implements Event {
+		@Override
+		public boolean startCombine(SimpleDisplayObject alive, SimpleDisplayObject killtarget) {
+			return true;
+		}
+	}
 }

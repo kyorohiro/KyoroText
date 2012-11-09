@@ -158,6 +158,14 @@ public class SeparateUI extends SimpleDisplayObject {
 		}
 	}
 
+	public  void resetPosition() {
+		SimpleDisplayObject target = (SimpleDisplayObject)getParent();
+		if(isVertical()){
+			setPoint(getX(), target.getHeight()/2);			
+		} else {
+			setPoint(target.getWidth()/4, getY());
+		}
+	}
 	private boolean isUnreached(int x, int y) {
 		SimpleDisplayObject target = this;
 		int a = 0;

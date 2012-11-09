@@ -21,6 +21,37 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		addChild(s);
 	}
 
+	public boolean isEdit() {
+		if(isEdit(getChild(0))){
+			android.util.Log.v("kiyo","combine --1--");
+			return true;
+		}
+		else if(isEdit(getChild(1))){
+			android.util.Log.v("kiyo","combine --2--");
+			return true;
+		}
+		else {
+			android.util.Log.v("kiyo","combine --3--");
+			return false;
+		}
+	}
+	private static boolean isEdit(SimpleDisplayObject child) {
+		if(child == null){
+			return false;
+		}
+		if(child instanceof TextViewer){
+			TextViewer v = (TextViewer)child;
+			return v.isEdit();
+		}
+		else if(child instanceof LineViewGroup){
+			LineViewGroup v = (LineViewGroup)child;
+			return v.isEdit();
+		}
+		else  {
+			return false;
+		}
+	}
+
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		SimpleDisplayObject[] obj = new SimpleDisplayObject[2];
@@ -85,6 +116,11 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	}
 
 	public void divide(SeparateUI separate) {
+		
+		// following yaxtuke sigoto
+		if(numOfChild()>=3){
+			return;
+		}
 		if(separate.getPersentY()>0.5){
 			addChild(new LineViewGroup(LineViewManager.getManager().newTextViewr()));
 			addChild(new LineViewGroup(mTextViewer));
@@ -98,17 +134,25 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	public void combine(SeparateUI separate) {
 		Object parent = getParent();
-		Object child = null;
+		SimpleDisplayObject child = null;
+		SimpleDisplayObject kill = null;
+		
 		if(separate.getPersentY()>0.5){
 			child = getChild(0);
+			kill = getChild(1);
 		} else{
 			child = getChild(1);
+			kill = getChild(0);
+		}
+		if(!LineViewManager.getManager().notifyEvent(child, kill)){
+			mSeparate.resetPosition();
+			return;
 		}
 		if(child != null){
 			// refactaring
 			int index = ((SimpleDisplayObjectContainer)parent).getIndex(this);
-			this.removeChild((SimpleDisplayObject)child);
-			((SimpleDisplayObjectContainer)parent).insertChild(index, (SimpleDisplayObject)child);//addChild((SimpleDisplayObject)child);
+			this.removeChild(child);
+			((SimpleDisplayObjectContainer)parent).insertChild(index, child);//addChild((SimpleDisplayObject)child);
 			((SimpleDisplayObjectContainer)parent).removeChild(this);
 			if(includeFocusingChild()) {
 				chFocus((SimpleDisplayObject)parent); 
