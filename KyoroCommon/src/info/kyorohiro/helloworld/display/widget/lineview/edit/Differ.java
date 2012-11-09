@@ -111,7 +111,7 @@ public class Differ {
 		if(true){
 			return;
 		}
-		android.util.Log.v("ll", "---start---" + mLine.size());
+//		android.util.Log.v("ll", "---start---" + mLine.size());
 		int j = 0;
 		for (Line l : mLine) {
 		//	android.util.Log.v("ll", "" + l.length());

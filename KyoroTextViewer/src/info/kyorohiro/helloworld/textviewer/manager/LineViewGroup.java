@@ -23,15 +23,15 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	public boolean isEdit() {
 		if(isEdit(getChild(0))){
-			android.util.Log.v("kiyo","combine --1--");
+//			android.util.Log.v("kiyo","combine --1--");
 			return true;
 		}
 		else if(isEdit(getChild(1))){
-			android.util.Log.v("kiyo","combine --2--");
+//			android.util.Log.v("kiyo","combine --2--");
 			return true;
 		}
 		else {
-			android.util.Log.v("kiyo","combine --3--");
+//			android.util.Log.v("kiyo","combine --3--");
 			return false;
 		}
 	}
