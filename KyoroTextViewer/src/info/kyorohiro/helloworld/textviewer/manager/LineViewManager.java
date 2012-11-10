@@ -19,17 +19,16 @@ import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 public class LineViewManager extends SimpleDisplayObjectContainer {
 	private static LineViewManager sInstance = null;
 	private CircleControllerManager mCircleManager = new CircleControllerManager();
-
-	public static LineViewManager getManager() {
-		return sInstance;
-	}
-
 	private int mWidth = 100;
 	private int mTextSize = 16;
 	private int mMergine = 10;
 	private TextViewer mFocusingViewer = null;
 	private SimpleCircleControllerMenuPlus mCircleMenu = new SimpleCircleControllerMenuPlus();
 	private LineViewGroup mRoot = null;
+
+	public static LineViewManager getManager() {
+		return sInstance;
+	}
 
 	public void setCurrentFontSize(int textSize) {
 		mTextSize = textSize;
@@ -132,61 +131,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	public TextViewer getFocusingTextViewer() {
 		return mFocusingViewer;
 	}
-/*
-	private boolean _circleSelected(CharSequence title) {
-		CursorableLineView mLineView = (CursorableLineView) getFocusingTextViewer()
-				.getLineView();
-		if (title.equals(CursorableLineView.MODE_VIEW)
-				|| title.equals(CursorableLineView.MODE_EDIT)) {
-			mCircleMenu.clearCircleMenu();
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-			if (title.equals(CursorableLineView.MODE_EDIT)) {
-				mLineView.setMode(CursorableLineView.MODE_EDIT);
-				mCircleMenu.addCircleMenu(0, "paste");
-			} else {
-				mLineView.setMode(CursorableLineView.MODE_VIEW);
-			}
 
-		} else if (title.equals(CursorableLineView.MODE_SELECT)) {
-			mCircleMenu.clearCircleMenu();
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-			if (!CursorableLineView.MODE_SELECT.equals(mLineView.getMode())) {
-				mLineView.setMode(CursorableLineView.MODE_SELECT);
-			}
-			mCircleMenu.addCircleMenu(0, "Copy");
-		} else if (title.equals("Copy")) {
-			mCircleMenu.clearCircleMenu();
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			CopyTask.copyStart();
-			return true;
-		}
-		return false;
-
-	}
-
-/*	private void _circle() {
-		if (mCircleMenu instanceof SimpleCircleControllerMenuPlus) {
-			((SimpleCircleControllerMenuPlus) mCircleMenu)
-					.setCircleMenuItem(new CircleMenuItem() {
-						@Override
-						public boolean selected(int id, String title) {
-							return _circleSelected(title);
-						}
-					});
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-		}
-		mCircleMenu.setEventListener(new MyCircleControllerEvent());
-		mCircleMenu.setColorWhenDefault(CircleControllerManager.COLOR_CIRCLE_DEFAULT);
-	}
-*/
 	private Event mEvent = new EmptyEvent();
 	public void setEvent(Event event){
 		if(event == null){
@@ -196,12 +141,15 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			mEvent = event;
 		}
 	}
+
 	public boolean notifyEvent(SimpleDisplayObject alive, SimpleDisplayObject killtarget){
 		return mEvent.startCombine(alive, killtarget);
 	}
+
 	public static interface Event {
 		boolean startCombine(SimpleDisplayObject alive, SimpleDisplayObject killtarget);
 	}
+
 	public static class EmptyEvent implements Event {
 		@Override
 		public boolean startCombine(SimpleDisplayObject alive, SimpleDisplayObject killtarget) {

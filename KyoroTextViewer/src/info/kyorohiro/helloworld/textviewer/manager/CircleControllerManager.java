@@ -20,7 +20,7 @@ public class CircleControllerManager {
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-		circleMenu.setEventListener(new MyCircleControllerEvent());
+		circleMenu.setEventListener(new CircleControllerEvent());
 		circleMenu.setColorWhenDefault(COLOR_CIRCLE_DEFAULT);
 	}
 
