@@ -13,6 +13,7 @@ import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMen
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineView;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
+import info.kyorohiro.helloworld.textviewer.task.CopyTask;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 
 public class LineViewManager extends SimpleDisplayObjectContainer {
@@ -143,6 +144,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			if (title.equals(CursorableLineView.MODE_EDIT)) {
 				mLineView.setMode(CursorableLineView.MODE_EDIT);
+				mCircleMenu.addCircleMenu(0, "paste");
 			} else {
 				mLineView.setMode(CursorableLineView.MODE_VIEW);
 			}
@@ -161,27 +163,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			KyoroApplication.getKyoroApplication().getHanler()
-					.post(new Runnable() {
-						public void run() {
-							try {
-								CursorableLineView mLineView = (CursorableLineView) getFocusingTextViewer()
-										.getLineView();
-								ClipboardManager cm = (ClipboardManager) KyoroApplication
-										.getKyoroApplication()
-										.getSystemService(
-												Context.CLIPBOARD_SERVICE);
-								CharSequence copy = ((CursorableLineView) mLineView)
-										.copy();
-								cm.setText("" + copy);
-								((SimpleCircleControllerMenuPlus) mCircleMenu)
-										.addCircleMenu(0, "Copy");
-								KyoroApplication.showMessage("" + copy);
-							} catch (Throwable t) {
-								t.printStackTrace();
-							}
-						}
-					});
+			CopyTask.copyStart();
 			return true;
 		}
 		return false;
