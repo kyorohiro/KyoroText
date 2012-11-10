@@ -17,8 +17,8 @@ import info.kyorohiro.helloworld.textviewer.task.CopyTask;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 
 public class LineViewManager extends SimpleDisplayObjectContainer {
-	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFAA44");
 	private static LineViewManager sInstance = null;
+	private CircleControllerManager mCircleManager = new CircleControllerManager();
 
 	public static LineViewManager getManager() {
 		return sInstance;
@@ -44,7 +44,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mFocusingViewer = newTextViewr();
 		addChild(new LineViewGroup(mFocusingViewer));
 		addChild(mCircleMenu);
-		_circle();
+		mCircleManager.init();
 //		mCommand.getLineView().fittableToView(true);
 	}
 
@@ -124,7 +124,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		}
 		mFocusingViewer = textViewer;
 		if (mFocusingViewer.getLineView() instanceof CursorableLineView) {
-			_circleSelected(((CursorableLineView) (mFocusingViewer
+			mCircleManager._circleSelected(((CursorableLineView) (mFocusingViewer
 					.getLineView())).getMode());
 		}
 	}
@@ -132,7 +132,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	public TextViewer getFocusingTextViewer() {
 		return mFocusingViewer;
 	}
-
+/*
 	private boolean _circleSelected(CharSequence title) {
 		CursorableLineView mLineView = (CursorableLineView) getFocusingTextViewer()
 				.getLineView();
@@ -170,7 +170,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 
 	}
 
-	private void _circle() {
+/*	private void _circle() {
 		if (mCircleMenu instanceof SimpleCircleControllerMenuPlus) {
 			((SimpleCircleControllerMenuPlus) mCircleMenu)
 					.setCircleMenuItem(new CircleMenuItem() {
@@ -184,9 +184,9 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			mCircleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 		}
 		mCircleMenu.setEventListener(new MyCircleControllerEvent());
-		mCircleMenu.setColorWhenDefault(COLOR_CIRCLE_DEFAULT);
+		mCircleMenu.setColorWhenDefault(CircleControllerManager.COLOR_CIRCLE_DEFAULT);
 	}
-
+*/
 	private Event mEvent = new EmptyEvent();
 	public void setEvent(Event event){
 		if(event == null){
