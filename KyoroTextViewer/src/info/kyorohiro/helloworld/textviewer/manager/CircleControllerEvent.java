@@ -2,8 +2,6 @@ package info.kyorohiro.helloworld.textviewer.manager;
 
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.LineView;
-import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 
 public class CircleControllerEvent implements CircleControllerAction {
