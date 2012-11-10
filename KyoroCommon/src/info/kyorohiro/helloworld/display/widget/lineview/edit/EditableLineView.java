@@ -32,8 +32,7 @@ public class EditableLineView extends CursorableLineView {
 	public synchronized void paint(SimpleGraphics graphics) {
 		if (editable()) {
 			try {
-				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft()
-						.getCursorCol());
+				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 				updateCommitTextFromIME();
 				updateComposingTextFromIME();
 				getLeft().setCursorRow(mTextBuffer.getRow());
@@ -117,6 +116,16 @@ public class EditableLineView extends CursorableLineView {
 		} // <-- ‚±‚±‚ð‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
 		getLeft().setMessage(c.getComposingText());
 	}
+
+	/* todo now creating*/
+	public void inputText(CharSequence clip) {
+		MyInputConnection c = getMyInputConnection();
+		if (c == null) {
+			return;
+		} // <-- ‚±‚±‚ð‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
+		c.addCommitText(clip, 1);
+	}
+
 	private void updateCommitTextFromIME() {
 		// following code is yaxutuke sigoto
 		if(!isFocus()){

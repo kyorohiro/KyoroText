@@ -168,14 +168,18 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("commitCompletion="+text);
 			try {
 				mCommitText = text.getText();
-				mCommitTextList.addLast(new CommitText(text.getText(), text.getPosition()));
+				addCommitText(text.getText(), text.getPosition());
+//				mCommitTextList.addLast(new CommitText(text.getText(), text.getPosition()));
 				return super.commitCompletion(text);
 			} finally {
 				mComposingText = "";
 				getEditable().clear();
 			}
 		}
-		
+
+		public void addCommitText(CharSequence text, int position) {
+			mCommitTextList.addLast(new CommitText(text, position));			
+		}
 		
 		@Override
 		public boolean commitText(CharSequence text, int newCursorPosition) {

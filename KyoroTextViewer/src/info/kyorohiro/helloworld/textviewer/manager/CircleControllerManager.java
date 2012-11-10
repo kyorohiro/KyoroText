@@ -5,6 +5,7 @@ import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMen
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.textviewer.task.CopyTask;
+import info.kyorohiro.helloworld.textviewer.task.PastTask;
 
 public class CircleControllerManager {
 	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFAA44");
@@ -35,7 +36,7 @@ public class CircleControllerManager {
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			if (title.equals(CursorableLineView.MODE_EDIT)) {
 				mLineView.setMode(CursorableLineView.MODE_EDIT);
-				circleMenu.addCircleMenu(0, "paste");
+				circleMenu.addCircleMenu(0, "Paste");
 			} else {
 				mLineView.setMode(CursorableLineView.MODE_VIEW);
 			}
@@ -56,6 +57,11 @@ public class CircleControllerManager {
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 			CopyTask.copyStart();
 			return true;
+		} else if(title.equals("Paste")){
+			circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
+			circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
+			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+			PastTask.pasteStart();
 		}
 		return false;
 
