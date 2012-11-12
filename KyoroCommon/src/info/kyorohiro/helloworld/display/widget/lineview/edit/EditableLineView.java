@@ -123,7 +123,14 @@ public class EditableLineView extends CursorableLineView {
 		if (c == null) {
 			return;
 		} // <-- ‚±‚±‚ð‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
-		c.addCommitText(clip, 1);
+		String[] lines = clip.toString().split("\r\n|\n");
+		for(int i=0;i<lines.length;i++) {
+			c.addCommitText(lines[i], 1);
+			if(i+1<lines.length){
+				c.addKeyEvent(0x42);
+//				c.addKeyEvent(KeyEvent.KEYCODE_ENTER);
+			}
+		}
 	}
 
 	private void updateCommitTextFromIME() {

@@ -58,6 +58,7 @@ public class CircleControllerManager {
 			CopyTask.copyStart();
 			return true;
 		} else if(title.equals("Paste")){
+			circleMenu.clearCircleMenu();
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);

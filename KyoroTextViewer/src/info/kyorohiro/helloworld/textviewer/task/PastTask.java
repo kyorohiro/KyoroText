@@ -1,6 +1,5 @@
 package info.kyorohiro.helloworld.textviewer.task;
 
-import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineView;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
@@ -12,6 +11,7 @@ public class PastTask implements Runnable {
 	public static void pasteStart() {
 		KyoroApplication.getKyoroApplication().getHanler().post(new PastTask());
 	}
+
 	public void run() {
 		KyoroApplication.getKyoroApplication().getHanler()
 		.post(new Runnable() {
@@ -24,11 +24,20 @@ public class PastTask implements Runnable {
 					TextViewer textViewer = LineViewManager.getManager().getFocusingTextViewer();
 					EditableLineView lineView = textViewer.getLineView();
 					lineView.inputText(clipdata);
-					LineViewManager.getManager().getCircleMenu().addCircleMenu(0, "Paste");
+//					LineViewManager.getManager().getCircleMenu().addCircleMenu(0, "Paste");
+					KyoroApplication.getKyoroApplication().getHanler().postDelayed(new A(), 1000);
 				} catch (Throwable t) {
 					t.printStackTrace();
 				}
 			}
 		});
+	}
+
+	//todo
+	class A implements Runnable{
+		@Override
+		public void run() {
+			LineViewManager.getManager().getCircleMenu().addCircleMenu(0, "Paste");			
+		}
 	}
 }

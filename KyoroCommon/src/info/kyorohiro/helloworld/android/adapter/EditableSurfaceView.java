@@ -180,7 +180,11 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		public void addCommitText(CharSequence text, int position) {
 			mCommitTextList.addLast(new CommitText(text, position));			
 		}
-		
+
+		public void addKeyEvent(int event) {
+			mCommitTextList.addLast(new CommitText(event));
+		}
+
 		@Override
 		public boolean commitText(CharSequence text, int newCursorPosition) {
 			log("commitText="+text+","+newCursorPosition);
@@ -220,7 +224,8 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		public boolean sendKeyEvent(KeyEvent event) {
 			log("sendKeyEvent="+event.toString());
 			if(event.getAction() == KeyEvent.ACTION_DOWN ) {
-					mCommitTextList.addLast(new CommitText(event.getKeyCode()));
+				addKeyEvent(event.getKeyCode());
+//					mCommitTextList.addLast(new CommitText(event.getKeyCode()));
 			}
 			return super.sendKeyEvent(event);
 		}
