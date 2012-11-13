@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import android.graphics.Color;
+import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -63,6 +64,16 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public boolean isEdit() {
 		return mLineView.isEdit();
 	}
+
+	private boolean mGuard = false;
+	public void isGuard(boolean guard) {
+		mGuard = guard;
+	}
+
+	public boolean isGuard() {
+		return mGuard;
+	}
+
 	public String getCurrentPath() {
 		return mCurrentPath;
 	}

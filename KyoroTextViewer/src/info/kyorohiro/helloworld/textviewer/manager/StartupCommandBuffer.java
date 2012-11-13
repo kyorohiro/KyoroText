@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.ObjectInputStream.GetField;
 
 import info.kyorohiro.helloworld.android.adapter.SimpleTypefaceForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -20,6 +21,9 @@ import android.graphics.Typeface;
 
 public class StartupCommandBuffer extends TextViewer {
 
+	public static final String GUARD = "guard";
+	public static final String UNGUARD = "unguard";
+
 	public StartupCommandBuffer(int textSize, int width, int mergine) {
 		super(new EmptyLineViewBufferSpecImpl(),textSize, width, mergine);
 		if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
@@ -30,6 +34,15 @@ public class StartupCommandBuffer extends TextViewer {
 		readStartupMessage();
 	}
 
+	@Override
+	public void paintGroup(SimpleGraphics graphics) {
+		super.paintGroup(graphics);
+		if(isGuard()) {
+			graphics.drawText(GUARD, graphics.getTextSize(), graphics.getTextSize());
+		} else {
+			graphics.drawText(UNGUARD, graphics.getTextSize(), graphics.getTextSize());			
+		}
+	}
 /*
 	@Override
 	public void start() {

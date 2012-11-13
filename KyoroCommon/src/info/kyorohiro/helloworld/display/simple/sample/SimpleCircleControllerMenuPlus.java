@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.display.simple.sample;
 
 import java.util.ArrayList;
+
+
 import android.graphics.Color;
 import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
@@ -15,7 +17,18 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 	private SelectMenu mMenu = new SelectMenu();
 	private ArrayList<Item> itemList = new ArrayList<Item>();
 	private CircleMenuItem mListener = null;
-
+//	private MenuMove mMoveAction = new MenuMove();
+//	private String _message = "---1---";;
+	//private int mDegree = 30;
+/*
+	@Override
+	protected CircleControllerAction getInternalAction() {
+		if(mFocus) {
+			return mMoveAction;
+		} else {
+			return super.getInternalAction();
+		}
+	}*/
 	public void setCircleMenuItem(CircleMenuItem listener) {
 		mListener = listener;
 	}
@@ -23,6 +36,8 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		super.paint(graphics);
+		graphics.setColor(Color.BLACK);
+//		graphics.drawText(_message, 10, 10);
 	}
 
 	public void addCircleMenu(int id, String title) {
@@ -92,7 +107,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 					mCurrentX = x - mPrevX;
 					mCurrentY = y - mPrevY;
 					// android.util.Log.v("kiyo","okm x="+x+",y="+y);
-					return true;
+					return false;//return true;
 				} else {
 					mFocus = false;
 					mCurrentX = 0;
@@ -127,7 +142,8 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 				graphics.drawCircle(x, y, radiusN * 4 / 5);
 				graphics.drawCircle(x, y, radiusN * 3 / 5);
 
-				int div = 12;
+//				int div = 12;
+				int div = 18;
 				double angle = Math.PI * 2 / div;
 
 				// åªç›à íu
@@ -203,4 +219,24 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 		public String title;
 		public int id;
 	}
+	
+	@Override
+	public void setEventListener(CircleControllerAction event) {
+		super.setEventListener(event);
+	}
+/*
+	private class MenuMove implements CircleControllerAction {
+		@Override
+		public void upButton(int action) {
+		}
+
+		@Override
+		public void downButton(int action) {
+		}
+
+		@Override
+		public void moveCircle(int action, int degree, int rateDegree) {
+			_message = ""+degree; 
+		}
+	}*/
 }

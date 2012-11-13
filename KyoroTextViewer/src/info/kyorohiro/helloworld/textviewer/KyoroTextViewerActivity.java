@@ -65,12 +65,14 @@ public class KyoroTextViewerActivity extends MainActivity {
 			if(killtarget instanceof TextViewer){
 				TextViewer target = null;
 				target = (TextViewer)killtarget;
-				return !target.isEdit();
+				return !target.isGuard();
+//				return !target.isEdit();
 			}
 			else if(killtarget instanceof LineViewGroup) {
 				LineViewGroup target = null;
 				target = (LineViewGroup)killtarget;
-				return !target.isEdit();
+				return !target.isGuard();
+//				return !target.isEdit();
 			}
 			return true;
 		}

@@ -21,20 +21,49 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		addChild(s);
 	}
 
-	public boolean isEdit() {
-		if(isEdit(getChild(0))){
-//			android.util.Log.v("kiyo","combine --1--");
+	// following code isrefactring targe
+	// isEdit() and IsGuard is same code posint.
+	public boolean isGuard() {
+		if(isGuard(getChild(0))){
 			return true;
 		}
-		else if(isEdit(getChild(1))){
-//			android.util.Log.v("kiyo","combine --2--");
+		else if(isGuard(getChild(1))){
 			return true;
 		}
 		else {
-//			android.util.Log.v("kiyo","combine --3--");
 			return false;
 		}
 	}
+
+	private static boolean isGuard(SimpleDisplayObject child) {
+		if(child == null){
+			return false;
+		}
+		if(child instanceof TextViewer){
+			TextViewer v = (TextViewer)child;
+			return v.isGuard();
+		}
+		else if(child instanceof LineViewGroup){
+			LineViewGroup v = (LineViewGroup)child;
+			return v.isGuard();
+		}
+		else  {
+			return false;
+		}
+	}
+
+	public boolean isEdit() {
+		if(isEdit(getChild(0))){
+			return true;
+		}
+		else if(isEdit(getChild(1))){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	private static boolean isEdit(SimpleDisplayObject child) {
 		if(child == null){
 			return false;

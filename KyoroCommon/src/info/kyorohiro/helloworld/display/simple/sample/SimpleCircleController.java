@@ -84,18 +84,21 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	protected CircleControllerAction getInternalAction() {
+		return mEvent;
+	}
 	@Override
 	public boolean onKeyDown(int keycode) {
 		switch(keycode){
 		case KeyEvent.KEYCODE_DPAD_UP:
 		case KeyEvent.KEYCODE_VOLUME_UP:
 		case KeyEvent.KEYCODE_DPAD_LEFT:
-			mEvent.upButton(CircleControllerAction.ACTION_PRESSED);
+			getInternalAction().upButton(CircleControllerAction.ACTION_PRESSED);
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
 		case KeyEvent.KEYCODE_DPAD_RIGHT:
-			mEvent.downButton(CircleControllerAction.ACTION_PRESSED);
+			getInternalAction().downButton(CircleControllerAction.ACTION_PRESSED);
 			break;
 		}
 		return super.onKeyDown(keycode);
@@ -106,11 +109,11 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 		switch(keycode){
 		case KeyEvent.KEYCODE_DPAD_UP:
 		case KeyEvent.KEYCODE_VOLUME_UP:
-			mEvent.upButton(CircleControllerAction.ACTION_RELEASED);
+			getInternalAction().upButton(CircleControllerAction.ACTION_RELEASED);
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			mEvent.downButton(CircleControllerAction.ACTION_RELEASED);
+			getInternalAction().downButton(CircleControllerAction.ACTION_RELEASED);
 			break;
 		}
 		return super.onKeyUp(keycode);
@@ -120,7 +123,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 //		private int mMinSize = 70;
 //		private int mSize = 90;
 //		private int mMaxSize = 110;
-		private boolean isTouched = false;
+		private boolean mIsTouched = false;
 		private int mTouchX = 0;
 		private int mTouchY = 0;
 
@@ -152,7 +155,7 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 			}
 			graphics.setStrokeWidth(6);
 			graphics.setColor(mColorWhenDefault);
-			if (isTouched) {
+			if (mIsTouched) {
 				graphics.setColor(mColorWhenTouched);
 				double pi = 0;
 				if (mTouchX != 0) {
@@ -187,33 +190,33 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 			int size = x * x + y * y;
 			int a = 0;
 			boolean ret;
-			if(!isTouched){
+			if(!mIsTouched){
 				mPrevDegree = -999;
 			}
 
 			if (mMinRadius * mMinRadius < size && size < mMaxRadius * mMaxRadius) {
 				switch (action) {
 				case MotionEvent.ACTION_DOWN:
-					isTouched = true;
+					mIsTouched = true;
 					a = CircleControllerAction.ACTION_PRESSED;
 					break;
 				case MotionEvent.ACTION_UP:
-					isTouched = false;
+					mIsTouched = false;
 					a = CircleControllerAction.ACTION_RELEASED;
 					break;
 				case MotionEvent.ACTION_MOVE:
-					if(isTouched){
+					if(mIsTouched){
 						a = CircleControllerAction.ACTION_MOVE;
 					}
 					else {
 						a = CircleControllerAction.ACTION_IN;
 					}
-					isTouched = true;
+					mIsTouched = true;
 					break;
 				case MotionEvent.ACTION_CANCEL:
 				case MotionEvent.ACTION_OUTSIDE:
 				default:
-					isTouched = false;
+					mIsTouched = false;
 					a = CircleControllerAction.ACTION_RELEASED;
 					break;
 				}
@@ -223,14 +226,14 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 				if (mPrevDegree == -999) {
 					mPrevDegree = curDegree;
 				}
-				mEvent.moveCircle(a, (int) Math.toDegrees(p), rate(curDegree,mPrevDegree));
+				getInternalAction().moveCircle(a, (int) Math.toDegrees(p), rate(curDegree,mPrevDegree));
 				mPrevDegree = curDegree;
 			} else {
-				isTouched = false;
+				mIsTouched = false;
 				a = CircleControllerAction.ACTION_OUT;
 				ret = false;
-				if(!isTouched) {
-					mEvent.moveCircle(a, mPrevDegree, 0);
+				if(!mIsTouched) {
+					getInternalAction().moveCircle(a, mPrevDegree, 0);
 				}
 			}
 
