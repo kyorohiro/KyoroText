@@ -299,15 +299,16 @@ public class LineView extends SimpleDisplayObjectContainer {
 		x -= getLeftForStartDrawLine();
 		float[] ws = widths.getAllBufferedMoji();
 		int l = getWidth(cursorCol, ws);
-
 		float ww = 0;
 		for (int i = 0; i < l; i++) {
 			ww += ws[i];
 			//ww += widths.get[i];// * getSclaeFromTextSize();
 			if (ww > x) {
+//				android.util.Log.v("xxx","000"+ww);
 				return i;
 			}
 		}
+//		android.util.Log.v("xxx","001"+ww);
 		return l;
 	}
 

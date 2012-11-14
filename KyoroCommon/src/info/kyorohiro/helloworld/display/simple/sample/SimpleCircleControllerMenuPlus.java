@@ -107,7 +107,8 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 					mCurrentX = x - mPrevX;
 					mCurrentY = y - mPrevY;
 					// android.util.Log.v("kiyo","okm x="+x+",y="+y);
-					return false;//return true;
+					//return false;//
+					return true;
 				} else {
 					mFocus = false;
 					mCurrentX = 0;

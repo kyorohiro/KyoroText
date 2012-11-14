@@ -141,9 +141,11 @@ public class CursorableLineView extends LineView {
 				else if (action == MotionEvent.ACTION_UP) {
 					if(mIsEditClickAction==true){
 						try{
+//							android.util.Log.v("xxx","--A1--");
 							lock();
 							mLeft.setCursorCol(getYToPosY(y));
-							mLeft.setCursorRow(getXToPosX(mRight.getCursorCol(), x, mRight.getCursorRow()));
+							mLeft.setCursorRow(getXToPosX(mLeft.getCursorCol(), x, mLeft.getCursorRow()));
+//							android.util.Log.v("xxx","--A2--");
 						}finally{
 							releaseLock();
 						}
@@ -204,11 +206,12 @@ public class CursorableLineView extends LineView {
 				time++;
 				if(time >= 7){
 					setMode(MODE_SELECT);
+//					android.util.Log.v("xxx","--B1--");
 					mLeft.setCursorCol(getYToPosY(prevY));
 					mLeft.setCursorRow(getXToPosX(mLeft.getCursorCol(), prevX, mLeft.getCursorRow()));
 					mRight.setCursorCol(getYToPosY(prevY));
 					mRight.setCursorRow(getXToPosX(mRight.getCursorCol(), prevX+1, mRight.getCursorRow()));
-
+//					android.util.Log.v("xxx","--B2--");
 					prevX=-1;
 					prevY=-1;
 					time=0;

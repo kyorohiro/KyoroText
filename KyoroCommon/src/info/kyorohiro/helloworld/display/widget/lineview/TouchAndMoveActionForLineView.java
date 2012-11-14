@@ -49,8 +49,8 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 	public boolean onTouchTest(int x, int y, int action) {
 		boolean focusIn = false;
 		boolean doubleTouched = doubleTouched();
-		boolean tapped = mTapCheck.tapped();
 		mTapCheck.onTouchTest(x, y, action);
+		boolean tapped = mTapCheck.tapped();
 		if(0<x&&x<mViewer.getWidth()&&0<y&&y<mViewer.getHeight()){
 			focusIn = true;
 		} else {
@@ -66,7 +66,9 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 			mIsTouched = false;
 			action = MotionEvent.ACTION_UP;
 		}
-		
+		if(tapped){
+			clearPower();
+		}
 		if (action == MotionEvent.ACTION_MOVE&& mIsTouched ==true) {
 //			android.util.Log.v("kiyo","move");
 			mHeavyX = 0;
@@ -78,7 +80,9 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 			mPrevY = y;
 			mPrevX = x;
 
-			updateMovePower(x, y);
+			if(!tapped) {
+				updateMovePower(x, y);
+			} 
 			int textSize = (int) (mViewer.getTextSize() * mViewer.getScale());// todo
 																				// 2.5f
 			boolean ret = false;
@@ -101,6 +105,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 			}
 			return ret;
 		} else if (action == MotionEvent.ACTION_DOWN) {
+			clearPower();
 //			android.util.Log.v("kiyo","down");
 			mIsTouched = true;
 			mHeavyX = 0;
@@ -130,6 +135,11 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		return false;
 	}
 
+	public void clearPower() {
+		mPower_time = -1;
+		mPower_prevY = 0;
+		mPower_prevX = 0;
+	}
 	public void updateMovePower(int x, int y) {
 		if (mPower_time < 0) {
 			mPower_time = System.currentTimeMillis();
@@ -160,11 +170,13 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		private boolean mIsTap = false;		
 		private int mX = 0;
 		private int mY = 0;
-		private int mLength = 30;
+		private int mLength = 70;
 		public boolean onTouchTest(int x, int y, int action) {
 			switch(action) {
 			case MotionEvent.ACTION_POINTER_DOWN:
-				mIsTap = true;
+					mIsTap = true;
+					mX = x;
+					mY = y;
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if(Math.abs(mX-x)>mLength||Math.abs(mY-y)>mLength){
@@ -172,9 +184,14 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 				}
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				mIsTap = false;
+//				mIsTap = false;
 				break;
+			default:
+				if(Math.abs(mX-x)>mLength||Math.abs(mY-y)>mLength){
+					mIsTap = false;
+				}
 			}
+
 			return false;
 		}
 		public boolean tapped() {
