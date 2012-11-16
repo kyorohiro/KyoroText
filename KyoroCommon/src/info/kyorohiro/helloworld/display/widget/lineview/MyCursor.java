@@ -72,6 +72,10 @@ public class MyCursor extends SimpleDisplayObject {
 		if (!mEnable) {
 			return;
 		}
+		if(!updatable()){
+			return;
+		}
+
 		if (!focus) {
 			graphics.setColor(CursorableLineView.__CURSOR__COLOR);
 		} else {
@@ -93,6 +97,9 @@ public class MyCursor extends SimpleDisplayObject {
 	}
 
 	private void drawCursor(SimpleGraphics graphics, int x, int y) {
+		if(!updatable()){
+			return;
+		}
 		graphics.startPath();
 		graphics.moveTo(x, y);
 		graphics.lineTo(x + getWidth() / 2, y + getHeight() * 2 / 3);
@@ -103,6 +110,19 @@ public class MyCursor extends SimpleDisplayObject {
 		graphics.endPath();
 	}
 
+	private boolean updatable() {
+		CursorableLineView view = mParent.get();
+		int start = view.getShowingTextStartPosition();
+		int end = view.getShowingTextEndPosition();
+		int cursorY = getCursorCol();
+		if(cursorY+10<start||end<cursorY-10) {
+		//	android.util.Log.v("kiyo","-- "+cursorY+"<"+start+"||"+end+"<"+cursorY+" --");
+			return false;
+		} else {
+			return true;
+		}
+		
+	}
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		// following code is yatuke sigoto
@@ -110,6 +130,9 @@ public class MyCursor extends SimpleDisplayObject {
 			return false;
 		}
 		if (!mEnable) {
+			return false;
+		}
+		if(!updatable()){
 			return false;
 		}
 		mX = x;
@@ -174,6 +197,10 @@ public class MyCursor extends SimpleDisplayObject {
 		if(!mParent.get().isFocus()){
 			return;
 		}
+		if(!updatable()){
+			return;
+		}
+
 //		android.util.Log.v("kiyo","cursor:c="+getCursorCol()+",r="+getCursorRow());
 		int y = 0;
 		float x = 0.0f;
