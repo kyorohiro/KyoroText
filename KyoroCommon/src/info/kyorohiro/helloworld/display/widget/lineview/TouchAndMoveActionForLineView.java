@@ -118,7 +118,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 //			mPrevX = -999;
 		} else if (action == MotionEvent.ACTION_UP) {
 //			android.util.Log.v("kiyo","up");
-			if(mIsTouched&&!tapped){
+			if(mIsTouched&&!tapped&&mPower_time!=-1){
 				mHeavyX = mPowerX * 8;
 				mHeavyY = mPowerY * 8;
 			} else {
@@ -170,7 +170,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		private boolean mIsTap = false;		
 		private int mX = 0;
 		private int mY = 0;
-		private int mLength = 70;
+		private int mLength = 100;
 		public boolean onTouchTest(int x, int y, int action) {
 			switch(action) {
 			case MotionEvent.ACTION_POINTER_DOWN:

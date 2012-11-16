@@ -128,8 +128,8 @@ public class MyCursor extends SimpleDisplayObject {
 		if (action == MotionEvent.ACTION_UP) {
 			if (focus == true) {
 				focus = false;
-				return false;
-//				return true;
+//				return false;
+				return true;
 			}
 		} else if (action == MotionEvent.ACTION_MOVE) {
 			if (focus == true) {
