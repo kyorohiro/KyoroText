@@ -88,7 +88,7 @@ public class MyCursor extends SimpleDisplayObject {
 		if(mMessage != null&&mMessage.length()!=0){
 			graphics.setColor(Color.parseColor("#AA005555"));
 			graphics.setTextSize(mParent.get().getTextSize());
-			graphics.drawText(mMessage, 0, -1*mParent.get().getTextSize());
+			graphics.drawText(mMessage, 0, -1*mParent.get().getShowingTextSize());
 		}
 		graphics.setTextSize(26);
 		graphics.drawText("x=" + cursorRow + ",y=" + cursorCol.getPoint(), 10, 100);
