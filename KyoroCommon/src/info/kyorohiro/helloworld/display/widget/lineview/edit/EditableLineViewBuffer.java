@@ -1,7 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
-import android.graphics.Color;
-import android.test.MoreAsserts;
+
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
@@ -203,13 +202,13 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			}
 
 			if(prevLine.includeLF()) {
-//				android.util.Log.v("kiyo", "msg-------(1-2-1)");
+				//				android.util.Log.v("kiyo", "msg-------(1-2-1)");
 				prevLine.pargeLF(mIsCrlfMode);
 				commit(""+prevLine+currentLineText, 0);//crlfを除く処理が必要
 				moveCursor(prevLine.length());
 				prevLine.releaseParge();
 			} else {
-//				android.util.Log.v("kiyo", "msg-------(1-2-2)");
+				//				android.util.Log.v("kiyo", "msg-------(1-2-2)");
 				prevLine.pargeLF(mIsCrlfMode);
 				prevLine.pargeEnd();
 				commit(""+prevLine+currentLineText, 0);//crlfを除く処理が必要
@@ -217,37 +216,38 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				prevLine.releaseParge();
 			}
 			return;
-		} else if (currentLineText.includeLF()){
-			
-//			android.util.Log.v("kiyo", "msg-------(2)");
-			CharSequence f = "";
-			if (row > 1) {
-				f = currentLineText.subSequence(0, row - 1);
-			}
-			CharSequence e = "";
-			if (row < currentLineText.length()) {
-				e = currentLineText.subSequence(row, currentLineText.length());
-			}
-			mDiffer.setLine(index, "" + f + e);
-			mCursorRow = row - 1;
 		} else {
-			
-			CharSequence f = currentLineText.subSequence(0, row - 1);
-			CharSequence e = "";
-			if (row < currentLineText.length()) {
-				e = currentLineText.subSequence(row, currentLineText.length());
+			if (currentLineText.includeLF()){
+				//			android.util.Log.v("kiyo", "msg-------(2)");
+				CharSequence f = "";
+				if (row > 1) {
+					f = currentLineText.subSequence(0, row - 1);
+				}
+				CharSequence e = "";
+				if (row < currentLineText.length()) {
+					e = currentLineText.subSequence(row, currentLineText.length());
+				}
+				mDiffer.setLine(index, "" + f + e);
+				mCursorRow = row - 1;
+			} else {
+				//android.util.Log.v("kiyo", "msg-------(3)");
+				CharSequence f = currentLineText.subSequence(0, row - 1);
+				CharSequence e = "";
+				if (row < currentLineText.length()) {
+					e = currentLineText.subSequence(row, currentLineText.length());
+				}
+				int br = row - 1;
+				int bc = mCursorLine;
+				deleteLinePerVisible();
+				//if (mCursorLine + 1 < getNumberOfStockedElement()) {
+				//	mCursorLine += 1;
+					mCursorRow = 0;
+				//}
+//				crlf(fal);
+				// mCursorC =row-1;
+				commit("" + f + e, index);
+				setCursor(br, bc);
 			}
-			int br = row - 1;
-			int bc = mCursorLine;
-			deleteLinePerVisible();
-			if (mCursorLine + 1 < getNumberOfStockedElement()) {
-				mCursorLine += 1;
-				mCursorRow = 0;
-			}
-			// crlf();
-			// mCursorC =row-1;
-			commit("" + f + e, index);
-			setCursor(br, bc);
 		}
 		if (mCursorRow < 0) {
 			mCursorRow = 0;
