@@ -55,6 +55,9 @@ public class SimpleGraphicUtil {
 		int end = 0;
 		int xPlus = 0;
 		while(true) {
+			// ココのスピードが遅い
+			//　スペースをコントロールコードとして扱ってみると
+			// その遅さがわかる。
 			end = graphics.getSimpleFont().getControlCode(buffer, len, start);
 			graphics.drawText(buffer, start, end, x+xPlus, y);
 			if(len<=end){
@@ -79,6 +82,9 @@ public class SimpleGraphicUtil {
 	public static final int YELLOW = parseColor("#FFFFFF00");;
 	private static int drawControlCode(SimpleGraphics graphics, char code, int x, int y, int textSize) {
 		int size = graphics.getSimpleFont().lengthOfControlCode(code, textSize);
+		//if(true){
+		//return size;
+		//}
 		if(size != 0) {
 			int ts = graphics.getTextSize();
 			int c = graphics.getColor();
