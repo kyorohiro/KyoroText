@@ -85,12 +85,14 @@ public class MyCursor extends SimpleDisplayObject {
 		}
 		drawCursor(graphics, 0, 0);
 
+		if(mMessage != null&&mMessage.length()!=0){
+			graphics.setColor(Color.parseColor("#AA005555"));
+			graphics.setTextSize(mParent.get().getTextSize());
+			graphics.drawText(mMessage, 0, -1*mParent.get().getTextSize());
+		}
 		graphics.setTextSize(26);
 		graphics.drawText("x=" + cursorRow + ",y=" + cursorCol.getPoint(), 10, 100);
-		if(mMessage != null){
-			graphics.setColor(Color.parseColor("#AA005555"));
-			graphics.drawText(mMessage, 20, 20);
-		}
+
 		graphics.drawLine(0, 0, 0, -20);
 		graphics.setColor(CursorableLineView.__CURSOR__COLOR2);
 		graphics.drawLine(0, 0, 0, -1*6);
