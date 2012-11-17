@@ -98,23 +98,23 @@ public class SimpleGraphicUtil {
 	}
 
 	public static int argb(int a, int r, int g, int b) {
-		int ret = ((a&0xff)<<(3*4))|((r&0xff)<<(2*4))|((g&0xff)<<(1*4))|((b&0xff)<<(0*4));
+		int ret = ((a&0xff)<<(3*8))|((r&0xff)<<(2*8))|((g&0xff)<<(1*8))|((b&0xff)<<(0*8));
 		return ret;
 	}
 	public static int colorA(int c) {
-		int ret = 0xff&(c>>(3*4));
+		int ret = 0xff&(c>>(3*8));
 		return ret;		
 	}
 	public static int colorR(int c) {
-		int ret = 0xff&(c>>(2*4));
+		int ret = 0xff&(c>>(2*8));
 		return ret;		
 	}
 	public static int colorG(int c) {
-		int ret = 0xff&(c>>(1*4));
+		int ret = 0xff&(c>>(1*8));
 		return ret;		
 	}
 	public static int colorB(int c) {
-		int ret = 0xff&(c>>(0*4));
+		int ret = 0xff&(c>>(0*8));
 		return ret;		
 	}
 

@@ -387,7 +387,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 			if (list[i].includeLF()) {
 				int c = list[i].getColor();
-				graphics.setColor(SimpleGraphicUtil.argb(127, SimpleGraphicUtil.colorA(c), SimpleGraphicUtil.colorG(c),
+				graphics.setColor(SimpleGraphicUtil.argb(62, SimpleGraphicUtil.colorA(c), SimpleGraphicUtil.colorG(c),
 						SimpleGraphicUtil.colorB(c)));
 				graphics.setStrokeWidth(1);
 				graphics.drawLine(10, yy, graphics.getWidth() - 10, yy);				
