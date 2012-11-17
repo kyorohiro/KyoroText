@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 /**
- * todo Android‚ÉˆË‘¶‚µ‚Ä‚¢‚é•”•ª‚Í•ª—£‚·‚é
+ * todo Androidï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•”ï¿½ï¿½ï¿½Í•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public class SimpleStage extends EditableSurfaceView {
 	// SurfaceView {

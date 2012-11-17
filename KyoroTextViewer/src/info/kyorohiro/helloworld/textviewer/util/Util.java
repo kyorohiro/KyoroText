@@ -15,12 +15,12 @@ public class Util {
 		return from*((metrics.xdpi+metrics.ydpi)/2);
 	}
 
-	public static double ‚‰nchi2mm(double from){
+	public static double inchi2mm(double from){
 		return from*25.4;
 	}
 
 
-	public static double mm2‚‰nchi(double from){
+	public static double mm2inchi(double from){
 		return (from/25.4);
 	}
 

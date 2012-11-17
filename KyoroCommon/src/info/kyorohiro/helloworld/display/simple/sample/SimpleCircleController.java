@@ -2,19 +2,19 @@ package info.kyorohiro.helloworld.display.simple.sample;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
+import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
-import android.graphics.Color;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 
 public class SimpleCircleController extends SimpleDisplayObjectContainer {
 
 	private CircleControllerAction mEvent = new NullCircleControllerEvent();
 	private int mMaxRadius = 100;
 	private int mMinRadius = 50;
-	private int mColorWhenDefault = Color.parseColor("#99ffff86");
-	private int mColorWhenTouched = Color.parseColor("#99ffc9f4");
+	private int mColorWhenDefault = SimpleGraphicUtil.parseColor("#99ffff86");
+	private int mColorWhenTouched = SimpleGraphicUtil.parseColor("#99ffc9f4");
 		
 	public SimpleCircleController() {
 		BG bg = new BG();
@@ -90,14 +90,14 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 	@Override
 	public boolean onKeyDown(int keycode) {
 		switch(keycode){
-		case KeyEvent.KEYCODE_DPAD_UP:
-		case KeyEvent.KEYCODE_VOLUME_UP:
-		case KeyEvent.KEYCODE_DPAD_LEFT:
+		case SimpleKeyEvent.KEYCODE_DPAD_UP:
+		case SimpleKeyEvent.KEYCODE_VOLUME_UP:
+		case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
 			getInternalAction().upButton(CircleControllerAction.ACTION_PRESSED);
 			break;
-		case KeyEvent.KEYCODE_DPAD_DOWN:
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-		case KeyEvent.KEYCODE_DPAD_RIGHT:
+		case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
+		case SimpleKeyEvent.KEYCODE_VOLUME_DOWN:
+		case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
 			getInternalAction().downButton(CircleControllerAction.ACTION_PRESSED);
 			break;
 		}
@@ -107,12 +107,12 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 	@Override
 	public boolean onKeyUp(int keycode) {
 		switch(keycode){
-		case KeyEvent.KEYCODE_DPAD_UP:
-		case KeyEvent.KEYCODE_VOLUME_UP:
+		case SimpleKeyEvent.KEYCODE_DPAD_UP:
+		case SimpleKeyEvent.KEYCODE_VOLUME_UP:
 			getInternalAction().upButton(CircleControllerAction.ACTION_RELEASED);
 			break;
-		case KeyEvent.KEYCODE_DPAD_DOWN:
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
+		case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
+		case SimpleKeyEvent.KEYCODE_VOLUME_DOWN:
 			getInternalAction().downButton(CircleControllerAction.ACTION_RELEASED);
 			break;
 		}
@@ -196,15 +196,15 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 
 			if (mMinRadius * mMinRadius < size && size < mMaxRadius * mMaxRadius) {
 				switch (action) {
-				case MotionEvent.ACTION_DOWN:
+				case SimpleMotionEvent.ACTION_DOWN:
 					mIsTouched = true;
 					a = CircleControllerAction.ACTION_PRESSED;
 					break;
-				case MotionEvent.ACTION_UP:
+				case SimpleMotionEvent.ACTION_UP:
 					mIsTouched = false;
 					a = CircleControllerAction.ACTION_RELEASED;
 					break;
-				case MotionEvent.ACTION_MOVE:
+				case SimpleMotionEvent.ACTION_MOVE:
 					if(mIsTouched){
 						a = CircleControllerAction.ACTION_MOVE;
 					}
@@ -213,8 +213,8 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 					}
 					mIsTouched = true;
 					break;
-				case MotionEvent.ACTION_CANCEL:
-				case MotionEvent.ACTION_OUTSIDE:
+				case SimpleMotionEvent.ACTION_CANCEL:
+				case SimpleMotionEvent.ACTION_OUTSIDE:
 				default:
 					mIsTouched = false;
 					a = CircleControllerAction.ACTION_RELEASED;

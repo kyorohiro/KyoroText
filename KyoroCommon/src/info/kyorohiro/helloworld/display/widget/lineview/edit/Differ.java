@@ -6,7 +6,6 @@ import info.kyorohiro.helloworld.text.KyoroString;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import android.graphics.Color;
 
 public class Differ {
 	private final DifferGetAction mGetAction = new DifferGetAction();

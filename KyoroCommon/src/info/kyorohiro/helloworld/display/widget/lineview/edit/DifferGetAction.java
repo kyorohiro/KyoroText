@@ -2,11 +2,11 @@ package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
 import java.util.LinkedList;
 
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.CheckAction;
 import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.Line;
 import info.kyorohiro.helloworld.text.KyoroString;
-import android.graphics.Color;
 
 public class DifferGetAction extends CheckAction {
 	private int mIndex = 0;
@@ -24,7 +24,7 @@ public class DifferGetAction extends CheckAction {
 		differ.checkAllSortedLine(this);
 		try {
 			if (isDiffer()) {
-				return new KyoroString(mRe, Color.BLACK);
+				return new KyoroString(mRe, SimpleGraphicUtil.BLACK);
 			} else {
 				// android.util.Log.i("text","lll="+mIndexFromBase+","+mPrevEnd+","+mIndex+","+mDiffLength+","+
 				// mDeleteLength);

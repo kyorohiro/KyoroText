@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.regex.Pattern;
 
 import android.view.ViewDebug.ExportedProperty;
+import info.kyorohiro.helloworld.android.adapter.MyBreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -14,7 +15,6 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.io.BreakText;
-import info.kyorohiro.helloworld.io.MyBreakText;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.text.KyoroString;

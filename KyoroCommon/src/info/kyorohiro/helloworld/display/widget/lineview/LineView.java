@@ -11,18 +11,16 @@ import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
-import android.graphics.Color;
 
 //
-// ‚±‚ÌƒNƒ‰ƒX‚Í‚Å‚©‚·‚¬‚é‚Ì‚ÅA¬‚³‚­‚·‚éB
-//
+// ç¸ºè–™ï¿½ç¹§ï½¯ç¹ï½©ç¹§ï½¹ç¸ºï½¯ç¸ºï½§ç¸ºä¹â˜†ç¸ºå¼±ï½‹ç¸ºï½®ç¸ºï½§èŸ†ä¸Šï¼†ç¸ºä¸Šâ˜†ç¹§ï¿½
 //
 public class LineView extends SimpleDisplayObjectContainer {
 //	public static float[] widths = new float[256];
 	public static FloatArrayBuilder widths = new FloatArrayBuilder();
 
 	private KyoroString[] mCashBuffer = new KyoroString[0];
-	private final static int sTestTextColor = Color.parseColor("#AAFFFF00");
+	private final static int sTestTextColor = SimpleGraphicUtil.parseColor("#AAFFFF00");
 	private boolean mIsClearBG = false;
 	private int mBiasAboutMoveLine = 0;
 	private int mMergine = -1;
@@ -38,7 +36,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private WeakHashMap<Integer, Point> mPoint = new WeakHashMap<Integer, Point>();
 
 	private SimpleImage mBGImage = null;
-	private int mBgColor = Color.parseColor("#FF000022");
+	private int mBgColor = SimpleGraphicUtil.parseColor("#FF000022");
 
 	private LineViewBufferSpec mInputtedText = null;
 	private boolean mIsTail = true;
@@ -57,8 +55,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 		return mIsLockScreen;
 	}
 
-	// setScale‚ÆsetTextSize()‚ÅŠg‘å—¦‚ğİ’è‚µ‚Ä‚¢‚éB
-	// Œã‚Å‚Ç‚¿‚ç‚©‚É“ˆê‚·‚éH
+	// setScaleï¿½ï½½ï¿½ï½½setTextSize()ï¿½ï½½ï¾…æ‹¡ï¿½ï½½è¸ï½¦ï¿½ï½½ï¿½ï½½ï¾å®šã—ï¿½ï½½ï¾„ã‚‘ï½¿ï½½ï¿½ï½½ï¿½ï½½B
+	// ï¿½ï½½ï¿½ï½½ï¾…ã©ã‚‘ï½¿ï½½ï¿½ï½½è½¤ï½©ï¿½ï½½ï¾‰é›£ï½¿ï½½ï¿½ï½½é»·ï½·ï¿½ï½½ï¿½ï½½H
 	protected float getSclaeFromTextSize() {
 		return (getTextSize() / getBreakText().getSimpleFont().getFontSize());
 	}
@@ -389,8 +387,8 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 			if (list[i].includeLF()) {
 				int c = list[i].getColor();
-				graphics.setColor(Color.argb(127, Color.red(c), Color.green(c),
-						Color.blue(c)));
+				graphics.setColor(SimpleGraphicUtil.argb(127, SimpleGraphicUtil.colorA(c), SimpleGraphicUtil.colorG(c),
+						SimpleGraphicUtil.colorB(c)));
 				graphics.setStrokeWidth(1);
 				graphics.drawLine(10, yy, graphics.getWidth() - 10, yy);				
 			}
@@ -438,7 +436,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.drawText("now lockscreen",100, 100);
 			return;
 		}
-		// todo ‰º‹LƒR[ƒh‚Éˆá˜aŠ´
+		// todo ï¿½ï½½ï¿½ï½½ï¿½ï½½Lï¿½ï½½Rï¿½ï½½[ï¿½ï½½hï¿½ï½½ï¾‰èŒ¨ï½¿ï½½aï¿½ï½½ï¿½ï½½
 		graphics.setSimpleFont(getBreakText().getSimpleFont());
 		LineViewBufferSpec showingText = mInputtedText;
 		KyoroString[] list = null;
@@ -477,7 +475,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 		{// scale in out animation
 			if (mScaleTime > 0) {
-				graphics.setColor(Color.argb(mScaleTime, 0xff, 0xff, 0x00));
+				graphics.setColor(SimpleGraphicUtil.argb(mScaleTime, 0xff, 0xff, 0x00));
 				graphics.drawCircle(mScaleX, mScaleY, 30);
 				mScaleTime -= 3;
 			}

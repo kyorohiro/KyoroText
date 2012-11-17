@@ -1,7 +1,6 @@
 package info.kyorohiro.helloworld.display.simple;
 
 
-import android.graphics.Color;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 
@@ -73,7 +72,10 @@ public class SimpleGraphicUtil {
 		}
 	}
 
-	private static final int sControlCodeColoe = Color.parseColor("#99FF9911");
+	private static final int sControlCodeColoe = SimpleGraphicUtil.parseColor("#99FF9911");
+	public static final int BLACK = parseColor("#FF000000");
+	public static final int GREEN = parseColor("#FF00FF00");
+	public static final int YELLOW = parseColor("#FFFFFF00");;
 	private static int drawControlCode(SimpleGraphics graphics, char code, int x, int y, int textSize) {
 		int size = graphics.getSimpleFont().lengthOfControlCode(code, textSize);
 		if(size != 0) {
@@ -88,6 +90,32 @@ public class SimpleGraphicUtil {
 			graphics.setColor(c);
 		}
 		return size;
+	}
+
+	public static int parseColor(String colorSource) {
+		String c = colorSource.replaceAll(" ","").replaceAll("#","");
+		return (int)Long.parseLong(c, 16);
+	}
+
+	public static int argb(int a, int r, int g, int b) {
+		int ret = ((a&0xff)<<(3*4))|((r&0xff)<<(2*4))|((g&0xff)<<(1*4))|((b&0xff)<<(0*4));
+		return ret;
+	}
+	public static int colorA(int c) {
+		int ret = 0xff&(c>>(3*4));
+		return ret;		
+	}
+	public static int colorR(int c) {
+		int ret = 0xff&(c>>(2*4));
+		return ret;		
+	}
+	public static int colorG(int c) {
+		int ret = 0xff&(c>>(1*4));
+		return ret;		
+	}
+	public static int colorB(int c) {
+		int ret = 0xff&(c>>(0*4));
+		return ret;		
 	}
 
 }

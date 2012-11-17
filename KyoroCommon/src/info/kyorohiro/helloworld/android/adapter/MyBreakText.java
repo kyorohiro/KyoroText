@@ -1,7 +1,7 @@
-package info.kyorohiro.helloworld.io;
+package info.kyorohiro.helloworld.android.adapter;
 
-import info.kyorohiro.helloworld.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
+import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 

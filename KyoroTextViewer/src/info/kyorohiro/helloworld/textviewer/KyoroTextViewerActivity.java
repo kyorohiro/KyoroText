@@ -126,7 +126,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		doFileOpenIntentAction();
 		mStage.start();
 		//
-		// •ÒW’†‚ÌBuffer‚ğŠÇ—‚·‚éƒNƒ‰ƒX‚ªstart/stop‚·‚éƒ^ƒCƒ~ƒ“ƒO‚ğŒˆ‚ß‚éB
+		// ï¿½ÒWï¿½ï¿½ï¿½ï¿½Bufferï¿½ï¿½ï¿½Ç—ï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½start/stopï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½~ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½B
 		KyoroServiceForForgroundApp.startForgroundService(KyoroApplication.getKyoroApplication(), "start");
 	}
 
@@ -139,7 +139,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 	@Override
 	protected void onDestroy() {
 		mViewerManager.dispose();
-		// •ÒW’†‚ÌBuffer‚ğŠÇ—‚·‚éƒNƒ‰ƒX‚ªstart/stop‚·‚éƒ^ƒCƒ~ƒ“ƒO‚ğŒˆ‚ß‚éB
+		// ï¿½ÒWï¿½ï¿½ï¿½ï¿½Bufferï¿½ï¿½ï¿½Ç—ï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½start/stopï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½~ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½B
 		KyoroServiceForForgroundApp.stopForgroundService(this, null);
 		super.onDestroy();
 	}
@@ -165,7 +165,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		int screenMargine = mViewerWidth*1/20;
 		int screenWidth = mViewerWidth-screenMargine/2; // mod 2 is my feeling value so design only. 
 		int screenHeight = mViewerHeight;
-		return new LineViewManager(textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2‚‰nchi(22/2)));
+		return new LineViewManager(textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2inchi(22/2)));
 	}
 
 	private void doFileOpenIntentAction() {

@@ -3,10 +3,10 @@ package info.kyorohiro.helloworld.display.simple.sample;
 import java.util.ArrayList;
 
 
-import android.graphics.Color;
-import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 
@@ -36,7 +36,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		super.paint(graphics);
-		graphics.setColor(Color.BLACK);
+		graphics.setColor(SimpleGraphicUtil.BLACK);
 //		graphics.drawText(_message, 10, 10);
 	}
 
@@ -81,7 +81,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 			int x = SimpleCircleControllerMenuPlus.this.getCenterX();
 			int y = SimpleCircleControllerMenuPlus.this.getCenterY();
 			int radius = SimpleCircleControllerMenuPlus.this.getMinRadius();
-			graphics.setColor(Color.GREEN);
+			graphics.setColor(SimpleGraphicUtil.GREEN);
 			graphics.setStrokeWidth(3);
 			graphics.drawCircle(x + mCurrentX, y + mCurrentY, radius * 4 / 5);
 			graphics.drawCircle(x + mCurrentX, y + mCurrentY, radius * 3 / 5);
@@ -93,7 +93,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 			y -= getCenterY();
 			int radius = SimpleCircleControllerMenuPlus.this.getMinRadius();
 			int radiusN = SimpleCircleControllerMenuPlus.this.getMaxRadius() * 3;
-			if (action == MotionEvent.ACTION_DOWN) {
+			if (action == SimpleMotionEvent.ACTION_DOWN) {
 				if (mFocus == false && x * x + y * y < radius * radius) {
 					mFocus = true;
 					mPrevX = x;
@@ -102,7 +102,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 					mCurrentY = 0;
 					return true;
 				}
-			} else if (action == MotionEvent.ACTION_MOVE) {
+			} else if (action == SimpleMotionEvent.ACTION_MOVE) {
 				if (mFocus == true && x * x + y * y < radiusN * radiusN) {
 					mCurrentX = x - mPrevX;
 					mCurrentY = y - mPrevY;
@@ -115,7 +115,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 					mCurrentY = 0;
 					return false;
 				}
-			} else if (action == MotionEvent.ACTION_UP) {
+			} else if (action == SimpleMotionEvent.ACTION_UP) {
 				mFocus = false;
 				mCurrentX = 0;
 				mCurrentY = 0;
@@ -138,7 +138,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 			int radius = SimpleCircleControllerMenuPlus.this.getMaxRadius();
 			int radiusN = SimpleCircleControllerMenuPlus.this.getMaxRadius() * 3 * 3 / 4;
 			if (mFocus) {
-				graphics.setColor(Color.GREEN);
+				graphics.setColor(SimpleGraphicUtil.GREEN);
 				graphics.setStrokeWidth(1);
 				graphics.drawCircle(x, y, radiusN * 4 / 5);
 				graphics.drawCircle(x, y, radiusN * 3 / 5);
@@ -147,12 +147,12 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 				int div = 18;
 				double angle = Math.PI * 2 / div;
 
-				// ���݈ʒu
+				// �ｽ�ｽ�ｽﾝ位置
 				double p = 0;
 				p = Math.atan2(-mButton.getYY(), mButton.getXX());
 				int curDegree = (int) Math.toDegrees(p);// - 90;
 
-				// 90�x���獀�ڒǉ�
+				// 90�ｽx�ｽ�ｽ�ｽ迯�ｿｽﾚ追会ｿｽ
 				curDegree -= 90 - (360 / div / 2);
 				//
 				int base = ((360 * 2 + curDegree) % 360) / (360 / div);
@@ -170,9 +170,9 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 						a -= extra;
 					}
 					if (i == selected) {
-						graphics.setColor(Color.YELLOW);
+						graphics.setColor(SimpleGraphicUtil.YELLOW);
 					} else {
-						graphics.setColor(Color.GREEN);
+						graphics.setColor(SimpleGraphicUtil.GREEN);
 					}
 
 					graphics.drawLine(

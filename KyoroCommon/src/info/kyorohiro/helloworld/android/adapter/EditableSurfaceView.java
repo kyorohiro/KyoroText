@@ -1,6 +1,9 @@
 package info.kyorohiro.helloworld.android.adapter;
 
 
+import info.kyorohiro.helloworld.display.simple.CommitText;
+import info.kyorohiro.helloworld.display.simple.MyInputConnection;
+
 import java.util.LinkedList;
 
 import android.content.Context;
@@ -25,7 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	private InputMethodManager mManager = null;
-	private MyInputConnection mCurrentInputConnection = null;
+	private _MyInputConnection mCurrentInputConnection = null;
 	public EditableSurfaceView(Context context) {
 		super(context);
 		mManager = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -43,7 +46,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		outAttrs.inputType = EditorInfo.TYPE_CLASS_TEXT;
 		outAttrs.imeOptions = EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI;
 		if(mCurrentInputConnection == null) {
-			mCurrentInputConnection = new MyInputConnection(this, true);
+			mCurrentInputConnection = new _MyInputConnection(this, true);
 		}
 		return mCurrentInputConnection;
 	}
@@ -85,7 +88,8 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	private static LinkedList<CommitText> mCommitTextList = new LinkedList<CommitText>();
 	private static int mStart = 0;
 	private static int mEnd = 0;
-	public class MyInputConnection extends BaseInputConnection {
+	public class _MyInputConnection extends BaseInputConnection implements  
+	MyInputConnection{
 
 		@Override
 		public int getCursorCapsMode(int reqModes) {
@@ -120,7 +124,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 				return null;
 			}
 		}
-		public MyInputConnection(View targetView, boolean fullEditor) {
+		public _MyInputConnection(View targetView, boolean fullEditor) {
 			super(targetView, fullEditor);
 			log("new MyInputConnection");
 		}
@@ -259,40 +263,10 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("reportFullscreenMode="+enabled);
 			return super.reportFullscreenMode(enabled);
 		}
-		
+
 		
 	}
-	public static class CommitText {
-		private CharSequence mText = null;
-		private int mNewCursorPosition = 0;
-		//
-		// å„Ç≈èCê≥
-		private boolean mIsKeyCode = false;
-		private int mKeycode = 0;
 
-		@Deprecated
-		public CommitText(int keycode) {
-			mIsKeyCode = true;
-			mKeycode = keycode;
-		}
-
-		public CommitText(CharSequence text, int newCursorPosition) {
-			mText = text;
-			mNewCursorPosition = newCursorPosition;
-		}
-		public CharSequence getText() {
-			return mText;
-		}
-		public int getNewCursorPosition() {
-			return mNewCursorPosition;
-		}
-		public boolean isKeyCode() {
-			return mIsKeyCode;
-		}
-		public int getKeyCode() {
-			return mKeycode;
-		}
-	}
 	public static void log(String log) {
 	//	android.util.Log.v("kiyo", ""+log);
 	}

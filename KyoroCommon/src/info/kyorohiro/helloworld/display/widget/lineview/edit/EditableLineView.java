@@ -1,18 +1,15 @@
 package info.kyorohiro.helloworld.display.widget.lineview.edit;
 
-import android.view.KeyEvent;
-import info.kyorohiro.helloworld.android.adapter.EditableSurfaceView.CommitText;
-import info.kyorohiro.helloworld.android.adapter.EditableSurfaceView.MyInputConnection;
+import info.kyorohiro.helloworld.display.simple.CommitText;
+import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 
 /**
- * This Class ‚Í CursorableLineView‚ÉIME‚©‚ç‚Ì•ÒW‹@”\‚ğ’Ç‰Á‚µ‚½‚à‚Ì‚Å‚·B
- * 
- * [•ûj] LineView‚Ö“n‚µ‚Ä‚¢‚éƒeƒLƒXƒgƒf[ƒ^‚ÌDIFFƒf[ƒ^‚ğƒLƒƒƒbƒVƒ…‚·‚éB •\¦‚·‚é‚Æ‚«‚ÍA–ˆ‰ñDIFFƒf[ƒ^‚ğƒ}[ƒW‚µ‚ÄA‰æ–Ê‚É•\¦‚·‚éB
- * 
+ * This Class
  */
 public class EditableLineView extends CursorableLineView {
 
@@ -113,7 +110,7 @@ public class EditableLineView extends CursorableLineView {
 		MyInputConnection c = getMyInputConnection();
 		if (c == null) {
 			return;
-		} // <-- ‚±‚±‚ğ‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
+		} // <-- ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾†ã‚‘ï½¿ï½½ï¿½ï½½é©ï½±ï¿½ï½½ï¾†ã¯ãªã‚‘ï½¿ï½½
 		getLeft().setMessage(c.getComposingText());
 	}
 
@@ -122,7 +119,7 @@ public class EditableLineView extends CursorableLineView {
 		MyInputConnection c = getMyInputConnection();
 		if (c == null) {
 			return;
-		} // <-- ‚±‚±‚ğ‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
+		} // <-- ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾†ã‚‘ï½¿ï½½ï¿½ï½½é©ï½±ï¿½ï½½ï¾†ã¯ãªã‚‘ï½¿ï½½
 		String[] lines = clip.toString().split("\r\n|\n");
 		for(int i=0;i<lines.length;i++) {
 			c.addCommitText(lines[i], 1);
@@ -141,37 +138,37 @@ public class EditableLineView extends CursorableLineView {
 		MyInputConnection c = getMyInputConnection();
 		if (c == null) {
 			return;
-		} // <-- ‚±‚±‚ğ‚Æ‚¨‚é‚±‚Æ‚Í‚È‚¢
+		} // <-- ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾†ã‚‘ï½¿ï½½ï¿½ï½½é©ï½±ï¿½ï½½ï¾†ã¯ãªã‚‘ï½¿ï½½
 		mTextBuffer.IsCrlfMode(this.isCrlfMode());
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {
 				if (text.isKeyCode()) {
 					switch (text.getKeyCode()) {
-					case KeyEvent.KEYCODE_BACK:
-					case KeyEvent.KEYCODE_DEL:
+					case SimpleKeyEvent.KEYCODE_BACK:
+					case SimpleKeyEvent.KEYCODE_DEL:
 						mTextBuffer.delete();
 						break;
-					case KeyEvent.KEYCODE_ENTER:
+					case SimpleKeyEvent.KEYCODE_ENTER:
 						mTextBuffer.crlf();
 						break;
-					case KeyEvent.KEYCODE_DPAD_LEFT:
+					case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
 						back();
 						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 						break;
-					case KeyEvent.KEYCODE_DPAD_RIGHT:
+					case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
 						front();
 						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 						break;
-					case KeyEvent.KEYCODE_DPAD_UP:
+					case SimpleKeyEvent.KEYCODE_DPAD_UP:
 						prev();
 						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 						break;
-					case KeyEvent.KEYCODE_DPAD_DOWN:
+					case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
 						next();
 						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 						break;
-					case KeyEvent.KEYCODE_SPACE:
+					case SimpleKeyEvent.KEYCODE_SPACE:
 						mTextBuffer.pushCommit(" ",1);
 						break;
 					}

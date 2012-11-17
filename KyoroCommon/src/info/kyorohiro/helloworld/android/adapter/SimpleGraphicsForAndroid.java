@@ -88,7 +88,8 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 
 	Shader shader = null;
 	@Override
-	public void drawImageAsTile(SimpleImage image, int x, int y, int w, int h) {
+	public void drawImageAsTile(SimpleImage _image, int x, int y, int w, int h) {
+		SimpleImageForAndroid image = (SimpleImageForAndroid)_image;
 		if (image.getImage().isRecycled()) {
 			return;
 		}
