@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.display.simple;
 
 
+import android.graphics.Color;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 
@@ -21,6 +22,19 @@ public class SimpleGraphicUtil {
 		graphics.moveTo(x, y);
 		graphics.lineTo(x, h+y);
 		graphics.lineTo(x+w, h+y);
+		graphics.lineTo(x+w, y);
+		graphics.lineTo(x, y);
+		graphics.endPath();
+		graphics.setStyle(s);
+	}
+
+	public static void drawControlCodeRect(SimpleGraphics graphics,int style, int x, int y, int w, int h) {
+		int s = graphics.getStyle();
+		graphics.setStrokeWidth(1);
+		graphics.setStyle(style);
+		graphics.startPath();
+//		graphics.moveTo(x, h/2+y);
+		graphics.moveTo(x+w, h/2+y);
 		graphics.lineTo(x+w, y);
 		graphics.lineTo(x, y);
 		graphics.endPath();
@@ -58,15 +72,22 @@ public class SimpleGraphicUtil {
 			start = end+1;
 		}
 	}
+
+	private static final int sControlCodeColoe = Color.parseColor("#99FF9911");
 	private static int drawControlCode(SimpleGraphics graphics, char code, int x, int y, int textSize) {
 		int size = graphics.getSimpleFont().lengthOfControlCode(code, textSize);
 		if(size != 0) {
-			SimpleGraphicUtil.drawRect(graphics, x, y, size, -textSize);
 			int ts = graphics.getTextSize();
+			int c = graphics.getColor();
+			graphics.setColor(sControlCodeColoe);
+			graphics.setStrokeWidth(1);
+			SimpleGraphicUtil.drawControlCodeRect(graphics, SimpleGraphics.STYLE_STROKE, x, y, size, -textSize);
 			graphics.setTextSize(ts/3);
 			graphics.drawText(""+Integer.toHexString((int)code), x, y);
 			graphics.setTextSize(ts);
+			graphics.setColor(c);
 		}
 		return size;
 	}
+
 }

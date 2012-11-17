@@ -160,6 +160,10 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		return mCanvas.getHeight();
 	}
 
+	public int getColor() {
+		return mPaint.getColor();
+	}
+
 	public void setColor(int color) {
 		mPaint.setColor(color);
 	}

@@ -23,9 +23,12 @@ import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
-	public static int COLOR_BG = Color.parseColor("#FFFFFFBB");
-	public static int COLOR_FONT1 = Color.parseColor("#ff1188dd");
-	public static int COLOR_FONT2 = Color.parseColor("#ffdd1188");
+//	public static int COLOR_BG = Color.parseColor("#FFFFFFBB");
+//	public static int COLOR_FONT1 = Color.parseColor("#ff1188dd");
+//	public static int COLOR_FONT2 = Color.parseColor("#ffdd1188");
+	public static int COLOR_BG = Color.parseColor("#FFE7DDAA");
+	public static int COLOR_FONT1 = Color.parseColor("#dd0044ff");
+	public static int COLOR_FONT2 = Color.parseColor("#ddff0044");
 
 	private String mCurrentCharset = "utf8";
 	private ManagedLineViewBuffer mBuffer = null;

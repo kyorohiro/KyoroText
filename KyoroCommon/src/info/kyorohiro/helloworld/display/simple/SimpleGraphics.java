@@ -24,6 +24,7 @@ public abstract class SimpleGraphics {
 	public abstract void endPath();
 	public abstract int getWidth();	
 	public abstract int getHeight();
+	public abstract int getColor();
 	public abstract void setColor(int color);
 	public abstract void setTextSize(int size);
 	public abstract void setStyle(int style);
