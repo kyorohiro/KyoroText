@@ -1,13 +1,11 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.text.KyoroString;
-
 import java.lang.ref.WeakReference;
-
-import android.graphics.Color;
-import android.view.MotionEvent;
 
 public class MyCursor extends SimpleDisplayObject {
 	private int cursorRow = 0;
@@ -79,14 +77,14 @@ public class MyCursor extends SimpleDisplayObject {
 		if (!focus) {
 			graphics.setColor(CursorableLineView.__CURSOR__COLOR);
 		} else {
-			graphics.setColor(Color.parseColor("#AA00FFFF"));
+			graphics.setColor(SimpleGraphicUtil.parseColor("#AA00FFFF"));
 			drawCursor(graphics, mX - px, mY - py);
-			graphics.setColor(Color.parseColor("#AA00FFFF"));
+			graphics.setColor(SimpleGraphicUtil.parseColor("#AA00FFFF"));
 		}
 		drawCursor(graphics, 0, 0);
 
 		if(mMessage != null&&mMessage.length()!=0){
-			graphics.setColor(Color.parseColor("#AA005555"));
+			graphics.setColor(SimpleGraphicUtil.parseColor("#AA005555"));
 			graphics.setTextSize(mParent.get().getTextSize());
 			graphics.drawText(mMessage, 0, -1*mParent.get().getShowingTextSize());
 		}
@@ -139,7 +137,7 @@ public class MyCursor extends SimpleDisplayObject {
 		}
 		mX = x;
 		mY = y;
-		if (action == MotionEvent.ACTION_DOWN) {
+		if (action == SimpleMotionEvent.ACTION_DOWN) {
 			if (-getWidth() < x && x < getWidth() && 0 < y
 					&& y < getHeight()) {
 				focus = true;
@@ -150,13 +148,13 @@ public class MyCursor extends SimpleDisplayObject {
 			}
 		}
 
-		if (action == MotionEvent.ACTION_UP) {
+		if (action == SimpleMotionEvent.ACTION_UP) {
 			if (focus == true) {
 				focus = false;
 //				return false;
 				return true;
 			}
-		} else if (action == MotionEvent.ACTION_MOVE) {
+		} else if (action == SimpleMotionEvent.ACTION_MOVE) {
 			if (focus == true) {
 				try {
 					lock();
@@ -209,9 +207,9 @@ public class MyCursor extends SimpleDisplayObject {
 		int l = 0;
 		if (this.getCursorCol() < mParent.get().getShowingTextStartPosition()
 				|| this.getCursorCol() > mParent.get().getShowingTextEndPosition()) {
-			// TextViewer‚Æ‚ÌƒLƒƒƒbƒVƒ…‚Ìæ‚è‡‚¢‚ÅA‰æ–Ê‚ª“_–Å‚µ‚Ä‚µ‚Ü‚¤B
-			// todo Œã‚Å‘Îô‚ğl‚¦‚éB
-			// LineView‘¤‚ªƒoƒbƒtƒ@‚Ì’†g‚É‚Â‚¢‚Ä’m‚ç‚È‚­‚Ä‚à—Ç‚¢‚æ‚¤‚É‚·‚éBA
+			// TextViewerï¿½Æ‚ÌƒLï¿½ï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½Ìï¿½è‡ï¿½ï¿½ï¿½ÅAï¿½ï¿½Ê‚ï¿½ï¿½_ï¿½Å‚ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B
+			// todo ï¿½ï¿½Å‘Îï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½B
+			// LineViewï¿½ï¿½ï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½Ì’ï¿½ï¿½gï¿½É‚Â‚ï¿½ï¿½Ä’mï¿½ï¿½È‚ï¿½ï¿½Ä‚ï¿½ï¿½Ç‚ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½Bï¿½A
 		} else {
 			KyoroString d = null;
 			try {
@@ -242,7 +240,7 @@ public class MyCursor extends SimpleDisplayObject {
 					//android.util.Log.v("kiyo","cursor:x="+x);
 				}
 			} catch(Throwable t){
-				// todo refactaring BreakText‚Í‘¼Ò‚ª’è‹`‚·‚é‚Ì‚ÅA”O‚Ì‚½‚ß
+				// todo refactaring BreakTextï¿½Í‘ï¿½ï¿½Ò‚ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½ï¿½Ì‚ÅAï¿½Oï¿½Ì‚ï¿½ï¿½ï¿½
 			}
 		}
 

@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import android.graphics.Color;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
@@ -110,7 +111,7 @@ public class TouchAndZoomForLineView extends SimpleDisplayObject {
 					mStartGetX = mLineViewer.getPositionX();
 					if (mStartLine != null) {
 						mStartLineBaseColor = mStartLine.getColor();
-						mStartLine.setColor(Color.YELLOW);
+						mStartLine.setColor(SimpleGraphicUtil.YELLOW);
 					}
 				}finally {
 					if (mLineViewer instanceof SimpleLockInter) {

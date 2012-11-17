@@ -2,9 +2,9 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
-import android.view.MotionEvent;
 
 // this class is refactraing target.
 public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
@@ -58,18 +58,18 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		}
 		if(!focusIn){
 			if(mIsTouched!=true){
-				action = MotionEvent.ACTION_UP;
+				action = SimpleMotionEvent.ACTION_UP;
 			}
 		}
 		if(doubleTouched){
 //			android.util.Log.v("kiyo","touched");
 			mIsTouched = false;
-			action = MotionEvent.ACTION_UP;
+			action = SimpleMotionEvent.ACTION_UP;
 		}
 		if(tapped){
 			clearPower();
 		}
-		if (action == MotionEvent.ACTION_MOVE&& mIsTouched ==true) {
+		if (action == SimpleMotionEvent.ACTION_MOVE&& mIsTouched ==true) {
 //			android.util.Log.v("kiyo","move");
 			mHeavyX = 0;
 			mHeavyY = 0;
@@ -104,7 +104,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 				ret = true;
 			}
 			return ret;
-		} else if (action == MotionEvent.ACTION_DOWN) {
+		} else if (action == SimpleMotionEvent.ACTION_DOWN) {
 			clearPower();
 //			android.util.Log.v("kiyo","down");
 			mIsTouched = true;
@@ -116,7 +116,7 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 			mPrevX = x;
 //			mPrevY = -999;
 //			mPrevX = -999;
-		} else if (action == MotionEvent.ACTION_UP) {
+		} else if (action == SimpleMotionEvent.ACTION_UP) {
 //			android.util.Log.v("kiyo","up");
 			if(mIsTouched&&!tapped&&mPower_time!=-1){
 				mHeavyX = mPowerX * 8;
@@ -173,17 +173,17 @@ public class TouchAndMoveActionForLineView extends SimpleDisplayObject {
 		private int mLength = 100;
 		public boolean onTouchTest(int x, int y, int action) {
 			switch(action) {
-			case MotionEvent.ACTION_POINTER_DOWN:
+			case SimpleMotionEvent.ACTION_POINTER_DOWN:
 					mIsTap = true;
 					mX = x;
 					mY = y;
 				break;
-			case MotionEvent.ACTION_MOVE:
+			case SimpleMotionEvent.ACTION_MOVE:
 				if(Math.abs(mX-x)>mLength||Math.abs(mY-y)>mLength){
 					mIsTap = false;
 				}
 				break;
-			case MotionEvent.ACTION_POINTER_UP:
+			case SimpleMotionEvent.ACTION_POINTER_UP:
 //				mIsTap = false;
 				break;
 			default:

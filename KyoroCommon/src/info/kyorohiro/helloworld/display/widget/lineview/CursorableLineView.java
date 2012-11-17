@@ -2,10 +2,9 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import java.io.ObjectInputStream.GetField;
 
-import android.graphics.Color;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class CursorableLineView extends LineView {
@@ -13,8 +12,8 @@ public class CursorableLineView extends LineView {
 	public final static String MODE_SELECT = "MODE SELECT";
 	public final static String MODE_VIEW = "MODE VIEW";
 	public final static String MODE_EDIT = "MODE EDIT: NOW CREATING!!";
-	public final static int __CURSOR__COLOR = Color.parseColor("#44FFAA44");
-	public final static int __CURSOR__COLOR2 = Color.parseColor("#FFBB8811");
+	public final static int __CURSOR__COLOR = SimpleGraphicUtil.parseColor("#44FFAA44");
+	public final static int __CURSOR__COLOR2 = SimpleGraphicUtil.parseColor("#FFBB8811");
 
 
 	private MyCursor mLeft = new MyCursor(this);
@@ -125,12 +124,12 @@ public class CursorableLineView extends LineView {
 			return true;
 		} else {
 			if (mMode == MODE_EDIT) {
-				if(action == MotionEvent.ACTION_DOWN) {
+				if(action == SimpleMotionEvent.ACTION_DOWN) {
 					mIsEditClickActionX = x;
 					mIsEditClickActionY = y; 
 					mIsEditClickAction = true;
 				}
-				else if (action == MotionEvent.ACTION_MOVE) {
+				else if (action == SimpleMotionEvent.ACTION_MOVE) {
 					if(mIsEditClickAction){
 						int ts = 30;
 						if(Math.abs(x-mIsEditClickActionX)>ts|Math.abs(y-mIsEditClickActionY)>ts){
@@ -138,7 +137,7 @@ public class CursorableLineView extends LineView {
 						}
 					}
 				}
-				else if (action == MotionEvent.ACTION_UP) {
+				else if (action == SimpleMotionEvent.ACTION_UP) {
 					if(mIsEditClickAction==true){
 						try{
 //							android.util.Log.v("xxx","--A1--");
@@ -153,12 +152,12 @@ public class CursorableLineView extends LineView {
 				}
 			}
 			if(mMode == MODE_SELECT){
-				if(action == MotionEvent.ACTION_DOWN&&
+				if(action == SimpleMotionEvent.ACTION_DOWN&&
 						0<x&&x<getWidth()&&0<y&&y<getHeight()) {
 					prevX = x;
 					prevY = y;
 				}
-				else if(action == MotionEvent.ACTION_MOVE){
+				else if(action == SimpleMotionEvent.ACTION_MOVE){
 					if(20>Math.abs(prevX-x)+Math.abs(prevY-y)){
 					}else {
 						time = 0;
@@ -166,7 +165,7 @@ public class CursorableLineView extends LineView {
 						prevY = -1;	
 					}
 				}
-				else if(action == MotionEvent.ACTION_UP){
+				else if(action == SimpleMotionEvent.ACTION_UP){
 					prevX = -1;
 					prevY = -1;					
 				}
@@ -282,7 +281,7 @@ public class CursorableLineView extends LineView {
 		int _colTmp = col;
 		LineViewBufferSpec spec= this.getLineViewBuffer();
 		if (_rowTmp < 0) {
-			// ˆÚ“®‚·‚éB
+			// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½B
 			if (_colTmp > 0) {
 				_colTmp -= 1;
 				KyoroString cc = spec.get(_colTmp);
@@ -299,7 +298,7 @@ public class CursorableLineView extends LineView {
 		LineViewBufferSpec spec= this.getLineViewBuffer();
 		KyoroString c = spec.get(_colTmp);
 		if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
-			// ˆÚ“®‚·‚éB
+			// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½B
 			if (_colTmp < spec.getNumberOfStockedElement() - 1) {
 				_rowTmp = 0;
 				_colTmp += 1;
@@ -345,7 +344,7 @@ if (_colTmp < 0) {
 
 KyoroString c = spec.get(_colTmp);
 if (_rowTmp < 0) {
-	// ˆÚ“®‚·‚éB
+	// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½B
 	if (_colTmp > 0) {
 		_colTmp -= 1;
 		KyoroString cc = spec.get(_colTmp);
@@ -354,7 +353,7 @@ if (_rowTmp < 0) {
 		_rowTmp = 0;
 	}
 } else if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
-	// ˆÚ“®‚·‚éB
+	// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½B
 	if (_colTmp < spec.getNumberOfStockedElement() - 1) {
 		_rowTmp = 0;
 		_colTmp += 1;

@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import android.graphics.Color;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 
@@ -12,7 +12,7 @@ public class ScrollBar extends SimpleDisplayObject {
 	private int mEnd;
 	private int mSize;
 	private SimpleImage mImage = null;
-	private int mColorWhenDefault = Color.parseColor("#99ffff86");
+	private int mColorWhenDefault = SimpleGraphicUtil.parseColor("#99ffff86");
 
 	public ScrollBar(SimpleDisplayObject target) {
 		mTargetObject = target;

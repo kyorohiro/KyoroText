@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import info.kyorohiro.helloworld.android.adapter.MyBreakText;
 import info.kyorohiro.helloworld.io.BreakText;
+import info.kyorohiro.helloworld.io.EmptyBreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
@@ -41,7 +41,7 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 
 	@Override
 	public BreakText getBreakText() {
-		return new MyBreakText();
+		return new EmptyBreakText(null, 400);
 	}
 
 	@Override
