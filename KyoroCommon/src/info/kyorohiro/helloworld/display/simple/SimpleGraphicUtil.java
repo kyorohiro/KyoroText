@@ -73,6 +73,7 @@ public class SimpleGraphicUtil {
 	}
 
 	private static final int sControlCodeColoe = SimpleGraphicUtil.parseColor("#99FF9911");
+	private static final int sControlCodeColoe20 = SimpleGraphicUtil.parseColor("#22FF9911");
 	public static final int BLACK = parseColor("#FF000000");
 	public static final int GREEN = parseColor("#FF00FF00");
 	public static final int YELLOW = parseColor("#FFFFFF00");;
@@ -81,7 +82,11 @@ public class SimpleGraphicUtil {
 		if(size != 0) {
 			int ts = graphics.getTextSize();
 			int c = graphics.getColor();
-			graphics.setColor(sControlCodeColoe);
+			if(code == 0x20||code == 0x09) {
+				graphics.setColor(sControlCodeColoe20);
+			} else {
+				graphics.setColor(sControlCodeColoe);
+			}
 			graphics.setStrokeWidth(1);
 			SimpleGraphicUtil.drawControlCodeRect(graphics, SimpleGraphics.STYLE_STROKE, x, y, size, -textSize);
 			graphics.setTextSize(ts/3);

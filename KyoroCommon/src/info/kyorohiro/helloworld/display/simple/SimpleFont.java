@@ -34,7 +34,7 @@ public abstract class SimpleFont {
 	public static int lengthOfControlCode(char code, int textSize) {
 		if(code == 9) {//tab
 			return textSize*2;
-		} else if(code<=31||code==127){
+		} else if(code<=32||code==127){
 			return textSize/2;
 		}  else {
 			return 0;
@@ -43,7 +43,7 @@ public abstract class SimpleFont {
 
 	public int getControlCode(char[] buffer, int len, int start ) {
 		for(int i=start;i<len;i++) {
-			if(buffer[i]<=31||buffer[i]==127){
+			if(buffer[i]<=32||buffer[i]==127){
 				return i;
 			}
 		}
