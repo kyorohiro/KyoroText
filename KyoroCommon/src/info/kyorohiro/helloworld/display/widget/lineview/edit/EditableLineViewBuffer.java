@@ -239,10 +239,13 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				int br = row - 1;
 				int bc = mCursorLine;
 				deleteLinePerVisible();
-				//if (mCursorLine + 1 < getNumberOfStockedElement()) {
-				//	mCursorLine += 1;
+				
+				if(bc<=0) {
+					mCursorRow = 0;					
+				} else if (mCursorLine + 1 < getNumberOfStockedElement()) {
+					mCursorLine += 1;
 					mCursorRow = 0;
-				//}
+				} 
 //				crlf(fal);
 				// mCursorC =row-1;
 				commit("" + f + e, index);
