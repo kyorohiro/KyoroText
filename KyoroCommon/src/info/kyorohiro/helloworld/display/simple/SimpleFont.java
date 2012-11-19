@@ -6,6 +6,7 @@ public abstract class SimpleFont {
 	private boolean mAntiAlias = false;
 	private float mFontSize = 16.0f;
 	private SimpleTypeface mTypeface = null;
+	protected static int CONTROLCODE_TABLE1_END = 32;
 
 	public void setAntiAlias(boolean state){
 		mAntiAlias = state;
@@ -34,16 +35,17 @@ public abstract class SimpleFont {
 	public static int lengthOfControlCode(char code, int textSize) {
 		if(code == 9) {//tab
 			return textSize*2;
-		} else if(code<=31||code==127){
+		} else if(code<=CONTROLCODE_TABLE1_END||code==127){
 			return textSize/2;
-		}  else {
+		}
+		else {
 			return 0;
 		}
 	}
 
 	public int getControlCode(char[] buffer, int len, int start ) {
 		for(int i=start;i<len;i++) {
-			if(buffer[i]<=31||buffer[i]==127){
+			if(buffer[i]<=CONTROLCODE_TABLE1_END||buffer[i]==127){
 				return i;
 			}
 		}

@@ -48,7 +48,7 @@ public class SimpleFontForAndroid extends SimpleFont {
 
 	public int getControlCode(char[] buffer, int len, int start ) {
 		for(int i=start;i<len;i++) {
-			if(buffer[i]<=31||buffer[i]==127){
+			if(buffer[i]<=CONTROLCODE_TABLE1_END||buffer[i]==127){
 				return i;
 			}
 		}

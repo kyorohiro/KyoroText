@@ -1,8 +1,12 @@
 package info.kyorohiro.helloworld.text;
 
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
+
 ///*
 public class KyoroString  implements CharSequence {
 	public char[] mContent = null;
+	private float[] _mCash = null;
+	private int _mFontSize = 0;
 	private long mLinePosition = 0;
 	private boolean mIncludeLF = false;
 	private boolean mIncludeCRLF = false;
@@ -43,11 +47,12 @@ public class KyoroString  implements CharSequence {
 			contentBuffer[i] = content.charAt(i);
 		}
 		init(contentBuffer, 0, len);
-		mColor = color;		
+		mColor = color;
 	}
 	private void init(char[] content, int start, int end) {
 		int length = end-start;
 		mContent = new char[length];
+		_mCash = new float[length];
 //		android.util.Log.v("kiyo","dd="+start+",end="+end+","+length+",c="+content.length);
 		System.arraycopy(content, start, mContent, 0, length);
 		if(mContent.length >0 && mContent[length-1]=='\n'){
@@ -153,7 +158,32 @@ public class KyoroString  implements CharSequence {
 	public void setColor(int color) {
 		mColor = color;
 	}
-
+	public void setCash(float[] buffer, int len, int fontSize) {
+		_mFontSize = fontSize;
+		if(len >_mCash.length){
+			len = _mCash.length;
+		}
+		System.arraycopy(buffer, 0, _mCash, 0, len);
+	}
+	public float getCashZoomSize(int size) {
+		float ret = (float)size/_mFontSize;
+		android.util.Log.v("time","ret="+ret);
+		return ret;
+	}
+	public void setCash(SimpleFont font, int fontSize) {
+		_mFontSize = fontSize;
+		font.getTextWidths(this, 0, length(), _mCash, fontSize);
+	}
+	public float[] getCash() {
+		return _mCash;
+	}
+ 	public boolean use(int fostSize) {
+		if(fostSize == _mFontSize) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 //
 //	private int mPointer = 0;
 //	private int mLength = 512;

@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.io;
 
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
+import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -13,6 +14,7 @@ public class SimpleTextDecoder {
 
 	private MarkableReader mReader = null;
 	private CharArrayBuilder mBuffer = new CharArrayBuilder();
+	private FloatArrayBuilder mWidths = new FloatArrayBuilder();
 	private Charset mCharset = null;
 	private BreakText mBreakText;
 
@@ -56,6 +58,7 @@ public class SimpleTextDecoder {
 		//time1 = System.currentTimeMillis();
 
 		mBuffer.clear();
+		mWidths.clear();
 		mByteBuffer.clear();
 		mCharBuffer.clear();
 		CharsetDecoder decoder = getCharsetDecoder();
@@ -101,8 +104,10 @@ public class SimpleTextDecoder {
 //						len = mBreakText.breakText(mBuffer);
 						int size = mBuffer.getCurrentBufferedMojiSize();
 						ws[0] = 0;
+						
 						mBreakText.getTextWidths(mBuffer.getAllBufferedMoji(), size-1, size, ws, textSize);
 						textLength += ws[0];
+						mWidths.append(ws[0]);
 						//if(c=='\t'){
 						//android.util.Log.v("kiyo","time2 ["+mBuffer.getAllBufferedMoji()[size-1]+"]"+c+"="+width+","+textLength +","+ ws[0]);
 						//}
@@ -136,6 +141,7 @@ public class SimpleTextDecoder {
 		} while (!end);
 		KyoroString ret =new KyoroString(mBuffer.getAllBufferedMoji(),
 				mBuffer.getCurrentBufferedMojiSize());
+		ret.setCash(mWidths.getAllBufferedMoji(),mWidths.getCurrentBufferedMojiSize(), (int)textSize);
 		//time2 = System.currentTimeMillis();
 		//android.util.Log.v("kiyo","time a="+(time2-time1));
 		return ret;

@@ -86,6 +86,22 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 				mPaint);
 	}
 
+	//test
+	public void drawPosText(char[] text, float[] widths, float zoom,int start, int end, int x, int y) {
+		float[] pos = new float[widths.length*2];
+		float t=0;
+		for(int i=0;i<pos.length;i+=2) {
+			if(i==0) {
+				t=0;
+			}else{
+				t += widths[i/2-1];
+			}
+			pos[i+0] = x+mGlobalX+t*zoom;
+			pos[i+1] = y+mGlobalY;
+		}
+		mCanvas.drawPosText(text, 0, end, pos,mPaint);
+	}
+
 	Shader shader = null;
 	@Override
 	public void drawImageAsTile(SimpleImage _image, int x, int y, int w, int h) {
