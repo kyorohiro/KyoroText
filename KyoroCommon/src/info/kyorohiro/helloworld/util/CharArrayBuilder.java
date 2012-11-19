@@ -9,17 +9,26 @@ public class CharArrayBuilder {
 
 	public void append(char moji){
 		if(mPointer >= mLength){
-			mLength *=2;
-			char[] tmp = new char[mLength*2];
-			for(int i=0;i<mBuffer.length;i++) {
-				tmp[i] = mBuffer[i];
-			}
-			mBuffer = tmp;
+			updateBuffer();
 		}
 		mBuffer[mPointer] = moji;
 		mPointer++;
 	}
 
+	public void setLength(int length) {
+		if(mLength < length) {
+			mLength = length*2/3;
+			updateBuffer();
+		}
+	}
+	private void updateBuffer() {
+		mLength *=2;
+		char[] tmp = new char[mLength*2];
+		for(int i=0;i<mBuffer.length;i++) {
+			tmp[i] = mBuffer[i];
+		}
+		mBuffer = tmp;
+	}
 	public void clear() {
 		mPointer = 0;
 	}

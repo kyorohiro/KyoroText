@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.util;
 
 //
-// KyoroString‚É‹zû‚³‚ê‚éB
+// KyoroStringï¿½É‹zï¿½ï¿½ï¿½ï¿½B
 public class FloatArrayBuilder {
 	private int mPointer = 0;
 	private int mLength = 256;
@@ -9,6 +9,7 @@ public class FloatArrayBuilder {
 
 	public void setLength(int length) {
 		if(mLength < length) {
+			mLength = length*2/3;
 			updateBuffer();
 		}
 	}

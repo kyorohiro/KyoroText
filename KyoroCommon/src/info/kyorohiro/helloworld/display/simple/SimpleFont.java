@@ -32,6 +32,16 @@ public abstract class SimpleFont {
 		return mTypeface;
 	}
 
+	public static boolean isControlCode(char code, int textSize) {
+		if(code == 9) {//tab
+			return true;
+		} else if(code<=CONTROLCODE_TABLE1_END||code==127){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	public static int lengthOfControlCode(char code, int textSize) {
 		if(code == 9) {//tab
 			return textSize*2;
