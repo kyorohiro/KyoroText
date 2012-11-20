@@ -167,22 +167,21 @@ public class KyoroString  implements CharSequence {
 	}
 	public float getCashZoomSize(int size) {
 		float ret = (float)size/_mFontSize;
-		android.util.Log.v("time","ret="+ret);
+//		android.util.Log.v("time","ret="+ret);
 		return ret;
 	}
 	public void setCash(SimpleFont font, int fontSize) {
 		_mFontSize = fontSize;
 		font.getTextWidths(this, 0, length(), _mCash, fontSize);
+		mIsCahsed = true;
 	}
+	
 	public float[] getCash() {
 		return _mCash;
 	}
+	private boolean mIsCahsed = false;
  	public boolean use(int fostSize) {
-		if(fostSize == _mFontSize) {
-			return true;
-		} else {
-			return false;
-		}
+ 		return mIsCahsed;
 	}
 //
 //	private int mPointer = 0;

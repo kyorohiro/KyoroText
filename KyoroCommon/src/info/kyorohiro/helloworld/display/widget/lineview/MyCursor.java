@@ -207,9 +207,9 @@ public class MyCursor extends SimpleDisplayObject {
 		int l = 0;
 		if (this.getCursorCol() < mParent.get().getShowingTextStartPosition()
 				|| this.getCursorCol() > mParent.get().getShowingTextEndPosition()) {
-			// TextViewer�Ƃ̃L���b�V���̎�荇���ŁA��ʂ��_�ł��Ă��܂��B
-			// todo ��ő΍���l����B
-			// LineView�����o�b�t�@�̒��g�ɂ��Ēm��Ȃ��Ă��ǂ��悤�ɂ���B�A
+			// TextViewer�ｽﾆのキ�ｽ�ｽ�ｽb�ｽV�ｽ�ｽ�ｽﾌ趣ｿｽ闕�ｿｽ�ｽ�ｽﾅ、�ｽ�ｽﾊゑｿｽ�ｽ_�ｽﾅゑｿｽ�ｽﾄゑｿｽ�ｽﾜゑｿｽ�ｽB
+			// todo �ｽ�ｽﾅ対搾ｿｽ�ｽ�ｽl�ｽ�ｽ�ｽ�ｽB
+			// LineView�ｽ�ｽ�ｽ�ｽ�ｽo�ｽb�ｽt�ｽ@�ｽﾌ抵ｿｽ�ｽg�ｽﾉつゑｿｽ�ｽﾄ知�ｽ�ｽﾈゑｿｽ�ｽﾄゑｿｽ�ｽﾇゑｿｽ�ｽ謔､�ｽﾉゑｿｽ�ｽ�ｽB�ｽA
 		} else {
 			KyoroString d = null;
 			try {
@@ -227,20 +227,26 @@ public class MyCursor extends SimpleDisplayObject {
 
 			try {
 				if (d != null) {
-					float[] ws = mParent.get().widths.getAllBufferedMoji();
-					l = mParent.get().getBreakText()
-							.getTextWidths(d, 0,
-							this.getCursorRow(), ws,
-							mParent.get().getShowingTextSize());
+					l=getCursorRow();
+					if(!d.use(-1)){
+					//	android.util.Log.v("kiyo","cursor:l="+l+","+mParent.get().getShowingTextSize()+","+d);
+						d.setCash(mParent.get().getBreakText().getSimpleFont(),
+								(int)mParent.get().getBreakText().getSimpleFont().getFontSize());	
+//								mParent.get().getShowingTextSize());
+					}
+					//android.util.Log.v("kiyo","cursor:--2--"+l);
+					float[] ws = d.getCash();
 
-					//	android.util.Log.v("kiyo","cursor:l="+l);
+					//android.util.Log.v("kiyo","cursor:--3--"+x);
 					for (int i = 0; i < l; i++) {
 						x += ws[i];
 					}
+					x*=d.getCashZoomSize(mParent.get().getShowingTextSize());
+					//android.util.Log.v("kiyo","cursor:--4--"+x);
 					//android.util.Log.v("kiyo","cursor:x="+x);
 				}
 			} catch(Throwable t){
-				// todo refactaring BreakText�͑��҂���`����̂ŁA�O�̂���
+				// todo refactaring BreakText�ｽﾍ托ｿｽ�ｽﾒゑｿｽ�ｽ�ｽ`�ｽ�ｽ�ｽ�ｽﾌで、�ｽO�ｽﾌゑｿｽ�ｽ�ｽ
 			}
 		}
 

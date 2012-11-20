@@ -26,7 +26,8 @@ public class SeparateUI extends SimpleDisplayObject {
 		int w = LineViewManager.getManager().getCircleMenu().getMinRadius()/2;
 		setRect(w, w);
 		mManager = manager;
-		super.setPoint(w, 0);
+		//super.
+		setPoint(w*2, 0);
 	}
 
 	public double getPersentY(){
@@ -58,6 +59,9 @@ public class SeparateUI extends SimpleDisplayObject {
 
 	@Override
 	public void setPoint(int x, int y) {
+		if(x<30){
+			x= 30;
+		}
 		Object parent = getParent();
 		if(parent != null &&  parent instanceof SimpleDisplayObjectContainer) {
 			SimpleDisplayObjectContainer parentAtSDO = (SimpleDisplayObjectContainer)parent;

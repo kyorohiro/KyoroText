@@ -131,13 +131,15 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			int num = super.numOfChild()-1;
 		 	if(num<0){num = 0;}
 			super.insertChild(num, child);
-		} else if(child instanceof LineViewGroup) {
+		}
+		else if(child instanceof SeparateUI) {
+			mSeparate = (SeparateUI)child;
+			super.addChild(child);
+		}
+		else if(child instanceof LineViewGroup) {
 			int num = super.numOfChild()-1;
 		 	if(num<0){num = 0;}
 			super.insertChild(num, child);			
-		} else if(child instanceof SeparateUI) {
-			mSeparate = (SeparateUI)child;
-			super.addChild(child);
 		}
 		else {
 			super.addChild(child);

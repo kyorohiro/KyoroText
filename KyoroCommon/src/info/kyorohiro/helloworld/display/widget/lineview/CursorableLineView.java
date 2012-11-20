@@ -1,7 +1,5 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import java.io.ObjectInputStream.GetField;
-
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
@@ -281,7 +279,7 @@ public class CursorableLineView extends LineView {
 		int _colTmp = col;
 		LineViewBufferSpec spec= this.getLineViewBuffer();
 		if (_rowTmp < 0) {
-			// �ړ�����B
+			// �ｽﾚ難ｿｽ�ｽ�ｽ�ｽ�ｽB
 			if (_colTmp > 0) {
 				_colTmp -= 1;
 				KyoroString cc = spec.get(_colTmp);
@@ -298,7 +296,7 @@ public class CursorableLineView extends LineView {
 		LineViewBufferSpec spec= this.getLineViewBuffer();
 		KyoroString c = spec.get(_colTmp);
 		if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
-			// �ړ�����B
+			// �ｽﾚ難ｿｽ�ｽ�ｽ�ｽ�ｽB
 			if (_colTmp < spec.getNumberOfStockedElement() - 1) {
 				_rowTmp = 0;
 				_colTmp += 1;
@@ -330,38 +328,3 @@ public class CursorableLineView extends LineView {
 	}
 }
 
-/*
-public void setCursorAndCRLF(MyCursor cursor, int row, int col) {
-// this method Should belong to LIneView
-int _rowTmp = row;
-int _colTmp = col;
-LineViewBufferSpec spec= this.getLineViewBuffer();
-if (_colTmp < 0) {
-	_colTmp = 0;
-} else if (_colTmp >= spec.getNumberOfStockedElement()) {
-	_colTmp = spec.getNumberOfStockedElement();
-}
-
-KyoroString c = spec.get(_colTmp);
-if (_rowTmp < 0) {
-	// �ړ�����B
-	if (_colTmp > 0) {
-		_colTmp -= 1;
-		KyoroString cc = spec.get(_colTmp);
-		_rowTmp = cc.lengthWithoutLF(isCrlfMode());
-	} else {
-		_rowTmp = 0;
-	}
-} else if (_rowTmp > c.lengthWithoutLF(isCrlfMode())) {
-	// �ړ�����B
-	if (_colTmp < spec.getNumberOfStockedElement() - 1) {
-		_rowTmp = 0;
-		_colTmp += 1;
-	} else {
-		_rowTmp = c.lengthWithoutLF(isCrlfMode());
-	}
-}
-cursor.setCursorCol(_colTmp);
-cursor.setCursorRow(_rowTmp);
-}
-*/

@@ -285,6 +285,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		if (data == null) {
 			return -1;
 		}
+		
 		//todo
 		int l = mInputtedText.getBreakText().getTextWidths(data, 0,
 				data.lengthWithoutLF(mCrlfMode), w, textSize);

@@ -36,7 +36,7 @@ public class PdfLexerTest extends TestCase {
 			String value = current.getValue().toString();
 			String id = current.getIdentify().toString();
 			int type = current.getType();
-			android.util.Log.v("pdfparser", "ret="+value+","+id+","+type);
+//			android.util.Log.v("pdfparser", "ret="+value+","+id+","+type);
 			assertEquals(expectedID, id);
 			assertEquals(expectedValue, value);
 		}
