@@ -97,6 +97,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	public boolean fittableToView() {
+		return mDrawingPosition.fittableToView();
+	}
+
 	public void fittableToView(boolean fit) {
 		mDrawingPosition.fittableToView(fit);
 	}

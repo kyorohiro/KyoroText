@@ -171,8 +171,9 @@ public class KyoroString  implements CharSequence {
 		return ret;
 	}
 	public void setCash(SimpleFont font, int fontSize) {
-		_mFontSize = fontSize;
-		font.getTextWidths(this, 0, length(), _mCash, fontSize);
+//		_mFontSize = fontSize;
+		_mFontSize = (int)font.getFontSize();
+		font.getTextWidths(this, 0, length(), _mCash, font.getFontSize());
 		mIsCahsed = true;
 	}
 	

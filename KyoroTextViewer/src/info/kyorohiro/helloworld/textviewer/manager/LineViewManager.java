@@ -34,7 +34,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mTextSize = textSize;
 	}
 
-	// Œã‚ÅSingletone‚É‚·‚éB
+	// ï¿½ï¿½ï¿½Singletoneï¿½É‚ï¿½ï¿½ï¿½B
 	public LineViewManager(int textSize, int width, int height, int mergine, int menuWidth) {
 		sInstance = this;
 		mWidth = width;
