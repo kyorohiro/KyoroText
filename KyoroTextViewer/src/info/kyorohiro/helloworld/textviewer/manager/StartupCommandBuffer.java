@@ -37,7 +37,8 @@ public class StartupCommandBuffer extends TextViewer {
 			getLineView().isCrlfMode(true);
 		}
 		readStartupMessage();
-		addChild(new Button(this));
+		addChild(new Button(this, "fit", 1));
+		addChild(new Button(this, "guard", 3));
 	}
 
 	@Override
@@ -96,71 +97,4 @@ public class StartupCommandBuffer extends TextViewer {
 			"If you have particular questions or comments, \n",
 			"please don't hesitate to contact me. Thank you. \n" };
 	
-	public static class Button extends SimpleDisplayObject {
-		private StartupCommandBuffer mBuffer = null;
-		private boolean mOn = false;
-		public Button(StartupCommandBuffer buffer) {
-			mBuffer = buffer;
-			mOn = mBuffer.getLineView().fittableToView();
-		}
-		@Override
-		public void paint(SimpleGraphics graphics) {
-			if(mOn) {
-				graphics.setColor(SimpleGraphicUtil.parseColor("#FFFF0000"));
-			} else {
-				graphics.setColor(SimpleGraphicUtil.parseColor("#FFFFFF00"));				
-			}
-			int w = ((SimpleDisplayObject)getParent()).getWidth();
-			int bw = w/20;
-			graphics.drawLine(w-bw*3, bw, w-bw, bw);
-			graphics.drawLine(w-bw*3, (int)(bw*1.3), w-bw, (int)(bw*1.3));
-		}
-		
-		private boolean isContain(int x, int y) {
-			int w = ((SimpleDisplayObject)getParent()).getWidth();
-			int bw = w/20;
-			int sx = w-bw*4;
-			int sy = (int)(bw*0.8);
-			int ex = w-bw;
-			int ey =(int)(bw*1.4);
-			if(sx<x&&x<ex) {
-				if(sy<y&&y<ey){
-					return true;
-				}
-			}
-			//android.util.Log.v("aaa","sx="+sx+",sy="+sy);
-			//android.util.Log.v("aaa","ex="+ex+",ey="+ey);
-			return false;
-		}
-
-		private void onTouched() {
-			boolean  b = mBuffer.getLineView().fittableToView();
-			mBuffer.getLineView().fittableToView(mOn=!b);
-		}
-
-		private boolean mIsTouched = false;
-		@Override
-		public boolean onTouchTest(int x, int y, int action) {
-			boolean isContain = isContain(x, y);
-			//android.util.Log.v("aaa","x="+x+",y="+y+"b="+isContain);
-			//mIsTouched = isContain;
-			if(!isContain){
-				mIsTouched = false;
-				return false;
-			}
-			switch(action) {
-			case SimpleMotionEvent.ACTION_DOWN:
-				mIsTouched = true;
-				break;
-			case SimpleMotionEvent.ACTION_MOVE:
-				break;
-			case SimpleMotionEvent.ACTION_UP:
-				if(mIsTouched) {
-					onTouched();
-				}
-				break;
-			}
-			return super.onTouchTest(x, y, action);
-		}
-	}
 }
