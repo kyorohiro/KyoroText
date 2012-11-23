@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.io;
 
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.util.ByteArrayBuilder;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 
@@ -10,11 +11,18 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
+import org.apache.http.util.ByteArrayBuffer;
+
 public class SimpleTextDecoder {
 
 	private MarkableReader mReader = null;
 	private CharArrayBuilder mBuffer = new CharArrayBuilder();
 	private FloatArrayBuilder mWidths = new FloatArrayBuilder();
+	private ByteArrayBuilder mSource = new ByteArrayBuilder();
+	private CharsetDecoder mDecoder = null;
+	private ByteBuffer mByteBuffer = ByteBuffer.allocateDirect(32); // bbï¿½Íï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½ï¿½ï¿½
+	private CharBuffer mCharBuffer = CharBuffer.allocate(16); // cbï¿½Íï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½ï¿½ï¿½
+
 	private Charset mCharset = null;
 	private BreakText mBreakText;
 
@@ -40,9 +48,6 @@ public class SimpleTextDecoder {
 		return decodeLine(null);
 	}
 
-	private CharsetDecoder mDecoder = null;
-	private ByteBuffer mByteBuffer = ByteBuffer.allocateDirect(32); // bb‚Í‘‚«‚ß‚éó‘Ô
-	private CharBuffer mCharBuffer = CharBuffer.allocate(16); // cb‚Í‘‚«‚ß‚éó‘Ô
 
 	public CharsetDecoder getCharsetDecoder() {
 		if (mDecoder == null) {
@@ -61,6 +66,7 @@ public class SimpleTextDecoder {
 		mWidths.clear();
 		mByteBuffer.clear();
 		mCharBuffer.clear();
+		mSource.clear();
 		CharsetDecoder decoder = getCharsetDecoder();
 		boolean end = false;
 
@@ -77,10 +83,13 @@ public class SimpleTextDecoder {
 	//	android.util.Log.v("kiyo","textSize="+textSize+","+width);
 		int len = 0;
 
+		int numOfRead = 0;
 		outside: do {
 			int d = mReader.read();
+			numOfRead++;
 			if (d >= 0) {
-				mByteBuffer.put((byte) d); // bb‚Ö‚Ì‘‚«‚İ
+				mByteBuffer.put((byte) d); // bbï¿½Ö‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				mSource.append((byte)d);
 			} else {
 				break;
 			}
@@ -121,12 +130,18 @@ public class SimpleTextDecoder {
 						}
 					}
 					if (len < mBuffer.getCurrentBufferedMojiSize()) {
-						// ‚Ğ‚Æ‚Â‘O‚Å‰üs
-						mBuffer.removeLast();
+						// ï¿½Ğ‚Æ‚Â‘Oï¿½Å‰ï¿½s
+						numOfRead = (int)(mReader.getFilePointer()-todoPrevPosition)/8;
+						for(int i=0;i<numOfRead;i++) {
+							mBuffer.removeLast();
+							mSource.removeLast();
+						}
 						mReader.seek(todoPrevPosition);
+						numOfRead=0;
 						break outside;
 					} else {
 						todoPrevPosition = mReader.getFilePointer();
+						numOfRead = 0;
 					}
 				}
 			}
@@ -137,11 +152,12 @@ public class SimpleTextDecoder {
 			if (!added) {
 				mByteBuffer.compact();
 			}
-			mCharBuffer.clear(); // cb‚ğ‘‚«‚İó‘Ô‚É•ÏX
+			mCharBuffer.clear(); // cbï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İï¿½Ô‚É•ÏX
 		} while (!end);
 		KyoroString ret =new KyoroString(mBuffer.getAllBufferedMoji(),
 				mBuffer.getCurrentBufferedMojiSize());
 		ret.setCash(mWidths.getAllBufferedMoji(),mWidths.getCurrentBufferedMojiSize(), (int)textSize);
+		ret.setCashContent(mSource.getAllBufferedMoji(),mSource.getCurrentBufferedMojiSize());
 		//time2 = System.currentTimeMillis();
 		//android.util.Log.v("kiyo","time a="+(time2-time1));
 		return ret;

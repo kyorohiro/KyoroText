@@ -72,7 +72,6 @@ public class BigLineData {
 		return false;
 	}
 
-
 	public KyoroString readLine() throws IOException {
 		KyoroString tmp = new KyoroString(new char[]{}, 0);
 		int lineNumber = (int) mLinePosition;

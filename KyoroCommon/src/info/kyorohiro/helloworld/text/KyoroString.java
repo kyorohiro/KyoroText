@@ -189,11 +189,28 @@ public class KyoroString  implements CharSequence {
 		font.getTextWidths(this, 0, length(), mCashWidth, font.getFontSize());
 		mIsCahsed = true;
 	}
-	
+
+	public void setCashContent(byte[] content, int len) {
+		if(mCashByte==null||mCashByte.length!=len){
+			mCashByte = new byte[len];
+		}
+		System.arraycopy(content, 0, mCashByte, 0, len);
+	}
+
+	public byte[] getCashContent() {
+		return mCashByte;
+	}
+
 	public float[] getCashWidths() {
 		return mCashWidth;
 	}
 
+	public boolean useCashContent() {
+		if(mCashByte == null|| mCashByte.length ==0){
+			return false;
+		}
+		return true;
+	}
  	public boolean use() {
  		return mIsCahsed;
 	}

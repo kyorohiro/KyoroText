@@ -64,6 +64,8 @@ public class SaveTask implements Runnable {
 			
 			// �ꎞ�ۑ�
 			mStream = new FileOutputStream(mTmpFilePath);
+// version 1
+// ensure same between showing text and saveing text.
 //			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 //				KyoroString str = mBuffer.get(i);
 //				byte[] b = (""+str).getBytes(mCharset);
@@ -71,16 +73,20 @@ public class SaveTask implements Runnable {
 //				Thread.yield();
 //			}
 
+// version 2 
+// ensure non editing text is not change.
 			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);
-				if(str.getBeginPointer()<0||str.getEndPointer()<0){
-					continue;
+				byte[] b = null;
+				if(str.useCashContent()) {
+					b = str.getCashContent();
+				} else {
+					b = (""+str).getBytes(mCharset);
 				}
-				byte[] b = (""+str).getBytes(mCharset);
 				mStream.write(b, 0, b.length);
 				Thread.yield();
 			}
-
+// version 3 now creating
 			// �����̃t�@�C������ʖ��ŋL�^���Ă���
 			mBakFilePath.delete();
 			mSaveFilePath.renameTo(mBakFilePath.getAbsoluteFile());
