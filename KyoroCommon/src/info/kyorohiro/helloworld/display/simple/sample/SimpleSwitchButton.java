@@ -4,10 +4,10 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
-import info.kyorohiro.helloworld.textviewer.manager.StartupCommandBuffer;
+//import info.kyorohiro.helloworld.textviewer.manager.StartupCommandBuffer;
 
 public class SimpleSwitchButton extends SimpleDisplayObject {
-	private StartupCommandBuffer mBuffer = null;
+//	private StartupCommandBuffer mBuffer = null;
 //	private boolean mOn = false;
 	private int mStartX = 0;
 	private int mStartY = 0;
@@ -18,10 +18,10 @@ public class SimpleSwitchButton extends SimpleDisplayObject {
 	private String mLabel = "";
 	private int mPosition = 0;
 	private SwithAction mSwitch = null;
-	public SimpleSwitchButton(StartupCommandBuffer buffer, String label, int position,SwithAction _switch) {
+	public SimpleSwitchButton(String label, int position,SwithAction _switch) {
 		mLabel = label;
 		mPosition = position;
-		mBuffer = buffer;
+//		mBuffer = buffer;
 		mSwitch = _switch;
 	}
 
@@ -70,7 +70,7 @@ public class SimpleSwitchButton extends SimpleDisplayObject {
 	
 
 	private void onTouched() {
-		boolean  b = mBuffer.getLineView().fittableToView();
+//		boolean  b = mBuffer.getLineView().fittableToView();
 		mSwitch.on(!mSwitch.on());
 	}
 

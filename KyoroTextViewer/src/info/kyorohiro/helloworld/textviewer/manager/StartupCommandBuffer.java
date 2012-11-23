@@ -38,8 +38,8 @@ public class StartupCommandBuffer extends TextViewer {
 			getLineView().isCrlfMode(true);
 		}
 		readStartupMessage();
-		addChild(new SimpleSwitchButton(this, "fit", 1, new FitAction(this)));
-		addChild(new SimpleSwitchButton(this, "guard", 3, new GuardAction(this)));
+		addChild(new SimpleSwitchButton("fit", 1, new FitAction(this)));
+		addChild(new SimpleSwitchButton("guard", 3, new GuardAction(this)));
 	}
 	public class FitAction implements SimpleSwitchButton.SwithAction {
 		public TextViewer mViewer = null;
