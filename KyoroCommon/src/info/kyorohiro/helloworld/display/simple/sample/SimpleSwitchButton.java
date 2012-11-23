@@ -1,11 +1,12 @@
-package info.kyorohiro.helloworld.textviewer.manager;
+package info.kyorohiro.helloworld.display.simple.sample;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
+import info.kyorohiro.helloworld.textviewer.manager.StartupCommandBuffer;
 
-public class Button extends SimpleDisplayObject {
+public class SimpleSwitchButton extends SimpleDisplayObject {
 	private StartupCommandBuffer mBuffer = null;
 //	private boolean mOn = false;
 	private int mStartX = 0;
@@ -17,7 +18,7 @@ public class Button extends SimpleDisplayObject {
 	private String mLabel = "";
 	private int mPosition = 0;
 	private SwithAction mSwitch = null;
-	public Button(StartupCommandBuffer buffer, String label, int position,SwithAction _switch) {
+	public SimpleSwitchButton(StartupCommandBuffer buffer, String label, int position,SwithAction _switch) {
 		mLabel = label;
 		mPosition = position;
 		mBuffer = buffer;
@@ -62,7 +63,7 @@ public class Button extends SimpleDisplayObject {
 		}
 	}
 
-	interface SwithAction {
+	public interface SwithAction {
 		boolean on();
 		void on(boolean value);
 	}
