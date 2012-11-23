@@ -17,6 +17,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+import info.kyorohiro.helloworld.textviewer.manager.Button.SwithAction;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.util.Utility;
 import android.R.dimen;
@@ -37,8 +38,37 @@ public class StartupCommandBuffer extends TextViewer {
 			getLineView().isCrlfMode(true);
 		}
 		readStartupMessage();
-		addChild(new Button(this, "fit", 1));
-		addChild(new Button(this, "guard", 3));
+		addChild(new Button(this, "fit", 1, new FitAction(this)));
+		addChild(new Button(this, "guard", 3, new GuardAction(this)));
+	}
+	public class FitAction implements Button.SwithAction {
+		public TextViewer mViewer = null;
+		public FitAction(TextViewer viewer) {
+			mViewer = viewer;
+		}
+		@Override
+		public boolean on() {
+			return mViewer.getLineView().fittableToView();
+		}
+		@Override
+		public void on(boolean value) {
+			mViewer.getLineView().fittableToView(value);
+		}		
+	}
+
+	public class GuardAction implements Button.SwithAction {
+		public TextViewer mViewer = null;
+		public GuardAction(TextViewer viewer) {
+			mViewer = viewer;
+		}
+		@Override
+		public boolean on() {
+			return mViewer.isGuard();
+		}
+		@Override
+		public void on(boolean value) {
+			mViewer.isGuard(value);
+		}		
 	}
 
 	@Override

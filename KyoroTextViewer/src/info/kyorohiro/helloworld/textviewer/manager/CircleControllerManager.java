@@ -10,8 +10,8 @@ import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 
 public class CircleControllerManager {
 	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFAA44");
-	public static String MENU_GUARD_ON = "GUARD_ON";
-	public static String MENU_GUARD_OFF = "GUARD_OFF";
+//	public static String MENU_GUARD_ON = "GUARD_ON";
+//	public static String MENU_GUARD_OFF = "GUARD_OFF";
 
 	public void init() {
 		SimpleCircleControllerMenuPlus circleMenu = LineViewManager.getManager().getCircleMenu();
@@ -32,8 +32,8 @@ public class CircleControllerManager {
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-		circleMenu.addCircleMenu(0, MENU_GUARD_ON);
-		circleMenu.addCircleMenu(0, MENU_GUARD_OFF);
+//		circleMenu.addCircleMenu(0, MENU_GUARD_ON);
+//		circleMenu.addCircleMenu(0, MENU_GUARD_OFF);
 	}
 	public boolean _circleSelected(CharSequence title) {
 		SimpleCircleControllerMenuPlus circleMenu = LineViewManager.getManager().getCircleMenu();
@@ -66,10 +66,10 @@ public class CircleControllerManager {
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 			PastTask.pasteStart();
-		} else if(title.equals(MENU_GUARD_ON)) {
-			textviewer.isGuard(true);
-		} else if(title.equals(MENU_GUARD_OFF)) {
-			textviewer.isGuard(false);			
+//		} else if(title.equals(MENU_GUARD_ON)) {
+//			textviewer.isGuard(true);
+//		} else if(title.equals(MENU_GUARD_OFF)) {
+//			textviewer.isGuard(false);			
 		}
 		return false;
 

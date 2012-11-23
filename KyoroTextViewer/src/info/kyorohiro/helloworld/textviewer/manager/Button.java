@@ -7,7 +7,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 
 public class Button extends SimpleDisplayObject {
 	private StartupCommandBuffer mBuffer = null;
-	private boolean mOn = false;
+//	private boolean mOn = false;
 	private int mStartX = 0;
 	private int mStartY = 0;
 	private int mEndX = 0;
@@ -16,11 +16,12 @@ public class Button extends SimpleDisplayObject {
 	private int mFinY = 0;
 	private String mLabel = "";
 	private int mPosition = 0;
-	public Button(StartupCommandBuffer buffer, String label, int position) {
+	private SwithAction mSwitch = null;
+	public Button(StartupCommandBuffer buffer, String label, int position,SwithAction _switch) {
 		mLabel = label;
 		mPosition = position;
 		mBuffer = buffer;
-		mOn = mBuffer.getLineView().fittableToView();
+		mSwitch = _switch;
 	}
 
 	private void calcPosition() {
@@ -46,7 +47,7 @@ public class Button extends SimpleDisplayObject {
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		calcPosition();
-		if(mOn) {
+		if(mSwitch.on()) {
 			graphics.setColor(SimpleGraphicUtil.parseColor("#55FF0000"));
 		} else {
 			graphics.setColor(SimpleGraphicUtil.parseColor("#55FFFF00"));				
@@ -61,10 +62,15 @@ public class Button extends SimpleDisplayObject {
 		}
 	}
 
+	interface SwithAction {
+		boolean on();
+		void on(boolean value);
+	}
+	
 
 	private void onTouched() {
 		boolean  b = mBuffer.getLineView().fittableToView();
-		mBuffer.getLineView().fittableToView(mOn=!b);
+		mSwitch.on(!mSwitch.on());
 	}
 
 	private boolean mIsTouched = false;
@@ -83,7 +89,7 @@ public class Button extends SimpleDisplayObject {
 			mPrevX = x;
 			mPrevY = y;
 			mX = 0;
-			mY = 0;
+			mY = 0;                                                                                                                                                                              
 			break;
 		case SimpleMotionEvent.ACTION_MOVE:
 			if(mIsTouched){
