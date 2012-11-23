@@ -130,10 +130,9 @@ public class SimpleTextDecoder {
 						}
 					}
 					if (len < mBuffer.getCurrentBufferedMojiSize()) {
-						// �ЂƂO�ŉ�s
-						numOfRead = (int)(mReader.getFilePointer()-todoPrevPosition)/8;
+						numOfRead = (int)(mReader.getFilePointer()-todoPrevPosition);
+						mBuffer.removeLast();
 						for(int i=0;i<numOfRead;i++) {
-							mBuffer.removeLast();
 							mSource.removeLast();
 						}
 						mReader.seek(todoPrevPosition);
