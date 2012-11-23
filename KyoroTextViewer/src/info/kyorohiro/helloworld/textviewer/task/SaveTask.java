@@ -15,6 +15,12 @@ import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.util.Utility;
 
+//
+// 2012/11/23 
+// todo
+// now all text is convert to utf8
+// next modify text only is covert utf8 and save 
+//
 public class SaveTask implements Runnable {
 
 	private TextViewer mViewer = null;
@@ -56,7 +62,7 @@ public class SaveTask implements Runnable {
 			save_init();
 
 			
-			// ˆêŽž•Û‘¶
+			// ï¿½êŽžï¿½Û‘ï¿½
 			mStream = new FileOutputStream(mTmpFilePath);
 			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);
@@ -65,11 +71,11 @@ public class SaveTask implements Runnable {
 				Thread.yield();
 			}
 
-			// “¯–¼‚Ìƒtƒ@ƒCƒ‹–¼‚ð•Ê–¼‚Å‹L˜^‚µ‚Ä‚¨‚­
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê–ï¿½ï¿½Å‹Lï¿½^ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 			mBakFilePath.delete();
 			mSaveFilePath.renameTo(mBakFilePath.getAbsoluteFile());
 			
-			// ˆêŽž•Û‘¶‚µ‚½ƒtƒ@ƒCƒ‹‚ðˆÚ“®‚·‚éB
+			// ï¿½êŽžï¿½Û‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½B
 			mTmpFilePath.renameTo(mSaveFilePath.getAbsoluteFile());
 		}
 		finally {
