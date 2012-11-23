@@ -5,7 +5,9 @@ import info.kyorohiro.helloworld.display.simple.SimpleFont;
 ///*
 public class KyoroString  implements CharSequence {
 	public char[] mContent = null;
-	private float[] _mCash = null;
+	private float[] mCashWidth = null;
+	private byte[] mCashByte = null;
+
 	private int _mFontSize = 0;
 	private long mLinePosition = 0;
 	private boolean mIncludeLF = false;
@@ -15,6 +17,9 @@ public class KyoroString  implements CharSequence {
 	// file buffer
 	private long mBeginPoint = -1;
 	private long mEndPoint = -1;
+	private boolean mIsCahsed = false;
+	private int mPargedLF_CRLF = 0;
+	private int mPargedEND = 0;
 
 	
 	public static KyoroString newKyoroStringWithLF(CharSequence content, int color) {
@@ -49,10 +54,10 @@ public class KyoroString  implements CharSequence {
 		init(contentBuffer, 0, len);
 		mColor = color;
 	}
+
 	private void init(char[] content, int start, int end) {
 		int length = end-start;
 		mContent = new char[length];
-		_mCash = new float[length];
 //		android.util.Log.v("kiyo","dd="+start+",end="+end+","+length+",c="+content.length);
 		System.arraycopy(content, start, mContent, 0, length);
 		if(mContent.length >0 && mContent[length-1]=='\n'){
@@ -65,11 +70,10 @@ public class KyoroString  implements CharSequence {
 		}
 	}
 
-	private int mPargedLF_CRLF = 0;
-	private int mPargedEND = 0;
 	public void pargeLF(boolean includeCR) {
 		mPargedLF_CRLF = length()-lengthWithoutLF(includeCR)+mPargedEND;
 	}
+
 	public void pargeEnd() {
 		mPargedEND++;
 	}
@@ -78,6 +82,7 @@ public class KyoroString  implements CharSequence {
 		mPargedLF_CRLF = 0;
 		mPargedEND = 0;
 	}
+
 	@Override
 	public char charAt(int index) {
 		return mContent[index];
@@ -158,48 +163,39 @@ public class KyoroString  implements CharSequence {
 	public void setColor(int color) {
 		mColor = color;
 	}
+
 	public void setCash(float[] buffer, int len, int fontSize) {
 		_mFontSize = fontSize;
-		if(len >_mCash.length){
-			len = _mCash.length;
+		if(mCashWidth == null) {
+			// todo maybe be throw exception o rreturn false;
+			return;
 		}
-		System.arraycopy(buffer, 0, _mCash, 0, len);
+		if(len >mCashWidth.length){
+			len = mCashWidth.length;
+		}
+		System.arraycopy(buffer, 0, mCashWidth, 0, len);
 	}
+
 	public float getCashZoomSize(int size) {
 		float ret = (float)size/_mFontSize;
-//		android.util.Log.v("time","ret="+ret);
 		return ret;
 	}
-	public void setCash(SimpleFont font, int fontSize) {
-//		_mFontSize = fontSize;
+
+	public void setCashWidths(SimpleFont font, int fontSize) {
+		if(mCashWidth == null||mCashByte.length <mContent.length) {
+			mCashWidth = new float[mContent.length];
+		}
 		_mFontSize = (int)font.getFontSize();
-		font.getTextWidths(this, 0, length(), _mCash, font.getFontSize());
+		font.getTextWidths(this, 0, length(), mCashWidth, font.getFontSize());
 		mIsCahsed = true;
 	}
 	
-	public float[] getCash() {
-		return _mCash;
+	public float[] getCashWidths() {
+		return mCashWidth;
 	}
-	private boolean mIsCahsed = false;
- 	public boolean use(int fostSize) {
+
+ 	public boolean use() {
  		return mIsCahsed;
 	}
-//
-//	private int mPointer = 0;
-//	private int mLength = 512;
-//	private char[] mBuffer = new char[mLength];
-//
-//	public void append(char moji){
-//		if(mPointer >= mLength){
-//			mLength *=2;
-//			char[] tmp = new char[mLength*2];
-//			for(int i=0;i<mBuffer.length;i++) {
-//				tmp[i] = mBuffer[i];
-//			}
-//			mBuffer = tmp;
-//		}
-//		mBuffer[mPointer] = moji;
-//		mPointer++;
-//	}
-//
+
 }

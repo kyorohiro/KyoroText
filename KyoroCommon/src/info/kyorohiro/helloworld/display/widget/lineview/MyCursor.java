@@ -228,14 +228,14 @@ public class MyCursor extends SimpleDisplayObject {
 			try {
 				if (d != null) {
 					l=getCursorRow();
-					if(!d.use(-1)){
+					if(!d.use()){
 					//	android.util.Log.v("kiyo","cursor:l="+l+","+mParent.get().getShowingTextSize()+","+d);
-						d.setCash(mParent.get().getBreakText().getSimpleFont(),
+						d.setCashWidths(mParent.get().getBreakText().getSimpleFont(),
 								(int)mParent.get().getBreakText().getSimpleFont().getFontSize());	
 //								mParent.get().getShowingTextSize());
 					}
 					//android.util.Log.v("kiyo","cursor:--2--"+l);
-					float[] ws = d.getCash();
+					float[] ws = d.getCashWidths();
 
 					//android.util.Log.v("kiyo","cursor:--3--"+x);
 					for (int i = 0; i < l; i++) {

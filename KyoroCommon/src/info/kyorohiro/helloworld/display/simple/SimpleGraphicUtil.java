@@ -51,13 +51,13 @@ public class SimpleGraphicUtil {
 		//long eTime = 0;
 		try{
 			//sTime = System.currentTimeMillis();
-			if(!text.use(textSize)){
-				text.setCash(font, textSize);
+			if(!text.use()){
+				text.setCashWidths(font, textSize);
 			}
 			end = text.length();
 			SimpleGraphicsForAndroid andrographics = (SimpleGraphicsForAndroid)graphics;
 			float zoom = text.getCashZoomSize(textSize);
-			andrographics.drawPosText(buffer, text.getCash(), zoom, start, end,x, y);
+			andrographics.drawPosText(buffer, text.getCashWidths(), zoom, start, end,x, y);
 			drawControlCode(graphics, text, zoom, x, y, textSize);
 		}finally{
 			//eTime = System.currentTimeMillis();
@@ -91,16 +91,16 @@ public class SimpleGraphicUtil {
 				}else {	
 					graphics.setColor(sControlCodeColoe20);
 				}
-				SimpleGraphicUtil.drawControlCodeRect(graphics, SimpleGraphics.STYLE_STROKE, (int)(x+t*zoom), y, (int)(st.getCash()[i]*zoom), -textSize);
+				SimpleGraphicUtil.drawControlCodeRect(graphics, SimpleGraphics.STYLE_STROKE, (int)(x+t*zoom), y, (int)(st.getCashWidths()[i]*zoom), -textSize);
 				for(int n=0;n<r.length();n++){
 					line[j] = r.charAt(n);
-					widths[j] = st.getCash()[i]/r.length();
+					widths[j] = st.getCashWidths()[i]/r.length();
 					t += widths[j];
 					j++;
 				}
 			} else {
 				line[j] = ' ';
-				widths[j] = st.getCash()[i];
+				widths[j] = st.getCashWidths()[i];
 				t += widths[j];
 				j++;
 			}

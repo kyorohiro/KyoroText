@@ -64,8 +64,18 @@ public class SaveTask implements Runnable {
 			
 			// �ꎞ�ۑ�
 			mStream = new FileOutputStream(mTmpFilePath);
+//			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
+//				KyoroString str = mBuffer.get(i);
+//				byte[] b = (""+str).getBytes(mCharset);
+//				mStream.write(b, 0, b.length);
+//				Thread.yield();
+//			}
+
 			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
 				KyoroString str = mBuffer.get(i);
+				if(str.getBeginPointer()<0||str.getEndPointer()<0){
+					continue;
+				}
 				byte[] b = (""+str).getBytes(mCharset);
 				mStream.write(b, 0, b.length);
 				Thread.yield();
