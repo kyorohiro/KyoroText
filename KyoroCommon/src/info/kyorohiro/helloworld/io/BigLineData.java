@@ -16,8 +16,9 @@ public class BigLineData {
 
 	private File mPath;
 	private String mCharset = "utf8";
-	private MarkableFileReader mReader = null;
+	private MarkableReader mReader = null;
 	private SimpleTextDecoder mDecoder = null;
+	private static final String EOF ="\0";
 	
 
 	private long mCurrentPosition = 0;
@@ -39,6 +40,13 @@ public class BigLineData {
 		mPath = path;
 		mCharset = charset;
 		mReader = new MarkableFileReader(mPath, 1024*2);
+		/*
+		try {
+			mReader = new MarkableReaderPlusEOF(new MarkableFileReader(mPath, 1024*2));
+		} catch (IOException e) {
+			// TODO should throws IOException
+			e.printStackTrace();
+		}*/
 		mPositionPer100Line.add(0l);
 		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
 	}
@@ -93,6 +101,10 @@ public class BigLineData {
 		tmp.setLinePosition(lineNumber);
 		tmp.setBeginPointer(begin);
 		tmp.setEndPointer(end);
+		if(end==mReader.length()){
+			// 応急処置
+			tmp.includeEOF(true);
+		}
 		return tmp;
 	}
 

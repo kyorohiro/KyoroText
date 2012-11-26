@@ -12,6 +12,7 @@ public class KyoroString  implements CharSequence {
 	private long mLinePosition = 0;
 	private boolean mIncludeLF = false;
 	private boolean mIncludeCRLF = false;
+	private boolean mIncludeEOF = false;
 	private int mColor = 0;
 
 	// file buffer
@@ -67,7 +68,11 @@ public class KyoroString  implements CharSequence {
 			}
 		} else {
 			mIncludeLF = false;
-		}
+		} 
+	}
+
+	public void includeEOF(boolean eof) {
+		mIncludeEOF = eof;
 	}
 
 	public void pargeLF(boolean includeCR) {
@@ -132,6 +137,12 @@ public class KyoroString  implements CharSequence {
 		return mIncludeLF;
 	}
 
+	public boolean includeEOF() {
+		//if(mIncludeEOF){
+		//	android.util.Log.v("kiyo","-EOF");
+		//}
+		return mIncludeEOF;
+	}
 	public void setBeginPointer(long pointer){
 		mBeginPoint = pointer;
 	}

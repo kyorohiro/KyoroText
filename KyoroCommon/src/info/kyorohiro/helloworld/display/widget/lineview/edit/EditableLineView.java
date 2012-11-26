@@ -110,7 +110,7 @@ public class EditableLineView extends CursorableLineView {
 		MyInputConnection c = getMyInputConnection();
 		if (c == null) {
 			return;
-		} // <-- �ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾆゑｿｽ�ｽ驍ｱ�ｽﾆはなゑｿｽ
+		} 
 		getLeft().setMessage(c.getComposingText());
 	}
 
@@ -119,7 +119,7 @@ public class EditableLineView extends CursorableLineView {
 		MyInputConnection c = getMyInputConnection();
 		if (c == null) {
 			return;
-		} // <-- �ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾆゑｿｽ�ｽ驍ｱ�ｽﾆはなゑｿｽ
+		} 
 		String[] lines = clip.toString().split("\r\n|\n");
 		for(int i=0;i<lines.length;i++) {
 			c.addCommitText(lines[i], 1);
