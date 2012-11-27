@@ -20,6 +20,11 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 	}
 
 	@Override
+	public boolean isSync() {
+		return true;
+	}
+
+	@Override
 	public KyoroString get(int i) {
 		return new KyoroString(""+i, i);
 	}

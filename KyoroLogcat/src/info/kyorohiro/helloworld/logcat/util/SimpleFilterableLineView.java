@@ -202,7 +202,10 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		public void isSync(boolean isSync) {
 			// èÌÇ…SYNC
 		}
-
+		@Override
+		public boolean isSync() {
+			return true;
+		}
 		@Override
 		public void dispose() {
 			// TODO Auto-generated method stub

@@ -25,6 +25,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 
 	public TextViewerBuffer(int listSize, BreakText breakText, File path, String charset) throws FileNotFoundException {
 		super(listSize);
+		mErrorLineMessage.isNowLoading(true);
+		mLoadingLineMessage.isNowLoading(true);
 		mLineManagerFromFile = new BigLineData(path, charset, breakText);
 		mCashing = new LookAheadCaching(this);
 	}
@@ -202,5 +204,9 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		 if(isSync){
 			 mCashing.stopTask();
 		 }
+	}
+	@Override
+	public boolean isSync() {
+		return mIsSync;
 	}
 }

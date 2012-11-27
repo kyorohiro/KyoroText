@@ -21,7 +21,13 @@ public class KyoroString  implements CharSequence {
 	private boolean mIsCahsed = false;
 	private int mPargedLF_CRLF = 0;
 	private int mPargedEND = 0;
-
+	private boolean mIsNowLoading = false;
+	public void isNowLoading(boolean v) {
+		mIsNowLoading = v;
+	}	
+	public boolean isNowLoading() {
+		return mIsNowLoading;
+	}
 	
 	public static KyoroString newKyoroStringWithLF(CharSequence content, int color) {
 		if(content.charAt(content.length()-1)!='\n'){

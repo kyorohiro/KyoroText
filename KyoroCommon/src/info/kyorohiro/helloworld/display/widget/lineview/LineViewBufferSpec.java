@@ -7,6 +7,7 @@ public interface LineViewBufferSpec {
 	public int getNumOfAdd();
 	public void clearNumOfAdd();
 	public void isSync(boolean isSync);
+	public boolean isSync();
 	public KyoroString get(int i);
 	public int getNumberOfStockedElement();
 	public int getMaxOfStackedElement();

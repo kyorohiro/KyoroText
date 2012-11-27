@@ -46,6 +46,11 @@ public class ManagedLineViewBuffer implements LineViewBufferSpec {
 	}
 
 	@Override
+	public boolean isSync() {
+		return mBase.isSync();
+	}
+
+	@Override
 	public KyoroString get(int i) {
 		return mBase.get(i);
 	}
