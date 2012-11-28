@@ -82,5 +82,10 @@ public class ManagedLineViewBuffer implements LineViewBufferSpec {
 			mBase.dispose();
 		}
 	}
+
+	@Override
+	public boolean isLoading() {
+		return mBase.isLoading();
+	}
 	
 }

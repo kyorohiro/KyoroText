@@ -55,4 +55,10 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 		
 	}
 
+	@Override
+	public boolean isLoading() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

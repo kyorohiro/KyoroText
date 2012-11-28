@@ -24,10 +24,12 @@ public class DifferGetAction extends CheckAction {
 		differ.checkAllSortedLine(this);
 		try {
 			if (isDiffer()) {
+				//android.util.Log.v("kiyo","---A="+mRe);
 				return new KyoroString(mRe, SimpleGraphicUtil.BLACK);
 			} else {
 				// android.util.Log.i("text","lll="+mIndexFromBase+","+mPrevEnd+","+mIndex+","+mDiffLength+","+
 				// mDeleteLength);
+				//android.util.Log.v("kiyo","---B=");
 				return spec.get(mIndexFromBase);
 			}
 		} finally {

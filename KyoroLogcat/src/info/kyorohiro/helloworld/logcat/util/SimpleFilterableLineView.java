@@ -211,6 +211,11 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public boolean isLoading() {
+			return true;
+		}
 		
 	}
 }

@@ -67,6 +67,20 @@ public class BigLineData {
 		}
 	}
 
+	public boolean wasEOF() {
+		try {
+			//android.util.Log.v("kiyo","reader="+mReader.length()+","+mLastFilePointer);
+			if (mReader.length() > mLastFilePointer) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
 	public boolean isEOF() {
 		try {
 			if (mReader.length() <= mReader.getFilePointer()) {
@@ -80,6 +94,7 @@ public class BigLineData {
 		return false;
 	}
 
+	private long mLastFilePointer = 0;
 	public KyoroString readLine() throws IOException {
 		KyoroString tmp = new KyoroString(new char[]{}, 0);
 		int lineNumber = (int) mLinePosition;
@@ -94,6 +109,9 @@ public class BigLineData {
 			if (mLastLinePosition < mLinePosition) {
 				mLastLinePosition = mLinePosition;
 			}
+			if (mLastFilePointer < end) {
+				mLastFilePointer = end;
+			}			
 			updateIndex();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -102,6 +120,7 @@ public class BigLineData {
 		tmp.setBeginPointer(begin);
 		tmp.setEndPointer(end);
 		if(end==mReader.length()){
+			//android.util.Log.v("kiyo","end="+mReader.length()+","+mLastFilePointer);
 			// 応急処置
 			tmp.includeEOF(true);
 		}

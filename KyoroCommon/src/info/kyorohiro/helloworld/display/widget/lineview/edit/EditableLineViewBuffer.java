@@ -56,7 +56,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	@Override
 	public synchronized int getNumberOfStockedElement() {
-		return mOwner.getNumberOfStockedElement() + mDiffer.length();
+//		android.util.Log.v("kiyo","len="+mDiffer.length() );
+		return mOwner.getNumberOfStockedElement() + mDiffer.length() ;
 	}
 
 	private boolean isNormalize = false;
@@ -148,19 +149,26 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			mDiffer.setLine(mCursorLine, lf);
 			mCursorLine += 1;
 			mCursorRow = 0;
-			if(removelf) {
-				mDiffer.addLine(mCursorLine, c.subSequence(0, c.lengthWithoutLF(mIsCrlfMode)));
+
+			if(c.includeLF()) {
+				mDiffer.addLine(mCursorLine, c);
 			} else {
-				mDiffer.addLine(mCursorLine, c);				
+				int _col = mCursorLine;
+				int _row = mCursorRow;
+				commit(c,1);
+				setCursor(_row, _col);				
 			}
 		} else {
 			mDiffer.setLine(mCursorLine, c.subSequence(0, row) + lf);
 			mCursorLine += 1;
 			mCursorRow = 0;
-			if(removelf) {
-				mDiffer.addLine(mCursorLine, c.subSequence(row, c.lengthWithoutLF(mIsCrlfMode)));
-			} else {
+			if(c.includeLF()) {
 				mDiffer.addLine(mCursorLine, c.subSequence(row, c.length()));				
+			} else {
+				int _col = mCursorLine;
+				int _row = mCursorRow;
+				commit(c.subSequence(row, c.length()), mCursorLine);
+				setCursor(_row, _col);
 			}
 		}
 	}
@@ -191,7 +199,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	private synchronized boolean isEOF(int index) {
 		int length = getNumberOfStockedElement();
 		index += 1;
-		if (index < length) {
+		if (index < length||isLoading()) {
 			return false;
 		} else {
 			return true;
@@ -433,14 +441,15 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			}
 
 			CharSequence ct = "";
-			if (0 < getNumberOfStockedElement()) {
+			if (cursorLine < getNumberOfStockedElement()) {
 				ct = get(cursorLine);
 			}
 			if (cursorRow >= ct.length()) {
 				cursorRow = ct.length();
 			}
+			//android.util.Log.v("kiyo", "__f0=" + ct+","+".");
 			KyoroString f = composeString(ct, cursorRow, text);
-			// android.util.Log.v("kiyo", "_f0=" + f+","+cursorLine+"."+cursor);
+//			android.util.Log.v("kiyo", "__f0=" + f+","+cursorLine+"."+cursor);
 
 			int w = this.getBreakText().getWidth();
 			int breakLinePoint = 0;
@@ -461,6 +470,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				//
 				breakLinePoint = BreakText.breakText(getBreakText(), f, 0,
 						f.length());
+//				android.util.Log.v("kiyo", "f0 len="+breakLinePoint+","+f.length());
 				currentLineLength = f.length();
 				// android.util.Log.v("kiyo", "_aaa0=" +
 				// i+",row="+mCursorRow+",col="+mCursorLine);
@@ -481,8 +491,17 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 				if (g >= 0) {
 					g = 0;
-					mDiffer.setLine(cursorLine,
-							f.subSequence(0, breakLinePoint));
+//.util.Log.v("kiyo", "f0 line="+cursorLine+","+getNumberOfStockedElement());
+					if(cursorLine < getNumberOfStockedElement()){
+						mDiffer.setLine(cursorLine,
+								f.subSequence(0, breakLinePoint));
+					} else {
+						mDiffer.addLine(cursorLine,
+								f.subSequence(0, breakLinePoint));						
+					}
+//					if(true){
+//						break;
+//					}
 					if ((currentLineLength + g) > breakLinePoint) {
 						cursorLine += 1;
 						cursorRow = 0;
@@ -550,6 +569,11 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	@Override
 	public synchronized void dispose() {
 		mOwner.dispose();
+	}
+
+	@Override
+	public boolean isLoading() {
+		return mOwner.isLoading();
 	}
 
 }

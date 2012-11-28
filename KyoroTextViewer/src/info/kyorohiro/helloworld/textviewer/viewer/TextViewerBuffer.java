@@ -106,10 +106,11 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	}
 
 	private KyoroString getSync(int i) {
+//		android.util.Log.v("kiyo","---"+i+"---"+isLoading());
 		if (i < 0) {
 			return mErrorLineMessage;
 		}
-		else if(i>=getNumberOfStockedElement()) {
+		else if(i>=getNumberOfStockedElement()&&!isLoading()) {
 			return mErrorLineMessage;
 		}
 		try {
@@ -208,5 +209,10 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	@Override
 	public boolean isSync() {
 		return mIsSync;
+	}
+
+	@Override
+	public boolean isLoading() {
+		return !mLineManagerFromFile.wasEOF();
 	}
 }

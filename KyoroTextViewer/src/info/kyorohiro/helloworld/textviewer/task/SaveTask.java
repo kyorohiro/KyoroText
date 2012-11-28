@@ -75,8 +75,9 @@ public class SaveTask implements Runnable {
 
 // version 2 
 // ensure non editing text is not change.
-			for(int i=0;i<mBuffer.getNumberOfStockedElement();i++) {
+			for(int i=0;i<mBuffer.getNumberOfStockedElement()||mBuffer.isLoading();i++) {
 				KyoroString str = mBuffer.get(i);
+//				android.util.Log.v("kiyo","["+i+"]"+mBuffer.getNumberOfStockedElement()+","+str);
 				byte[] b = null;
 				if(str.useCashContent()) {
 					b = str.getCashContent();
