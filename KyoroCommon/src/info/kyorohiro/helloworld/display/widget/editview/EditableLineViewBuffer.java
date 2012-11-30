@@ -1,8 +1,8 @@
 package info.kyorohiro.helloworld.display.widget.editview;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.editview.Differ;
 import info.kyorohiro.helloworld.display.widget.editview.IMEClient;
+import info.kyorohiro.helloworld.display.widget.editview.differ.Differ;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 

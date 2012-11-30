@@ -1,10 +1,10 @@
-package info.kyorohiro.helloworld.display.widget.editview;
+package info.kyorohiro.helloworld.display.widget.editview.differ;
 
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.editview.DeleteLine;
-import info.kyorohiro.helloworld.display.widget.editview.DifferAddAction;
-import info.kyorohiro.helloworld.display.widget.editview.DifferDeleteAction;
-import info.kyorohiro.helloworld.display.widget.editview.DifferGetAction;
+import info.kyorohiro.helloworld.display.widget.editview.differ.DeleteLine;
+import info.kyorohiro.helloworld.display.widget.editview.differ.DifferAddAction;
+import info.kyorohiro.helloworld.display.widget.editview.differ.DifferDeleteAction;
+import info.kyorohiro.helloworld.display.widget.editview.differ.DifferGetAction;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 import java.util.LinkedList;
