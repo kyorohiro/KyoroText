@@ -1,6 +1,6 @@
-package info.kyorohiro.helloworld.display.widget.lineview.edit;
+package info.kyorohiro.helloworld.display.widget.editview;
 
-import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.Line;
+import info.kyorohiro.helloworld.display.widget.editview.Differ.Line;
 
 import java.util.ArrayList;
 
@@ -51,7 +51,7 @@ public class DeleteLine  implements Line {
 
 	@Override
 	public void insert(int index, CharSequence line) {
-		// ‰½‚à‚µ‚È‚¢
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
 	}
 
 	@Override

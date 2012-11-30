@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
+import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
-import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;

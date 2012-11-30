@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget.lineview.edit;
+package info.kyorohiro.helloworld.display.widget.editview;
 
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
@@ -7,6 +7,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 
 /**
  * This Class

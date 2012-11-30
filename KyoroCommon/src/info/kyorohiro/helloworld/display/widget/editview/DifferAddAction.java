@@ -1,8 +1,12 @@
-package info.kyorohiro.helloworld.display.widget.lineview.edit;
+package info.kyorohiro.helloworld.display.widget.editview;
 
 import java.util.LinkedList;
-import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.CheckAction;
-import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.Line;
+
+import info.kyorohiro.helloworld.display.widget.editview.Differ.CheckAction;
+import info.kyorohiro.helloworld.display.widget.editview.Differ.Line;
+import info.kyorohiro.helloworld.display.widget.editview.AddLine;
+import info.kyorohiro.helloworld.display.widget.editview.DeleteLine;
+import info.kyorohiro.helloworld.display.widget.editview.Differ;
 
 public class DifferAddAction extends CheckAction {
 	private int mPrevEnd = 0;
@@ -50,13 +54,13 @@ public class DifferAddAction extends CheckAction {
 					mFind = true;
 					return false;
 			} else 
-			// ”ÍˆÍ“à‚©—×Ú‚µ‚Ä‚¢‚éê‡
+			// ï¿½ÍˆÍ“ï¿½ï¿½ï¿½ï¿½×Ú‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡
 			if (!(l instanceof DeleteLine)&&start <= mIndex && mIndex <= end) {
 				mFind = true;
 				l.insert(mIndex - start, mLine);
 				return false;
 			}
-			// ‘O‚É‘¶İ‚·‚éê‡
+			// ï¿½Oï¿½É‘ï¿½ï¿½İ‚ï¿½ï¿½ï¿½ê‡
 			return true;
 		} finally {
 			mPrevEnd = end;

@@ -1,11 +1,13 @@
-package info.kyorohiro.helloworld.display.widget.lineview.edit;
+package info.kyorohiro.helloworld.display.widget.editview;
 
 import java.util.LinkedList;
 
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
+import info.kyorohiro.helloworld.display.widget.editview.Differ.CheckAction;
+import info.kyorohiro.helloworld.display.widget.editview.Differ.Line;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.CheckAction;
-import info.kyorohiro.helloworld.display.widget.lineview.edit.Differ.Line;
+import info.kyorohiro.helloworld.display.widget.editview.DeleteLine;
+import info.kyorohiro.helloworld.display.widget.editview.Differ;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class DifferGetAction extends CheckAction {

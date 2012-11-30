@@ -6,9 +6,9 @@ import java.lang.ref.WeakReference;
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
+import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
+import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
-import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.edit.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
@@ -24,8 +24,8 @@ import android.view.MenuItem;
 
 
 //
-// ‚±‚ÌƒR[ƒh‚Í‹ßXíœ‚·‚éB
-// ¦ ƒƒjƒ…[‚Ìg—p‚Í‚â‚ß‚é—\’è‚È‚Ì‚ÅA“®‚¯‚Î—Ç‚¢ˆµ‚¢‚Æ‚·‚éB
+// ï¿½ï¿½ï¿½ÌƒRï¿½[ï¿½hï¿½Í‹ßXï¿½íœï¿½ï¿½ï¿½ï¿½B
+// ï¿½ï¿½ ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½Ìgï¿½pï¿½Í‚ï¿½ß‚ï¿½\ï¿½ï¿½È‚Ì‚ÅAï¿½ï¿½ï¿½ï¿½ï¿½Î—Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½B
 public class MainActivitySaveFileAction implements MainActivityMenuAction {
 
 	public static String TITLE = "save";

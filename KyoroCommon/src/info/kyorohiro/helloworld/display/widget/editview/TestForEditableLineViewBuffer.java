@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget.lineview.edit;
+package info.kyorohiro.helloworld.display.widget.editview;
 
 import junit.framework.TestCase;
 
