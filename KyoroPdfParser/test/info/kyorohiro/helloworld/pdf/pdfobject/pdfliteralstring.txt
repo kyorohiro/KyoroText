@@ -1,4 +1,0 @@
-(This is a string)
-(Strings may contain newlines
-and such.)(aa(b)cc)
-()(\(\))

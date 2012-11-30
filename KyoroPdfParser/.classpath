@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="info/kyorohiro/helloworld/android/|info/kyorohiro/helloworld/display/|info/kyorohiro/helloworld/test/|info/kyorohiro/helloworld/util/" including="info/kyorohiro/helloworld/io/VirtualMemory.java" kind="src" path="src_common"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
-	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
