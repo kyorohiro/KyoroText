@@ -86,14 +86,14 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());
 		switch(event.getAction()) {
 		case KeyEvent.ACTION_DOWN:
-			if(event.getKeyCode()==0x72||
-			event.getKeyCode()==0x71) {
+			if(event.getKeyCode()==KeyEvent.KEYCODE_CTRL_LEFT||
+			event.getKeyCode()==KeyEvent.KEYCODE_CTRL_RIGHT) {
 				mPushingCtl = true;
 			}
 			break;
 		case KeyEvent.ACTION_UP:
-			if(event.getKeyCode()==0x72||
-			event.getKeyCode()==0x71) {
+			if(event.getKeyCode()==KeyEvent.KEYCODE_CTRL_LEFT||
+			event.getKeyCode()==KeyEvent.KEYCODE_CTRL_RIGHT) {
 				mPushingCtl = false;
 			}
 			break;

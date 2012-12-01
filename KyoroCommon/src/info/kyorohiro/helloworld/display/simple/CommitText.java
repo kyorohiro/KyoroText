@@ -1,12 +1,21 @@
 package info.kyorohiro.helloworld.display.simple;
 
 public class CommitText {
+	    // todo commit text keycode 
 		private CharSequence mText = null;
 		private int mNewCursorPosition = 0;
-		//
-		// ��ŏC��
 		private boolean mIsKeyCode = false;
 		private int mKeycode = 0;
+
+		// todo controlCode
+		private boolean mPushingCtrl = false;
+		public void pushingCtrl(boolean pushing) {
+			mPushingCtrl = pushing;
+		}
+
+		public boolean pushingCtrl() {
+			return mPushingCtrl;
+		}
 
 		@Deprecated
 		public CommitText(int keycode) {
@@ -18,9 +27,11 @@ public class CommitText {
 			mText = text;
 			mNewCursorPosition = newCursorPosition;
 		}
+
 		public CharSequence getText() {
 			return mText;
 		}
+
 		public int getNewCursorPosition() {
 			return mNewCursorPosition;
 		}

@@ -3,7 +3,6 @@
 	<name>KyoroTextViewer</name>
 	<comment></comment>
 	<projects>
-		<project>KyoroCommon</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

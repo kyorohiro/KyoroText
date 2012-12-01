@@ -47,12 +47,12 @@ public abstract class TestService extends Service {
 	    onStartHandle(intent);
 	}
 
-	@Override
+	//@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    onStartHandle(intent);
 	    // We want this service to continue running until it is explicitly
 	    // stopped, so return sticky.
-	    return START_STICKY;
+	    return 0x01;//START_STICKY;
 	}
 
 	void invokeMethod(Method method, Object[] args) {

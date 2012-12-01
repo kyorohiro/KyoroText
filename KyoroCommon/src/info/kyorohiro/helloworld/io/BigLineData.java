@@ -122,7 +122,7 @@ public class BigLineData {
 		if(end==mReader.length()){
 			//android.util.Log.v("kiyo","end="+mReader.length()+","+mLastFilePointer);
 			// 応急処置
-			tmp.includeEOF(true);
+			//tmp.includeEOF(true);
 		}
 		return tmp;
 	}

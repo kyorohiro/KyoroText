@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.editview;
 
+import junit.framework.Test;
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -139,13 +140,48 @@ public class EditableLineView extends CursorableLineView {
 		MyInputConnection c = getMyInputConnection();
 		if (c == null) {
 			return;
-		} // <-- �ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾆゑｿｽ�ｽ驍ｱ�ｽﾆはなゑｿｽ
+		} 
+
 		mTextBuffer.IsCrlfMode(this.isCrlfMode());
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {
+				//if (text))
+				if (text.pushingCtrl()) {
+					CharSequence t = text.getText();
+					if(t.length() != 0) {
+						int v = t.charAt(0);
+						switch(v){
+						case 'a':
+							mTextBuffer.setCursor(0, mTextBuffer.getCol());
+							break;
+						case 'e':
+							int _c = mTextBuffer.getCol();
+							CharSequence _t = mTextBuffer.get(_c);
+							mTextBuffer.setCursor(_t.length(), _c);
+							break;
+						case 'n':
+							next();
+							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+							break;
+						case 'p':
+							prev();
+							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+							break;
+						case 'f':
+							front();
+							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+							break;
+						case 'b':
+							back();
+							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+							break;
+						}
+					}
+//				}
+				} else 
 				if (text.isKeyCode()) {
-					android.util.Log.v("kiyo","key="+text.getKeyCode());
+//					android.util.Log.v("kiyo","key="+text.getKeyCode());
 					switch (text.getKeyCode()) {
 					case SimpleKeyEvent.KEYCODE_BACK:
 					case SimpleKeyEvent.KEYCODE_DEL:
