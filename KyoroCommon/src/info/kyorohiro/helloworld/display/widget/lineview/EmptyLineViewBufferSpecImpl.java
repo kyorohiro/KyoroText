@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import java.util.LinkedList;
 
+import info.kyorohiro.helloworld.display.simple.EmptySimpleFont;
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.EmptyBreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
@@ -9,7 +10,11 @@ import info.kyorohiro.helloworld.text.KyoroString;
 public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 
 	private LinkedList<KyoroString> mList = new LinkedList<KyoroString>();
+	private EmptyBreakText mBreakText = null;
 
+	public EmptyLineViewBufferSpecImpl(int w) {
+		mBreakText = new EmptyBreakText(new EmptySimpleFont(), w);
+	}
 	public void append(KyoroString text) {
 		mList.add(text);
 	}
@@ -58,7 +63,7 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 
 	@Override
 	public BreakText getBreakText() {
-		return new EmptyBreakText(null, 400);
+		return mBreakText;
 	}
 
 	@Override

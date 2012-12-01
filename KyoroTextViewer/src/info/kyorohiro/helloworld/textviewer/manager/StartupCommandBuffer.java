@@ -31,7 +31,7 @@ public class StartupCommandBuffer extends TextViewer {
 	public static final String UNGUARD = "unguard";
 
 	public StartupCommandBuffer(int textSize, int width, int mergine) {
-		super(new EmptyLineViewBufferSpecImpl(),textSize, width, mergine);
+		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine);
 		if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
 			getLineView().isCrlfMode(false);
 		} else {
