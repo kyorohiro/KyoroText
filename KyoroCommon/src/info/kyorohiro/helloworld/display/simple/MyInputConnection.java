@@ -5,4 +5,5 @@ public interface  MyInputConnection {
 	void addCommitText(CharSequence text, int cursorPositionOnCommitedText);
 	void addKeyEvent(int keyEvent);
 	CommitText popFirst();
+	boolean pushingCtr();
 }

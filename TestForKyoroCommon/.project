@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>KyoroCommon</name>
+	<name>TestForKyoroCommon</name>
 	<comment></comment>
 	<projects>
+		<project>KyoroCommon</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

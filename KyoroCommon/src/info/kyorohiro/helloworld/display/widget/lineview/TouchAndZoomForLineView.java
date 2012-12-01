@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import android.graphics.Color;
+
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;

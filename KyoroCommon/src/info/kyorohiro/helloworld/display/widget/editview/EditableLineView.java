@@ -145,6 +145,7 @@ public class EditableLineView extends CursorableLineView {
 			CommitText text = c.popFirst();
 			if (text != null) {
 				if (text.isKeyCode()) {
+					android.util.Log.v("kiyo","key="+text.getKeyCode());
 					switch (text.getKeyCode()) {
 					case SimpleKeyEvent.KEYCODE_BACK:
 					case SimpleKeyEvent.KEYCODE_DEL:

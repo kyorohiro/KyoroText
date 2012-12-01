@@ -75,6 +75,7 @@ public class SimpleSwitchButton extends SimpleDisplayObject {
 	}
 
 	private boolean mIsTouched = false;
+	@SuppressWarnings("unused")
 	private int mX = 0;
 	private int mY = 0;
 	private int mPrevX =0;

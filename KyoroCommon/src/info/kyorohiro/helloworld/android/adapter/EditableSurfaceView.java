@@ -23,7 +23,7 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 
 /**
- * todo Android‚ÉˆË‘¶‚µ‚Ä‚¢‚é•”•ª‚Í•ª—£‚·‚é
+ * todo Androidï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•”ï¿½ï¿½ï¿½Í•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public class EditableSurfaceView extends MultiTouchSurfaceView {
 
@@ -79,7 +79,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	@Override
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
-		log("dispatchKeyEventPreIme"+event.getKeyCode());
+		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());
 		return super.dispatchKeyEventPreIme(event);
 	}
 	
@@ -99,7 +99,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean beginBatchEdit() {
 			log("beginBatchEditn");
-			return super.beginBatchEdit();
+		 	return super.beginBatchEdit();
 		}
 
 		@Override
@@ -212,7 +212,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 				log("getTextAfterCursor="+a.toString()+","+length+","+flags);
 				return a;
 			} catch(Exception e) {
-				// –^’[––‚ÅAjava.lang.IndexOutOfBoundsException‚ª”­¶‚µ‚½‚Ì‚ÅƒK[ƒh
+				// ï¿½^ï¿½[ï¿½ï¿½ï¿½ÅAjava.lang.IndexOutOfBoundsExceptionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ÅƒKï¿½[ï¿½h
 				e.printStackTrace();
 				return "";
 			}
@@ -227,6 +227,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean sendKeyEvent(KeyEvent event) {
 			log("sendKeyEvent="+event.toString());
+//			android.util.Log.v("kiyo","sendKeyEvent="+event.toString());
 			if(event.getAction() == KeyEvent.ACTION_DOWN ) {
 				addKeyEvent(event.getKeyCode());
 //					mCommitTextList.addLast(new CommitText(event.getKeyCode()));
@@ -264,10 +265,16 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			return super.reportFullscreenMode(enabled);
 		}
 
+		private boolean mPushingCtr = false;
+		@Override
+		public boolean pushingCtr() {
+			return mPushingCtr;
+		}
+
 		
 	}
 
 	public static void log(String log) {
-	//	android.util.Log.v("kiyo", ""+log);
+		android.util.Log.v("kiyo", ""+log);
 	}
 }
