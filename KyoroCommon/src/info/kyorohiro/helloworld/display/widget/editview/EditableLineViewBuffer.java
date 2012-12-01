@@ -354,6 +354,32 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	}
 
+	public synchronized void killLine() {
+		int index = getCol();
+		int row = getRow();
+		KyoroString text = get(index);
+		KyoroString prev = null;
+		if(index-1>=0){
+			prev = get(index-1);
+		}
+
+		deleteLinePerVisible();
+		if(row>=text.length()){
+			row = text.length();
+		}
+		setCursor(0, index);
+		if(prev==null) {			
+		}
+		else if(!text.includeLF()) {
+			//crlf(false,false);
+		} else {
+			crlf(true,false);			
+		}
+		setCursor(0, index);
+		commit(text.subSequence(0, row), 1);
+		setCursor(row, index);
+	}
+
 	@Override
 	public synchronized void pushCommit(CharSequence text, int cursor) {
 		int index = getNumberOfStockedElement();// +1;

@@ -151,6 +151,7 @@ public class EditableLineView extends CursorableLineView {
 					CharSequence t = text.getText();
 					if(t.length() != 0) {
 						int v = t.charAt(0);
+						// move
 						switch(v){
 						case 'a':
 							mTextBuffer.setCursor(0, mTextBuffer.getCol());
@@ -175,6 +176,20 @@ public class EditableLineView extends CursorableLineView {
 						case 'b':
 							back();
 							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+							break;
+						}
+						// delete
+						switch(v){
+						case 'k':
+							//android.util.Log.v("kiyo","---k---");
+							int _c = mTextBuffer.getCol();
+							if(0<=_c&&_c<mTextBuffer.getNumberOfStockedElement()){
+								//android.util.Log.v("kiyo","---in---");
+//								mTextBuffer.deleteLinePerVisible();
+								mTextBuffer.killLine();
+							} else {
+								//android.util.Log.v("kiyo","---out---"+_c);
+							}
 							break;
 						}
 					}

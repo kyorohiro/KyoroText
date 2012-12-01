@@ -1,10 +1,18 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import java.util.LinkedList;
+
 import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.io.EmptyBreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
+
+	private LinkedList<KyoroString> mList = new LinkedList<KyoroString>();
+
+	public void append(KyoroString text) {
+		mList.add(text);
+	}
 
 	@Override
 	public int getNumOfAdd() {
@@ -26,21 +34,25 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 
 	@Override
 	public KyoroString get(int i) {
-		return new KyoroString(""+i, i);
+		return mList.get(i);
 	}
 
 	@Override
 	public int getNumberOfStockedElement() {
-		return 0;
+		return mList.size();
 	}
 
 	@Override
 	public int getMaxOfStackedElement() {
-		return 0;
+		return mList.size();
 	}
 
 	@Override
 	public KyoroString[] getElements(KyoroString[] ret, int start, int end) {
+		int len = end-start;
+		for(int i=0;i<len;i++){
+			ret[i] = mList.get(i+start);
+		}
 		return ret;
 	}
 
