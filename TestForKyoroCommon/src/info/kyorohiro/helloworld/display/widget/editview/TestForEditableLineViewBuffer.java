@@ -60,6 +60,14 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			assertEquals(1, buffer.getNumberOfStockedElement());
 			assertEquals(0, buffer.getCol());
 			checkData(expected4, buffer);
+
+			buffer.killLine();
+			assertEquals(0, buffer.getNumberOfStockedElement());
+			assertEquals(0, buffer.getCol());
+
+			buffer.killLine();
+			assertEquals(0, buffer.getNumberOfStockedElement());
+			assertEquals(0, buffer.getCol());
 		}
 	}
 	public void testKillLine2() {
@@ -88,11 +96,11 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			};
 			checkData(expected2, buffer);
 
-			buffer.killLine();
+/*			buffer.killLine();
 			String[] expected3 = {
 					"abijkl"
 			};
-			checkData(expected3, buffer);
+			checkData(expected3, buffer);*/
 			
 		}
 	}

@@ -362,6 +362,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	public synchronized void killLine() {
+		if(0>=getNumberOfStockedElement()) {
+			return;
+		}
 		int index = getCol();
 		int row = getRow();
 		KyoroString text = get(index);
