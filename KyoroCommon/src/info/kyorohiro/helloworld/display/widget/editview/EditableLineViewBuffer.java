@@ -370,27 +370,36 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		int row = getRow();
 		
 		KyoroString text = get(index);
-		if(row <text.lengthWithoutLF(mIsCrlfMode)){
+		KyoroString next = null;
+		if(index+1<getNumberOfStockedElement()){
+			next = get(index+1);
+		}
+
+		if(
+		(text.includeLF()&&row<=text.lengthWithoutLF(mIsCrlfMode))||
+		(!text.includeLF()&&row<text.lengthWithoutLF(mIsCrlfMode))
+		){
 			deleteLinePerVisible();
 			setCursor(0, index);
-			if(!text.includeLF()) {
+			if (row+1<text.lengthWithoutLF(mIsCrlfMode)) {
+				if(!text.includeLF()) {
+				} else {
+					crlf(true,false);			
+				}
+				commit(""+text.subSequence(0, row)+text.subSequence(row+1, text.lengthWithoutLF(mIsCrlfMode)), 1);
 			} else {
-				crlf(true,false);			
-			}
-			if(row+1<=text.length()){
-				commit(""+text.subSequence(0, row)+text.subSequence(row+1, text.length()), 1);
-			} else {
-				//this root do not go through
+				commit(""+text.subSequence(0, row)+text.subSequence(row+1, text.lengthWithoutLF(mIsCrlfMode)), 1);
 			}
 			setCursor(row, index);
 		} else {
-			if(text.includeLF()) {
-				
-			} else {
-				
+			if(next !=null){
+				setCursor(0, index+1);
+				backwardDeleteChar();
+				setCursor(row, index);
 			}
 		}
 	}
+
 	public synchronized void killLine() {
 		if(0>=getNumberOfStockedElement()) {
 			return;
