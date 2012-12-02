@@ -377,9 +377,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			} else {
 				crlf(true,false);			
 			}
-			commit(text.subSequence(0, row), 1);
 			if(row+1<=text.length()){
-				commit(text.subSequence(row+1, text.length()), 1);
+				commit(""+text.subSequence(0, row)+text.subSequence(row+1, text.length()), 1);
 			} else {
 				//this root do not go through
 			}

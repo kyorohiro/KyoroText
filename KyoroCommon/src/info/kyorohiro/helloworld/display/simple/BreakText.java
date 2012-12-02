@@ -47,15 +47,24 @@ public abstract class BreakText implements SimpleTextDecoderBreakText {
 		for(int i=0;i<len;i++) {
 			l+=ws[i];
 			if(l>=width){
-				//android.util.Log.v("kiyo","ret1="+i);
-				return  (i<=0?0:i-1);
+				//android.util.Log.v("test","#ret1="+i+":"+l+">="+width);
+				if(true){
+					//android.util.Log.v("test","#=============================");
+					for(int j=0;j<=i;j++){
+						android.util.Log.v("test","#ret1="+ws[j]);					
+					}
+				//	android.util.Log.v("test","#=============================");
+				}
+//return  (i<=0?0:i-1);
+				return  (i<=0?0:i);
 			}
 		}
-		//android.util.Log.v("kiyo","ret2="+len);
+		///android.util.Log.v("test","#ret2="+len+":"+l+":"+s+":"+width);
 		return len;
 	}
 
 	public static synchronized int breakText(BreakText breaktext, KyoroString text, int index, int count) {
+		//android.util.Log.v("test","#getWidth="+breaktext.getWidth());
 		return  breakText(breaktext, text.getChars(), index, count, breaktext.getWidth());
 	}
 

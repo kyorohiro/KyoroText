@@ -12,9 +12,11 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 	private LinkedList<KyoroString> mList = new LinkedList<KyoroString>();
 	private EmptyBreakText mBreakText = null;
 
-	public EmptyLineViewBufferSpecImpl(int w) {
-		mBreakText = new EmptyBreakText(new EmptySimpleFont(), w);
+	public EmptyLineViewBufferSpecImpl(int maxLineLength) {
+		EmptySimpleFont font = new EmptySimpleFont();
+		mBreakText = new EmptyBreakText(font,(int)(font.getFontSize()*maxLineLength)+(int)font.getFontSize()/2);
 	}
+
 	public void append(KyoroString text) {
 		mList.add(text);
 	}
