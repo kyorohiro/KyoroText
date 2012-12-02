@@ -96,12 +96,34 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			};
 			checkData(expected2, buffer);
 
-/*			buffer.killLine();
+			buffer.killLine();
 			String[] expected3 = {
 					"abijkl"
 			};
-			checkData(expected3, buffer);*/
+			checkData(expected3, buffer);
 			
+		}
+	}
+
+	public void testBackwardDeleteChar1() {
+		String[] data = {
+				"abcde",
+				"fgh\r\n",
+				"ijkl"
+		};
+		{
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			setData(data,spec);
+			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+			buffer.IsCrlfMode(true);
+			buffer.setCursor(0, 0);
+			buffer.backwardDeleteChar();
+			String[] expected1 = {
+					"bcdef",
+					"gh\r\n",
+					"ijkl"
+			};
+			checkData(expected1, buffer);
 		}
 	}
 

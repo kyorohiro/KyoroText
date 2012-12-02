@@ -32,11 +32,6 @@
     			<data android:mimeType="text/*" />
             </intent-filter>
         </activity>
-        <uses-library android:name="android.test.runner" />
         <service android:exported="false" android:name=".KyoroServiceForForgroundApp"/>
     </application>
-    <instrumentation
-        android:label="KyoroTextFieldTest"
-        android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="info.kyorohiro.helloworld.textviewer" />
 </manifest>

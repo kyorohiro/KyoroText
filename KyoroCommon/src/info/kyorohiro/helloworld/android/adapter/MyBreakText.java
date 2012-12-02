@@ -1,14 +1,14 @@
 package info.kyorohiro.helloworld.android.adapter;
 
+import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
-import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 
 //
-//@‚±‚ÌƒR[ƒh‚©‚çA‚¢‚ç‚È‚¢‹@”\‚ğíœ‚·‚é•K—v‚ª‚ ‚éB
-//@--> LineView‚ÌƒJ[ƒ\ƒ‹ŠÖ˜A‚ÌƒR[ƒh‚ğC³‚·‚éƒ^ƒCƒ~ƒ“ƒO‚ª
-//     ‚æ‚³‚°
+//ï¿½@ï¿½ï¿½ï¿½ÌƒRï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½@ï¿½\ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+//ï¿½@--> LineViewï¿½ÌƒJï¿½[ï¿½\ï¿½ï¿½ï¿½Ö˜Aï¿½ÌƒRï¿½[ï¿½hï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½~ï¿½ï¿½ï¿½Oï¿½ï¿½
+//     ï¿½æ‚³ï¿½ï¿½
 public class MyBreakText extends BreakText {
 
 	public MyBreakText() {
@@ -62,7 +62,7 @@ public class MyBreakText extends BreakText {
 			ret = font.getTextWidths(buffer, start, end, widths,textSize);
 
 //			time2 = System.currentTimeMillis();
-			// ˆÈ‰º‚ÌƒR[ƒh‚ÍSimpleFont‚É‚ ‚é‚Ù‚¤‚ª‚æ‚¢‚©‚à
+			// ï¿½È‰ï¿½ï¿½ÌƒRï¿½[ï¿½hï¿½ï¿½SimpleFontï¿½É‚ï¿½ï¿½ï¿½Ù‚ï¿½ï¿½ï¿½ï¿½æ‚¢ï¿½ï¿½ï¿½ï¿½
 			int t=0;
 			for(int i=start;i<end;i++){
 				t = font.lengthOfControlCode(buffer[i], (int)textSize);

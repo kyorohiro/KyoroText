@@ -2,12 +2,12 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import java.util.WeakHashMap;
 
+import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
-import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 import info.kyorohiro.helloworld.util.SimpleLockInter;

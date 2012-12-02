@@ -1,8 +1,6 @@
-package info.kyorohiro.helloworld.io;
+package info.kyorohiro.helloworld.display.simple;
 
-import info.kyorohiro.helloworld.display.simple.SimpleFont;
-import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
-import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.io.SimpleTextDecoderBreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;

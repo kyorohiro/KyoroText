@@ -1,9 +1,9 @@
 package info.kyorohiro.helloworld.display.widget.editview;
 
+import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.editview.IMEClient;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ;
-import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
@@ -361,6 +361,37 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	}
 
+	public synchronized void backwardDeleteChar() {
+		if(0>=getNumberOfStockedElement()) {
+			return;
+		}
+		// todo normalize before get cursorposition
+		int index = getCol();
+		int row = getRow();
+		
+		KyoroString text = get(index);
+		if(row <text.lengthWithoutLF(mIsCrlfMode)){
+			deleteLinePerVisible();
+			setCursor(0, index);
+			if(!text.includeLF()) {
+			} else {
+				crlf(true,false);			
+			}
+			commit(text.subSequence(0, row), 1);
+			if(row+1<=text.length()){
+				commit(text.subSequence(row+1, text.length()), 1);
+			} else {
+				//this root do not go through
+			}
+			setCursor(row, index);
+		} else {
+			if(text.includeLF()) {
+				
+			} else {
+				
+			}
+		}
+	}
 	public synchronized void killLine() {
 		if(0>=getNumberOfStockedElement()) {
 			return;
@@ -376,17 +407,17 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		if(text.lengthWithoutLF(mIsCrlfMode)==0) {
 			deleteLinePerVisible();
 			setCursor(row, index);
+		} else if(text.lengthWithoutLF(mIsCrlfMode)==mCursorRow) {
+			//todo wait complete  about backwardDeleteChar(); 
+			//backwardDeleteChar();
+			setCursor(row, index);
 		} else {
 			deleteLinePerVisible();
 			if(row>=text.length()){
 				row = text.length();
 			}
 			setCursor(0, index);
-			//if(prev==null) {
-			//}
-			//else 
 			if(!text.includeLF()) {
-				//crlf(false,false);
 			} else {
 				crlf(true,false);			
 			}

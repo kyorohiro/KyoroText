@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.io;
 
+import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.ByteArrayBuilder;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;

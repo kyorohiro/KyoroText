@@ -1,8 +1,8 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
+import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.io.BigLineData;
-import info.kyorohiro.helloworld.io.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.LockableCyclingList;
 
