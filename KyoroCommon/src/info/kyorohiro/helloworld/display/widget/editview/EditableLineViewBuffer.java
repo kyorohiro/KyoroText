@@ -105,13 +105,20 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			mCursorLine = 0;
 		} else if (mCursorLine >= getNumberOfStockedElement()) {
 			mCursorLine = getNumberOfStockedElement() - 1;
+			if(mCursorLine<0){
+				mCursorLine = 0;
+			}
 		}
 
-		KyoroString c = get(mCursorLine);
-		if (mCursorRow < 0) {
-			mCursorRow = 0;
-		} else if (mCursorRow > c.lengthWithoutLF(mIsCrlfMode)) {
-			mCursorRow = c.lengthWithoutLF(mIsCrlfMode);
+		if(mCursorLine<getNumberOfStockedElement()){
+			KyoroString c = get(mCursorLine);
+			if (mCursorRow < 0) {
+				mCursorRow = 0;
+			} else if (mCursorRow > c.lengthWithoutLF(mIsCrlfMode)) {
+				mCursorRow = c.lengthWithoutLF(mIsCrlfMode);
+			}
+		} else {
+			mCursorRow = 0;			
 		}
 	}
 
@@ -363,21 +370,27 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			prev = get(index-1);
 		}
 
-		deleteLinePerVisible();
-		if(row>=text.length()){
-			row = text.length();
-		}
-		setCursor(0, index);
-		if(prev==null) {			
-		}
-		else if(!text.includeLF()) {
-			//crlf(false,false);
+		if(text.lengthWithoutLF(mIsCrlfMode)==0) {
+			deleteLinePerVisible();
+			setCursor(row, index);
 		} else {
-			crlf(true,false);			
+			deleteLinePerVisible();
+			if(row>=text.length()){
+				row = text.length();
+			}
+			setCursor(0, index);
+			//if(prev==null) {
+			//}
+			//else 
+			if(!text.includeLF()) {
+				//crlf(false,false);
+			} else {
+				crlf(true,false);			
+			}
+			setCursor(0, index);
+			commit(text.subSequence(0, row), 1);
+			setCursor(row, index);
 		}
-		setCursor(0, index);
-		commit(text.subSequence(0, row), 1);
-		setCursor(row, index);
 	}
 
 	@Override
@@ -432,7 +445,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
-	// commit text�ｽ�ｽ\n�ｽ�ｽ�ｽﾓゑｿｽ�ｽﾜゑｿｽ�ｽ鼾�ｿｽﾍどゑｿｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾍてゑｿｽ
+	// todo rewrite!!
 	private synchronized void commit(CharSequence text, int cursor) {
 		// android.util.Log.v("kiyo",
 		// "[-0-]col="+mCursorLine+",row="+mCursorRow);
@@ -460,13 +473,14 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 					text = text.subSequence(0, text.length() - 1);
 				}
 			}
-			if (0 >= getNumberOfStockedElement()) {
-				if (mIsCrlfMode) {
-					mDiffer.addLine(0, "\r\n");
-				} else {
-					mDiffer.addLine(0, "\n");
-				}
-			}
+		/// todo delete
+		///	if (0 >= getNumberOfStockedElement()) {
+		///		if (mIsCrlfMode) {
+		///			mDiffer.addLine(0, "\r\n");
+		///		} else {
+		///			mDiffer.addLine(0, "\n");
+		///		}
+		///	}
 
 			CharSequence ct = "";
 			if (cursorLine < getNumberOfStockedElement()) {
