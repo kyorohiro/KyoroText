@@ -83,6 +83,8 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	}
 	@Override
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
+		char dispatchKey = 0;
+
 		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());
 		switch(event.getAction()) {
 		case KeyEvent.ACTION_DOWN:
@@ -90,13 +92,24 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			event.getKeyCode()==0x71) {
 				mPushingCtl = true;
 			}
+			// for asus fskaren 
+			if(pushingCtl()){
+				if(KeyEvent.KEYCODE_A <= event.getKeyCode()&&event.getKeyCode()<=KeyEvent.KEYCODE_Z){
+					dispatchKey =(char)( 
+							(int)'a'+(int)event.getKeyCode()-(int)KeyEvent.KEYCODE_A);
+					CommitText v = new CommitText(""+dispatchKey, 0);
+					v.pushingCtrl(pushingCtl());
+					mCommitTextList.addLast(v);
+					break;
+				}
+			}
 			break;
 		case KeyEvent.ACTION_UP:
 			if(event.getKeyCode()==0x72||
 			event.getKeyCode()==0x71) {
 				mPushingCtl = false;
 			}
-			break;
+			break;		
 		}
 		return super.dispatchKeyEventPreIme(event);
 	}
@@ -156,6 +169,13 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean finishComposingText() {
 			log("finishComposingText");
+			// for asus fskaren 
+			{
+			if(mCommitText!=null&&mComposingText.length() != 0) {
+				addCommitText(mComposingText, 1);
+				mComposingText = "";
+			}
+			}
 			return super.finishComposingText();
 		}
 
@@ -307,6 +327,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	}
 
 	public static void log(String log) {
-	//	android.util.Log.v("kiyo", ""+log);
+		//android.util.Log.v("kiyo", ""+log);
 	}
 }
