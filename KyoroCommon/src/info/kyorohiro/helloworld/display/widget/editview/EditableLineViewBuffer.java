@@ -386,11 +386,15 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				} else {
 					crlf(true,false);			
 				}
+				setCursor(0, index);
 				commit(""+text.subSequence(0, row)+text.subSequence(row+1, text.lengthWithoutLF(mIsCrlfMode)), 1);
+				setCursor(row, index);
 			} else {
-				commit(""+text.subSequence(0, row)+text.subSequence(row+1, text.lengthWithoutLF(mIsCrlfMode)), 1);
+				setCursor(0, index);
+				commit(""+text.subSequence(0, row), 1);
+				setCursor(row, index);
 			}
-			setCursor(row, index);
+			//setCursor(row, index);
 		} else {
 			if(next !=null){
 				setCursor(0, index+1);
@@ -417,7 +421,12 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			setCursor(row, index);
 		} else if(text.lengthWithoutLF(mIsCrlfMode)==mCursorRow) {
 			//todo wait complete  about backwardDeleteChar(); 
-			//backwardDeleteChar();
+			if(text.includeLF()){
+				backwardDeleteChar();
+			} else {
+				setCursor(0, index+1);
+				killLine();
+			}
 			setCursor(row, index);
 		} else {
 			deleteLinePerVisible();

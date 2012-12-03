@@ -177,6 +177,9 @@ public class EditableLineView extends CursorableLineView {
 							back();
 							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 							break;
+						case 'h':
+							mTextBuffer.backwardDeleteChar();
+							break;
 						}
 						// delete
 						switch(v){
