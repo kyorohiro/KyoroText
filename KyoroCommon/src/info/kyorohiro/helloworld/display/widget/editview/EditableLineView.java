@@ -203,7 +203,7 @@ public class EditableLineView extends CursorableLineView {
 					switch (text.getKeyCode()) {
 					case SimpleKeyEvent.KEYCODE_BACK:
 					case SimpleKeyEvent.KEYCODE_DEL:
-						mTextBuffer.delete();
+						mTextBuffer.deleteChar();
 						break;
 					case SimpleKeyEvent.KEYCODE_ENTER:
 						mTextBuffer.crlf();
