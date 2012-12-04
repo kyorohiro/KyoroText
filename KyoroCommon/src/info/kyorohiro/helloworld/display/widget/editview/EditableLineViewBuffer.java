@@ -454,20 +454,20 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 
 		if(text.lengthWithoutLF(mIsCrlfMode)==0) {
-			android.util.Log.v("kiyo","#<A>------col="+getCol()+",row="+getRow());
+			//android.util.Log.v("kiyo","#<A>------col="+getCol()+",row="+getRow());
 			deleteLinePerVisible();
 			setCursor(row, index);
 			//if(index+1==getMaxOfStackedElement()&&!isLoading()) {
 			//	normalize(index);
 			//}
 		} else if(text.lengthWithoutLF(mIsCrlfMode)==mCursorRow) {
-			android.util.Log.v("kiyo","#<B>------col="+getCol()+",row="+getRow());
+			//android.util.Log.v("kiyo","#<B>------col="+getCol()+",row="+getRow());
 			//todo wait complete  about backwardDeleteChar(); 
 			if(text.includeLF()){
-				android.util.Log.v("kiyo","#<B-1>------col="+getCol()+",row="+getRow());
+				//android.util.Log.v("kiyo","#<B-1>------col="+getCol()+",row="+getRow());
 				backwardDeleteChar();
 			} else {
-				android.util.Log.v("kiyo","#<B-2>------col="+getCol()+",row="+getRow());
+				//android.util.Log.v("kiyo","#<B-2>------col="+getCol()+",row="+getRow());
 				if(index+1<getNumberOfStockedElement()){
 					setCursor(0, index+1);
 					killLine();
@@ -475,15 +475,15 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			}
 			setCursor(row, index);
 		} else {
-			android.util.Log.v("kiyo","#<C>------col="+getCol()+",row="+getRow());
+			//android.util.Log.v("kiyo","#<C>------col="+getCol()+",row="+getRow());
 			deleteLinePerVisible();
 			if(row>=text.length()){
-				android.util.Log.v("kiyo","#<C-1>------col="+getCol()+",row="+getRow());
+				//android.util.Log.v("kiyo","#<C-1>------col="+getCol()+",row="+getRow());
 				row = text.length();
 			}
 			setCursor(0, index);
 			if(text.includeLF()) {
-				android.util.Log.v("kiyo","#<C-2>------col="+getCol()+",row="+getRow());
+				//android.util.Log.v("kiyo","#<C-2>------col="+getCol()+",row="+getRow());
 				crlf(true,false);			
 			}
 			setCursor(0, index);
