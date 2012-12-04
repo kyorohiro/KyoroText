@@ -180,6 +180,9 @@ public class EditableLineView extends CursorableLineView {
 						case 'h':
 							mTextBuffer.backwardDeleteChar();
 							break;
+						case 'd':
+							mTextBuffer.deleteChar();
+							break;
 						}
 						// delete
 						switch(v){
