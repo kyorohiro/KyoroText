@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.util;
+ï»¿package info.kyorohiro.helloworld.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,16 +8,6 @@ import java.io.InputStream;
 import java.nio.channels.FileChannel;
 
 public class Utility {
-	/**
-	 * copy from http://sattontanabe.blog86.fc2.com/blog-entry-71.html
-	 * ƒRƒs[Œ³‚ÌƒpƒX[srcPath]‚©‚çAƒRƒs[æ‚ÌƒpƒX[destPath]‚Ö
-	 * ƒtƒ@ƒCƒ‹‚ÌƒRƒs[‚ğs‚¢‚Ü‚·B
-	 * ƒRƒs[ˆ—‚É‚ÍFileChannel#transferToƒƒ\ƒbƒh‚ğ—˜—p‚µ‚Ü‚·B
-	 * ®AƒRƒs[ˆ—I—¹ŒãA“ü—ÍEo—Í‚Ìƒ`ƒƒƒlƒ‹‚ğƒNƒ[ƒY‚µ‚Ü‚·B
-	 * @param srcPath    ƒRƒs[Œ³‚ÌƒpƒX
-	 * @param destPath    ƒRƒs[æ‚ÌƒpƒX
-	 * @throws IOException    ‰½‚ç‚©‚Ì“üo—Íˆ——áŠO‚ª”­¶‚µ‚½ê‡
-	 */
 	public static void copyTransfer(File srcPath, File destPath) throws IOException {
 	    FileChannel srcChannel = new FileInputStream(srcPath).getChannel();
 	    FileChannel destChannel = new FileOutputStream(destPath).getChannel();

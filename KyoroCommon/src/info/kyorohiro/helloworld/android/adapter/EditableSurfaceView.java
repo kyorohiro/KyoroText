@@ -43,8 +43,17 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	
 	@Override
 	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-		outAttrs.inputType = EditorInfo.TYPE_CLASS_TEXT;
-		outAttrs.imeOptions = EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI;
+		outAttrs.inputType = EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS|EditorInfo.TYPE_CLASS_TEXT;
+		outAttrs.imeOptions = EditorInfo.IME_ACTION_UNSPECIFIED|
+				EditorInfo.IME_ACTION_NONE| EditorInfo.IME_FLAG_NO_ACCESSORY_ACTION|
+				EditorInfo.IME_FLAG_NO_ENTER_ACTION|EditorInfo.IME_FLAG_NO_EXTRACT_UI;
+				/*
+				EditorInfo.IME_ACTION_UNSPECIFIED|
+				//EditorInfo.IME_MASK_ACTION|EditorInfo.IME_MASK_ACTION|
+				//EditorInfo.IME_ACTION_DONE|
+				//EditorInfo.IME_FLAG_NO_ENTER_ACTION|
+				EditorInfo.IME_FLAG_NO_EXTRACT_UI;*/
+				
 		if(mCurrentInputConnection == null) {
 			mCurrentInputConnection = new _MyInputConnection(this, true);
 		}
@@ -82,36 +91,51 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		return mPushingCtl;
 	}
 	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
+		return super.dispatchKeyEvent(event);
+	}
+	@Override
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
 		char dispatchKey = 0;
 
 		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());
-		switch(event.getAction()) {
-		case KeyEvent.ACTION_DOWN:
-			if(event.getKeyCode()==0x72||
-			event.getKeyCode()==0x71) {
-				mPushingCtl = true;
-			}
-			// for asus fskaren 
-			if(pushingCtl()){
+
+		int ctrl = event.getMetaState();
+		if(0x1000==(ctrl&0x1000)){
+			mPushingCtl = true;
+			switch(event.getAction()) {
+			case KeyEvent.ACTION_DOWN:
+				// for asus fskaren 
 				if(KeyEvent.KEYCODE_A <= event.getKeyCode()&&event.getKeyCode()<=KeyEvent.KEYCODE_Z){
 					dispatchKey =(char)( 
 							(int)'a'+(int)event.getKeyCode()-(int)KeyEvent.KEYCODE_A);
 					CommitText v = new CommitText(""+dispatchKey, 0);
 					v.pushingCtrl(pushingCtl());
 					mCommitTextList.addLast(v);
-					break;
 				}
 			}
-			break;
-		case KeyEvent.ACTION_UP:
-			if(event.getKeyCode()==0x72||
-			event.getKeyCode()==0x71) {
-				mPushingCtl = false;
+			// return true reason
+			// Kyoro Common manage keyevent. Android IME can not manage.
+			return true;
+		} else {
+			mPushingCtl = false;
+			switch(event.getAction()) {
+			case KeyEvent.ACTION_DOWN:
+				if(event.getKeyCode()==0x72||
+				event.getKeyCode()==0x71) {
+					mPushingCtl = true;
+				}
+				break;
+			case KeyEvent.ACTION_UP:
+				if(event.getKeyCode()==0x72||
+				event.getKeyCode()==0x71) {
+					mPushingCtl = false;
+				}
+				break;
 			}
-			break;		
+			return super.dispatchKeyEventPreIme(event);
 		}
-		return super.dispatchKeyEventPreIme(event);
 	}
 	
 	private static CharSequence mComposingText = null;
