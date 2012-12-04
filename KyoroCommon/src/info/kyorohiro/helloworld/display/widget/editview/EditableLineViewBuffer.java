@@ -381,7 +381,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		){
 			deleteLinePerVisible();
 			setCursor(0, index);
-			if (row+1<text.lengthWithoutLF(mIsCrlfMode)) {
+			if (row+1<=text.lengthWithoutLF(mIsCrlfMode)) {
 				if(!text.includeLF()) {
 				} else {
 					crlf(true,false);			
@@ -424,8 +424,10 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			if(text.includeLF()){
 				backwardDeleteChar();
 			} else {
-				setCursor(0, index+1);
-				killLine();
+				if(index+1<getNumberOfStockedElement()){
+					setCursor(0, index+1);
+					killLine();
+				}
 			}
 			setCursor(row, index);
 		} else {
