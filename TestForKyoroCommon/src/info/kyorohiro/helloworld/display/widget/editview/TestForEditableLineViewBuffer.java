@@ -19,112 +19,60 @@ public class TestForEditableLineViewBuffer extends TestCase {
 	public void testDeleteText() {
 		assertTrue(true);
 	}
-	
-	public void testKillLine() {
-		String[] data = {
-				"abcde",
-				"fgh\r\n",
-				"ijkl"
+
+	public void testKillLine1_() {
+		String[] data = {"abcde", "fgh\r\n", "ijkl"};
+
+		String[][] expected = {
+				{"fgh\r\n", "ijkl"},
+				{"\r\n", "ijkl"},
+				{"ijkl"},
+				{""},
+				{""},
+				{""},
 		};
-		{
-			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
-			setData(data,spec);
-			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
-			buffer.IsCrlfMode(true);
-			buffer.setCursor(0, 0);
-			buffer.killLine();
-			String[] expected1 = {
-					"fgh\r\n",
-					"ijkl"
-			};
-			checkData(expected1, buffer);
-			buffer.killLine();
-			String[] expected2 = {
-					"\r\n",
-					"ijkl"
-			};
-			checkData(expected2, buffer);
-			assertEquals(0, buffer.getCol());
+		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+		setData(data,spec);
+		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+		buffer.IsCrlfMode(true);
+		buffer.setCursor(0, 0);
 
+		for(int i=0;i<data.length;i++) {
+			String[] exp = expected[i];
 			buffer.killLine();
-			String[] expected3 = {
-					"ijkl"
-			};
-			checkData(expected3, buffer);
+			checkData("ms="+i+",",exp, buffer);
 			assertEquals(0, buffer.getCol());
-
-			buffer.killLine();
-			String[] expected4 = {
-					""
-			};
-			assertEquals(1, buffer.getNumberOfStockedElement());
-			assertEquals(0, buffer.getCol());
-			checkData(expected4, buffer);
-
-			buffer.killLine();
-			assertEquals(0, buffer.getNumberOfStockedElement());
-			assertEquals(0, buffer.getCol());
-
-			buffer.killLine();
-			assertEquals(0, buffer.getNumberOfStockedElement());
-			assertEquals(0, buffer.getCol());
+			assertEquals(0, buffer.getRow());
 		}
 	}
-	public void testKillLine2() {
-		String[] data = {
-				"abcde",
-				"fgh\r\n",
-				"ijkl"
-		};
+
+	public void testKillLine2_() {
+		String[] data = {"abcde", "fgh\r\n", "ijkl"};
 		{
+			String[][] expected = {
+					{"abfgh", "\r\n","ijkl"},
+					{"ab\r\n", "ijkl"},
+					{"abijk", "l"},
+					{"abl"},
+					{"ab"},
+					{"ab"},
+			};
 			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
 			setData(data,spec);
 			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 			buffer.IsCrlfMode(true);
 			buffer.setCursor(2, 0);
-			buffer.killLine();
-			String[] expected1 = {
-					"abfgh",
-					"\r\n",
-					"ijkl"
-			};
-			checkData(expected1, buffer);
 
-			buffer.killLine();
-			String[] expected2 = {
-					"ab\r\n",
-					"ijkl"
-			};
-			checkData(expected2, buffer);
-
-			buffer.killLine();
-			String[] expected3 = {
-					"abijk",
-					"l"
-			};
-			checkData(expected3, buffer);
-
-			buffer.killLine();
-			String[] expected4 = {
-					"abl"
-			};
-			checkData(expected4, buffer);
-
-
-			buffer.killLine();
-			String[] expected5 = {
-					"ab"
-			};
-			checkData(expected5, buffer);
-
-			buffer.killLine();
-			String[] expected6 = {
-					"ab"
-			};
-			checkData(expected6, buffer);
-
+			for(int i=0;i<data.length;i++) {
+				String[] exp = expected[i];
+				buffer.killLine();
+				checkData(exp, buffer);
+				assertEquals(0, buffer.getCol());
+				assertEquals(2, buffer.getRow());
+			}
 		}
 	}
+
 
 
 	public void testBackwardDeleteChar1() {
