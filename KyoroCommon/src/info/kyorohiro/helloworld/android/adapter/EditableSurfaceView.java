@@ -4,6 +4,7 @@ package info.kyorohiro.helloworld.android.adapter;
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import android.content.Context;
@@ -43,10 +44,15 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	
 	@Override
 	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-		outAttrs.inputType = EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS|EditorInfo.TYPE_CLASS_TEXT;
-		outAttrs.imeOptions = EditorInfo.IME_ACTION_UNSPECIFIED|
-				EditorInfo.IME_ACTION_NONE| EditorInfo.IME_FLAG_NO_ACCESSORY_ACTION|
-				EditorInfo.IME_FLAG_NO_ENTER_ACTION|EditorInfo.IME_FLAG_NO_EXTRACT_UI;
+		outAttrs.inputType = //EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS|
+				EditorInfo.TYPE_CLASS_TEXT;
+		outAttrs.imeOptions = 
+				//EditorInfo.IME_ACTION_UNSPECIFIED|
+				//EditorInfo.IME_ACTION_NONE| 
+				//EditorInfo.IME_FLAG_NO_ACCESSORY_ACTION|
+				//EditorInfo.IME_FLAG_NO_ENTER_ACTION|
+				//EditorInfo.IME_ACTION_DONE|
+				EditorInfo.IME_FLAG_NO_EXTRACT_UI;
 				/*
 				EditorInfo.IME_ACTION_UNSPECIFIED|
 				//EditorInfo.IME_MASK_ACTION|EditorInfo.IME_MASK_ACTION|
@@ -57,6 +63,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		if(mCurrentInputConnection == null) {
 			mCurrentInputConnection = new _MyInputConnection(this, true);
 		}
+		//mManager.
 		return mCurrentInputConnection;
 	}
 
@@ -90,9 +97,103 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	public boolean pushingCtl() {
 		return mPushingCtl;
 	}
+
+	private static HashMap<Integer, Character> sMMap = new HashMap<Integer, Character>();
+	private static HashMap<Integer, Character> sRMap = new HashMap<Integer, Character>();
+	static {
+		sMMap.put(77, '@');
+		sRMap.put(77, '`');
+		sMMap.put(74, ';');
+		sRMap.put(74, '+');
+		sMMap.put(75, ':');
+		sRMap.put(75, '*');
+		sMMap.put(72, ']');
+		sRMap.put(72, '}');
+		sMMap.put(71, '[');
+		sRMap.put(71, '{');
+		sMMap.put(76, '/');
+		sRMap.put(76, '?');
+		sMMap.put(73, '\\');
+		sRMap.put(73, '_');
+		sMMap.put(73, '\\');
+		sMMap.put(55, ',');
+		sRMap.put(55, '<');
+		sMMap.put(56, '.');
+		sRMap.put(56, '>');
+		sMMap.put(216, '\\');
+		sRMap.put(216, '|');
+		sMMap.put(70, '^');
+		sRMap.put(70, '~');
+		sMMap.put(69, '-');
+		sRMap.put(69, '=');
+
+
+		sMMap.put(62, ' ');	
+	}
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
+
+		char dispatchKey = 0;
+		int keycode = event.getKeyCode();
+		log("test="+keycode+"s="+event.isShiftPressed());
+
+		// 
+		if(KeyEvent.KEYCODE_A <= event.getKeyCode()&&event.getKeyCode()<=KeyEvent.KEYCODE_Z){
+			switch(event.getAction()) {
+			case KeyEvent.ACTION_DOWN:
+				dispatchKey =(char)( 
+						(int)'a'+(int)event.getKeyCode()-(int)KeyEvent.KEYCODE_A);
+				if(event.isShiftPressed()){
+					dispatchKey +='A'-'a';
+				}
+				CommitText v = new CommitText(""+dispatchKey, 1);
+				mCommitTextList.addLast(v);
+			}
+			return true;
+		} 
+		else if(KeyEvent.KEYCODE_0<keycode&&keycode <=KeyEvent.KEYCODE_9) {
+			switch(event.getAction()) {
+			case KeyEvent.ACTION_DOWN:
+				dispatchKey =(char)( 
+						(int)'0'+(int)event.getKeyCode()-(int)KeyEvent.KEYCODE_0);		
+				if(event.isShiftPressed()) {
+					dispatchKey += '!'-'0'-1;
+				}
+				CommitText v = new CommitText(""+dispatchKey, 1);
+				mCommitTextList.addLast(v);
+			}
+			return true;
+		}
+		else if(event.isShiftPressed()&&sRMap.containsKey(keycode)){
+			switch(event.getAction()) {
+			case KeyEvent.ACTION_DOWN:
+				dispatchKey = sRMap.get(keycode);
+				CommitText v = new CommitText(""+dispatchKey, 1);
+				mCommitTextList.addLast(v);
+			}
+			return true;
+		}else if(!event.isShiftPressed()&&sMMap.containsKey(keycode)){
+			switch(event.getAction()) {
+			case KeyEvent.ACTION_DOWN:
+				dispatchKey = sMMap.get(keycode);
+				CommitText v = new CommitText(""+dispatchKey, 1);
+				mCommitTextList.addLast(v);
+			}
+			return true;
+		} else {
+			if(keycode == KeyEvent.KEYCODE_ENTER|| keycode==KeyEvent.KEYCODE_DEL) {
+				switch(event.getAction()) {
+				case KeyEvent.ACTION_DOWN:
+//					(event.getKeyCode());
+					// foolowing code infinite loop
+				mCurrentInputConnection.sendKeyEvent(event);
+				}
+				return true;
+
+			} 
+		}
+		
 		return super.dispatchKeyEvent(event);
 	}
 	@Override
@@ -113,6 +214,8 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 					CommitText v = new CommitText(""+dispatchKey, 0);
 					v.pushingCtrl(pushingCtl());
 					mCommitTextList.addLast(v);
+					mComposingText = "";
+					mCommitText = "";
 				}
 			}
 			// return true reason
@@ -310,7 +413,8 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 				addKeyEvent(event.getKeyCode());
 //					mCommitTextList.addLast(new CommitText(event.getKeyCode()));
 			}
-			return super.sendKeyEvent(event);
+			return true;
+//			return super.sendKeyEvent(event);
 		}
 		
 		@Override
