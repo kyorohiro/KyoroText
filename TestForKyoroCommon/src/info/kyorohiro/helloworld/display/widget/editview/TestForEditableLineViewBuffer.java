@@ -155,6 +155,7 @@ public class TestForEditableLineViewBuffer extends TestCase {
 				{""},
 		};
 		for(int i=0;i<expected.length;i++){
+			android.util.Log.v("test","--"+i+"--");
 			String[] exp = expected[i];
 			buffer.backwardDeleteChar();
 			checkData("ms="+i+",",exp, buffer);
@@ -211,13 +212,38 @@ public class TestForEditableLineViewBuffer extends TestCase {
 				{"abcde", "jkl"},//4
 				{"abcde", "kl"},
 				{"abcde", "l"},
-				{"abcde", ""},
-				{"abcde", ""},
+				{"abcde"},
+				{"abcde"},
 		};
 		for(int i=0;i<expected.length;i++){
 			String[] exp = expected[i];
 			buffer.backwardDeleteChar();
 			checkData("ms="+i+",",exp, buffer);
+			assertEquals(0, buffer.getCol());
+			assertEquals(5, buffer.getRow());
+		}
+	}
+	public void testBackwardDeleteChar3_opt() {
+		String[] data = {
+			"abcde", "jkl"
+		};
+		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+		setData(data,spec);
+		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+		buffer.IsCrlfMode(true);
+		buffer.setCursor(5, 0);
+		String[][] expected = {
+				{"abcde", "kl"},
+				{"abcde", "l"},
+				{"abcde"},
+				{"abcde"},
+		};
+		for(int i=0;i<expected.length;i++){
+			String[] exp = expected[i];
+			buffer.backwardDeleteChar();
+			checkData("ms="+i+",",exp, buffer);
+			assertEquals(0, buffer.getCol());
+			assertEquals(5, buffer.getRow());
 		}
 	}
 
@@ -236,6 +262,7 @@ public class TestForEditableLineViewBuffer extends TestCase {
 	private void checkData(String message, String[] data, LineViewBufferSpec buffer) {
 		int i=0;
 		try {
+		assertEquals(data.length, buffer.getNumberOfStockedElement());
 		for(i=0;i<data.length;i++) {
 			assertEquals(""+message+"["+i+"]",data[i], buffer.get(i).toString());
 		}

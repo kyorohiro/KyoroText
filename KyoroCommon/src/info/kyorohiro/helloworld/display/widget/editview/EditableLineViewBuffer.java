@@ -362,44 +362,81 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	public synchronized void backwardDeleteChar() {
+		//android.util.Log.v("kiyo","#<0>----------------");
 		if(0>=getNumberOfStockedElement()) {
 			return;
 		}
 		// todo normalize before get cursorposition
 		int index = getCol();
 		int row = getRow();
-		
+		//android.util.Log.v("kiyo","#<0>----------index="+index+",row="+row);
 		KyoroString text = get(index);
 		KyoroString next = null;
+		KyoroString prev = null;
 		if(index+1<getNumberOfStockedElement()){
 			next = get(index+1);
+		}
+		if(index-1>=0) {
+			prev = get(index-1);
 		}
 
 		if(
 		(text.includeLF()&&row<=text.lengthWithoutLF(mIsCrlfMode))||
 		(!text.includeLF()&&row<text.lengthWithoutLF(mIsCrlfMode))
 		){
+			//android.util.Log.v("kiyo","#<A>----------------");
 			deleteLinePerVisible();
 			setCursor(0, index);
 			if (row+1<=text.lengthWithoutLF(mIsCrlfMode)) {
-				if(!text.includeLF()) {
+				//android.util.Log.v("kiyo","#<A-1>----------------");
+				if(text.includeLF()) {
+					//android.util.Log.v("kiyo","#<A-1-1>----col="+getCol()+",row="+getRow());
+					crlf(true,false);
+					//android.util.Log.v("kiyo","#<A-1-2>----col="+getCol()+",row="+getRow());
+					setCursor(0, index);
+					//android.util.Log.v("kiyo","#<A-1-3>----col="+getCol()+",row="+getRow());
 				} else {
-					crlf(true,false);			
+					if(getCol()<index) {
+						//android.util.Log.v("kiyo","#<A-2-1>----col="+getCol()+",row="+getRow());
+						if(prev == null) {
+							//android.util.Log.v("kiyo","#<A-2-2>----col="+getCol()+",row="+getRow());
+							setCursor(0, 0);
+						} else {
+							//android.util.Log.v("kiyo","#<A-2-3>----col="+getCol()+",row="+getRow());
+							setCursor(prev.lengthWithoutLF(mIsCrlfMode), getCol());
+							//android.util.Log.v("kiyo","#<A-2-4>----col="+getCol()+",row="+getRow());
+						}
+					} else {
+						//android.util.Log.v("kiyo","#<A-2-5>----col="+getCol()+",row="+getRow());
+						setCursor(0, index);
+						//android.util.Log.v("kiyo","#<A-2-6>----col="+getCol()+",row="+getRow());
+					}
 				}
-				setCursor(0, index);
+				//android.util.Log.v("kiyo","#<A-1-3>----col="+getCol()+",row="+getRow());
 				commit(""+text.subSequence(0, row)+text.subSequence(row+1, text.lengthWithoutLF(mIsCrlfMode)), 1);
 				setCursor(row, index);
 			} else {
+				//android.util.Log.v("kiyo","#<A-2>----------------");
 				setCursor(0, index);
 				commit(""+text.subSequence(0, row), 1);
 				setCursor(row, index);
 			}
+			//android.util.Log.v("kiyo","#</A>----------------");
 			//setCursor(row, index);
 		} else {
 			if(next !=null){
-				setCursor(0, index+1);
-				backwardDeleteChar();
-				setCursor(row, index);
+				//android.util.Log.v("kiyo","#<B>------col="+getCol()+",row="+getRow());
+				if(index<getMaxOfStackedElement()) {
+					//android.util.Log.v("kiyo","#<-->----------------");
+					//android.util.Log.v("kiyo","#<B-1>------col="+getCol()+",row="+getRow());
+					setCursor(0, index+1);
+					//android.util.Log.v("kiyo","#<B-2>------col="+getCol()+",row="+getRow());
+					backwardDeleteChar();
+					//android.util.Log.v("kiyo","#<B-3>------col="+getCol()+",row="+getRow());
+					setCursor(row, index);
+					//android.util.Log.v("kiyo","#<B-4>------col="+getCol()+",row="+getRow());
+				}
+				//android.util.Log.v("kiyo","#<B/>------col="+getCol()+",row="+getRow());
 			}
 		}
 	}

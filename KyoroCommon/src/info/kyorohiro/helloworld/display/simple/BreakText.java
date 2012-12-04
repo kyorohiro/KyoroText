@@ -48,13 +48,13 @@ public abstract class BreakText implements SimpleTextDecoderBreakText {
 			l+=ws[i];
 			if(l>=width){
 				//android.util.Log.v("test","#ret1="+i+":"+l+">="+width);
-				if(true){
+				//if(true){
 					//android.util.Log.v("test","#=============================");
-					for(int j=0;j<=i;j++){
-						android.util.Log.v("test","#ret1="+ws[j]);					
-					}
+				//	for(int j=0;j<=i;j++){
+				//		android.util.Log.v("test","#ret1="+ws[j]);					
+				//	}
 				//	android.util.Log.v("test","#=============================");
-				}
+				//}
 //return  (i<=0?0:i-1);
 				return  (i<=0?0:i);
 			}
