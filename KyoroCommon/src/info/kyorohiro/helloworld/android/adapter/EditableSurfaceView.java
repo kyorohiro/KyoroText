@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.android.adapter;
 
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
+import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -126,15 +127,24 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		sRMap.put(70, '~');
 		sMMap.put(69, '-');
 		sRMap.put(69, '=');
-
-
-		sMMap.put(62, ' ');	
+		sMMap.put(62, ' ');
+		sMMap.put(18, '#');
+		sMMap.put(81, '+');
+		sMMap.put(7, '0');
+		sMMap.put(17, '*');
+		sMMap.put(7, '0');
 	}
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
 
 		char dispatchKey = 0;
+		int ctrl = event.getMetaState();
+		if(0x1000==(ctrl&0x1000)||0x2000==(ctrl&0x2000)||0x4000==(ctrl&0x4000)){
+			mPushingCtl = true;
+		} else {
+			mPushingCtl = false;			
+		}
 		int keycode = event.getKeyCode();
 		log("test="+keycode+"s="+event.isShiftPressed());
 
@@ -148,6 +158,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 					dispatchKey +='A'-'a';
 				}
 				CommitText v = new CommitText(""+dispatchKey, 1);
+				v.pushingCtrl(pushingCtl());
 				mCommitTextList.addLast(v);
 			}
 			return true;
@@ -186,12 +197,22 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 				switch(event.getAction()) {
 				case KeyEvent.ACTION_DOWN:
 //					(event.getKeyCode());
-					// foolowing code infinite loop
-				mCurrentInputConnection.sendKeyEvent(event);
+					// fmod oolowing code infinite loop
+					mCurrentInputConnection.addKeyEvent(event.getKeyCode());
 				}
 				return true;
 
 			} 
+			switch(keycode){
+			case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
+			case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
+			case SimpleKeyEvent.KEYCODE_DPAD_UP:
+			case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
+				if(event.getAction()== KeyEvent.ACTION_DOWN){
+					mCurrentInputConnection.addKeyEvent(event.getKeyCode());
+				}
+				return true;
+			}
 		}
 		
 		return super.dispatchKeyEvent(event);
@@ -203,7 +224,8 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());
 
 		int ctrl = event.getMetaState();
-		if(0x1000==(ctrl&0x1000)){
+		if(0x1000==(ctrl&0x1000)||0x2000==(ctrl&0x2000)||0x4000==(ctrl&0x4000)){
+//		if(0x1000==(ctrl&0x1000)){
 			mPushingCtl = true;
 			switch(event.getAction()) {
 			case KeyEvent.ACTION_DOWN:
@@ -409,12 +431,13 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		public boolean sendKeyEvent(KeyEvent event) {
 			log("sendKeyEvent="+event.toString());
 //			android.util.Log.v("kiyo","sendKeyEvent="+event.toString());
-			if(event.getAction() == KeyEvent.ACTION_DOWN ) {
-				addKeyEvent(event.getKeyCode());
+//			if(event.getAction() == KeyEvent.ACTION_DOWN ) {
+//				addKeyEvent(event.getKeyCode());
 //					mCommitTextList.addLast(new CommitText(event.getKeyCode()));
-			}
-			return true;
-//			return super.sendKeyEvent(event);
+//			}
+//			return true;
+			// call dispatchEvent 
+			return super.sendKeyEvent(event);
 		}
 		
 		@Override
@@ -455,6 +478,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	}
 
 	public static void log(String log) {
-		//android.util.Log.v("kiyo", ""+log);
+	//	android.util.Log.v("kiyo", ""+log);
 	}
 }
