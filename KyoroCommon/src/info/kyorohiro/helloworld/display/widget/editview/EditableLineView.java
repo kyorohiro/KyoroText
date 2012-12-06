@@ -8,6 +8,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 
 /**
@@ -27,6 +28,10 @@ public class EditableLineView extends CursorableLineView {
 		mTextBuffer = (EditableLineViewBuffer) getLineViewBuffer();
 	}
 
+	@Override
+	public synchronized MyCursor getLeft() {
+		return super.getLeft();
+	}
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		if (editable()) {
@@ -102,7 +107,7 @@ public class EditableLineView extends CursorableLineView {
 		}
 	}
 
-	private MyInputConnection getMyInputConnection() {
+	public MyInputConnection getMyInputConnection() {
 		SimpleStage stage = getStage(this);
 		MyInputConnection c = stage.getCurrentInputConnection();
 		return c;
@@ -127,118 +132,12 @@ public class EditableLineView extends CursorableLineView {
 			c.addCommitText(lines[i], 1);
 			if(i+1<lines.length){
 				c.addKeyEvent(0x42);
-//				c.addKeyEvent(KeyEvent.KEYCODE_ENTER);
 			}
 		}
 	}
 
+	private KeyEventManager mKeyEventManager = new KeyEventManager();
 	private void updateCommitTextFromIME() {
-		// following code is yaxutuke sigoto
-		if(!isFocus()){
-			return;
-		}
-		MyInputConnection c = getMyInputConnection();
-		if (c == null) {
-			return;
-		} 
-
-		mTextBuffer.IsCrlfMode(this.isCrlfMode());
-		while (true) {
-			CommitText text = c.popFirst();
-			if (text != null) {
-				//if (text))
-				if (text.pushingCtrl()) {
-					CharSequence t = text.getText();
-					if(t.length() != 0) {
-						int v = t.charAt(0);
-						// move
-						switch(v){
-						case 'a':
-							mTextBuffer.setCursor(0, mTextBuffer.getCol());
-							break;
-						case 'e':
-							int _c = mTextBuffer.getCol();
-							CharSequence _t = mTextBuffer.get(_c);
-							mTextBuffer.setCursor(_t.length(), _c);
-							break;
-						case 'n':
-							next();
-							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-							break;
-						case 'p':
-							prev();
-							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-							break;
-						case 'f':
-							front();
-							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-							break;
-						case 'b':
-							back();
-							mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-							break;
-						case 'h':
-							mTextBuffer.backwardDeleteChar();
-							break;
-						case 'd':
-							mTextBuffer.deleteChar();
-							break;
-						}
-						// delete
-						switch(v){
-						case 'k':
-							//android.util.Log.v("kiyo","---k---");
-							int _c = mTextBuffer.getCol();
-							if(0<=_c&&_c<mTextBuffer.getNumberOfStockedElement()){
-								//android.util.Log.v("kiyo","---in---");
-//								mTextBuffer.deleteLinePerVisible();
-								mTextBuffer.killLine();
-							} else {
-								//android.util.Log.v("kiyo","---out---"+_c);
-							}
-							break;
-						}
-					}
-//				}
-				} else 
-				if (text.isKeyCode()) {
-//					android.util.Log.v("kiyo","key="+text.getKeyCode());
-					switch (text.getKeyCode()) {
-					case SimpleKeyEvent.KEYCODE_BACK:
-					case SimpleKeyEvent.KEYCODE_DEL:
-						mTextBuffer.deleteChar();
-						break;
-					case SimpleKeyEvent.KEYCODE_ENTER:
-						mTextBuffer.crlf();
-						break;
-					case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
-						back();
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-						break;
-					case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
-						front();
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-						break;
-					case SimpleKeyEvent.KEYCODE_DPAD_UP:
-						prev();
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-						break;
-					case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
-						next();
-						mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-						break;
-					case SimpleKeyEvent.KEYCODE_SPACE:
-						mTextBuffer.pushCommit(" ",1);
-						break;
-					}
-				} else {
-					mTextBuffer.pushCommit(text.getText(),
-							text.getNewCursorPosition());
-				}
-				getStage(this).resetTimer();
-			} else {
-				break;
-			}
-		}
+		mKeyEventManager.updateCommitTextFromIME(this, mTextBuffer);
 	}
 }

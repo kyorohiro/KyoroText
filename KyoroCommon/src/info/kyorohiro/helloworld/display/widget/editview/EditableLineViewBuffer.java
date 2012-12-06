@@ -154,12 +154,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			index = mCursorLine;
 		}
 		// mCursorLine = index;
-		if (false) {
-			android.util.Log.v("test", "--stocked="
-					+ getNumberOfStockedElement());
-			android.util.Log.v("test", "--cursorLine=" + mCursorLine);
-			get(mCursorLine);
-		}
 		int row = 0;
 		KyoroString c = null;
 		if (mCursorLine < getNumberOfStockedElement()) {
@@ -176,11 +170,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			row = mCursorRow;
 		}
 
-		// if (row == c.length()) {
-		// mCursorLine += 1;
-		// mDiffer.addLine(mCursorLine, lf);
-		// mCursorRow = 0;
-		// }else
 		if (row == 0) {
 			mDiffer.setLine(mCursorLine, lf);
 			mCursorLine += 1;
@@ -320,119 +309,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		mCursorLine = _colTmp;
 		mCursorRow =_rowTmp;
 	}
-	/*	public synchronized void deleteChar() {
 
-		if (deleteTargetIsEmpty()) {
-			return;
-		}
-		// if(true){
-		// deleteLinePerVisible();
-		// return;
-		// }
-
-		int index = getNumberOfStockedElement() - 1;
-		if (index > mCursorLine) {
-			index = mCursorLine;
-		}
-
-		KyoroString currentLineText = get(index);
-		boolean isEOF = isEOF(index);
-		if (lineIsEmpty(currentLineText)) {
-			deleteLinePerVisible();
-			// �ｽJ�ｽ[�ｽ\�ｽ�ｽ�ｽﾌ位置�ｽﾍ鯉ｿｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽB
-			return;
-		}
-
-		int row = mCursorRow;
-		if (row >= currentLineText.lengthWithoutLF(mIsCrlfMode)) {
-			row = currentLineText.lengthWithoutLF(mIsCrlfMode);
-		}
-
-		if (mCursorRow <= 0 && index > 0) {
-			// android.util.Log.v("kiyo", "msg-------(1)");
-			KyoroString prevLine = get(index - 1);
-			mCursorLine = index;
-			deleteLinePerVisible();
-			deleteLinePerVisible();
-			mCursorLine = index - 1;
-			// todo EOF
-			// if(currentLineText.includeLF()|| currentLineText.includeEOF()){
-			if (currentLineText.includeLF()) {// || isEOF) {
-				// android.util.Log.v("kiyo", "msg-------(1-1-1)");
-				// if (mCursorLine < getNumberOfStockedElement()) {
-				// todo kiyo now
-				crlf(true, false);
-				mCursorLine = index - 1;
-				// } else {
-				// crlf(true, false);
-				// }
-			} else {
-				// android.util.Log.v("kiyo", "msg-------(1-1-2)");
-				crlf(false, false);// false�ｽﾌ趣ｿｽ�ｽﾌ鯉ｿｽ�ｽﾝ位置�ｽﾉつゑｿｽ�ｽﾄ、�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ驍ｱ�ｽ�ｽ
-				mCursorLine = index - 1;
-			}
-
-			if (prevLine.includeLF()) {
-				// android.util.Log.v("kiyo", "msg-------(1-2-1)");
-				prevLine.pargeLF(mIsCrlfMode);
-				commit("" + prevLine + currentLineText, 0);// crlf�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽK�ｽv
-				moveCursor(prevLine.length());
-				prevLine.releaseParge();
-			} else {
-				// android.util.Log.v("kiyo", "msg-------(1-2-2)");
-				prevLine.pargeLF(mIsCrlfMode);
-				prevLine.pargeEnd();
-				commit("" + prevLine + currentLineText, 0);// crlf�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽK�ｽv
-				moveCursor(prevLine.length());
-				prevLine.releaseParge();
-			}
-			return;
-		} else {
-			// todo EOF
-
-			// if (currentLineText.includeLF()|| currentLineText.includeEOF()){
-			if (currentLineText.includeLF() || isEOF) {
-				// android.util.Log.v("kiyo", "msg-------(2)");
-				CharSequence f = "";
-				if (row > 1) {
-					f = currentLineText.subSequence(0, row - 1);
-				}
-				CharSequence e = "";
-				if (row < currentLineText.length()) {
-					e = currentLineText.subSequence(row,
-							currentLineText.length());
-				}
-				mDiffer.setLine(index, "" + f + e);
-				mCursorRow = row - 1;
-			} else {
-				// android.util.Log.v("kiyo", "msg-------(3)");
-				CharSequence f = currentLineText.subSequence(0, row - 1);
-				CharSequence e = "";
-				if (row < currentLineText.length()) {
-					e = currentLineText.subSequence(row,
-							currentLineText.length());
-				}
-				int br = row - 1;
-				int bc = mCursorLine;
-				deleteLinePerVisible();
-
-				if (bc <= 0) {
-					mCursorRow = 0;
-				} else if (mCursorLine + 1 < getNumberOfStockedElement()) {
-					mCursorLine += 1;
-					mCursorRow = 0;
-				}
-				// crlf(fal);
-				// mCursorC =row-1;
-				commit("" + f + e, index);
-				setCursor(br, bc);
-			}
-		}
-		if (mCursorRow < 0) {
-			mCursorRow = 0;
-		}
-	}
-*/
 	public synchronized void deleteLinePerVisible() {
 		int index = getNumberOfStockedElement();// +1;
 		if (index == 0) {

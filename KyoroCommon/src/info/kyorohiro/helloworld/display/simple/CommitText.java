@@ -9,6 +9,16 @@ public class CommitText {
 
 		// todo controlCode
 		private boolean mPushingCtrl = false;
+		private boolean mPushingEsc = false;
+
+		public void pushingEsc(boolean pushing) {
+			mPushingEsc = pushing;
+		}
+
+		public boolean pushingEsc() {
+			return mPushingEsc;
+		}
+
 		public void pushingCtrl(boolean pushing) {
 			mPushingCtrl = pushing;
 		}
