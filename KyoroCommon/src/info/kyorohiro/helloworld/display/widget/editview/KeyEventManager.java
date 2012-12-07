@@ -54,6 +54,8 @@ public class KeyEventManager {
 						switch(v){
 						case '<':
 							mTextBuffer.setCursor(0, 0);
+							mTextView.setCursorAndCRLF(mTextView.getLeft(), 0, 0);
+							mTextView.recenter();
 							mIsEscMode = false;
 							break;
 						case '>':
@@ -64,7 +66,9 @@ public class KeyEventManager {
 							}
 							if(ks!=null){
 								mTextBuffer.setCursor(ks.lengthWithoutLF(mIsEscMode), len-1);
+								mTextView.setCursorAndCRLF(mTextView.getLeft(), mTextBuffer.getRow(), mTextBuffer.getCol());
 							}
+							mTextView.recenter();
 							mIsEscMode = false;
 							break;
 						}
@@ -105,6 +109,9 @@ public class KeyEventManager {
 							break;
 						case 'd':
 							mTextBuffer.deleteChar();
+							break;
+						case 'l':
+							mTextView.recenter();
 							break;
 						}
 						// delete
