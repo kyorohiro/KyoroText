@@ -1,8 +1,9 @@
-package info.kyorohiro.helloworld.display.widget.editview;
+package info.kyorohiro.helloworld.android.adapter;
 
+import info.kyorohiro.helloworld.display.simple.MetaState;
 import android.view.KeyEvent;
 
-public class MetaState {
+public class MetaStateForAndroid implements MetaState {
 	private boolean mPushingCtl = false;
 	private boolean mPushingAlt = false;
 	private boolean mPushingEsc = false;
@@ -73,5 +74,5 @@ public class MetaState {
 		if(isEsc(event.getKeyCode())&&event.getAction()==KeyEvent.ACTION_DOWN){
 			mPushingEsc = true;
 		}
-	}
+	} 
 }

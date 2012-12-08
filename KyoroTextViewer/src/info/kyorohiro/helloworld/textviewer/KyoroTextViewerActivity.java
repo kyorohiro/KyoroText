@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.textviewer;
 
 import java.io.File;
 
+import info.kyorohiro.helloworld.android.adapter.SimpleStageForAndroid;
 import info.kyorohiro.helloworld.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
@@ -29,7 +30,7 @@ import android.view.WindowManager;
 
 
 public class KyoroTextViewerActivity extends MainActivity {
-	private SimpleStage mStage = null;
+	private SimpleStageForAndroid mStage = null;
 //	private TextViewer mTextViewer = null;
 	private int mViewerWidth = 100;
 	private int mViewerHeight = 100;
@@ -41,7 +42,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		super.onCreate(savedInstanceState);
 
 		mViewerManager = newTextManager();
-		mStage = new SimpleStage(this);
+		mStage = new SimpleStageForAndroid(this);
 		mStage.getRoot().addChild(mViewerManager);
 		int modeForDisableSoftKeyboard = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
 		getWindow().setSoftInputMode(modeForDisableSoftKeyboard);

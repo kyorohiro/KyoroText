@@ -4,7 +4,6 @@ package info.kyorohiro.helloworld.android.adapter;
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
-import info.kyorohiro.helloworld.display.widget.editview.MetaState;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,7 +32,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	private InputMethodManager mManager = null;
 	private _MyInputConnection mCurrentInputConnection = null;
-	private  MetaState mMetaState = new MetaState();
+	private  MetaStateForAndroid mMetaState = new MetaStateForAndroid();
 
 
 	public EditableSurfaceView(Context context) {
@@ -269,7 +268,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 				}
 			}
 		}
-		if(mMetaState.pushingCtl()||MetaState.isCtl(event.getKeyCode())||
+		if(mMetaState.pushingCtl()||MetaStateForAndroid.isCtl(event.getKeyCode())||
 				mMetaState.pushingEsc()){
 			return true;
 		} else {

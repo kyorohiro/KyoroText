@@ -17,6 +17,7 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 public class EditableLineView extends CursorableLineView {
 
 	private EditableLineViewBuffer mTextBuffer = null;
+	private KeyEventManager mKeyEventManager = new KeyEventManager();
 
 	public EditableLineView(EditableLineViewBuffer v, int textSize, int cashSize) {
 		super(v, textSize, cashSize);
@@ -28,14 +29,17 @@ public class EditableLineView extends CursorableLineView {
 		mTextBuffer = (EditableLineViewBuffer) getLineViewBuffer();
 	}
 
+	public void setKeyEventManager(KeyEventManager manager) {
+		mKeyEventManager = manager;
+	}
 	@Override
 	public synchronized MyCursor getLeft() {
 		return super.getLeft();
 	}
 
 	public void recenter() {
-		int s = getShowingTextStartPosition();
-		int e = getShowingTextEndPosition();
+		//int s = getShowingTextStartPosition();
+		//int e = getShowingTextEndPosition();
 		//android.util.Log.v("kiyo","#1="+getPositionY()+","+getShowingTextSize()+","+s+","+e);
 		//android.util.Log.v("kiyo","#2="+getLeft().getCursorCol()+","+getPositionY());
 		setPositionY(-getLeft().getCursorCol()+getShowingTextStartPosition());
@@ -147,7 +151,6 @@ public class EditableLineView extends CursorableLineView {
 		}
 	}
 
-	private KeyEventManager mKeyEventManager = new KeyEventManager();
 	private void updateCommitTextFromIME() {
 		int prev = mTextBuffer.getNumberOfStockedElement();
 		mKeyEventManager.updateCommitTextFromIME(this, mTextBuffer);

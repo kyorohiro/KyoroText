@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.stress;
 
 import java.util.List;
 
+import info.kyorohiro.helloworld.android.adapter.SimpleStageForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
@@ -39,7 +40,7 @@ public class KyoroStressActivity extends Activity {
 	public final static String MENU_SETTING_IS_RETRY = "is retry";
 
 
-	private SimpleStage mStage = null;
+	private SimpleStageForAndroid mStage = null;
 	private LineList mBigEaterListView = null;
 	private SimpleCircleController mControllerView = new SimpleCircleController();
 	private Button mStartButton = new Button("start all");
@@ -55,7 +56,7 @@ public class KyoroStressActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mStage = new SimpleStage(this);
+		mStage = new SimpleStageForAndroid(this);
 		mBigEaterListView = new LineList(mBigEaterList, 50);
 		mStage.getRoot().addChild(new Layout());
 		mStage.getRoot().addChild(mBigEaterListView);
@@ -305,8 +306,8 @@ public class KyoroStressActivity extends Activity {
 		for (RunningAppProcessInfo i : list) {
 			String p = i.processName;
 			if (p.equals(c)) {
-				// ë∂ç›Ç∑ÇÈèÍçáÇÕ
-				// process kill Ç©Ç«Ç§Ç©Ç≈ï™äÚ
+				// ÔøΩÔøΩÔøΩ›ÇÔøΩÔøΩÔøΩÍçáÔøΩÔøΩ
+				// process kill ÔøΩÔøΩÔøΩ«ÇÔøΩÔøΩÔøΩÔøΩ≈ïÔøΩÔøΩÔøΩ
 				String extra = infos.memInfo(KyoroStressActivity.this, i.pid);
 				if (KyoroStressService.START_SERVICE.equals(KyoroSetting
 						.getBigEaterState(processName))) {

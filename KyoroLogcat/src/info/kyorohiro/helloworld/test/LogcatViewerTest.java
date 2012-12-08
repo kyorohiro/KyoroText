@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.test;
 
 import android.os.Bundle;
+import info.kyorohiro.helloworld.android.adapter.SimpleStageForAndroid;
 import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.android.base.TestResult;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
@@ -16,13 +17,13 @@ public class LogcatViewerTest extends android.test.ActivityInstrumentationTestCa
 	public static class LogcatViewerTestActivity extends TestActivity {
 		private FlowingLineBuffer mData = null;
 		private LogcatViewer mConsole = null;
-		private SimpleStage mStage = null;
+		private SimpleStageForAndroid mStage = null;
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			mConsole = new LogcatViewer(1000);
 			mData = mConsole.getCyclingStringList();
-			mStage = new SimpleStage(this);
+			mStage = new SimpleStageForAndroid(this);
 			mStage.getRoot().addChild(mConsole);
 			setContentView(mStage);
 			mStage.start();

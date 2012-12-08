@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.logcat;
 import java.io.File;
 import java.util.regex.Pattern;
 
+import info.kyorohiro.helloworld.android.adapter.SimpleStageForAndroid;
 import info.kyorohiro.helloworld.android.base.TestActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -74,7 +75,7 @@ public class KyoroLogcatActivity extends TestActivity {
 	= new SimpleCircleControllerMenuPlus();
 //	private SimpleCircleController mCircleController
 //	= new SimpleCircleController();
-	private SimpleStage mStage = null;
+	private SimpleStageForAndroid mStage = null;
 	private AutoCompleteTextView mInputForLogFilter = null;
 	private TaskInter mShowTask = null;
 
@@ -180,7 +181,7 @@ public class KyoroLogcatActivity extends TestActivity {
 
 		//
 		// simple stage
-		mStage = new SimpleStage(this.getApplicationContext());
+		mStage = new SimpleStageForAndroid(this.getApplicationContext());
 		mStage.getRoot().addChild(new Layout());
 		mStage.getRoot().addChild(mLogcatViewer);
 		mStage.getRoot().addChild(mCircleController);

@@ -7,7 +7,7 @@ public class EmptyBreakText extends BreakText {
 
 	public EmptyBreakText(SimpleFont font, int width) {
 		super(font, width);
-		android.util.Log.v("test","#width="+width);
+		//android.util.Log.v("test","#width="+width);
 		// TODO Auto-generated constructor stub
 	}
 
