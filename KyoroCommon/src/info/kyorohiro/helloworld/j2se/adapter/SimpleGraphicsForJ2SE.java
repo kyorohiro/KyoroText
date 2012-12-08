@@ -34,15 +34,14 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void setGlobalPoint(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		mGlobalX = x;
+		mGlobalY = y;
 	}
 
 	@Override
 	public SimpleGraphics getChildGraphics(SimpleGraphics graphics,
 			int globalX, int globalY) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleGraphicsForJ2SE(mGraphics, globalX, globalY);
 	}
 
 	@Override

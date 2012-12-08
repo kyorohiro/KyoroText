@@ -15,6 +15,7 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 	private int mSleep = 50;
 	private SimpleDisplayObjectContainer mRoot = new SimpleDisplayObjectContainer();
 
+	
 	@Override
 	public boolean isAlive() {
 		if (mCurrentThread == null || !mCurrentThread.isAlive()) {
@@ -95,7 +96,9 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 
 	@Override
 	public void paint(Graphics g) {
+		//System.out.println("--begin paint--");
 		mRoot.paint(new SimpleGraphicsForJ2SE((Graphics2D)g, 0, 0));
+		//System.out.println("--end paint--");
 	}
 
 	private Thread mCurrentThread = null;
@@ -106,7 +109,7 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 				System.out.println("--begin animation--");
 				Thread currentThread = null;
 				while(true) {
-					mCurrentThread = currentThread;
+					currentThread = mCurrentThread;
 					if(currentThread == null || currentThread != Thread.currentThread()) {
 						break;
 					}
@@ -117,7 +120,12 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 						break;
 					}
 				}
-			} finally {
+			}
+			catch(Throwable t) {
+				System.out.println("--error animation--");
+				t.printStackTrace();
+			}
+			finally {
 				System.out.println("--end animation--");
 			}
 		}

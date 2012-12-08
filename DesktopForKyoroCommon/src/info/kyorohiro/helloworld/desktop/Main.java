@@ -1,10 +1,16 @@
 package info.kyorohiro.helloworld.desktop;
 
+import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleStage;
+import info.kyorohiro.helloworld.j2se.adapter.SimpleStageForJ2SE;
+
 import java.awt.AWTEvent;
 import java.awt.AWTException;
 import java.awt.Button;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -25,47 +31,47 @@ public class Main {
 
 	public static void main(String[] args) {
 		System.out.println("hello world1");
-		JFrame frame = new JFrame("hello swing");
-		TextComponent tc = new TextComponent();
-		tc.setVisible(true);
-		frame.getContentPane().setLayout(new FlowLayout());
-		tc.setPreferredSize(new Dimension(200 , 200));
-		frame.getContentPane().add(tc);
-		frame.getContentPane().add(new Button("botton"));
-		
-		frame.setBounds(100,100,100,100);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		Main main = new Main();
+		main.init();
 		System.out.println("/hello world1");	
 	}
 
-	public static class TextComponent extends JPanel{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+	private SimpleStage mStage = null;
 
-		@Override
-		public void paint(Graphics g){
-			System.out.println("paint");	
-			g.setColor(new Color(0xFF0000));
-			g.drawString("adsfasdf", 10, 10);
-			g.fillRect(0, 0, 100, 100);
-			System.out.println("/paint");	
-		}
-	}
-	public static class MainThread implements Runnable {
-		Window mWindow = null;
-		public MainThread(Window window) {
-			mWindow = window;
-		}
-
-		@Override
-		public void run() {
-			while(true) {
-				InputContext im = mWindow.getInputContext();
-			}
-		}
+	private void init() {
+		JFrame frame = new JFrame("hello swing");
+		frame.getContentPane().setLayout(new FlowLayout());
+		frame.setBounds(100,100,100,100);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);	
+		initKyoroCommon(frame.getContentPane());
+		testItem();
+		mStage.start();
 	}
 
+	private void initKyoroCommon(Container appRoot) {
+		SimpleStageForJ2SE stage = new SimpleStageForJ2SE();
+		stage.setVisible(true);
+		stage.setPreferredSize(new Dimension(200, 200));
+		appRoot.add(stage);
+		mStage = stage;
+	}
+
+	private void testItem() {
+		SimpleDisplayObject child = new TestDisplayObject();
+		mStage.getRoot().addChild(child);
+	}
+
+	private static class TestDisplayObject extends SimpleDisplayObject {
+		@Override
+		public void paint(SimpleGraphics graphics) {
+			System.out.println("begin paint");
+			graphics.setColor(0xFF0000);
+			graphics.drawLine(0, 0, 100, 100);
+			graphics.drawLine(-100, -100, 100, 100);
+			System.out.println("end paint");
+		}		
+	}
+	
+	
 }
