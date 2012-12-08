@@ -1,5 +1,10 @@
 package info.kyorohiro.helloworld.j2se.adapter;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -7,16 +12,24 @@ import info.kyorohiro.helloworld.display.simple.SimpleImage;
 
 public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
+	private Graphics2D mGraphics = null;
+	private int mGlobalX = 0;
+	private int mGlobalY = 0;
+	
+	public SimpleGraphicsForJ2SE(Graphics2D g, int globalX, int globalY) {
+		mGraphics = g;
+		mGlobalX = globalX;
+		mGlobalY = globalY;
+	}
+
 	@Override
 	public int getGlobalX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mGlobalX;
 	}
 
 	@Override
 	public int getGlobalY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mGlobalY;
 	}
 
 	@Override
@@ -40,8 +53,7 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void drawLine(int startX, int startY, int stopX, int stopY) {
-		// TODO Auto-generated method stub
-		
+		mGraphics.drawLine(mGlobalX+startX, mGlobalY+startY, mGlobalX+stopX, mGlobalY+stopY);
 	}
 
 	@Override
@@ -119,8 +131,7 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void setColor(int color) {
-		// TODO Auto-generated method stub
-		
+		mGraphics.setColor(new Color(color));
 	}
 
 	@Override

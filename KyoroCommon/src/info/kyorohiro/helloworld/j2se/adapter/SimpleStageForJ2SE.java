@@ -95,7 +95,7 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 
 	@Override
 	public void paint(Graphics g) {
-		mRoot.paint(new SimpleGraphicsForJ2SE(g, 0, 0));
+		mRoot.paint(new SimpleGraphicsForJ2SE((Graphics2D)g, 0, 0));
 	}
 
 	private Thread mCurrentThread = null;
