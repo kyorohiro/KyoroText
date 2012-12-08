@@ -1,17 +1,27 @@
 package info.kyorohiro.helloworld.j2se.adapter;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JPanel;
+
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 
-public class SimpleStageForJ2SE implements SimpleStage {
+public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 	private int mClearColor = 0x00;
+	private int mSleep = 50;
 	private SimpleDisplayObjectContainer mRoot = new SimpleDisplayObjectContainer();
 
 	@Override
 	public boolean isAlive() {
-		return false;
+		if (mCurrentThread == null || !mCurrentThread.isAlive()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 
@@ -21,9 +31,11 @@ public class SimpleStageForJ2SE implements SimpleStage {
 	}
 
 	@Override
-	public void start() {
-		// TODO Auto-generated method stub
-		
+	public synchronized void start() {
+		if (!isAlive()) {
+			mCurrentThread = new Thread(new Animation());
+			mCurrentThread.start();
+		}
 	}
 
 	@Override
@@ -37,11 +49,16 @@ public class SimpleStageForJ2SE implements SimpleStage {
 	}
 
 	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-		
+	public synchronized void stop() {
+		if (isAlive()) {
+			Thread tmp = mCurrentThread;
+			mCurrentThread = null;
+			if (tmp != null && tmp.isAlive()) {
+				tmp.interrupt();
+			}
+		}
 	}
-
+	
 	@Override
 	public void showInputConnection() {
 		// TODO Auto-generated method stub
@@ -72,6 +89,15 @@ public class SimpleStageForJ2SE implements SimpleStage {
 		return new SimplePoint[0];
 	}
 
+	private void doDraw() {
+		repaint();
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		mRoot.paint(new SimpleGraphicsForJ2SE(g, 0, 0));
+	}
+
 	private Thread mCurrentThread = null;
 	private class Animation implements Runnable {
 		@Override
@@ -84,8 +110,12 @@ public class SimpleStageForJ2SE implements SimpleStage {
 					if(currentThread == null || currentThread != Thread.currentThread()) {
 						break;
 					}
-					
-					
+					doDraw();
+					try {
+						Thread.sleep(mSleep);
+					} catch (InterruptedException e) {
+						break;
+					}
 				}
 			} finally {
 				System.out.println("--end animation--");
