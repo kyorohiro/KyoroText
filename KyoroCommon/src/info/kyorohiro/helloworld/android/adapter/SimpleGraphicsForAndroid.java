@@ -90,6 +90,7 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 
 	private static FloatArrayBuilder sWidthBuffer = new FloatArrayBuilder();
 	//test
+	@Override
 	public synchronized void drawPosText(char[] text, float[] widths, float zoom, int start, int end, int x, int y) {
 		sWidthBuffer.setLength(widths.length*2);
 		float[] pos = sWidthBuffer.getAllBufferedMoji();

@@ -1,7 +1,6 @@
 package info.kyorohiro.helloworld.display.simple;
 
 
-import info.kyorohiro.helloworld.android.adapter.SimpleGraphicsForAndroid;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 import info.kyorohiro.helloworld.util.FloatArrayBuilder;
@@ -55,9 +54,8 @@ public class SimpleGraphicUtil {
 				text.setCashWidths(font, textSize);
 			}
 			end = text.length();
-			SimpleGraphicsForAndroid andrographics = (SimpleGraphicsForAndroid)graphics;
 			float zoom = text.getCashZoomSize(textSize);
-			andrographics.drawPosText(buffer, text.getCashWidths(), zoom, start, end,x, y);
+			graphics.drawPosText(buffer, text.getCashWidths(), zoom, start, end,x, y);
 			drawControlCode(graphics, text, zoom, x, y, textSize);
 		}finally{
 			//eTime = System.currentTimeMillis();
@@ -106,10 +104,9 @@ public class SimpleGraphicUtil {
 			}
 		}
 		graphics.setColor(sControlCodeColoe20);
-		SimpleGraphicsForAndroid andrographics = (SimpleGraphicsForAndroid)graphics;
 		int ts = graphics.getTextSize();
 		graphics.setTextSize(ts/3);
-		andrographics.drawPosText(line, widths, zoom, 0, j, x, y);
+		graphics.drawPosText(line, widths, zoom, 0, j, x, y);
 		graphics.setTextSize(ts);
 		graphics.setColor(c);
 

@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.editview;
 
-import junit.framework.Test;
+
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;

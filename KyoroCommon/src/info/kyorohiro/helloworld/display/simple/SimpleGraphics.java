@@ -17,6 +17,7 @@ public abstract class SimpleGraphics {
 	public abstract void drawBackGround(int color);
 	public abstract void drawText(char[] text, int start, int end, int x, int y);
 	public abstract void drawText(CharSequence text, int x, int y);
+	public abstract void drawPosText(char[] text, float[] widths, float zoom, int start, int end, int x, int y);
 	public abstract int getTextSize();
 	public abstract void startPath();
 	public abstract void moveTo(int x, int y);
