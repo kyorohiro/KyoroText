@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.j2se.adapter;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -96,6 +97,8 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 
 	@Override
 	public void paint(Graphics g) {
+		setVisible(true);
+		setPreferredSize(new Dimension(400, 400));
 		//System.out.println("--begin paint--");
 		mRoot.paint(new SimpleGraphicsForJ2SE((Graphics2D)g, 0, 0));
 		//System.out.println("--end paint--");

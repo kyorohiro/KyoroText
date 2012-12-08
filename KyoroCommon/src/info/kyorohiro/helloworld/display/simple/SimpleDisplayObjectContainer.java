@@ -23,6 +23,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 							child.getY()+graphics.getGlobalY());
 				} else {
 					mCashGraphics.setGlobalPoint(
+							graphics,
 							child.getX()+graphics.getGlobalX()
 							,child.getY()+graphics.getGlobalY());
 				}

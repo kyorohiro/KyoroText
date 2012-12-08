@@ -10,7 +10,7 @@ public abstract class SimpleGraphics {
 
 	public abstract int getGlobalX();
 	public abstract int getGlobalY();
-	public abstract void setGlobalPoint(int x,int y);
+	public abstract void setGlobalPoint(SimpleGraphics graphics, int x,int y);
 	public abstract SimpleGraphics getChildGraphics(SimpleGraphics graphics, int globalX, int globalY);
 	public abstract void drawCircle(int x, int y, int radius);	
 	public abstract void drawLine(int startX, int startY, int stopX, int stopY);	

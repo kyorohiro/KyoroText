@@ -22,6 +22,10 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 		mGlobalY = globalY;
 	}
 
+	public Graphics2D getGraphics() {
+		return mGraphics;
+	}
+
 	@Override
 	public int getGlobalX() {
 		return mGlobalX;
@@ -33,7 +37,10 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	}
 
 	@Override
-	public void setGlobalPoint(int x, int y) {
+	public void setGlobalPoint(SimpleGraphics graphics, int x, int y) {
+		//if( != mGraphics){
+			mGraphics = ((SimpleGraphicsForJ2SE)graphics).getGraphics();
+		//}
 		mGlobalX = x;
 		mGlobalY = y;
 	}
