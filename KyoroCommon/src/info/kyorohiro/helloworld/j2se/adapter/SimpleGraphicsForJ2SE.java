@@ -26,7 +26,7 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	private int mColor = 0xFFFFFF;
 	private int mStyle = 0;
 	private int mStrokeWidth = 1;
-	private  SimpleFontForJ2SE mFont = null;
+	private  SimpleFont mFont = null;
 
 	public SimpleGraphicsForJ2SE(Graphics2D g, int globalX, int globalY, int globalW, int globalH) {
 		mGraphics = g;
@@ -95,12 +95,14 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void drawText(char[] text, int start, int end, int x, int y) {
+		setColor(mColor);
 		mGraphics.setFont(mGraphics.getFont().deriveFont(mTextSize));
 		mGraphics.drawChars(text, start, end-start, mGlobalX+x, mGlobalY+y);
 	}
 
 	@Override
 	public void drawText(CharSequence text, int x, int y) {
+		setColor(mColor);
 		mGraphics.setFont(mGraphics.getFont().deriveFont((float)mTextSize));
 		mGraphics.drawString(""+text, mGlobalX+x, mGlobalY+y);
 	}
@@ -108,17 +110,19 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	@Override
 	public void drawPosText(char[] text, float[] widths, float zoom, int start,
 			int end, int x, int y) {
+		// text size setting
 		mGraphics.setFont(mGraphics.getFont().deriveFont((float)mTextSize));
 //		mGraphics.setPaint(new Color(mColor));
 		mGraphics.setColor(new Color(mColor));
-		GlyphVector gv = mFont.getFont().createGlyphVector(
+		GlyphVector gv = mGraphics.getFont().createGlyphVector(
 				mGraphics.getFontRenderContext(), 
 				new String(text, start, end-start));
 
 		float w =0;
 		for(int i=start;i<(end-start);i++){
 			w += widths[i]*zoom;
-			Point2D pos = new Point2D.Float(mGlobalX+w, mGlobalY+50);
+			System.out.println("["+i+"]="+w);
+			Point2D pos = new Point2D.Float(mGlobalX+x+w, mGlobalY+y);
 			gv.setGlyphPosition(i-start, pos);
 		}
 
@@ -215,9 +219,10 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void setSimpleFont(SimpleFont f) {
-		if(f instanceof SimpleFontForJ2SE) {
-			mFont = (SimpleFontForJ2SE)f;
-		}
+		//if(f instanceof SimpleFontForJ2SE) {
+		//	mFont = (SimpleFontForJ2SE)f;
+		//}
+		mFont = f;
 	}
 
 	@Override

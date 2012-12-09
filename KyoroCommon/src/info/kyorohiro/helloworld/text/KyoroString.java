@@ -12,7 +12,7 @@ public class KyoroString  implements CharSequence {
 	private long mLinePosition = 0;
 	private boolean mIncludeLF = false;
 	private boolean mIncludeCRLF = false;
-	private int mColor = 0;
+	private int mColor = 0xFF000000;
 
 	// file buffer
 	private long mBeginPoint = -1;
@@ -36,7 +36,7 @@ public class KyoroString  implements CharSequence {
 	}
 
 	public KyoroString(CharSequence content) {
-		init(content, 0x000000);
+		init(content, 0xFF000000);
 	}
 
 	public KyoroString(CharSequence content, int color) {
@@ -189,10 +189,12 @@ public class KyoroString  implements CharSequence {
 	}
 
 	public void setCashWidths(SimpleFont font, int fontSize) {
+		System.out.println("cash[A]="+font.getFontSize());
 		if(mCashWidth == null||mCashByte.length <mContent.length) {
 			mCashWidth = new float[mContent.length];
 		}
 		_mFontSize = (int)font.getFontSize();
+		System.out.println("cash[B]="+font.getFontSize());
 		font.getTextWidths(this, 0, length(), mCashWidth, font.getFontSize());
 		mIsCahsed = true;
 	}
