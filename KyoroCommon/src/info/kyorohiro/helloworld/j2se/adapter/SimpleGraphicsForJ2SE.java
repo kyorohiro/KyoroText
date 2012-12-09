@@ -88,32 +88,41 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	public void drawBackGround(int color) {
 		int c = getColor(); 
 		setColor(color);
-		mGraphics.clearRect(mGlobalX, mGlobalY, getWidth(), getHeight());
+		mGraphics.fillRect(mGlobalX, mGlobalY, getWidth(), getHeight());
+//		mGraphics.clearRect(mGlobalX, mGlobalY, getWidth(), getHeight());
 		setColor(c);
 	}
 
 	@Override
 	public void drawText(char[] text, int start, int end, int x, int y) {
+		mGraphics.setFont(mGraphics.getFont().deriveFont(mTextSize));
 		mGraphics.drawChars(text, start, end-start, mGlobalX+x, mGlobalY+y);
-//		mGraphics.drawString(new String(text, start, end), mGlobalX+x, mGlobalY+y);
 	}
 
 	@Override
 	public void drawText(CharSequence text, int x, int y) {
+		mGraphics.setFont(mGraphics.getFont().deriveFont((float)mTextSize));
 		mGraphics.drawString(""+text, mGlobalX+x, mGlobalY+y);
 	}
 
 	@Override
 	public void drawPosText(char[] text, float[] widths, float zoom, int start,
 			int end, int x, int y) {
-		 GlyphVector gv = mFont.getFont().createGlyphVector(mGraphics.getFontRenderContext(), 
-				 new String(text, start, end-start));
+		mGraphics.setFont(mGraphics.getFont().deriveFont((float)mTextSize));
+//		mGraphics.setPaint(new Color(mColor));
+		mGraphics.setColor(new Color(mColor));
+		GlyphVector gv = mFont.getFont().createGlyphVector(
+				mGraphics.getFontRenderContext(), 
+				new String(text, start, end-start));
 
-		 for(int i=0;i<(end-start);i++){
-			 Point2D pos = new Point2D.Float(widths[i], 0);
-			 gv.setGlyphPosition(i, pos);
-		 }
-		 mGraphics.drawGlyphVector(gv, mGlobalX, mGlobalY);
+		float w =0;
+		for(int i=start;i<(end-start);i++){
+			w += widths[i]*zoom;
+			Point2D pos = new Point2D.Float(mGlobalX+w, mGlobalY+50);
+			gv.setGlyphPosition(i-start, pos);
+		}
+
+		mGraphics.drawGlyphVector(gv, mGlobalX, mGlobalY);
 	}
 
 	@Override
@@ -163,7 +172,7 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	@Override
 	public void setColor(int color) {
 		mColor = color;
-		mGraphics.setColor(new Color(color));
+		mGraphics.setColor(new Color(color,true));
 	}
 
 	@Override
@@ -186,11 +195,6 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 		mStrokeWidth = w;
 	}
 
-//	@Override
-//	public int getTextWidth(String line) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
 
 	@Override
 	public SimpleDisplayObject createImage(byte[] data, int offset, int length) {
@@ -206,20 +210,19 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void clipRect(int left, int top, int right, int bottom) {
-		// TODO Auto-generated method stub
-		
+		mGraphics.clearRect(left, top, right-left, bottom-top);
 	}
 
 	@Override
 	public void setSimpleFont(SimpleFont f) {
-		// TODO Auto-generated method stub
-		
+		if(f instanceof SimpleFontForJ2SE) {
+			mFont = (SimpleFontForJ2SE)f;
+		}
 	}
 
 	@Override
 	public SimpleFont getSimpleFont() {
-		// TODO Auto-generated method stub
-		return null;
+		return mFont;
 	}
 
 }

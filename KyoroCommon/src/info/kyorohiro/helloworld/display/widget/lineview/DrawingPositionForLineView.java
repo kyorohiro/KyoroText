@@ -37,7 +37,8 @@ public class DrawingPositionForLineView {
 		resetInfo(view);
 		
 		if(!mfittableToView){
-			// ƒpƒEƒ“ƒX‚·‚é‚æ‚¤‚ÈƒAƒjƒ[ƒVƒ‡ƒ“‚·‚éB
+			// ï¿½pï¿½Eï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½ÈƒAï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+			System.out.println("===============do"+position+","+height+","+textSize+","+scale);
 			mPosition = position;
 			if(Math.abs(view.getPositionY()-mPosition)>mNumOfLine/4) {
 				if(view.getPositionY()>mPosition) {
@@ -47,7 +48,7 @@ public class DrawingPositionForLineView {
 				}
 			}
 		} else {
-			// ƒpƒEƒ“ƒX‚·‚é‚æ‚¤‚ÈƒAƒjƒ[ƒVƒ‡ƒ“‚µ‚È‚¢B
+			// ï¿½pï¿½Eï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½ÈƒAï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½B
 			mPosition = view.getPositionY();
 		}
 		mStart = start(showingText);

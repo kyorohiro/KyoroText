@@ -13,7 +13,7 @@ import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 
 public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
-	private int mClearColor = 0xFFFFFF;
+	private int mClearColor = 0xFFAAAAFF;
 	private int mSleep = 50;
 	private SimpleDisplayObjectContainer mRoot = new SimpleDisplayObjectContainer();
 
@@ -97,7 +97,9 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	protected void paintComponent(Graphics g) {
+//	@Override
+//	public void paint(Graphics g) {
 		setVisible(true);
 		setPreferredSize(new Dimension(400, 400));
 		g.setColor(new Color(mClearColor));
