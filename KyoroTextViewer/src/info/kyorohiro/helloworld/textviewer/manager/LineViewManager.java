@@ -1,19 +1,12 @@
 package info.kyorohiro.helloworld.textviewer.manager;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.text.ClipboardManager;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
-import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController.CircleControllerAction;
-import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus.CircleMenuItem;
-import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
-import info.kyorohiro.helloworld.textviewer.KyoroApplication;
-import info.kyorohiro.helloworld.textviewer.task.CopyTask;
 import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 
 public class LineViewManager extends SimpleDisplayObjectContainer {

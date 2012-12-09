@@ -1,11 +1,11 @@
 /*
- * �`�摬�x�ɂ��܂肱�����Ȃ�����������Sprite�\���@�\�Z�b�g
+ * 描画速度にあまりこだわらない部分向けのSprite表示機能セット
  * 
- * �Q�[���p�͍̂쐬�� 
- *  �ȉ��̂悤�Ȋ����ɂȂ�
- *   ���� paint(Graphics g) ���Ăяo��������߂�B
-  * �@    ��Sprite�̈ʒu�ƕ`����e���w�肷��΁A���Native���œK���ɏ������Ă����
- *   ������� OpenGL�ŕ`�悷��
- *   ���֘A��DynamicSound �� �Ȉ�MIDI
+ * ゲーム用のは作成中 
+ *  以下のような感じになる
+ *   毎回 paint(Graphics g) を呼び出す事をやめる。
+  * 　    ※Spriteの位置と描画内容を指定すれば、後はNative側で適当に処理してくれる
+ *   もちろん OpenGLで描画する
+ *   音関連はDynamicSound と 簡易MIDI
  */
 package info.kyorohiro.helloworld.display.simple;
