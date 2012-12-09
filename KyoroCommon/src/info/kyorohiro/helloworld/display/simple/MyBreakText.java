@@ -1,7 +1,5 @@
-package info.kyorohiro.helloworld.android.adapter;
+package info.kyorohiro.helloworld.display.simple;
 
-import info.kyorohiro.helloworld.display.simple.BreakText;
-import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CharArrayBuilder;
 
@@ -11,8 +9,8 @@ import info.kyorohiro.helloworld.util.CharArrayBuilder;
 //     �悳��
 public class MyBreakText extends BreakText {
 
-	public MyBreakText() {
-		super(new SimpleFontForAndroid(), 400);
+	public MyBreakText(SimpleFont font) {
+		super(font, 400);
 	}
 	
 	public void setBufferWidth(int w){

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.ObjectInputStream.GetField;
 
+import info.kyorohiro.helloworld.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.android.adapter.SimpleTypefaceForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
@@ -31,7 +32,7 @@ public class StartupCommandBuffer extends TextViewer {
 	public static final String UNGUARD = "unguard";
 
 	public StartupCommandBuffer(int textSize, int width, int mergine) {
-		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine);
+		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine, new SimpleFontForAndroid());
 		if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
 			getLineView().isCrlfMode(false);
 		} else {

@@ -4,8 +4,9 @@ import java.lang.ref.WeakReference;
 import java.util.regex.Pattern;
 
 import android.view.ViewDebug.ExportedProperty;
-import info.kyorohiro.helloworld.android.adapter.MyBreakText;
+import info.kyorohiro.helloworld.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.display.simple.BreakText;
+import info.kyorohiro.helloworld.display.simple.MyBreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -125,7 +126,7 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 	public static class LineViewBufferSpecAdapterForFlowingLineBuffer implements LineViewBufferSpec {
 //		private WeakReference<CyclingListInter<KyoroString>> mBuffer = null;
 		private WeakReference<CyclingListInter<KyoroString>> mBuffer = null;
-		private MyBreakText mBreakText = new MyBreakText();
+		private MyBreakText mBreakText = new MyBreakText(new SimpleFontForAndroid());
 
 		public LineViewBufferSpecAdapterForFlowingLineBuffer(CyclingListInter<KyoroString> buffer, int textsize, int width) {
 			mBuffer = new WeakReference<CyclingListInter<KyoroString>>(buffer);

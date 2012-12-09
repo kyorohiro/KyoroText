@@ -3,17 +3,15 @@ package info.kyorohiro.helloworld.textviewer.viewer;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import android.graphics.Color;
-import android.view.MotionEvent;
-import info.kyorohiro.helloworld.android.adapter.MyBreakText;
 import info.kyorohiro.helloworld.display.simple.BreakText;
+import info.kyorohiro.helloworld.display.simple.MyBreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
@@ -23,9 +21,9 @@ import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
-	public static int COLOR_BG = Color.parseColor("#FFE7DDAA");
-	public static int COLOR_FONT1 = Color.parseColor("#dd0044ff");
-	public static int COLOR_FONT2 = Color.parseColor("#ddff0044");
+	public static int COLOR_BG = SimpleGraphicUtil.parseColor("#FFE7DDAA");
+	public static int COLOR_FONT1 = SimpleGraphicUtil.parseColor("#dd0044ff");
+	public static int COLOR_FONT2 = SimpleGraphicUtil.parseColor("#ddff0044");
 
 	private String mCurrentCharset = "utf8";
 	private ManagedLineViewBuffer mBuffer = null;
@@ -35,9 +33,10 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private int mCurrentFontSize = KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
 	private String mCurrentPath = "";
 	private int mMergine = 0;
-	private MyBreakText mBreakText = new MyBreakText();
+	private MyBreakText mBreakText = null;
 
-	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine) {
+	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine, SimpleFont font) {
+		mBreakText = new MyBreakText(font);
 		init(buffer, textSize, width, mergine);
 	}
 
