@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
 import info.kyorohiro.helloworld.display.simple.BreakText;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.text.KyoroString;
@@ -10,15 +11,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import android.graphics.Color;
 
 public class TextViewerBuffer extends LockableCyclingList implements LineViewBufferSpec {
 	private BigLineData mLineManagerFromFile = null;
 	private int mCurrentBufferStartLinePosition = 0;
 	private int mCurrentBufferEndLinePosition = 0;
 	private int mCurrentPosition = 0;
-	private KyoroString mErrorLineMessage = new KyoroString("error..\n", Color.RED);
-	private KyoroString mLoadingLineMessage = new KyoroString("loading..\n", Color.parseColor("#33FFFF00"));
+	private KyoroString mErrorLineMessage = new KyoroString("error..\n", SimpleGraphicUtil.parseColor("#FFFF0000"));
+	private KyoroString mLoadingLineMessage = new KyoroString("loading..\n", SimpleGraphicUtil.parseColor("#33FFFF00"));
 	private LookAheadCaching mCashing = null;
 	private long mNumberOfStockedElement = 0;
 	private boolean mIsSync = false;

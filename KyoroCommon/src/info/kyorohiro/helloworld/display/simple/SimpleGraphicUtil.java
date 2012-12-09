@@ -66,8 +66,9 @@ public class SimpleGraphicUtil {
 	private static final int sControlCodeColoe = SimpleGraphicUtil.parseColor("#99FF9911");
 	private static final int sControlCodeColoe20 = SimpleGraphicUtil.parseColor("#22FF9911");
 	public static final int BLACK = parseColor("#FF000000");
+	public static final int WHITE = parseColor("#FFFFFFFF");
 	public static final int GREEN = parseColor("#FF00FF00");
-	public static final int YELLOW = parseColor("#FFFFFF00");;
+	public static final int YELLOW = parseColor("#FFFFFF00");
 	
 	private static CharArrayBuilder slineBuffer = new CharArrayBuilder();
 	private static FloatArrayBuilder sWidthBuffer = new FloatArrayBuilder();

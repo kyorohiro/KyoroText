@@ -1,11 +1,10 @@
 package info.kyorohiro.helloworld.textviewer.viewer;
 
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.text.KyoroString;
-
 import java.lang.ref.WeakReference;
 
-import android.graphics.Color;
 
 public class LookAheadCaching {
 	private boolean mIsDispose = false;
@@ -227,7 +226,7 @@ public class LookAheadCaching {
 						i++) {
 					CharSequence line = mBigLineData.readLine();
 					KyoroString lineWP = (KyoroString) line;
-					lineWP.setColor(Color.WHITE);
+					lineWP.setColor(SimpleGraphicUtil.WHITE);
 					if (mStartWithoutOwn > (int) lineWP.getLinePosition()) {
 						builder[j++] = lineWP;
 					}
@@ -277,7 +276,7 @@ public class LookAheadCaching {
 						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
 					KyoroString lineWP = (KyoroString) mBigLineData.readLine();
-					lineWP.setColor(Color.WHITE);
+					lineWP.setColor(SimpleGraphicUtil.WHITE);
 					if (lineWP.getLinePosition() > mStartWithoutOwn) {
 						mTextViewer.add(lineWP);
 					}
