@@ -1,11 +1,13 @@
 package info.kyorohiro.helloworld.textviewer.appparts;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 
 import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
 import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
+import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
@@ -70,14 +72,22 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 			@Override
 			public boolean onSelectedFile(File file, String action) {
 				if (file.exists() && file.isFile()) {
-					if(mViewer.getFocusingTextViewer().readFile(file)&& mRefActivity!=null){
-						Activity a = mRefActivity.get();
-						if(a!=null){
-							// todo refactraing 
-							// reset Intent. for open current showing file 
-							// when restart this application.
-							a.setIntent(null);
+					try {
+						if(mViewer.getFocusingTextViewer().readFile(file)&& mRefActivity!=null){
+							Activity a = mRefActivity.get();
+							if(a!=null){
+								// todo refactraing 
+								// reset Intent. for open current showing file 
+								// when restart this application.
+								a.setIntent(null);
+							}
 						}
+					} catch (FileNotFoundException e) {
+						KyoroApplication.showMessage("file can not read null file");
+						e.printStackTrace();
+					} catch (NullPointerException e) {
+						KyoroApplication.showMessage("file can not read " + file.toString());
+						e.printStackTrace();
 					}
 
 					return true;

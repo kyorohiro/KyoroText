@@ -110,23 +110,31 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	public void restart() {
 		if (mCurrentPath != null && !mCurrentPath.equals("")) {
-			readFile(new File(mCurrentPath));
+			try {
+				readFile(new File(mCurrentPath));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public boolean readFile(File file) {
+	public boolean readFile(File file) throws FileNotFoundException, NullPointerException  {
 		return readFile(file, true);
 	}
 
-	public boolean readFile(File file, boolean updataCurrentPath) {
+	public boolean readFile(File file, boolean updataCurrentPath) throws FileNotFoundException, NullPointerException {
 
 		if (file == null) {
-			KyoroApplication.showMessage("file can not read null file");
-			return false;
+			throw new NullPointerException("kyoro text");
+//			KyoroApplication.showMessage("file can not read null file");
+//			return false;
 		}
 		if (!file.canRead() || !file.exists() || !file.isFile()) {
-			KyoroApplication.showMessage("file can not read " + file.toString());
-			return false;
+			throw new FileNotFoundException("kyoro text");
+//			KyoroApplication.showMessage("file can not read " + file.toString());
+//			return false;
 		}
 		mCurrentPath = file.getAbsolutePath();
 		
