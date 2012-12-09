@@ -42,13 +42,7 @@ public class SimpleFontForAndroid extends SimpleFont {
 		float _textSize = mPaint.getTextSize();
 		mPaint.setTextSize(textSize);
 		int ret = mPaint.getTextWidths(text.getChars(), start, end-start, widths);
-		int t=0;
-		for(int i=start;i<end-start;i++){
-			t=lengthOfControlCode(text.getChars()[i], (int)textSize);
-			if(t!=0){
-				widths[i] = t;
-			}
-		}
+		normalizeWidth(text.getChars(), start, end, widths, textSize);
 		mPaint.setTextSize(_textSize);
 		return ret;
 	}
@@ -67,6 +61,7 @@ public class SimpleFontForAndroid extends SimpleFont {
 		float _t = mPaint.getTextSize();
 		mPaint.setTextSize(textSize);
 		int ret = mPaint.getTextWidths(buffer, start, end-start, widths);
+		normalizeWidth(buffer, start, end, widths, textSize);
 		mPaint.setTextSize(_t);
 		return ret;
 	}

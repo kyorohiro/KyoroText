@@ -32,6 +32,16 @@ public abstract class SimpleFont {
 		return mTypeface;
 	}
 
+	public static void normalizeWidth(char[] text, int start, int end, float[] widths, float textSize) {
+		int t=0;
+		for(int i=start;i<end-start;i++){
+			t=lengthOfControlCode(text[i], (int)textSize);
+			if(t!=0){
+				widths[i] = t;
+			}
+		}
+	}
+
 	public static boolean isControlCode(char code, int textSize) {
 		if(code == 9) {//tab
 			return true;
@@ -42,6 +52,7 @@ public abstract class SimpleFont {
 			return false;
 		}
 	}
+
 	public static int lengthOfControlCode(char code, int textSize) {
 		if(code == 9) {//tab
 			return textSize*2;

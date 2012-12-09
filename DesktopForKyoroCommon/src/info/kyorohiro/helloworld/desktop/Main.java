@@ -68,7 +68,7 @@ public class Main {
 			System.out.println("begin paint");
 			graphics.setColor(0xFF0000);
 			graphics.drawLine(0, 0, 100, 100);
-			graphics.drawLine(-100, -100, 100, 100);
+			graphics.drawCircle(0, 0, 100);
 			System.out.println("end paint");
 		}		
 	}

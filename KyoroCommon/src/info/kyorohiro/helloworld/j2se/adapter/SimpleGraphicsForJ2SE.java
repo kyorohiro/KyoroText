@@ -3,6 +3,8 @@ package info.kyorohiro.helloworld.j2se.adapter;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
 
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
@@ -15,15 +17,32 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	private Graphics2D mGraphics = null;
 	private int mGlobalX = 0;
 	private int mGlobalY = 0;
-	
-	public SimpleGraphicsForJ2SE(Graphics2D g, int globalX, int globalY) {
+	private int mGlobalW = 400;
+	private int mGlobalH = 400;
+
+	private int mTextSize = 16;
+	private int mColor = 0xFFFFFF;
+	private int mStyle = 0;
+	private int mStrokeWidth = 1;
+
+	public SimpleGraphicsForJ2SE(Graphics2D g, int globalX, int globalY, int globalW, int globalH) {
 		mGraphics = g;
 		mGlobalX = globalX;
 		mGlobalY = globalY;
+		mGlobalH = globalH;
+		mGlobalW = globalW;
 	}
 
 	public Graphics2D getGraphics() {
 		return mGraphics;
+	}
+
+	public void setGlobalW(int w) {
+		mGlobalW = w;
+	}
+
+	public void setGlobalH(int h) {
+		mGlobalH = h;
 	}
 
 	@Override
@@ -38,23 +57,22 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void setGlobalPoint(SimpleGraphics graphics, int x, int y) {
-		//if( != mGraphics){
-			mGraphics = ((SimpleGraphicsForJ2SE)graphics).getGraphics();
-		//}
+		mGraphics = ((SimpleGraphicsForJ2SE)graphics).getGraphics();
 		mGlobalX = x;
 		mGlobalY = y;
+		mGlobalW = graphics.getWidth();
+		mGlobalH = graphics.getHeight();
 	}
 
 	@Override
 	public SimpleGraphics getChildGraphics(SimpleGraphics graphics,
 			int globalX, int globalY) {
-		return new SimpleGraphicsForJ2SE(mGraphics, globalX, globalY);
+		return new SimpleGraphicsForJ2SE(mGraphics, globalX, globalY, mGlobalW, mGlobalH);
 	}
 
 	@Override
 	public void drawCircle(int x, int y, int radius) {
-		// TODO Auto-generated method stub
-		
+		mGraphics.drawArc(mGlobalX+x-radius, mGlobalY+y-radius, radius*2, radius*2, 0, 360);
 	}
 
 	@Override
@@ -64,20 +82,21 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void drawBackGround(int color) {
-		// TODO Auto-generated method stub
-		
+		int c = getColor(); 
+		setColor(color);
+		mGraphics.clearRect(mGlobalX, mGlobalY, getWidth(), getHeight());
+		setColor(c);
 	}
 
 	@Override
 	public void drawText(char[] text, int start, int end, int x, int y) {
-		// TODO Auto-generated method stub
-		
+		mGraphics.drawChars(text, start, end-start, mGlobalX+x, mGlobalY+y);
+//		mGraphics.drawString(new String(text, start, end), mGlobalX+x, mGlobalY+y);
 	}
 
 	@Override
 	public void drawText(CharSequence text, int x, int y) {
-		// TODO Auto-generated method stub
-		
+		mGraphics.drawString(""+text, mGlobalX+x, mGlobalY+y);
 	}
 
 	@Override
@@ -90,7 +109,7 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	@Override
 	public int getTextSize() {
 		// TODO Auto-generated method stub
-		return 0;
+		return mTextSize;
 	}
 
 	@Override
@@ -119,43 +138,38 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mGlobalW;
 	}
 
 	@Override
 	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mGlobalH;
 	}
 
 	@Override
 	public int getColor() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mColor;
 	}
 
 	@Override
 	public void setColor(int color) {
+		mColor = color;
 		mGraphics.setColor(new Color(color));
 	}
 
 	@Override
 	public void setTextSize(int size) {
-		// TODO Auto-generated method stub
-		
+		mTextSize = size;
 	}
 
 	@Override
 	public void setStyle(int style) {
-		// TODO Auto-generated method stub
-		
+		mStyle = style;
 	}
 
 	@Override
 	public int getStyle() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mStyle;
 	}
 
 	@Override

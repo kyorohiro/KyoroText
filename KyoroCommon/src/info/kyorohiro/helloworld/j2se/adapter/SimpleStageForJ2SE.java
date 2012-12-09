@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.j2se.adapter;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,7 +13,7 @@ import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 
 public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
-	private int mClearColor = 0x00;
+	private int mClearColor = 0xFFFFFF;
 	private int mSleep = 50;
 	private SimpleDisplayObjectContainer mRoot = new SimpleDisplayObjectContainer();
 
@@ -99,8 +100,10 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 	public void paint(Graphics g) {
 		setVisible(true);
 		setPreferredSize(new Dimension(400, 400));
+		g.setColor(new Color(mClearColor));
+		g.clearRect(0, 0, getWidth(), getHeight());
 		//System.out.println("--begin paint--");
-		mRoot.paint(new SimpleGraphicsForJ2SE((Graphics2D)g, 0, 0));
+		mRoot.paint(new SimpleGraphicsForJ2SE((Graphics2D)g, 0, 0, getWidth(), getHeight()));
 		//System.out.println("--end paint--");
 	}
 
