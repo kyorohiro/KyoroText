@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.textviewer.manager;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -32,7 +33,8 @@ public class StartupCommandBuffer extends TextViewer {
 	public static final String UNGUARD = "unguard";
 
 	public StartupCommandBuffer(int textSize, int width, int mergine) {
-		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine, new SimpleFontForAndroid());
+		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine,
+				new SimpleFontForAndroid(),KyoroSetting.getCurrentCharset());
 		if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
 			getLineView().isCrlfMode(false);
 		} else {
@@ -105,6 +107,23 @@ public class StartupCommandBuffer extends TextViewer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean readFile(File file, boolean updataCurrentPath)
+			throws FileNotFoundException, NullPointerException {
+		// todo following code dependent application layer.
+		// refactring target
+		if(updataCurrentPath){
+			File datadata = KyoroApplication.getKyoroApplication().getFilesDir();
+			File parent = file.getParentFile();
+			File grandpa = parent.getParentFile();
+			if(!datadata.equals(parent)
+					&&!(grandpa!=null&&grandpa.equals(datadata))){
+				KyoroSetting.setCurrentFile(file.getAbsolutePath());
+			}
+		}
+		return super.readFile(file, updataCurrentPath);
 	}
 
 	public void createStartupMessageIfNonExist(File f) throws IOException {

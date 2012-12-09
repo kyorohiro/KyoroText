@@ -73,7 +73,7 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 			public boolean onSelectedFile(File file, String action) {
 				if (file.exists() && file.isFile()) {
 					try {
-						if(mViewer.getFocusingTextViewer().readFile(file)&& mRefActivity!=null){
+						if(mViewer.getFocusingTextViewer().readFile(file, true)&& mRefActivity!=null){
 							Activity a = mRefActivity.get();
 							if(a!=null){
 								// todo refactraing 

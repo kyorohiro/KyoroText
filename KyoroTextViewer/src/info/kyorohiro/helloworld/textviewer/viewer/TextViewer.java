@@ -17,8 +17,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLi
 import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.textviewer.KyoroApplication;
-import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+//import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 
 public class TextViewer extends SimpleDisplayObjectContainer {
 	public static int COLOR_BG = SimpleGraphicUtil.parseColor("#FFE7DDAA");
@@ -30,19 +29,19 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private EditableLineView mLineView = null;
 	private int mBufferWidth = 0;
 	private ScrollBar mScrollBar = null;
-	private int mCurrentFontSize = KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
+	private int mCurrentFontSize = 12;//KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
 	private String mCurrentPath = "";
 	private int mMergine = 0;
 	private MyBreakText mBreakText = null;
 
-	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine, SimpleFont font) {
+	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine, SimpleFont font, String charset) {
 		mBreakText = new MyBreakText(font);
-		init(buffer, textSize, width, mergine);
+		init(buffer, textSize, width, mergine, charset);
 	}
 
-	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine) {
+	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine, String charset) {
 		mCurrentFontSize = textSize;
-		mCurrentCharset = KyoroSetting.getCurrentCharset();
+		mCurrentCharset = charset;//KyoroSetting.getCurrentCharset();
 		mBuffer = new ManagedLineViewBuffer(buffer);
 		mBufferWidth = width - mergine * 2;
 		mMergine = mergine;
@@ -111,7 +110,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public void restart() {
 		if (mCurrentPath != null && !mCurrentPath.equals("")) {
 			try {
-				readFile(new File(mCurrentPath));
+				readFile(new File(mCurrentPath), true);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (NullPointerException e) {
@@ -120,44 +119,25 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	public boolean readFile(File file) throws FileNotFoundException, NullPointerException  {
-		return readFile(file, true);
-	}
-
 	public boolean readFile(File file, boolean updataCurrentPath) throws FileNotFoundException, NullPointerException {
 
 		if (file == null) {
-			throw new NullPointerException("kyoro text");
-//			KyoroApplication.showMessage("file can not read null file");
-//			return false;
+			throw new NullPointerException("kyoro text --1--");
 		}
 		if (!file.canRead() || !file.exists() || !file.isFile()) {
-			throw new FileNotFoundException("kyoro text");
-//			KyoroApplication.showMessage("file can not read " + file.toString());
-//			return false;
+			throw new FileNotFoundException("kyoro text --2--");
 		}
 		mCurrentPath = file.getAbsolutePath();
 		
-		// todo following code dependent application layer.
-		// refactring target
-		if(updataCurrentPath){
-			File datadata = KyoroApplication.getKyoroApplication().getFilesDir();
-			File parent = file.getParentFile();
-			File grandpa = parent.getParentFile();
-			if(!datadata.equals(parent)
-					&&!(grandpa!=null&&grandpa.equals(datadata))){
-				KyoroSetting.setCurrentFile(file.getAbsolutePath());
-			}
-		}
 		try {
 			mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);
 			mBreakText.getSimpleFont().setAntiAlias(true);
 			mBreakText.setBufferWidth(mBufferWidth);
 			mBuffer = new ManagedLineViewBuffer(new TextViewerBufferWithColorFilter(3000, mBreakText, file, mCurrentCharset));
 		} catch (FileNotFoundException e) {
-			// don't pass along this code
-			KyoroApplication.showMessage("file can not read null filen --007--");
-			return false;
+			FileNotFoundException fnfe = new FileNotFoundException("--3--");
+			fnfe.setStackTrace(e.getStackTrace());
+			throw fnfe;
 		}
 		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView.getLineViewBuffer();
 		mLineView.setLineViewBufferSpec(mBuffer);

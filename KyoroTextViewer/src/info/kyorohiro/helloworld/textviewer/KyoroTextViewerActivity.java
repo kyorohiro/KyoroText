@@ -178,7 +178,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 				if (action != null && Intent.ACTION_VIEW.equals(action)) {
 					Uri uri = intentFromExteralApplication.getData();
 					if (uri != null) {
-						mViewerManager.getFocusingTextViewer().readFile(new File(uri.getPath()));
+						mViewerManager.getFocusingTextViewer().readFile(new File(uri.getPath()), true);
 					}
 				}
 			}
