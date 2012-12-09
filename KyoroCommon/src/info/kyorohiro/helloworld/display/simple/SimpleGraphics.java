@@ -31,7 +31,7 @@ public abstract class SimpleGraphics {
 	public abstract void setStyle(int style);
 	public abstract int getStyle();
 	public abstract void setStrokeWidth(int w);
-	public abstract int getTextWidth(String line);
+//	public abstract int getTextWidth(String line);
 	public abstract SimpleDisplayObject createImage(byte[] data, int offset, int length);
 	public abstract void drawImageAsTile(SimpleImage image, int x, int y, int w, int h);
 	public abstract void clipRect(int left, int top, int right, int bottom); 

@@ -17,13 +17,16 @@ public class SimpleFontForJ2SE extends SimpleFont {
 		mMetrics = metrics;
 	}
 
+	public Font getFont() {
+		return mFont;
+	}
+
 	@Override
 	public int getTextWidths(KyoroString text, int start, int end,
 			float[] widths, float textSize){
 		int ret = mMetrics.charsWidth(text.getChars(), start, end-start);
 		normalizeWidth(text.getChars(), start, end, widths, textSize);
 		return ret;
-
 	}
 
 	@Override

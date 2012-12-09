@@ -3,6 +3,8 @@ package info.kyorohiro.helloworld.j2se.adapter;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Point2D;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
@@ -24,6 +26,7 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	private int mColor = 0xFFFFFF;
 	private int mStyle = 0;
 	private int mStrokeWidth = 1;
+	private  SimpleFontForJ2SE mFont = null;
 
 	public SimpleGraphicsForJ2SE(Graphics2D g, int globalX, int globalY, int globalW, int globalH) {
 		mGraphics = g;
@@ -31,6 +34,7 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 		mGlobalY = globalY;
 		mGlobalH = globalH;
 		mGlobalW = globalW;
+		mFont = new SimpleFontForJ2SE(g.getFont(), g.getFontMetrics());
 	}
 
 	public Graphics2D getGraphics() {
@@ -102,13 +106,18 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 	@Override
 	public void drawPosText(char[] text, float[] widths, float zoom, int start,
 			int end, int x, int y) {
-		// TODO Auto-generated method stub
-		
+		 GlyphVector gv = mFont.getFont().createGlyphVector(mGraphics.getFontRenderContext(), 
+				 new String(text, start, end-start));
+
+		 for(int i=0;i<(end-start);i++){
+			 Point2D pos = new Point2D.Float(widths[i], 0);
+			 gv.setGlyphPosition(i, pos);
+		 }
+		 mGraphics.drawGlyphVector(gv, mGlobalX, mGlobalY);
 	}
 
 	@Override
 	public int getTextSize() {
-		// TODO Auto-generated method stub
 		return mTextSize;
 	}
 
@@ -174,15 +183,14 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void setStrokeWidth(int w) {
-		// TODO Auto-generated method stub
-		
+		mStrokeWidth = w;
 	}
 
-	@Override
-	public int getTextWidth(String line) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+//	@Override
+//	public int getTextWidth(String line) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
 
 	@Override
 	public SimpleDisplayObject createImage(byte[] data, int offset, int length) {

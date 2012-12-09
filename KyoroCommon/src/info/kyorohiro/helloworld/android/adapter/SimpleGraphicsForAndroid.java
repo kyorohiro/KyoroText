@@ -237,16 +237,17 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 			mCanvas.clipRect(mGlobalX+left, mGlobalY+top, mGlobalX+right, mGlobalY+bottom, Region.Op.REPLACE);
 		}
 	}
-	public int getTextWidth(String line) {
-		float[] w = new float[line.length()];
-		mPaint.getTextWidths(line, w);
-		float margine = 0;
-		int len = line.length();
-		for (int i = 0; i < len; i++) {
-			margine += w[i];
-		}
-		return (int) margine;
-	}
+
+//	public int getTextWidth(String line) {
+//		float[] w = new float[line.length()];
+//		mPaint.getTextWidths(line, w);
+//		float margine = 0;
+//		int len = line.length();
+//		for (int i = 0; i < len; i++) {
+//			margine += w[i];
+//		}
+//		return (int) margine;
+//	}
 
 	@Override
 	public SimpleDisplayObject createImage(byte[] data, int offset, int length) {
