@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.j2se.adapter.SimpleGraphicsForJ2SE;
 import info.kyorohiro.helloworld.j2se.adapter.SimpleStageForJ2SE;
 import info.kyorohiro.helloworld.text.KyoroString;
@@ -63,17 +64,26 @@ public class Main {
 	}
 
 	private void testItem() {
-		SimpleDisplayObject child = new TestDisplayObject();
-		child.setRect(100, 100);
-//		mStage.getRoot().addChild(child);
-		EmptyLineViewBufferSpecImpl e = new EmptyLineViewBufferSpecImpl(100);
-		e.append(new KyoroString("--1--\n"));
-		e.append(new KyoroString("--2--\n"));
-		e.append(new KyoroString("--3--\n"));
-		e.append(new KyoroString("--4--\n"));
-		EditableLineView v = new EditableLineView(e, 22, 256); 
-		v.setRect(200, 200);
-		mStage.getRoot().addChild(v);
+		if(false){
+			SimpleDisplayObject child = new TestDisplayObject();
+			child.setRect(100, 100);
+			mStage.getRoot().addChild(child);
+		}
+		if(false){
+			EmptyLineViewBufferSpecImpl e = new EmptyLineViewBufferSpecImpl(100);
+			e.append(new KyoroString("--1--\n"));
+			e.append(new KyoroString("--2--\n"));
+			e.append(new KyoroString("--3--\n"));
+			e.append(new KyoroString("--4--\n"));
+			EditableLineView v = new EditableLineView(e, 22, 256); 
+			v.setRect(200, 200);
+			mStage.getRoot().addChild(v);
+		}
+		if(true) {
+		//	TextViewer viewer = new TextViewer(buffer, textSize, width, mergine, font, charset)
+		//	v.setRect(200, 200);
+		//	mStage.getRoot().addChild(v);			
+		}
 	}
 
 	private static class TestDisplayObject extends SimpleDisplayObject {

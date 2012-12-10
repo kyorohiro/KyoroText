@@ -7,6 +7,7 @@ import info.kyorohiro.helloworld.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySaveFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCRLFAction;
@@ -16,7 +17,6 @@ import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeActi
 import info.kyorohiro.helloworld.textviewer.manager.LineViewGroup;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.util.Util;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

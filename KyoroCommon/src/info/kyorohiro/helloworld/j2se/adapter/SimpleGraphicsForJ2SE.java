@@ -121,7 +121,7 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 		float w =0;
 		for(int i=start;i<(end-start);i++){
 			w += widths[i]*zoom;
-			System.out.println("["+i+"]="+w);
+//			System.out.println("["+i+"]="+w);
 			Point2D pos = new Point2D.Float(mGlobalX+x+w, mGlobalY+y);
 			gv.setGlyphPosition(i-start, pos);
 		}

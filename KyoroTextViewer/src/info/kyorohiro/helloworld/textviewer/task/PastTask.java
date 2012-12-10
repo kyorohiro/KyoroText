@@ -3,7 +3,7 @@ package info.kyorohiro.helloworld.textviewer.task;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.content.Context;
 import android.text.ClipboardManager;
 

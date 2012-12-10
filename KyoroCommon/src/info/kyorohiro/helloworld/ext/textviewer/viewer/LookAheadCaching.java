@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.textviewer.viewer;
+package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.io.BigLineData;

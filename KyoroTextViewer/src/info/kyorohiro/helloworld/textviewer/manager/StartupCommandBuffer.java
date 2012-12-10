@@ -20,7 +20,7 @@ import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.util.Utility;
 import android.R.dimen;
 import android.content.Context;

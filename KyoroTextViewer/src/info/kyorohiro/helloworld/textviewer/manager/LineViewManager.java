@@ -7,7 +7,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
 public class LineViewManager extends SimpleDisplayObjectContainer {
 	private static LineViewManager sInstance = null;

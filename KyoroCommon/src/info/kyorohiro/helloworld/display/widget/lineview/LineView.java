@@ -387,7 +387,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			int y = getYForStartDrawLine(i);
 			int yy = getLineYForShowLine(0, i);
 
-			System.out.println("list["+i+"]="+list[i]+","+graphics.getColor()+","+list[i].getColor());
+//			System.out.println("list["+i+"]="+list[i]+","+graphics.getColor()+","+list[i].getColor());
 //			graphics.drawText(list[i], x, y);
         	SimpleGraphicUtil.drawString(graphics, list[i], x, y, widths);
 
@@ -433,7 +433,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-		System.out.println("===============begin paint");
+//		System.out.println("===============begin paint");
 		graphics.clipRect(0, 0, getWidth(), getHeight());
 		if (mBiasAboutMoveLine > 0) {
 			mBiasAboutMoveLine--;
@@ -479,7 +479,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.drawText("" + getShowingTextStartPosition() + ":"
 					+ getShowingTextEndPosition(), 30, s * 4);
 			graphics.setTextSize(s);
-			System.out.println("===============do"+mInputtedText.getNumberOfStockedElement());
+//			System.out.println("===============do"+mInputtedText.getNumberOfStockedElement());
 		}
 		{// scale in out animation
 			if (mScaleTime > 0) {
@@ -490,14 +490,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 		// draw content
 		if (list != null) {// bug fix
-			System.out.println("===============do"+len);
+//			System.out.println("===============do"+len);
 			showLineDate(graphics, list, len);
 		}
 		// */
 		// fin
 		super.paint(graphics);
 		graphics.clipRect(-1, -1, -1, -1);
-		System.out.println("===============end paint");
+//		System.out.println("===============end paint");
 	}
 
 	private int _getBuffer(LineViewBufferSpec showingText) {

@@ -13,7 +13,7 @@ import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.task.SaveTask;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;

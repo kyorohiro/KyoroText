@@ -1,10 +1,10 @@
-package info.kyorohiro.helloworld.textviewer.viewer;
+package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
 import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;
 import java.util.WeakHashMap;
 
 //
-// ‚±‚ÌƒNƒ‰ƒX‚ªæ‚è‚ ‚¸‹@”\‚·‚é‚æ‚¤‚É‚È‚Á‚½‚çAƒ}[ƒPƒbƒg‚ÉƒAƒbƒv‚·‚éB
+// ï¿½ï¿½ï¿½ÌƒNï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½è‚ ï¿½ï¿½ï¿½@ï¿½\ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚È‚ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½}ï¿½[ï¿½Pï¿½bï¿½gï¿½ÉƒAï¿½bï¿½vï¿½ï¿½ï¿½ï¿½B
 // 
 public class TextBufferManager {
 

@@ -38,13 +38,16 @@ public class EditableLineView extends CursorableLineView {
 	}
 
 	public void recenter() {
-		//int s = getShowingTextStartPosition();
-		//int e = getShowingTextEndPosition();
-		//android.util.Log.v("kiyo","#1="+getPositionY()+","+getShowingTextSize()+","+s+","+e);
-		//android.util.Log.v("kiyo","#2="+getLeft().getCursorCol()+","+getPositionY());
-		setPositionY(-getLeft().getCursorCol()+getShowingTextStartPosition());
-		//android.util.Log.v("kiyo","#3="+getPositionY()+","+getShowingTextSize()+","+s+","+e);
-		//android.util.Log.v("kiyo","#4="+getLeft().getCursorCol()+","+getPositionY());
+		int s = getShowingTextStartPosition();
+		int e = getShowingTextEndPosition();
+//		android.util.Log.v("kiyo","#1="+getPositionY()+","+getShowingTextSize()+","+s+","+e);
+//		android.util.Log.v("kiyo","#2="+getLeft().getCursorCol()+","+getPositionY()+","+getLineViewBuffer().getNumberOfStockedElement());
+//		setPositionY(-getLeft().getCursorCol()+getShowingTextStartPosition());
+		setPositionY(-getLeft().getCursorCol()+
+				-(getShowingTextEndPosition()-getShowingTextStartPosition())/2
+				+ getLineViewBuffer().getNumberOfStockedElement());
+//		android.util.Log.v("kiyo","#3="+getPositionY()+","+getShowingTextSize()+","+s+","+e);
+//		android.util.Log.v("kiyo","#4="+getLeft().getCursorCol()+","+getPositionY()+","+getLineViewBuffer().getNumberOfStockedElement());
 	}
 
 	@Override

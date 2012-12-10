@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.textviewer.viewer;
+package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
 import java.io.File;
 import java.io.FileNotFoundException;

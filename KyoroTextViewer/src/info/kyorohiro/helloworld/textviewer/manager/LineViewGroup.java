@@ -4,7 +4,7 @@ import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
 public class LineViewGroup extends SimpleDisplayObjectContainer{
 

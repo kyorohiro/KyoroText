@@ -6,7 +6,7 @@ import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMen
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.textviewer.task.CopyTask;
 import info.kyorohiro.helloworld.textviewer.task.PastTask;
-import info.kyorohiro.helloworld.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
 public class CircleControllerManager {
 	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFAA44");

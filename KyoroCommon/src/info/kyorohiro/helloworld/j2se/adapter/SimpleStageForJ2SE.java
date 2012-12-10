@@ -114,7 +114,7 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 		@Override
 		public void run() {
 			try {
-				System.out.println("--begin animation--");
+//				System.out.println("--begin animation--");
 				Thread currentThread = null;
 				while(true) {
 					currentThread = mCurrentThread;
@@ -130,11 +130,11 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 				}
 			}
 			catch(Throwable t) {
-				System.out.println("--error animation--");
+//				System.out.println("--error animation--");
 				t.printStackTrace();
 			}
 			finally {
-				System.out.println("--end animation--");
+//				System.out.println("--end animation--");
 			}
 		}
 	}
