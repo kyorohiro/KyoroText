@@ -17,6 +17,9 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 	private int mSleep = 50;
 	private SimpleDisplayObjectContainer mRoot = new SimpleDisplayObjectContainer();
 
+	public SimpleStageForJ2SE() {
+		mRoot.setParent(this);
+	}
 	
 	@Override
 	public boolean isAlive() {
@@ -26,7 +29,6 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 			return true;
 		}
 	}
-
 
 	@Override
 	public void setColor(int clearColor) {

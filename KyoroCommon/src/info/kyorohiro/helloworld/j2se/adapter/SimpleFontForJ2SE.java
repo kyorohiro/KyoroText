@@ -17,9 +17,9 @@ public class SimpleFontForJ2SE extends SimpleFont {
 		mMetrics = metrics;
 	}
 
-	public Font getFont() {
-		return mFont;
-	}
+	//public Font getFont() {
+	//	return mFont;
+	//}
 
 	@Override
 	public int getTextWidths(KyoroString text, int start, int end,

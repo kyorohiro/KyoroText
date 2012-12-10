@@ -6,26 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.ObjectInputStream.GetField;
 
 import info.kyorohiro.helloworld.android.adapter.SimpleFontForAndroid;
-import info.kyorohiro.helloworld.android.adapter.SimpleTypefaceForAndroid;
-import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
-import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
-import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
-import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.util.Utility;
-import android.R.dimen;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Typeface;
 
 public class StartupCommandBuffer extends TextViewer {
 

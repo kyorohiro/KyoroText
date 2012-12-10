@@ -7,6 +7,7 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.j2se.adapter.SimpleFontForJ2SE;
 import info.kyorohiro.helloworld.j2se.adapter.SimpleGraphicsForJ2SE;
 import info.kyorohiro.helloworld.j2se.adapter.SimpleStageForJ2SE;
 import info.kyorohiro.helloworld.text.KyoroString;
@@ -19,14 +20,23 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.im.InputContext;
 import java.awt.im.spi.InputMethod;
 import java.awt.im.spi.InputMethodContext;
 import java.awt.im.spi.InputMethodDescriptor;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.Character.Subset;
 import java.util.Locale;
 
@@ -34,6 +44,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Main {
+
+	public class Stage extends SimpleStageForJ2SE{//extends SimpleStageForJ2SE {
+		private boolean mInit = false;
+		@Override
+		protected void paintComponent(Graphics g) {
+			if(!mInit){
+				mInit = true;
+				initItem(g);
+			}
+			super.paintComponent(g);
+		}
+	}
 
 	public static void main(String[] args) {
 		System.out.println("hello world1");
@@ -51,19 +73,18 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);	
 		initKyoroCommon(frame.getContentPane());
-		testItem();
 		mStage.start();
 	}
 
 	private void initKyoroCommon(Container appRoot) {
-		SimpleStageForJ2SE stage = new SimpleStageForJ2SE();
+		SimpleStageForJ2SE stage = new Stage();// SimpleStageForJ2SE();
 		stage.setVisible(true);
 		stage.setPreferredSize(new Dimension(400, 400));
 		appRoot.add(stage);
 		mStage = stage;
 	}
 
-	private void testItem() {
+	private void initItem(Graphics g) {
 		if(false){
 			SimpleDisplayObject child = new TestDisplayObject();
 			child.setRect(100, 100);
@@ -80,12 +101,51 @@ public class Main {
 			mStage.getRoot().addChild(v);
 		}
 		if(true) {
-		//	TextViewer viewer = new TextViewer(buffer, textSize, width, mergine, font, charset)
-		//	v.setRect(200, 200);
-		//	mStage.getRoot().addChild(v);			
+			EmptyLineViewBufferSpecImpl e = new EmptyLineViewBufferSpecImpl(100);
+			e.append(new KyoroString("--1--\n"));
+			e.append(new KyoroString("--2--\n"));
+			e.append(new KyoroString("--3--\n"));
+			e.append(new KyoroString("--4--\n"));
+
+			TextViewer viewer = new TextViewer(
+					e, 16, 400, 10, new SimpleFontForJ2SE(null, g.getFontMetrics()), "utf8");
+			//readStartupMessage(viewer);
+			viewer.setRect(200, 200);
+			mStage.getRoot().addChild(viewer);			
+		}
+	}
+	public void readStartupMessage(TextViewer v) {
+		try {
+			File dir = new File("./");
+			File filePathOfStartMessage = new File(dir, "startup_message.txt");
+			createStartupMessageIfNonExist(filePathOfStartMessage);
+			v.readFile(filePathOfStartMessage, false);
+//			readFile(filePathOfStartMessage, true);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
+	public void createStartupMessageIfNonExist(File f) throws IOException {
+		if(f.exists()) {
+			return;
+		}
+		f.createNewFile();
+		FileOutputStream output = new FileOutputStream(f);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
+		for(String s : message) {
+			writer.write(s);
+		}
+		writer.close();
+		output.close();
+	}
+
+	String[] message = {
+			"Sorry, this application is pre-alpha version\n",
+			"Testing and Developing.. now\n",
+			"Please mail kyorohiro.android@gmail.com, \n",
+			"If you have particular questions or comments, \n",
+			"please don't hesitate to contact me. Thank you. \n" };
 	private static class TestDisplayObject extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
