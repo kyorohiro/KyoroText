@@ -189,12 +189,12 @@ public class KyoroString  implements CharSequence {
 	}
 
 	public void setCashWidths(SimpleFont font, int fontSize) {
-//		System.out.println("cash[A]="+font.getFontSize());
+		System.out.println("cash[A]="+font.getFontSize()+","+toString());
 		if(mCashWidth == null||mCashByte.length <mContent.length) {
 			mCashWidth = new float[mContent.length];
 		}
 		_mFontSize = (int)font.getFontSize();
-//		System.out.println("cash[B]="+font.getFontSize());
+		System.out.println("cash[B]=s="+font.getFontSize()+",l="+length()+",f="+font.getFontSize());
 		font.getTextWidths(this, 0, length(), mCashWidth, font.getFontSize());
 		mIsCahsed = true;
 	}

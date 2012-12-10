@@ -50,7 +50,7 @@ public class SimpleGraphicUtil {
 		//long eTime = 0;
 		try{
 			//sTime = System.currentTimeMillis();
-			if(!text.use()){
+			if(!text.use()&&text.length()!=0){
 				text.setCashWidths(font, textSize);
 			}
 			end = text.length();

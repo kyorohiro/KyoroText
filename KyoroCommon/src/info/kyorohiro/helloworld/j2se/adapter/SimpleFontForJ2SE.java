@@ -24,18 +24,31 @@ public class SimpleFontForJ2SE extends SimpleFont {
 	@Override
 	public int getTextWidths(KyoroString text, int start, int end,
 			float[] widths, float textSize){
-//		System.out.println("Bw=");
-		int ret = mMetrics.charsWidth(text.getChars(), start, end-start);
-		normalizeWidth(text.getChars(), start, end, widths, textSize);
-		return ret;
+		return getTextWidths(text.getChars(), start, end, widths, textSize);
 	}
 
 	@Override
 	public int getTextWidths(char[] buffer, int start, int end, float[] widths,
 			float textSize) {
-		int ret = mMetrics.charsWidth(buffer, start, end-start);
+		float zoom = textSize/getFontSize();
+		System.out.println("Bw="+start+","+end);
+		//mMetrics.
+		for(int i=start;i<end;i++){
+			float ret = 0;
+			//if(i+1<end-start){
+			//	ret = zoom*mMetrics.charsWidth(text.getChars(), i, 2)-
+			//			mMetrics.charsWidth(text.getChars(), i+1, 1);	
+			//} else {
+			
+				ret = zoom*mMetrics.charsWidth(buffer, i, 1);
+			//}
+			widths[i-start] = (int)ret;
+		}
 		normalizeWidth(buffer, start, end, widths, textSize);
-		return ret;
+		for(int i=start;i<end;i++){
+				System.out.println("#w["+i+"]="+widths[i]+","+buffer[i]+","+zoom+","+getFontSize());
+		}
+		return 100;
 	}
 
 }

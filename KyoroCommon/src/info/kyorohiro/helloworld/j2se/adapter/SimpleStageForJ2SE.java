@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
@@ -103,12 +104,12 @@ public class SimpleStageForJ2SE extends JPanel implements SimpleStage {
 //	@Override
 //	public void paint(Graphics g) {
 		setVisible(true);
-		setPreferredSize(new Dimension(400, 400));
+//		setPreferredSize(new Dimension(400, 400));
 		g.setColor(new Color(mClearColor));
 		g.clearRect(0, 0, getWidth(), getHeight());
-		//System.out.println("--begin paint--");
+		System.out.println("--begin paint--"+0+","+ 0+","+getWidth()+","+ getHeight());
 		mRoot.paint(new SimpleGraphicsForJ2SE((Graphics2D)g, 0, 0, getWidth(), getHeight()));
-		//System.out.println("--end paint--");
+		System.out.println("--end paint--");
 	}
 
 	private Thread mCurrentThread = null;
