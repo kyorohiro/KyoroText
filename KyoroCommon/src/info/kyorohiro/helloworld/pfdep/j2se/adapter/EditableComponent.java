@@ -43,7 +43,9 @@ public class EditableComponent extends JLabel implements KeyListener, FocusListe
 	@Override
     public void keyTyped(KeyEvent event) {
         char keyChar = event.getKeyChar();
-    	System.out.println("keyTyped="+keyChar+",keyChar="+event.getKeyChar());
+
+    	System.out.println("keyTyped="+keyChar+",keyChar="+event.getKeyChar()+":"+(int)event.getKeyChar()+","+event.getKeyCode());
+    	System.out.println("keyTyped ext="+event.getExtendedKeyCode()+","+event.getModifiers());
     	if(event.getKeyChar() == KeyEvent.VK_CONTROL){
     		CommitText c = new CommitText(SimpleKeyEvent.KEYCODE_DEL);
     		//c.isKeyCode();
@@ -58,13 +60,19 @@ public class EditableComponent extends JLabel implements KeyListener, FocusListe
     		//c.isKeyCode();
         	mInputConnection.addCommitText(c);
     	} else {
-    		CommitText c = new CommitText(""+event.getKeyChar(),1);
+
+    		CommitText c = null;
     		if((InputEvent.CTRL_DOWN_MASK&event.getModifiersEx())==InputEvent.CTRL_DOWN_MASK) {
-    			c.pushingCtrl(true);
+    			System.out.println("---ctl--"+(""+(char)('a'+event.getKeyChar()-1)));
+        		c = new CommitText(""+(char)('a'+event.getKeyChar()-1),0);
+    			c.pushingCtrl(true);  
+            	mInputConnection.addCommitText(c);
+    			
     		} else {
-    			c.pushingCtrl(false);    		
+        		c = new CommitText(""+event.getKeyChar(),1);
+    			c.pushingCtrl(false);  
+            	mInputConnection.addCommitText(c);
     		}
-        	mInputConnection.addCommitText(c);
     	}
        	event.consume();
 	}
