@@ -3,7 +3,7 @@ package info.kyorohiro.helloworld.stress.service;
 
 import java.util.LinkedList;
 
-import info.kyorohiro.helloworld.android.base.ForegroundService;
+import info.kyorohiro.helloworld.pfdep.android.base.ForegroundService;
 import info.kyorohiro.helloworld.stress.KyoroSetting;
 import info.kyorohiro.helloworld.stress.KyoroStressActivity;
 import info.kyorohiro.helloworld.stress.R;

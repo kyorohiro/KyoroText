@@ -2,8 +2,8 @@ package info.kyorohiro.helloworld.logcat.appparts;
 
 import java.io.File;
 
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
+import info.kyorohiro.helloworld.pfdep.android.util.SimpleFileExplorer;
+import info.kyorohiro.helloworld.pfdep.android.util.SimpleFileExplorer.SelectedFileAction;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatActivity;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatActivity.FileSelectedAction;

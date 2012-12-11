@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.android.adapter;
+package info.kyorohiro.helloworld.pfdep.android.adapter;
 
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 
@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 
 /**
- * todo Android‚ÉˆË‘¶‚µ‚Ä‚¢‚é•”•ª‚Í•ª—£‚·‚é
+ * todo Androidï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•”ï¿½ï¿½ï¿½Í•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public class MultiTouchSurfaceView extends SurfaceView {
 

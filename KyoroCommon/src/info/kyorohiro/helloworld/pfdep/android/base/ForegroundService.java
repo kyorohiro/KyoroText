@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.android.base;
+package info.kyorohiro.helloworld.pfdep.android.base;
 
 
 import android.app.Notification;

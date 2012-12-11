@@ -1,9 +1,9 @@
-package info.kyorohiro.helloworld.android.adapter;
+package info.kyorohiro.helloworld.pfdep.android.adapter;
 
-import info.kyorohiro.helloworld.android.adapter.EditableSurfaceView;
-import info.kyorohiro.helloworld.android.adapter.SimpleGraphicsForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
+import info.kyorohiro.helloworld.pfdep.android.adapter.EditableSurfaceView;
+import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleGraphicsForAndroid;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;

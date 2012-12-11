@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 
-import info.kyorohiro.helloworld.android.base.ForegroundService;
-import info.kyorohiro.helloworld.android.base.TestService;
+import info.kyorohiro.helloworld.pfdep.android.base.ForegroundService;
+import info.kyorohiro.helloworld.pfdep.android.base.TestService;
 import info.kyorohiro.helloworld.logcat.tasks.TaskManagerForSave;
 
 /**

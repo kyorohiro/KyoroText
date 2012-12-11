@@ -3,9 +3,9 @@ package info.kyorohiro.helloworld.textviewer.appparts;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
-import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
+import info.kyorohiro.helloworld.pfdep.android.base.MainActivityMenuAction;
+import info.kyorohiro.helloworld.pfdep.android.util.SimpleFileExplorer;
+import info.kyorohiro.helloworld.pfdep.android.util.SimpleFileExplorer.SelectedFileAction;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;

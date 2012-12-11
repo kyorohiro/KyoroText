@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.test;
 
-import info.kyorohiro.helloworld.android.base.TestActivity;
-import info.kyorohiro.helloworld.android.base.TestResult;
+import info.kyorohiro.helloworld.pfdep.android.base.TestActivity;
+import info.kyorohiro.helloworld.pfdep.android.base.TestResult;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatActivity;
 
 public class KyoroLogcatActivityTest extends android.test.ActivityInstrumentationTestCase2<KyoroLogcatActivity>{

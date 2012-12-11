@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.regex.Pattern;
 
 import android.view.ViewDebug.ExportedProperty;
-import info.kyorohiro.helloworld.android.adapter.SimpleFontForAndroid;
+import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.simple.MyBreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;

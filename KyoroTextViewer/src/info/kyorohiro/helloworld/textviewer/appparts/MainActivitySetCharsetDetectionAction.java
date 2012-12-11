@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.textviewer.appparts;
 
 import java.io.File;
 
-import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
+import info.kyorohiro.helloworld.pfdep.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;

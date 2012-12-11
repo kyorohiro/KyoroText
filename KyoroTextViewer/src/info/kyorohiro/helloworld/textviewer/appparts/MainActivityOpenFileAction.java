@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 
-import info.kyorohiro.helloworld.android.base.MainActivityMenuAction;
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer;
-import info.kyorohiro.helloworld.android.util.SimpleFileExplorer.SelectedFileAction;
+import info.kyorohiro.helloworld.pfdep.android.base.MainActivityMenuAction;
+import info.kyorohiro.helloworld.pfdep.android.util.SimpleFileExplorer;
+import info.kyorohiro.helloworld.pfdep.android.util.SimpleFileExplorer.SelectedFileAction;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;

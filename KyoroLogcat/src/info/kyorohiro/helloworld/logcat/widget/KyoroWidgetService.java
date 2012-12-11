@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.logcat.widget;
 
-import info.kyorohiro.helloworld.android.base.TestService;
+import info.kyorohiro.helloworld.pfdep.android.base.TestService;
 import info.kyorohiro.helloworld.logcat.KyoroApplication;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatActivity;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;

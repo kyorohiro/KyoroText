@@ -1,8 +1,11 @@
-package info.kyorohiro.helloworld.j2se.adapter;
+package info.kyorohiro.helloworld.pfdep.j2se.adapter;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
 import java.text.AttributedCharacterIterator;
@@ -84,6 +87,8 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 
 	@Override
 	public void drawLine(int startX, int startY, int stopX, int stopY) {
+		BasicStroke wideStroke = new BasicStroke(mStrokeWidth);
+		mGraphics.setStroke(wideStroke);
 		mGraphics.drawLine(mGlobalX + startX, mGlobalY + startY, mGlobalX
 				+ stopX, mGlobalY + stopY);
 	}
@@ -153,28 +158,27 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 		return mTextSize;
 	}
 
+
+
+	private Polygon mShape = null;
 	@Override
 	public void startPath() {
-		// TODO Auto-generated method stub
-
+		mShape = new Polygon();
 	}
 
 	@Override
 	public void moveTo(int x, int y) {
-		// TODO Auto-generated method stub
-
+		mShape.addPoint(x+mGlobalX, y+mGlobalY);
 	}
 
 	@Override
 	public void lineTo(int x, int y) {
-		// TODO Auto-generated method stub
-
+		mShape.addPoint(x+mGlobalX, y+mGlobalY);
 	}
 
 	@Override
 	public void endPath() {
-		// TODO Auto-generated method stub
-
+		mGraphics.fill(mShape);
 	}
 
 	@Override

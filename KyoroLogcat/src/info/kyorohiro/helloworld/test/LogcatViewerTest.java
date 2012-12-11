@@ -1,9 +1,9 @@
 package info.kyorohiro.helloworld.test;
 
 import android.os.Bundle;
-import info.kyorohiro.helloworld.android.adapter.SimpleStageForAndroid;
-import info.kyorohiro.helloworld.android.base.TestActivity;
-import info.kyorohiro.helloworld.android.base.TestResult;
+import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleStageForAndroid;
+import info.kyorohiro.helloworld.pfdep.android.base.TestActivity;
+import info.kyorohiro.helloworld.pfdep.android.base.TestResult;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.logcat.util.LogcatViewer;

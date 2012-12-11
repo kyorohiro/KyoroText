@@ -2,8 +2,8 @@ package info.kyorohiro.helloworld.textviewer;
 
 import java.io.File;
 
-import info.kyorohiro.helloworld.android.adapter.SimpleStageForAndroid;
-import info.kyorohiro.helloworld.android.base.MainActivity;
+import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleStageForAndroid;
+import info.kyorohiro.helloworld.pfdep.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;

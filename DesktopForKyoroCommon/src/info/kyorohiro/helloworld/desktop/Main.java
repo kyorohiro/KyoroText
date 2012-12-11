@@ -7,9 +7,9 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.j2se.adapter.SimpleFontForJ2SE;
-import info.kyorohiro.helloworld.j2se.adapter.SimpleGraphicsForJ2SE;
-import info.kyorohiro.helloworld.j2se.adapter.SimpleStageForJ2SE;
+import info.kyorohiro.helloworld.pfdep.j2se.adapter.SimpleFontForJ2SE;
+import info.kyorohiro.helloworld.pfdep.j2se.adapter.SimpleGraphicsForJ2SE;
+import info.kyorohiro.helloworld.pfdep.j2se.adapter.SimpleStageForJ2SE;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 import java.awt.AWTEvent;
@@ -40,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.Character.Subset;
+import java.text.AttributedCharacterIterator;
 import java.util.Locale;
 
 import javax.swing.JFrame;
@@ -53,6 +54,7 @@ public class Main {
 
 		@Override
 		protected void paintComponent(Graphics g) {
+//		public void paint(Graphics g) {
 			((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
 	                RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -60,6 +62,8 @@ public class Main {
 				mInit = true;
 				initItem(g);
 			}
+			AttributedCharacterIterator t;
+		//	super.paint(g);
 			super.paintComponent(g);
 		}
 	}
@@ -76,7 +80,7 @@ public class Main {
 	private void init() {
 		JFrame frame = new JFrame("hello swing");
 		frame.getContentPane().setLayout(new FlowLayout());
-		frame.setBounds(100, 100, 600, 600);
+		frame.setBounds(100, 100, 600, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		initKyoroCommon(frame.getContentPane());
@@ -86,7 +90,7 @@ public class Main {
 	private void initKyoroCommon(Container appRoot) {
 		SimpleStageForJ2SE stage = new Stage();// SimpleStageForJ2SE();
 		stage.setVisible(true);
-		stage.setPreferredSize(new Dimension(800, 800));
+		stage.setPreferredSize(new Dimension(600, 400));
 		appRoot.add(stage);
 		mStage = stage;
 	}
@@ -120,6 +124,8 @@ public class Main {
 			readStartupMessage(viewer);
 			viewer.setRect(800, 800);
 			mStage.getRoot().addChild(viewer);
+//			viewer.getLineView().setMode(EditableLineView.MODE_SELECT);
+			viewer.getLineView().setMode(EditableLineView.MODE_EDIT);
 		}
 	}
 

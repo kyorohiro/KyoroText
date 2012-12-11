@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.stress;
 
 import java.util.List;
 
-import info.kyorohiro.helloworld.android.adapter.SimpleStageForAndroid;
+import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleStageForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;

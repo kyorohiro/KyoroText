@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.j2se.adapter;
+package info.kyorohiro.helloworld.pfdep.j2se.adapter;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
