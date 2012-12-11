@@ -204,7 +204,7 @@ MouseListener, MouseMotionListener {
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println("mousePressed x="+x+",y="+y+","+mIsEntered);
+//		System.out.println("mousePressed x="+x+",y="+y+","+mIsEntered);
 		if(mIsEntered) {
 			getRoot().onTouchTest(x, y, SimpleMotionEvent.ACTION_DOWN);
 		}
@@ -214,7 +214,7 @@ MouseListener, MouseMotionListener {
 	public void mouseReleased(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println("mouseRelessed x="+x+",y="+y+","+mIsEntered);
+//		System.out.println("mouseRelessed x="+x+",y="+y+","+mIsEntered);
 		if(mIsEntered) {
 			getRoot().onTouchTest(x, y, SimpleMotionEvent.ACTION_UP);
 		}
@@ -224,7 +224,7 @@ MouseListener, MouseMotionListener {
 	public void mouseDragged(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println("mouseDragged x="+x+",y="+y+","+mIsEntered);
+//		System.out.println("mouseDragged x="+x+",y="+y+","+mIsEntered);
 		if(mIsEntered) {
 			getRoot().onTouchTest(x, y, SimpleMotionEvent.ACTION_MOVE);
 		}
@@ -234,6 +234,6 @@ MouseListener, MouseMotionListener {
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println("mouseMoved x="+x+",y="+y+","+mIsEntered);
+//		System.out.println("mouseMoved x="+x+",y="+y+","+mIsEntered);
 	}
 }

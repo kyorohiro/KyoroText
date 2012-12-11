@@ -69,10 +69,10 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("hello world1");
+//		System.out.println("hello world1");
 		Main main = new Main();
 		main.init();
-		System.out.println("/hello world1");
+//		System.out.println("/hello world1");
 	}
 
 	private SimpleStage mStage = null;
@@ -166,7 +166,7 @@ public class Main {
 	private static class TestDisplayObject extends SimpleDisplayObject {
 		@Override
 		public void paint(SimpleGraphics graphics) {
-			System.out.println("begin paint");
+//			System.out.println("begin paint");
 			SimpleGraphicsForJ2SE graj2se = (SimpleGraphicsForJ2SE) graphics;
 			graj2se.drawBackGround(0xAAFFFF00);
 			graphics.setColor(0xFFFF0000);
@@ -178,7 +178,7 @@ public class Main {
 			float[] widths = { 10, 10, 10, 10, 10, 10 };
 			graj2se.drawPosText("abcd".toCharArray(), widths, (float) 1.5, 0,
 					3, 50, 50);
-			System.out.println("end paint");
+//			System.out.println("end paint");
 		}
 	}
 

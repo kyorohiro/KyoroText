@@ -31,7 +31,7 @@ public class SimpleFontForJ2SE extends SimpleFont {
 	public int getTextWidths(char[] buffer, int start, int end, float[] widths,
 			float textSize) {
 		float zoom = textSize/getFontSize();
-		System.out.println("Bw="+start+","+end);
+//		System.out.println("Bw="+start+","+end);
 		//mMetrics.
 		for(int i=start;i<end;i++){
 			float ret = 0;
@@ -45,9 +45,9 @@ public class SimpleFontForJ2SE extends SimpleFont {
 			widths[i-start] = (int)ret;
 		}
 		normalizeWidth(buffer, start, end, widths, textSize);
-		for(int i=start;i<end;i++){
-				System.out.println("#w["+i+"]="+widths[i]+","+buffer[i]+","+zoom+","+getFontSize());
-		}
+//		for(int i=start;i<end;i++){
+//				System.out.println("#w["+i+"]="+widths[i]+","+buffer[i]+","+zoom+","+getFontSize());
+//		}
 		return 100;
 	}
 
