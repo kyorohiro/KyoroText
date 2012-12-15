@@ -10,6 +10,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager;
 
 /**
  * This Class

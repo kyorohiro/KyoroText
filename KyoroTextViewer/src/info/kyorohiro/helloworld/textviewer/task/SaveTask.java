@@ -13,7 +13,6 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.util.Utility;
 
 //
 // 2012/11/23 
