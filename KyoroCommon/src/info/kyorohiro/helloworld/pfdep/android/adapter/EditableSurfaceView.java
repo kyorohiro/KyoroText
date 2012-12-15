@@ -113,6 +113,9 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
+		if(event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+			return super.dispatchKeyEvent(event);
+		}
 		if(event.getAction() == KeyEvent.ACTION_DOWN) {
 			mController.binaryKey(mCurrentInputConnection, event.getKeyCode(), 
 					event.isShiftPressed(), pushingCtl(event), event.isAltPressed());
@@ -255,15 +258,16 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("commitText="+text+","+newCursorPosition);
 			log("--1--="+Selection.getSelectionStart(text));
 			log("--2--="+Selection.getSelectionEnd(text));
-			mController.decorateKey(mCurrentInputConnection, text, newCursorPosition, false, false, false);
-			
+			mController.decorateKey(mCurrentInputConnection, text, newCursorPosition, false, false, false);		
 			mCommitText = text;
-			CommitText v = new CommitText(text, newCursorPosition);
-			v.pushingCtrl(pushingCtl());
-			v.pushingAlt(pushingEsc());
-			mCommitTextList.addLast(v);
+//			CommitText v = new CommitText(text, newCursorPosition);
+//			v.pushingCtrl(pushingCtl());
+//			v.pushingAlt(pushingEsc());
+//			addCommitText(v);
+//			mCommitTextList.addLast(v);
 			try{
-				return super.commitText(text, newCursorPosition);
+				return true;
+//				return super.commitText(text, newCursorPosition);
 			} finally {
 				mComposingText = "";
 				getEditable().clear();
@@ -291,6 +295,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		}
 		@Override
 		public void addCommitText(CommitText text) {
+			log("# addlast---"+text);
 			mCommitTextList.addLast(text);
 		}
 
