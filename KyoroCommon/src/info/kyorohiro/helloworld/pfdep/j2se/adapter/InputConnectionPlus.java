@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.pfdep.j2se.adapter;
 import java.util.LinkedList;
 
 import info.kyorohiro.helloworld.display.simple.CommitText;
+import info.kyorohiro.helloworld.display.simple.IMEController;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 
 public class InputConnectionPlus implements MyInputConnection{
@@ -23,19 +24,21 @@ public class InputConnectionPlus implements MyInputConnection{
 	}
 
 	// CommitText を受け取るものだけ残す
-	@Override
-	public void addCommitText(CharSequence text, int cursorPositionOnCommitedText) {
-		CommitText c = new CommitText(text, 1);
-		c.pushingCtrl(pushingCtr());
-		mCommitTextList.add(c);
-	}
+	//@Override
+	//public void addCommitText(CharSequence text, int cursorPositionOnCommitedText) {
+	//		CommitText c = new CommitText(text, 1);
+	//	c.pushingCtrl(false);
+	//	mCommitTextList.add(c);
+	//}
+	//
 
 	// CommitText を受け取るものだけ残す
-	@Override
-	public void addKeyEvent(int keyEvent) {
-		mCommitTextList.add(new CommitText(keyEvent));
-	}
-
+	//@Override
+	//public void addKeyEvent(int keyEvent) {
+	//	mCommitTextList.add(new CommitText(keyEvent));
+	//}
+	//
+	
 	@Override
 	public CommitText popFirst() {
 		if(mCommitTextList.size()>0){
@@ -45,11 +48,8 @@ public class InputConnectionPlus implements MyInputConnection{
 		}
 	}
 
-
-	// いらなくなる予定
 	@Override
-	public boolean pushingCtr() {
-		return false;
+	public void setIMEController(IMEController controller) {
 	}
 
 }

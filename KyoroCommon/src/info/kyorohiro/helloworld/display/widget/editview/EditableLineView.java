@@ -147,9 +147,9 @@ public class EditableLineView extends CursorableLineView {
 		} 
 		String[] lines = clip.toString().split("\r\n|\n");
 		for(int i=0;i<lines.length;i++) {
-			c.addCommitText(lines[i], 1);
+			c.addCommitText(new CommitText(lines[i], 1));
 			if(i+1<lines.length){
-				c.addKeyEvent(0x42);
+				c.addCommitText(new CommitText(0x42));
 			}
 		}
 	}

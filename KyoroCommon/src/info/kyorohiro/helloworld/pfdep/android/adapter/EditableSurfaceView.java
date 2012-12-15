@@ -144,8 +144,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	private static CharSequence mComposingText = null;
 	private static CharSequence mCommitText = null;
 	private static LinkedList<CommitText> mCommitTextList = new LinkedList<CommitText>();
-	private static int mStart = 0;
-	private static int mEnd = 0;
 	public class _MyInputConnection extends BaseInputConnection implements  
 	MyInputConnection{
 
@@ -199,7 +197,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			// for asus fskaren 
 			{
 			if(mCommitText!=null&&mComposingText.length() != 0) {
-				addCommitText(mComposingText, 1);
+				addCommitText(new CommitText(mComposingText, 1));
 				mComposingText = "";
 			}
 			}
@@ -235,9 +233,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean setSelection(int start, int end) {
 			log("setSelection s="+start+",e="+end);	
-
-			mStart = start;
-			mEnd = end;
 			return super.setSelection(start, end);
 		}
 
@@ -246,8 +241,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("commitCompletion="+text);
 			try {
 				mCommitText = text.getText();
-				addCommitText(text.getText(), text.getPosition());
-//				mCommitTextList.addLast(new CommitText(text.getText(), text.getPosition()));
+				addCommitText(new CommitText(text.getText(), text.getPosition()));
 				return super.commitCompletion(text);
 			} finally {
 				mComposingText = "";
@@ -255,23 +249,13 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			}
 		}
 
-		public void addCommitText(CharSequence text, int position) {
-			CommitText v = new CommitText(text, position);
-			v.pushingCtrl(pushingCtl());
-			mCommitTextList.addLast(v);			
-		}
-
-		public void addKeyEvent(int event) {
-			CommitText v = new CommitText(event);
-			v.pushingCtrl(pushingCtl());
-			mCommitTextList.addLast(v);
-		}
-
 		@Override
 		public boolean commitText(CharSequence text, int newCursorPosition) {
 			log("commitText="+text+","+newCursorPosition);
 			log("--1--="+Selection.getSelectionStart(text));
 			log("--2--="+Selection.getSelectionEnd(text));
+			mController.decorateKey(mCurrentInputConnection, text, newCursorPosition, false, false, false);
+			
 			mCommitText = text;
 			CommitText v = new CommitText(text, newCursorPosition);
 			v.pushingCtrl(pushingCtl());
@@ -293,7 +277,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 				log("getTextAfterCursor="+a.toString()+","+length+","+flags);
 				return a;
 			} catch(Exception e) {
-				// �^�[���ŁAjava.lang.IndexOutOfBoundsException�����������̂ŃK�[�h
 				e.printStackTrace();
 				return "";
 			}
@@ -305,7 +288,19 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("getTextBeforeCursor="+a.toString()+","+length+","+flags);
 			return a;
 		}
-		
+		@Override
+		public void addCommitText(CommitText text) {
+			mCommitTextList.addLast(text);
+		}
+
+		@Override
+		public void setIMEController(IMEController controller) {
+			mController = controller;
+		}
+
+		//
+		// ======================================================================
+		//
 		@Override
 		public boolean sendKeyEvent(KeyEvent event) {
 			log("sendKeyEvent="+event.toString());
@@ -340,15 +335,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		public boolean reportFullscreenMode(boolean enabled) {
 			log("reportFullscreenMode="+enabled);
 			return super.reportFullscreenMode(enabled);
-		}
-
-		@Override
-		public boolean pushingCtr() {
-			return EditableSurfaceView.this.pushingCtl();
-		}
-		@Override
-		public void addCommitText(CommitText text) {
-			mCommitTextList.addLast(text);
 		}
 		
 	}

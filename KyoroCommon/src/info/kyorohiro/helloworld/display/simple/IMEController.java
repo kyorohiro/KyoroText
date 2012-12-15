@@ -1,10 +1,6 @@
 package info.kyorohiro.helloworld.display.simple;
 
-
-import info.kyorohiro.helloworld.display.widget.editview.IMEClient;
-
 import java.util.HashMap;
-
 
 // this class is hard-coding. 
 // todo refactaring
@@ -28,22 +24,22 @@ public class IMEController {
 		}
 		else  {
 			if(KeyMap.KEYCODE_BACKSPSACE == keycode) {
-				conn.addKeyEvent(SimpleKeyEvent.KEYCODE_BACK);			
+				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_BACK));			
 			}
 			else if(KeyMap.KEYCODE_ENTER == keycode) {
-				conn.addKeyEvent(SimpleKeyEvent.KEYCODE_ENTER);
+				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_ENTER));
 			}
 			else if(KeyMap.KEYCODE_DPAD_DOWN == keycode) {
-				conn.addKeyEvent(SimpleKeyEvent.KEYCODE_DPAD_DOWN);				
+				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_DPAD_DOWN));				
 			}
 			else if(KeyMap.KEYCODE_DPAD_LEFT == keycode) {
-				conn.addKeyEvent(SimpleKeyEvent.KEYCODE_DPAD_LEFT);
+				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_DPAD_LEFT));
 			}
 			else if(KeyMap.KEYCODE_DPAD_RIGHT == keycode) {
-				conn.addKeyEvent(SimpleKeyEvent.KEYCODE_DPAD_RIGHT);
+				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_DPAD_RIGHT));
 			}
 			else if(KeyMap.KEYCODE_DPAD_UP== keycode) {
-				conn.addKeyEvent(SimpleKeyEvent.KEYCODE_DPAD_UP);
+				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_DPAD_UP));
 			}
 		}
 
@@ -51,6 +47,13 @@ public class IMEController {
 
 	public void decorateKey(MyInputConnection conn, char c, boolean shift, boolean ctl, boolean alt) {
 		CommitText v = new CommitText(""+c, 1);
+		v.pushingCtrl(ctl);
+		v.pushingAlt(alt);
+		conn.addCommitText(v);
+	}
+
+	public void decorateKey(MyInputConnection conn, CharSequence text, int pos,  boolean shift, boolean ctl, boolean alt) {
+		CommitText v = new CommitText(text, pos);
 		v.pushingCtrl(ctl);
 		v.pushingAlt(alt);
 		conn.addCommitText(v);
