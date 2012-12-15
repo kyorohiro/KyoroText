@@ -9,8 +9,10 @@ public class Recenter implements Task {
 	public String getCommandName() {
 		return "recenter";
 	}
+
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		view.recenter();
+		buffer.clearYank();
 	}
  }

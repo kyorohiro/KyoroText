@@ -13,5 +13,6 @@ public class BackwardWord implements Task {
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		view.back();
 		buffer.setCursor(view.getLeft().getCursorRow(), view.getLeft().getCursorCol());
+		buffer.clearYank();
 	}
  }

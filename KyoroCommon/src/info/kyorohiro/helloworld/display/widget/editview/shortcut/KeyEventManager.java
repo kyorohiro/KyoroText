@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.editview.shortcut;
 
+import java.nio.Buffer;
+
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.IMEController;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
@@ -84,6 +86,7 @@ public class KeyEventManager extends IMEController{
 //			android.util.Log.v("kiyo","key= --");
 			mManager.clear();
 		}
+		mTextBuffer.clearYank();
 		if (text.isKeyCode()) {
 //			android.util.Log.v("kiyo","key="+text.getKeyCode());
 			switch (text.getKeyCode()) {

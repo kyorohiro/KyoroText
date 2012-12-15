@@ -13,5 +13,6 @@ public class PreviousLine implements Task {
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		view.prev();
 		buffer.setCursor(view.getLeft().getCursorRow(), view.getLeft().getCursorCol());
+		buffer.clearYank();
 	}
  }

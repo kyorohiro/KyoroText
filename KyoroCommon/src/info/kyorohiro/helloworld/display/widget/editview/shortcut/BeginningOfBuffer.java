@@ -13,6 +13,7 @@ public class BeginningOfBuffer implements Task {
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		buffer.setCursor(0, 0);
 		view.setCursorAndCRLF(view.getLeft(), 0, 0);
-		view.recenter();				
+		view.recenter();
+		buffer.clearYank();
 	}
  }

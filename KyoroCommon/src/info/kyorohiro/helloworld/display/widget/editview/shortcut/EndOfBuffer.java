@@ -28,6 +28,7 @@ public class EndOfBuffer implements Task {
 					buffer.getCol());
 		}
 		view.recenter();
+		buffer.clearYank();
 	}
 
 }

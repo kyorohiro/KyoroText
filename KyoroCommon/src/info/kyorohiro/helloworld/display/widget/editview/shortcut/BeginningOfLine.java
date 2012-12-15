@@ -14,5 +14,6 @@ public class BeginningOfLine implements Task {
 		buffer.setCursor(0, buffer.getCol());
 		view.getLeft().setCursorCol(buffer.getCol());
 		view.getLeft().setCursorRow(0);
+		buffer.clearYank();
 	}
  }

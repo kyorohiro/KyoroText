@@ -15,5 +15,6 @@ public class NextLine implements Task {
 		buffer.setCursor(view.getLeft()
 				.getCursorRow(), view.getLeft()
 				.getCursorCol());
+		buffer.clearYank();
 	}
  }

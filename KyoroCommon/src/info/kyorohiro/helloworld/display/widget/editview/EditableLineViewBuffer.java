@@ -435,7 +435,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	}
 
 	private void log(String log) {
-		android.util.Log.v("kiyo", "elvb:" + log);
+//		android.util.Log.v("kiyo", "elvb:" + log);
 	}
 
 	private LinkedList<String> mYankBuffer = new LinkedList<String>();
@@ -464,6 +464,10 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		return mYankBuffer.get(i);
 	}
 
+	private boolean mYankBufferClear = false;
+	public synchronized void clearYank() {
+		mYankBufferClear = true;
+	}
 	public synchronized void yank() {
 		try {
 			for (String line : mYankBuffer) {
@@ -476,8 +480,16 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				}
 			}
 		} finally {
-			mYankBuffer.clear();
+			mYankBufferClear = true;
 		}
+	}
+
+	public void appendYankBuffer(String text) {
+		if(mYankBufferClear) {
+			mYankBuffer.clear();
+			mYankBufferClear = false;
+		}
+		mYankBuffer.add(text);		
 	}
 
 	public synchronized void killLine() {
@@ -492,14 +504,14 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		if (text.lengthWithoutLF(mIsCrlfMode) == 0) {
 			deleteLinePerVisible();
 			setCursor(row, index);
-			mYankBuffer.add(text.toString());
+			appendYankBuffer(""+text);
 		}
 		// end of line without crlf
 		else if (text.lengthWithoutLF(mIsCrlfMode) == mCursorRow) {
 			// delete crlf
 			if (text.includeLF()) {
 				backwardDeleteChar();
-				mYankBuffer.add(""
+				appendYankBuffer(""
 						+ text.subSequence(text.lengthWithoutLF(mIsCrlfMode),
 								text.length()));
 				// mYankBuffer.add("\r\n");
@@ -530,7 +542,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			}
 			commit(text.subSequence(0, row), 1);
 			setCursor(row, index);
-			mYankBuffer.add(""
+			appendYankBuffer(""
 					+ text.subSequence(row, text.lengthWithoutLF(mIsCrlfMode)));
 		}
 		normalize(getCol());

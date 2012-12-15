@@ -14,5 +14,6 @@ public class EndOfLine implements Task {
 		int _c = buffer.getCol();
 		CharSequence _t = buffer.get(_c);
 		buffer.setCursor(_t.length(), _c);
+		buffer.clearYank();
 	}
  }

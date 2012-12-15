@@ -12,5 +12,6 @@ public class DeleteBackwardChar implements Task {
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		buffer.backwardDeleteChar();
+		buffer.clearYank();
 	}
  }

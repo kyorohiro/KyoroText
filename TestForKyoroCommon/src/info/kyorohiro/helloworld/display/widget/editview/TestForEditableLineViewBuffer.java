@@ -263,8 +263,7 @@ public class TestForEditableLineViewBuffer extends TestCase {
 				checkData("mt3-1", da, buffer);
 			}
 
-		}
-		
+		}	
 	}
 
 	public void testCommit_opt() {

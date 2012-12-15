@@ -51,8 +51,19 @@ public class EditableLineView extends CursorableLineView {
 //		android.util.Log.v("kiyo","#4="+getLeft().getCursorCol()+","+getPositionY()+","+getLineViewBuffer().getNumberOfStockedElement());
 	}
 
+	private int mR = 0;
+	private int mC = 0;
+	private void modCursor(int r, int c) {
+		if(mR!=r||mC!=c){
+			mTextBuffer.clearYank();
+		}
+		mR = r;
+		mC = c;
+	}
+
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
+		modCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 		if (editable()) {
 			try {
 				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());

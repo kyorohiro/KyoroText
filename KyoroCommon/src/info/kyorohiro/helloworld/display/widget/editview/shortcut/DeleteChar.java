@@ -12,5 +12,6 @@ public class DeleteChar implements Task {
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		buffer.deleteChar();
+		buffer.clearYank();
 	}
  }

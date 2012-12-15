@@ -9,6 +9,7 @@ public class KillLine implements Task {
 	public String getCommandName() {
 		return "kill-line";
 	}
+
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		int _c = buffer.getCol();

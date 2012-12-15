@@ -13,5 +13,6 @@ public class FowardWord implements Task {
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		view.front();
 		buffer.setCursor(view.getLeft().getCursorRow(), view.getLeft().getCursorCol());
+		buffer.clearYank();
 	}
  }
