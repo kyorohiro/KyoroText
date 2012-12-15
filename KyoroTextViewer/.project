@@ -32,6 +32,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>src_c</name>
+			<type>2</type>
+			<location>C:/github/001/KyoroHelloAndroid/KyoroCommon/src</location>
+		</link>
+		<link>
 			<name>src_common</name>
 			<type>2</type>
 			<location>C:/github/001/KyoroHelloAndroid/KyoroCommon/src</location>

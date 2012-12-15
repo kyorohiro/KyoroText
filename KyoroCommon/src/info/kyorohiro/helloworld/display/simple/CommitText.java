@@ -11,7 +11,7 @@ public class CommitText {
 		private boolean mPushingCtrl = false;
 		private boolean mPushingEsc = false;
 
-		public void pushingEsc(boolean pushing) {
+		public void pushingAlt(boolean pushing) {
 			mPushingEsc = pushing;
 		}
 

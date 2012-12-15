@@ -88,7 +88,9 @@ public class EditableComponent extends JLabel implements KeyListener, FocusListe
 
     @Override
     public void keyPressed(KeyEvent event) {
+		System.out.println("===========press=========");
     	keyTyped(event);
+		System.out.println("===========/press==========");
     }
 
     @Override

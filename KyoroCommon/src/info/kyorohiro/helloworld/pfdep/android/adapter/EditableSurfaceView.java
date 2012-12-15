@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.pfdep.android.adapter;
 
 
 import info.kyorohiro.helloworld.display.simple.CommitText;
+import info.kyorohiro.helloworld.display.simple.IMEController;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 
@@ -106,170 +107,34 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		return mMetaState.pushingEsc();
 	}
 
-	private static HashMap<Integer, Character> sMMap = new HashMap<Integer, Character>();
-	private static HashMap<Integer, Character> sRMap = new HashMap<Integer, Character>();
-	static {
-		sMMap.put(77, '@');
-		sRMap.put(77, '`');
-		sMMap.put(74, ';');
-		sRMap.put(74, '+');
-		sMMap.put(75, ':');
-		sRMap.put(75, '*');
-		sMMap.put(72, ']');
-		sRMap.put(72, '}');
-		sMMap.put(71, '[');
-		sRMap.put(71, '{');
-		sMMap.put(76, '/');
-		sRMap.put(76, '?');
-		sMMap.put(73, '\\');
-		sRMap.put(73, '_');
-		sMMap.put(73, '\\');
-		sMMap.put(55, ',');
-		sRMap.put(55, '<');
-		sMMap.put(56, '.');
-		sRMap.put(56, '>');
-		sMMap.put(216, '\\');
-		sRMap.put(216, '|');
-		sMMap.put(70, '^');
-		sRMap.put(70, '~');
-		sMMap.put(69, '-');
-		sRMap.put(69, '=');
-		sMMap.put(62, ' ');
-		sMMap.put(18, '#');
-		sMMap.put(81, '+');
-		sMMap.put(7, '0');
-		sMMap.put(17, '*');
-		sMMap.put(7, '0');
-/*
-		sMMap.put(77, '`');
-		sMMap.put(74, '+');
-		sMMap.put(75, '*');
-		sMMap.put(72, '}');
-		sMMap.put(71, '{');
-		sMMap.put(76, '?');
-		sMMap.put(73, '_');
-		sMMap.put(55, '<');
-		sMMap.put(56, '>');
-		sMMap.put(216, '|');
-		sMMap.put(70, '~');
-		sMMap.put(69, '=');
-*/
-	}
+
+	private IMEController mController = new IMEController();
 
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
-
-		char dispatchKey = 0;
-		int ctrl = event.getMetaState();
-		mMetaState.update(event);
-		int keycode = event.getKeyCode();
-		log("test="+keycode+"s="+event.isShiftPressed());
-
-		// 
-		if(KeyEvent.KEYCODE_A <= event.getKeyCode()&&event.getKeyCode()<=KeyEvent.KEYCODE_Z){
-			switch(event.getAction()) {
-			case KeyEvent.ACTION_DOWN:
-				dispatchKey =(char)( 
-						(int)'a'+(int)event.getKeyCode()-(int)KeyEvent.KEYCODE_A);
-				if(event.isShiftPressed()){
-					dispatchKey +='A'-'a';
-				}
-				CommitText v = new CommitText(""+dispatchKey, 1);
-				v.pushingCtrl(pushingCtl());
-				mCommitTextList.addLast(v);
-			}
-			return true;
-		} 
-		else if(KeyEvent.KEYCODE_0<keycode&&keycode <=KeyEvent.KEYCODE_9) {
-			switch(event.getAction()) {
-			case KeyEvent.ACTION_DOWN:
-				dispatchKey =(char)( 
-						(int)'0'+(int)event.getKeyCode()-(int)KeyEvent.KEYCODE_0);		
-				if(event.isShiftPressed()) {
-					dispatchKey += '!'-'0'-1;
-				}
-				CommitText v = new CommitText(""+dispatchKey, 1);
-				mCommitTextList.addLast(v);
-			}
-			return true;
+		if(event.getAction() == KeyEvent.ACTION_DOWN) {
+			mController.binaryKey(mCurrentInputConnection, event.getKeyCode(), 
+					event.isShiftPressed(), pushingCtl(event), event.isAltPressed());
 		}
-		else if(event.isShiftPressed()&&sRMap.containsKey(keycode)){
-			switch(event.getAction()) {
-			case KeyEvent.ACTION_DOWN:
-				dispatchKey = sRMap.get(keycode);
-				CommitText v = new CommitText(""+dispatchKey, 1);
-				mCommitTextList.addLast(v);
-			}
-			return true;
-		}else if(!event.isShiftPressed()&&sMMap.containsKey(keycode)){
-			switch(event.getAction()) {
-			case KeyEvent.ACTION_DOWN:
-				dispatchKey = sMMap.get(keycode);
-				CommitText v = new CommitText(""+dispatchKey, 1);
-				mCommitTextList.addLast(v);
-			}
+		return true;//super.dispatchKeyEvent(event);
+	}
+
+	public static boolean pushingCtl(KeyEvent event) {
+		int ctrl = event.getMetaState();
+		if(0x1000==(ctrl&0x1000)||0x2000==(ctrl&0x2000)||0x4000==(ctrl&0x4000)){
 			return true;
 		} else {
-			if(keycode == KeyEvent.KEYCODE_ENTER|| keycode==KeyEvent.KEYCODE_DEL) {
-				switch(event.getAction()) {
-				case KeyEvent.ACTION_DOWN:
-//					(event.getKeyCode());
-					// fmod oolowing code infinite loop
-					mCurrentInputConnection.addKeyEvent(event.getKeyCode());
-				}
-				return true;
-
-			} 
-			switch(keycode){
-			case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
-			case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
-			case SimpleKeyEvent.KEYCODE_DPAD_UP:
-			case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
-			case 111:
-//				android.util.Log.v("kiyo","#111=");
-				if(event.getAction()== KeyEvent.ACTION_DOWN){
-					mCurrentInputConnection.addKeyEvent(event.getKeyCode());
-				}
-				return true;
-			}
+			return false;			
 		}
-		
-		return super.dispatchKeyEvent(event);
 	}
 	@Override
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
-		char dispatchKey = 0;
-
-		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());
-
-		int ctrl = event.getMetaState();
-		mMetaState.update(event);
-		if(mMetaState.pushingEsc()) {
-			CommitText v = new CommitText("", 0);
-			v.pushingEsc(mMetaState.pushingEsc());
-			v.pushingCtrl(mMetaState.pushingCtl());
-			mCommitTextList.addLast(v);
-			mComposingText = "";
-			mCommitText = "";			
-		} else 
-		if(mMetaState.pushingCtl()){
-			switch(event.getAction()) {
-			case KeyEvent.ACTION_DOWN:
-				// for asus fskaren 
-				if(KeyEvent.KEYCODE_A <= event.getKeyCode()&&event.getKeyCode()<=KeyEvent.KEYCODE_Z){
-					dispatchKey =(char)( 
-							(int)'a'+(int)event.getKeyCode()-(int)KeyEvent.KEYCODE_A);
-					CommitText v = new CommitText(""+dispatchKey, 0);
-					v.pushingCtrl(pushingCtl());
-					mCommitTextList.addLast(v);
-					mComposingText = "";
-					mCommitText = "";
-				}
+		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());	
+		if(mController.tryUseBinaryKey(event.isShiftPressed(), pushingCtl(event), event.isAltPressed())){
+			if(event.getAction() == KeyEvent.ACTION_DOWN) {
+				mController.binaryKey(mCurrentInputConnection, event.getKeyCode(), event.isShiftPressed(), pushingCtl(event), event.isAltPressed());
 			}
-		}
-		if(mMetaState.pushingCtl()||MetaStateForAndroid.isCtl(event.getKeyCode())||
-				mMetaState.pushingEsc()){
 			return true;
 		} else {
 			return super.dispatchKeyEventPreIme(event);
@@ -410,7 +275,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			mCommitText = text;
 			CommitText v = new CommitText(text, newCursorPosition);
 			v.pushingCtrl(pushingCtl());
-			v.pushingEsc(pushingEsc());
+			v.pushingAlt(pushingEsc());
 			mCommitTextList.addLast(v);
 			try{
 				return super.commitText(text, newCursorPosition);
@@ -480,6 +345,10 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean pushingCtr() {
 			return EditableSurfaceView.this.pushingCtl();
+		}
+		@Override
+		public void addCommitText(CommitText text) {
+			mCommitTextList.addLast(text);
 		}
 		
 	}
