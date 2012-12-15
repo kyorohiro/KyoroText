@@ -114,6 +114,68 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			checkData("ms=" + i + ",", exp, buffer);
 		}
 	}
+	public void testYank1_() {
+		
+		{
+			String[] data = { "abcde", "fgh\r\n", "ijkl" };
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			setData(data, spec);
+			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+			buffer.IsCrlfMode(true);
+			buffer.setCursor(0, 0);
+
+			buffer.killLine();
+			buffer.yank();
+			checkData("mr1", data, buffer);
+
+			buffer.killLine();
+			buffer.killLine();
+			buffer.yank();
+			checkData("mr2", data, buffer);
+
+			buffer.killLine();
+			buffer.killLine();
+			buffer.killLine();
+			buffer.yank();
+			checkData("mr3", data, buffer);
+
+			buffer.killLine();
+			buffer.killLine();
+			buffer.killLine();
+			buffer.killLine();
+			buffer.yank();
+			checkData("mr4", data, buffer);
+		}
+		{
+			String[] data = { "abcde", "fgh\r\n", "ijkl" };
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(
+					5);
+			setData(data, spec);
+			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+			buffer.IsCrlfMode(true);
+			buffer.setCursor(2, 0);
+
+			buffer.killLine();
+			buffer.yank();
+			checkData("ms1", data, buffer);
+			
+			buffer.killLine();
+			buffer.killLine();
+			buffer.yank();
+			checkData("ms2", data, buffer);
+
+			buffer.killLine();
+			buffer.killLine();
+			buffer.killLine();
+			buffer.yank();
+
+			buffer.killLine();
+			buffer.killLine();
+			buffer.killLine();
+			buffer.killLine();
+			buffer.yank();
+		}
+	}
 
 	public void testKillLine1_() {
 		String[] data = { "abcde", "fgh\r\n", "ijkl" };

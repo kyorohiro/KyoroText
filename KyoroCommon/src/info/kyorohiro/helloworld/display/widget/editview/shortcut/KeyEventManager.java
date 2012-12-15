@@ -33,6 +33,7 @@ public class KeyEventManager extends IMEController{
 		new Command(new CommandPart[]{new CommandPart('d', true, false)}, new DeleteBackwardChar()),
 		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
 		new Command(new CommandPart[]{new CommandPart('k', true, false)}, new KillLine()),
+		new Command(new CommandPart[]{new CommandPart('y', true, false)}, new Yank()),
 
 		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('>', false, false)}, new EndOfBuffer()),

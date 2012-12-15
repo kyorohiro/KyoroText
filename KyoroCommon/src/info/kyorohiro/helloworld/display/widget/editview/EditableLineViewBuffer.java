@@ -1,6 +1,10 @@
 package info.kyorohiro.helloworld.display.widget.editview;
 
+import java.util.LinkedList;
+
 import info.kyorohiro.helloworld.display.simple.BreakText;
+import info.kyorohiro.helloworld.display.simple.CommitText;
+import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.display.widget.editview.IMEClient;
@@ -429,6 +433,21 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
+	private LinkedList<String> mYankBuffer = new LinkedList<String>();
+	public synchronized void yank() {
+		try {
+			for(String line: mYankBuffer) {
+				if(line.endsWith("\n")){
+					crlf();
+				} else {
+					commit(line, 1);
+				}
+			}
+		} finally {
+			mYankBuffer.clear();
+		}
+	}
+
 	public synchronized void killLine() {
 		if (0 >= getNumberOfStockedElement()) {
 			return;
@@ -436,47 +455,44 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		int index = getCol();
 		int row = getRow();
 		KyoroString text = get(index);
-		KyoroString prev = null;
-		if (index - 1 >= 0) {
-			prev = get(index - 1);
-		}
 
+		// crlf only or empty
 		if (text.lengthWithoutLF(mIsCrlfMode) == 0) {
-			// android.util.Log.v("kiyo","#<A>------col="+getCol()+",row="+getRow());
 			deleteLinePerVisible();
 			setCursor(row, index);
-			// if(index+1==getMaxOfStackedElement()&&!isLoading()) {
-			// normalize(index);
-			// }
-		} else if (text.lengthWithoutLF(mIsCrlfMode) == mCursorRow) {
-			// android.util.Log.v("kiyo","#<B>------col="+getCol()+",row="+getRow());
-			// todo wait complete about backwardDeleteChar();
+			mYankBuffer.add(text.toString());
+		}
+		// end of line without crlf 
+		else if (text.lengthWithoutLF(mIsCrlfMode) == mCursorRow) {
+			// delete crlf
 			if (text.includeLF()) {
-				// android.util.Log.v("kiyo","#<B-1>------col="+getCol()+",row="+getRow());
 				backwardDeleteChar();
-			} else {
-				// android.util.Log.v("kiyo","#<B-2>------col="+getCol()+",row="+getRow());
+				mYankBuffer.add(""+text.subSequence(text.lengthWithoutLF(mIsCrlfMode), text.length()));
+//				mYankBuffer.add("\r\n");
+			} 
+			// delete nextline 
+			else {
 				if (index + 1 < getNumberOfStockedElement()) {
-					setCursor(0, index + 1);
+					setCursor(row, index + 1);
 					killLine();
 				}
 			}
 			setCursor(row, index);
-		} else {
-			// android.util.Log.v("kiyo","#<C>------col="+getCol()+",row="+getRow());
+		} 
+		// other
+		else {
 			deleteLinePerVisible();
 			if (row >= text.length()) {
-				// android.util.Log.v("kiyo","#<C-1>------col="+getCol()+",row="+getRow());
 				row = text.length();
 			}
 			setCursor(0, index);
 			if (text.includeLF()) {
-				// android.util.Log.v("kiyo","#<C-2>------col="+getCol()+",row="+getRow());
 				crlf(true, false);
 			}
 			setCursor(0, index);
 			commit(text.subSequence(0, row), 1);
 			setCursor(row, index);
+			mYankBuffer.add(""+text.subSequence(0, text.lengthWithoutLF(mIsCrlfMode)));
 		}
 		normalize(getCol());
 		setCursor(row, index);
