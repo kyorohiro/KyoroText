@@ -114,8 +114,8 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			checkData("ms=" + i + ",", exp, buffer);
 		}
 	}
-	public void testYank1_() {
-		
+
+	public void testYank1_() {		
 		{
 			String[] data = { "abcde", "fgh\r\n", "ijkl" };
 			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
@@ -186,16 +186,24 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			buffer.setCursor(2, 1);
 
 			buffer.killLine();// "abcde", "fg\r\n", "ijkl" | h
+			assertEquals(1, buffer.getCol());
+			assertEquals(2, buffer.getRow());
 			buffer.yank();
 			checkData("mt1", data, buffer);
-			
+			assertEquals(1, buffer.getCol());
+			assertEquals(3, buffer.getRow());
+
+			buffer.setCursor(2, 1);
 			buffer.killLine();
 			buffer.yank_debug();
 			buffer.killLine();// "abcde", "fgijk, "l"  | h \r\n
 			buffer.yank_debug();
 			buffer.yank();
 			checkData("mt2", data, buffer);
+			assertEquals(2, buffer.getCol());
+			assertEquals(0, buffer.getRow());
 
+			
 			buffer.setCursor(2, 1);
 			buffer.killLine();
 			buffer.yank_debug();
@@ -206,16 +214,114 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			buffer.get_debug();
 			buffer.yank();
 			checkData("mt3", data, buffer);
+			assertEquals(2, buffer.getCol());
+			assertEquals(3, buffer.getRow());
 
+			buffer.setCursor(2, 1);
 			buffer.killLine();
 			buffer.killLine();
-			buffer.killLine();
-			buffer.killLine();
+			buffer.killLine();// "abcde", "fgl" |  h \r\n ijk
+			assertEquals(1, buffer.getCol());
+			assertEquals(2, buffer.getRow());
+			{
+				String[] da = {"abcde", "fgl"};
+				checkData("mt3-1", da, buffer);
+			}
+
+			buffer.killLine();// "abcde", "fg" |  h \r\n ijk l
+			assertEquals(1, buffer.getCol());
+			assertEquals(2, buffer.getRow());
+			{
+				String[] yankExp = {"h", "\r\n", "ijk", "l"};
+				for(int i=0;i<buffer.debugGetYankSize();i++){
+					assertEquals(yankExp[i], buffer.debugGetYank(i));
+				}
+			}
+			{
+				String[] da = {"abcde", "fg"};
+				checkData("mt3-1", da, buffer);
+			}
 			buffer.yank();
 			checkData("mt4", data, buffer);
-
+			assertEquals(2, buffer.getCol());
+			assertEquals(4, buffer.getRow());
 		}
 	}
+
+	public void testKillLine_opt() {
+		{
+			String[] data = { "abcde", "fgl" };
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			setData(data, spec);
+			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+			buffer.IsCrlfMode(true);
+			buffer.setCursor(2, 1);
+
+			buffer.killLine();
+			{
+				String[] da = {"abcde", "fg"};
+				checkData("mt3-1", da, buffer);
+			}
+
+		}
+		
+	}
+
+	public void testCommit_opt() {
+		{
+			String[] data = { "abcde", "fgl" };
+			String[][] expected = { { "abcde", "fghl" },
+					{ "abcde", "fgh\r\n", "l" },
+					{ "abcde", "fgh\r\n", "ijkl" }};
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			setData(data, spec);
+			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+			buffer.IsCrlfMode(true);
+			buffer.setCursor(2, 1);
+
+			buffer.pushCommit("h", 1);
+			checkData("mt3", expected[0], buffer);
+
+			buffer.crlf();
+			checkData("mt3", expected[1], buffer);
+
+			buffer.pushCommit("ijk", 1);
+			checkData("mt3", expected[2], buffer);
+			assertEquals(2, buffer.getCol());
+			assertEquals(3, buffer.getRow());
+		}
+		{
+			String[] data = { "abcde", "fg" };
+			String[][] expected = { { "abcde", "fgh" },
+					{ "abcde", "fgh\r\n", ""},
+					{ "abcde", "fgh\r\n", "ijk" },
+					{ "abcde", "fgh\r\n", "ijkl" },
+					};
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			setData(data, spec);
+			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+			buffer.IsCrlfMode(true);
+			buffer.setCursor(2, 1);
+
+			buffer.pushCommit("h", 1);
+			checkData("mt3", expected[0], buffer);
+
+			buffer.crlf();
+			checkData("mt3", expected[1], buffer);
+
+			buffer.pushCommit("ijk", 1);
+			checkData("mt3", expected[2], buffer);
+			assertEquals(2, buffer.getCol());
+			assertEquals(3, buffer.getRow());
+			buffer.pushCommit("l", 1);
+			checkData("mt3", expected[3], buffer);
+			assertEquals(2, buffer.getCol());
+			assertEquals(4, buffer.getRow());
+
+		}
+
+	}
+
 
 	public void testKillLine1_() {
 		String[] data = { "abcde", "fgh\r\n", "ijkl" };
