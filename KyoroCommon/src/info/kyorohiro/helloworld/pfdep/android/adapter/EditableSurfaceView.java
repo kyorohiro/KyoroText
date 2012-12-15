@@ -131,6 +131,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	@Override
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
 		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());	
+//		android.util.Log.v("kiyo","dispatchKeyEventPreIme");
 		if(mController.tryUseBinaryKey(event.isShiftPressed(), pushingCtl(event), event.isAltPressed())){
 			if(event.getAction() == KeyEvent.ACTION_DOWN) {
 				mController.binaryKey(mCurrentInputConnection, event.getKeyCode(), event.isShiftPressed(), pushingCtl(event), event.isAltPressed());

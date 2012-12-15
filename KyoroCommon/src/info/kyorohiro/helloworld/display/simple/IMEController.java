@@ -10,7 +10,7 @@ public class IMEController {
 	private KeyMap mKeyMap = new KeyMap();
 
 	public boolean tryUseBinaryKey(boolean shift, boolean ctl, boolean alt) {
-		if(ctl == true||mIsUseBinaryKey) {
+		if(alt==true||ctl == true||mIsUseBinaryKey) {
 			return true;
 		} else {
 			return false;			

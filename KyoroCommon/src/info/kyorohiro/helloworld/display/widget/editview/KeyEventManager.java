@@ -1,14 +1,24 @@
 package info.kyorohiro.helloworld.display.widget.editview;
 
-import android.widget.TextView;
 import info.kyorohiro.helloworld.display.simple.CommitText;
+import info.kyorohiro.helloworld.display.simple.IMEController;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CyclingListForAsyncDuplicate.Task;
 
-public class KeyEventManager {
+public class KeyEventManager extends IMEController{
+
+
+	@Override
+	public boolean tryUseBinaryKey(boolean shift, boolean ctl, boolean alt) {
+		if(mManager.useHardKey()) {
+			return true;
+		} else {
+			return super.tryUseBinaryKey(shift, ctl, alt);
+		}
+	}
 
 	public static class CommandPart {
 		private char mC = ' ';
@@ -41,9 +51,9 @@ public class KeyEventManager {
 		
 		public boolean action(int index, EditableLineView view, EditableLineViewBuffer buffer) {
 			if(index+1==mCommand.length) {
-				for(CommandPart p : mCommand) {
-					android.util.Log.v("kiyo","k="+p.toString());
-				}
+//				for(CommandPart p : mCommand) {
+//					android.util.Log.v("kiyo","k="+p.toString());
+//				}
 				if(mAction != null) {
 					mAction.act(view, buffer);
 				}
@@ -68,15 +78,15 @@ public class KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
 		new Command(new CommandPart[]{new CommandPart('n', true, false)}, new NextLine()),
 		new Command(new CommandPart[]{new CommandPart('p', true, false)}, new PreviousLine()),
-		new Command(new CommandPart[]{new CommandPart('f', true, false)},null),
-		new Command(new CommandPart[]{new CommandPart('b', true, false)},null),
-		new Command(new CommandPart[]{new CommandPart('h', true, false)},null),
-		new Command(new CommandPart[]{new CommandPart('d', true, false)},null),
-		new Command(new CommandPart[]{new CommandPart('l', true, false)},null),
-		new Command(new CommandPart[]{new CommandPart('k', true, false)},null),
+		new Command(new CommandPart[]{new CommandPart('f', true, false)}, new FowardWord()),
+		new Command(new CommandPart[]{new CommandPart('b', true, false)}, new BackwardWord()),
+		new Command(new CommandPart[]{new CommandPart('h', true, false)}, new DeleteChar()),
+		new Command(new CommandPart[]{new CommandPart('d', true, false)}, new DeleteBackwardChar()),
+		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
+		new Command(new CommandPart[]{new CommandPart('k', true, false)}, new KillLine()),
 
 		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
-		new Command(new CommandPart[]{new CommandPart('}', true, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart('<', false, true)}, new BeginningOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
 	};
@@ -85,6 +95,16 @@ public class KeyEventManager {
 		private int mCurPos = 0;
 		private Command[] mList = new Command[EMACS_SHORTCUT.length];
 		private int mLength = 0;
+
+		public boolean useHardKey() {
+//			android.util.Log.v("kiyo","--"+mCurPos);
+			if(mCurPos != 0) {
+//				android.util.Log.v("kiyo","--"+mCurPos);
+				return true;
+			} else {
+				return false;
+			}
+		}
 
 		public Manager() {
 			clear();
@@ -98,13 +118,16 @@ public class KeyEventManager {
 						clear();
 						return true;
 					} else {
+						//android.util.Log.v("kiyo","+++");
 						mList[i]=c;
 						i++;
 					}
 				}
 			}
 			mLength = i;
+			//android.util.Log.v("kiyo","len="+mLength+","+mCurPos);
 			if(mLength == 0) {
+				clear();
 				return false;
 			} else {
 				mCurPos++;
@@ -128,6 +151,7 @@ public class KeyEventManager {
 		if (!mTextView.isFocus()) {
 			return;
 		}
+		mTextView.getMyInputConnection().setIMEController(KeyEventManager.this);
 		MyInputConnection c = mTextView.getMyInputConnection();
 		if (c == null) {
 			return;
@@ -139,6 +163,7 @@ public class KeyEventManager {
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {
+//				 android.util.Log.v("kiyo","key= #");
 				a(text, mTextView, mTextBuffer);
 			} else {
 				break;
@@ -147,18 +172,19 @@ public class KeyEventManager {
 	}
 
 	 private void a(CommitText text, EditableLineView mTextView, EditableLineViewBuffer mTextBuffer) {
-		 android.util.Log.v("kiyo","key= #"+text.getText().length()
-				 +","+text.getText().charAt(0)+","
-				 +text.pushingCtrl()+","+ text.pushingAlt());
-		if(text.getText().length()==1&&mManager.update(text.getText().charAt(0),
+//		 android.util.Log.v("kiyo","key= #"+text.getText().length()
+//				 +","+text.getText().charAt(0)+","
+//				 +text.pushingCtrl()+","+ text.pushingAlt());
+		if(text.getText()!=null&&text.getText().length()==1&&mManager.update(text.getText().charAt(0),
 				text.pushingCtrl(), text.pushingAlt(), mTextView, mTextBuffer)) {
-			android.util.Log.v("kiyo","key= -----");
+//			android.util.Log.v("kiyo","key= ++");
 			return;
 		} else {
+//			android.util.Log.v("kiyo","key= --");
 			mManager.clear();
 		}
 		if (text.isKeyCode()) {
-			android.util.Log.v("kiyo","key="+text.getKeyCode());
+//			android.util.Log.v("kiyo","key="+text.getKeyCode());
 			switch (text.getKeyCode()) {
 			case SimpleKeyEvent.KEYCODE_BACK:
 			case SimpleKeyEvent.KEYCODE_DEL:
@@ -196,6 +222,7 @@ public class KeyEventManager {
 				break;
 			}
 		} else {
+//			android.util.Log.v("kiyo","key= -");
 			mTextBuffer.pushCommit(text.getText(),
 					text.getNewCursorPosition());
 		}
@@ -298,5 +325,75 @@ public class KeyEventManager {
 	 }
 
 
+	 public static class FowardWord implements Task {
+		@Override
+		public String getCommandName() {
+			return "foward-word";
+		}
+		@Override
+		public void act(EditableLineView view, EditableLineViewBuffer buffer) {
+			view.front();
+			buffer.setCursor(view.getLeft().getCursorRow(), view.getLeft().getCursorCol());
+		}
+	 }
+
+
+	 public static class BackwardWord implements Task {
+		@Override
+		public String getCommandName() {
+			return "backward-word";
+		}
+		@Override
+		public void act(EditableLineView view, EditableLineViewBuffer buffer) {
+			view.back();
+			buffer.setCursor(view.getLeft().getCursorRow(), view.getLeft().getCursorCol());
+		}
+	 }
+
+	 public static class DeleteChar implements Task {
+		@Override
+		public String getCommandName() {
+			return "delete-char";
+		}
+		@Override
+		public void act(EditableLineView view, EditableLineViewBuffer buffer) {
+			buffer.deleteChar();
+		}
+	 }
+
+	 public static class DeleteBackwardChar implements Task {
+		@Override
+		public String getCommandName() {
+			return "delete-backward-char";
+		}
+		@Override
+		public void act(EditableLineView view, EditableLineViewBuffer buffer) {
+			buffer.backwardDeleteChar();
+		}
+	 }
 	 
+	 public static class KillLine implements Task {
+		@Override
+		public String getCommandName() {
+			return "kill-line";
+		}
+		@Override
+		public void act(EditableLineView view, EditableLineViewBuffer buffer) {
+			int _c = buffer.getCol();
+			if (0 <= _c && _c < buffer.getNumberOfStockedElement()) {
+				buffer.killLine();
+			}
+		}
+	 }
+
+	 public static class Recenter implements Task {
+		@Override
+		public String getCommandName() {
+			return "recenter";
+		}
+		@Override
+		public void act(EditableLineView view, EditableLineViewBuffer buffer) {
+			view.recenter();
+		}
+	 }
 }
