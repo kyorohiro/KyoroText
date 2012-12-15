@@ -168,12 +168,52 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			buffer.killLine();
 			buffer.killLine();
 			buffer.yank();
+			checkData("ms3", data, buffer);
 
 			buffer.killLine();
 			buffer.killLine();
 			buffer.killLine();
 			buffer.killLine();
 			buffer.yank();
+			checkData("ms4", data, buffer);
+		}
+		{
+			String[] data = { "abcde", "fgh\r\n", "ijkl" };
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			setData(data, spec);
+			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+			buffer.IsCrlfMode(true);
+			buffer.setCursor(2, 1);
+
+			buffer.killLine();// "abcde", "fg\r\n", "ijkl" | h
+			buffer.yank();
+			checkData("mt1", data, buffer);
+			
+			buffer.killLine();
+			buffer.yank_debug();
+			buffer.killLine();// "abcde", "fgijk, "l"  | h \r\n
+			buffer.yank_debug();
+			buffer.yank();
+			checkData("mt2", data, buffer);
+
+			buffer.setCursor(2, 1);
+			buffer.killLine();
+			buffer.yank_debug();
+			buffer.killLine();
+			buffer.yank_debug();
+			buffer.killLine();// "abcde", "fgl" |  h \r\n ijk
+			buffer.yank_debug();
+			buffer.get_debug();
+			buffer.yank();
+			checkData("mt3", data, buffer);
+
+			buffer.killLine();
+			buffer.killLine();
+			buffer.killLine();
+			buffer.killLine();
+			buffer.yank();
+			checkData("mt4", data, buffer);
+
 		}
 	}
 

@@ -433,13 +433,32 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
+	private void log(String log) {
+		android.util.Log.v("kiyo","elvb:"+log);
+	}
 	private LinkedList<String> mYankBuffer = new LinkedList<String>();
+	public synchronized void yank_debug() {
+		log("debug=#yank----begin-");
+		for(String line: mYankBuffer) {
+			log("debug=#"+line+"#");
+		}
+		log("debug=#yank----end-r="+getRow()+",c="+getCol());
+	}
+
+	public synchronized void get_debug() {
+		log("debug=#get----begin-");
+		for(int i=0;i<getNumberOfStockedElement();i++) {
+			log("debug=#["+i+"]"+get(i)+"#");
+		}
+		log("debug=get----end-r="+getRow()+",c="+getCol());
+	}
+
 	public synchronized void yank() {
 		try {
 			for(String line: mYankBuffer) {
 				if(line.endsWith("\n")){
 					crlf();
-				} else {
+				} else if(line.length() != 0){
 					commit(line, 1);
 				}
 			}
