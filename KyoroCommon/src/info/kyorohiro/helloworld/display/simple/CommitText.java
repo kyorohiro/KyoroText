@@ -15,7 +15,7 @@ public class CommitText {
 			mPushingEsc = pushing;
 		}
 
-		public boolean pushingEsc() {
+		public boolean pushingAlt() {
 			return mPushingEsc;
 		}
 
