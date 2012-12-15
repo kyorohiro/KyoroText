@@ -473,7 +473,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			// delete nextline 
 			else {
 				if (index + 1 < getNumberOfStockedElement()) {
-					setCursor(row, index + 1);
+					setCursor(0, index + 1);
 					killLine();
 				}
 			}
@@ -492,7 +492,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			setCursor(0, index);
 			commit(text.subSequence(0, row), 1);
 			setCursor(row, index);
-			mYankBuffer.add(""+text.subSequence(0, text.lengthWithoutLF(mIsCrlfMode)));
+			mYankBuffer.add(""+text.subSequence(row, text.lengthWithoutLF(mIsCrlfMode)));
 		}
 		normalize(getCol());
 		setCursor(row, index);
