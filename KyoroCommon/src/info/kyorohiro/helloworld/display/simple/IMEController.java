@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.display.simple;
 
 import java.util.HashMap;
 
+
 // this class is hard-coding. 
 // todo refactaring
 public class IMEController {
@@ -9,6 +10,9 @@ public class IMEController {
 	private boolean mIsUseBinaryKey = false;
 	private KeyMap mKeyMap = new KeyMap();
 
+	public void log(String str) {
+	//	android.util.Log.v("kiyo","#=IMEC="+str);
+	}
 	public boolean tryUseBinaryKey(boolean shift, boolean ctl, boolean alt) {
 		if(alt==true||ctl == true||mIsUseBinaryKey) {
 			return true;
@@ -19,6 +23,7 @@ public class IMEController {
 
 	public void binaryKey(MyInputConnection conn, int keycode, boolean shift, boolean ctl, boolean alt) 
 	{
+		log(""+keycode+",c/a"+ctl+"/"+alt);
 		if(mKeyMap.containKey(keycode, shift)){
 			decorateKey(conn, (char)mKeyMap.convertKey(keycode, shift), shift, ctl, alt);
 		}
@@ -68,7 +73,7 @@ public class IMEController {
 		public static final int KEYCODE_DPAD_DOWN = 0x00000014;
 		public static final int KEYCODE_DPAD_LEFT = 0x00000015;
 		public static final int KEYCODE_DPAD_RIGHT = 0x00000016;
-
+		public static final int KEYCODE_ESCAPE = 111;
 
 		public boolean containKey(int key, boolean shift) {
 			HashMap<Integer, Character> t = null;
@@ -98,6 +103,8 @@ public class IMEController {
 		}
 
 		static {
+			sMMap.put(KEYCODE_ESCAPE, (char)0x1b);
+			sRMap.put(KEYCODE_ESCAPE, (char)0x1b);
 			sMMap.put(7, '0');
 			sMMap.put(8, '1');
 			sMMap.put(9, '2');

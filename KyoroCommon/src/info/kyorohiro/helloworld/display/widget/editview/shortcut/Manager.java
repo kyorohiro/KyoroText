@@ -8,6 +8,9 @@ public class Manager {
 	private Command[] mList = new Command[KeyEventManager.EMACS_SHORTCUT.length];
 	private int mLength = 0;
 
+	public static void log(String log) {
+		//android.util.Log.v("kiyo", ""+log);
+	}
 	public boolean useHardKey() {
 		if(mCurPos != 0) {
 			return true;
@@ -21,6 +24,8 @@ public class Manager {
 	} 
 	public boolean update(char code, boolean ctl, boolean alt,EditableLineView view, EditableLineViewBuffer buffer) {
 		int i=0;
+		log("#c="+code+",c/a="+ctl+"/"+alt);
+		
 		for(int j=0;j<mLength;j++) {
 			Command c = mList[j];
 			if(c.match(mCurPos, code, ctl, alt)){

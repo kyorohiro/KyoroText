@@ -33,7 +33,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	private InputMethodManager mManager = null;
 	private _MyInputConnection mCurrentInputConnection = null;
-	private  MetaStateForAndroid mMetaState = new MetaStateForAndroid();
+//	private  MetaStateForAndroid mMetaState = new MetaStateForAndroid();
 
 
 	public EditableSurfaceView(Context context) {
@@ -99,12 +99,14 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		return true;
 	}
 
-	public boolean pushingCtl() {
-		return mMetaState.pushingCtl();
+	private boolean mPushingCtl = false;
+	private boolean mPushingAlt = false;
+	public boolean pushingCtlForCommitText() {
+		return mPushingCtl;
 	}
 
-	public boolean pushingEsc() {
-		return mMetaState.pushingEsc();
+	public boolean pushingAltForCommitText() {
+		return mPushingAlt;
 	}
 
 
@@ -113,6 +115,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
+		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 		if(event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 			return super.dispatchKeyEvent(event);
 		}
@@ -132,9 +135,17 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		}
 	}
 	@Override
+	public boolean dispatchKeyShortcutEvent(KeyEvent event) {
+		log("dispatchKeyShortcutEvent"+event.getKeyCode()+","+event.toString());	
+		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
+		return super.dispatchKeyShortcutEvent(event);
+	}
+	@Override
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
 		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());	
 //		android.util.Log.v("kiyo","dispatchKeyEventPreIme");
+		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
+
 		if(mController.tryUseBinaryKey(event.isShiftPressed(), pushingCtl(event), event.isAltPressed())){
 			if(event.getAction() == KeyEvent.ACTION_DOWN) {
 				mController.binaryKey(mCurrentInputConnection, event.getKeyCode(), event.isShiftPressed(), pushingCtl(event), event.isAltPressed());
@@ -143,6 +154,11 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		} else {
 			return super.dispatchKeyEventPreIme(event);
 		}
+	}
+	public void setMetaForCommit(boolean alt, boolean ctl){
+		log("#-esf-alt/ctl="+alt+"/"+ctl);
+		//mPushingAlt = alt;
+		//mPushingCtl = ctl;
 	}
 	
 	private static CharSequence mComposingText = null;
@@ -221,17 +237,17 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean setComposingText(CharSequence text, int newCursorPosition) {
 			log("setComposingText="+text+","+newCursorPosition);
-			if(pushingCtl()){//todo
-		    	mComposingText = "";
-		    	mCommitText = "";
-		    	commitText(text, 0);
-		    	getEditable().clear();
-		    	mManager.restartInput(EditableSurfaceView.this);
-				return super.setComposingText("", 0);
-			} else {
+			//if(pushingCtl(event)){//todo
+		    //	mComposingText = "";
+		    //	mCommitText = "";
+		    //	commitText(text, 0);
+		    //	getEditable().clear();
+		    //	mManager.restartInput(EditableSurfaceView.this);
+			//	return super.setComposingText("", 0);
+			//} else {
 				mComposingText = text;
 				return super.setComposingText(text, newCursorPosition);
-			}
+			//}
 		}
 
 		@Override
@@ -258,16 +274,11 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("commitText="+text+","+newCursorPosition);
 			log("--1--="+Selection.getSelectionStart(text));
 			log("--2--="+Selection.getSelectionEnd(text));
-			mController.decorateKey(mCurrentInputConnection, text, newCursorPosition, false, false, false);		
+			log("--3--a/c="+pushingAltForCommitText()+"/"+pushingCtlForCommitText());
+			mController.decorateKey(mCurrentInputConnection, text, newCursorPosition, false, pushingCtlForCommitText(), pushingAltForCommitText());		
 			mCommitText = text;
-//			CommitText v = new CommitText(text, newCursorPosition);
-//			v.pushingCtrl(pushingCtl());
-//			v.pushingAlt(pushingEsc());
-//			addCommitText(v);
-//			mCommitTextList.addLast(v);
 			try{
 				return true;
-//				return super.commitText(text, newCursorPosition);
 			} finally {
 				mComposingText = "";
 				getEditable().clear();
@@ -310,6 +321,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public boolean sendKeyEvent(KeyEvent event) {
 			log("sendKeyEvent="+event.toString());
+			setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 			return super.sendKeyEvent(event);
 		}
 		
@@ -346,6 +358,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	}
 
 	public static void log(String log) {
-		//android.util.Log.v("kiyo", ""+log);
+	//	android.util.Log.v("kiyo", ""+log);
 	}
 }
