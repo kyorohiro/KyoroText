@@ -116,7 +116,11 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
-		if(event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+		if(event.getKeyCode() == KeyEvent.KEYCODE_BACK
+				||event.getKeyCode() == KeyEvent.KEYCODE_MENU
+				||event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN
+				||event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP
+				) {
 			return super.dispatchKeyEvent(event);
 		}
 		if(event.getAction() == KeyEvent.ACTION_DOWN) {
