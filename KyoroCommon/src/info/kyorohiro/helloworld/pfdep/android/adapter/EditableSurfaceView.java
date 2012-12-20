@@ -33,6 +33,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	private InputMethodManager mManager = null;
 	private _MyInputConnection mCurrentInputConnection = null;
+	private boolean mIMEIsShow = false;
 //	private  MetaStateForAndroid mMetaState = new MetaStateForAndroid();
 
 
@@ -79,10 +80,12 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	public void showInputConnection() {
 		mManager.showSoftInput(this, 0);
+		mIMEIsShow = true;
 	}
 
 	public void hideInputConnection() {
         mManager.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		mIMEIsShow = false;
     	mComposingText = "";
     	mCommitText = "";
     	mCommitTextList.clear();
@@ -116,6 +119,9 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
+		if(!mIMEIsShow) {
+			return super.dispatchKeyEvent(event);			
+		} else 
 		if(event.getKeyCode() == KeyEvent.KEYCODE_BACK
 				||event.getKeyCode() == KeyEvent.KEYCODE_MENU
 				||event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN
@@ -146,10 +152,13 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	}
 	@Override
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
-		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());	
-//		android.util.Log.v("kiyo","dispatchKeyEventPreIme");
+		log("dispatchKeyEventPreIme"+event.getKeyCode()+","+event.toString());
+		android.util.Log.v("kiyo","dispatchKeyEventPreIme");
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 
+		if(!mIMEIsShow) {
+			return super.dispatchKeyEventPreIme(event);			
+		} else 
 		if(mController.tryUseBinaryKey(event.isShiftPressed(), pushingCtl(event), event.isAltPressed())){
 			if(event.getAction() == KeyEvent.ACTION_DOWN) {
 				mController.binaryKey(mCurrentInputConnection, event.getKeyCode(), event.isShiftPressed(), pushingCtl(event), event.isAltPressed());

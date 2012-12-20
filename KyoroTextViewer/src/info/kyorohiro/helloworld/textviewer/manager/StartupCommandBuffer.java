@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
+//import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
@@ -23,7 +23,8 @@ public class StartupCommandBuffer extends TextViewer {
 
 	public StartupCommandBuffer(int textSize, int width, int mergine) {
 		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine,
-				new SimpleFontForAndroid(),KyoroSetting.getCurrentCharset());
+				LineViewManager.getManager().getFont(),//new SimpleFontForAndroid(),
+				KyoroSetting.getCurrentCharset());
 		if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
 			getLineView().isCrlfMode(false);
 		} else {
@@ -72,18 +73,6 @@ public class StartupCommandBuffer extends TextViewer {
 			graphics.drawText(UNGUARD, graphics.getTextSize(), graphics.getTextSize());			
 		}
 	}
-/*
-	@Override
-	public void start() {
-		super.start();
-		Context c = KyoroApplication.getKyoroApplication().getApplicationContext();
-		Resources r = c.getResources();
-//		Typeface t = Typeface.createFromAsset(c.getAssets(), "sourcecodepro_roman_blackfont.ttf");
-//		Typeface t = Typeface.createFromAsset(c.getAssets(), "inconsolata.ttf");
-		Typeface t = Typeface.createFromAsset(c.getAssets(), "xano_mincho_u32.ttf");
-		getLineView().setSimpleTypeface(new SimpleTypefaceForAndroid(t));
-	}*/
-
 	
 	public void readStartupMessage() {
 		try {
@@ -92,7 +81,6 @@ public class StartupCommandBuffer extends TextViewer {
 			File filePathOfStartMessage = new File(dir, "startup_message.txt");
 			createStartupMessageIfNonExist(filePathOfStartMessage);
 			readFile(filePathOfStartMessage, false);
-//			readFile(filePathOfStartMessage, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

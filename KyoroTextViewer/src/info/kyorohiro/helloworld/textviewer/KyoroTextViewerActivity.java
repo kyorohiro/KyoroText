@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.textviewer;
 
 import java.io.File;
 
+import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleStageForAndroid;
 import info.kyorohiro.helloworld.pfdep.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
@@ -27,6 +28,7 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 
 public class KyoroTextViewerActivity extends MainActivity {
@@ -46,7 +48,11 @@ public class KyoroTextViewerActivity extends MainActivity {
 		mStage.getRoot().addChild(mViewerManager);
 		int modeForDisableSoftKeyboard = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
 		getWindow().setSoftInputMode(modeForDisableSoftKeyboard);
-		setContentView(mStage);
+		
+		LinearLayout layout = new LinearLayout(this);
+		layout.addView(mStage);
+		setContentView(layout);
+	//	setContentView(mStage);
 
 		setMenuAction(new MainActivityOpenFileAction(mViewerManager));
 		setMenuAction(new MainActivitySetCharsetAction(mViewerManager));
@@ -166,7 +172,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		int screenMargine = mViewerWidth*1/20;
 		int screenWidth = mViewerWidth-screenMargine/2; // mod 2 is my feeling value so design only. 
 		int screenHeight = mViewerHeight;
-		return new LineViewManager(textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2inchi(22/2)));
+		return new LineViewManager(KyoroApplication.getKyoroApplication(), new SimpleFontForAndroid(), textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2inchi(22/2)));
 	}
 
 	private void doFileOpenIntentAction() {

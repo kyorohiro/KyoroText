@@ -1,5 +1,9 @@
 package info.kyorohiro.helloworld.textviewer;
 
+
+import info.kyorohiro.helloworld.display.simple.SimpleApplication;
+
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 import android.app.Application;
@@ -10,7 +14,7 @@ import android.widget.Toast;
 //
 // This class make it an open possibility to easy access Context instance.
 //
-public class KyoroApplication extends Application {
+public class KyoroApplication extends Application implements SimpleApplication {
 
 	private static WeakReference<KyoroApplication> sInstanceReference = null;
 	private Handler mHandler = null;
@@ -52,6 +56,12 @@ public class KyoroApplication extends Application {
 
 	public Handler getHanler(){
 		return getKyoroApplication().mHandler;
+	}
+
+	public File getApplicationDirectory() {
+		Context c = KyoroApplication.getKyoroApplication().getApplicationContext();
+		File dir = c.getFilesDir();
+		return dir;
 	}
 
 	private static class ToastMessage implements Runnable {

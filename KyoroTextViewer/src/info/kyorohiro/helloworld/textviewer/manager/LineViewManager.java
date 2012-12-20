@@ -1,13 +1,15 @@
 package info.kyorohiro.helloworld.textviewer.manager;
 
-import android.graphics.Color;
-
+import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 
 public class LineViewManager extends SimpleDisplayObjectContainer {
 	private static LineViewManager sInstance = null;
@@ -27,8 +29,20 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mTextSize = textSize;
 	}
 
+	private SimpleApplication mApplication = null;
+	private SimpleFont mFont = null;
+	public SimpleApplication getApplication() {
+		return mApplication;
+	}
+
+	public SimpleFont getFont() {
+		return new SimpleFontForAndroid();//mFont;
+	}
+
 	// ���Singletone�ɂ���B
-	public LineViewManager(int textSize, int width, int height, int mergine, int menuWidth) {
+	public LineViewManager(SimpleApplication application, SimpleFont font,int textSize, int width, int height, int mergine, int menuWidth) {
+		mApplication = application;
+		mFont = font;
 		sInstance = this;
 		mWidth = width;
 		mTextSize = textSize;
@@ -74,9 +88,9 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		getFocusingTextViewer().getGlobalXY(xy);
 		int x = xy[0] + 20;
 		int y = xy[1] + getFocusingTextViewer().getHeight(false) - 20;
-		graphics.setColor(Color.RED);
+		graphics.setColor(SimpleGraphicUtil.RED);
 		graphics.drawText("now focusing", x, y);
-		graphics.setColor(Color.BLACK);
+		graphics.setColor(SimpleGraphicUtil.BLACK);
 	}
 
 	public void setCircleMenuRadius(int radius) {

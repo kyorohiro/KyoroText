@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.textviewer.manager;
 
-import android.graphics.Color;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
@@ -9,7 +9,7 @@ import info.kyorohiro.helloworld.textviewer.task.PastTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
 public class CircleControllerManager {
-	public static int COLOR_CIRCLE_DEFAULT = Color.parseColor("#44FFAA44");
+	public static int COLOR_CIRCLE_DEFAULT = SimpleGraphicUtil.parseColor("#44FFAA44");
 //	public static String MENU_GUARD_ON = "GUARD_ON";
 //	public static String MENU_GUARD_OFF = "GUARD_OFF";
 

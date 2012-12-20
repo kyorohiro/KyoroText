@@ -1,9 +1,10 @@
 package info.kyorohiro.helloworld.textviewer.manager;
 
-import android.view.MotionEvent;
+//import android.view.MotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
 public class LineViewGroup extends SimpleDisplayObjectContainer{
@@ -227,7 +228,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		if(MotionEvent.ACTION_DOWN == action){
+		if(SimpleMotionEvent.ACTION_DOWN == action){
 			focusTest(x, y);
 		}
 		return super.onTouchTest(x, y, action);

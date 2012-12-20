@@ -75,7 +75,7 @@ public class EditableLineView extends CursorableLineView {
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
-		}
+		} 
 		super.paint(graphics);
 	}
 
