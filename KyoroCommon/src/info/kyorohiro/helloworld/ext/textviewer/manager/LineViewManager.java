@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.textviewer.manager;
+package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import java.io.File;
 
@@ -11,6 +11,11 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.CircleControllerManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewGroup;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.StartupCommandBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.TextViewBuilder;
 
 public class LineViewManager extends SimpleDisplayObjectContainer {
 	private static LineViewManager sInstance = null;

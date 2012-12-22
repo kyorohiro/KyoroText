@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.textviewer.manager;
+package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import java.io.File;
 

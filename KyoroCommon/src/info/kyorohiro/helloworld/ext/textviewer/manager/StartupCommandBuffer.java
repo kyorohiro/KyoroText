@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.textviewer.manager;
+package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +12,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 
 public class StartupCommandBuffer extends TextViewer {
 

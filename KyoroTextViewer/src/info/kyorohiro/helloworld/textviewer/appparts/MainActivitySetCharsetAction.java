@@ -6,7 +6,7 @@ import java.util.SortedMap;
 import info.kyorohiro.helloworld.pfdep.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
-import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.app.Dialog;

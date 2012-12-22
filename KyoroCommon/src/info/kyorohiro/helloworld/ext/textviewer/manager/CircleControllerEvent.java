@@ -1,8 +1,9 @@
-package info.kyorohiro.helloworld.textviewer.manager;
+package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 
 public class CircleControllerEvent implements CircleControllerAction {
 	private int mCurrentDegree = -999;

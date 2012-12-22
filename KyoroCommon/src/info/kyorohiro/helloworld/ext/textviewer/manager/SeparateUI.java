@@ -1,10 +1,12 @@
-package info.kyorohiro.helloworld.textviewer.manager;
+package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewGroup;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 
 public class SeparateUI extends SimpleDisplayObject {
 	public static int COLOR_UNLOCK = SimpleGraphicUtil.GREEN;
