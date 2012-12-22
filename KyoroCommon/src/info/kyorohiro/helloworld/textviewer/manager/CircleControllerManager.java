@@ -4,8 +4,6 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
-import info.kyorohiro.helloworld.textviewer.task.CopyTask;
-import info.kyorohiro.helloworld.textviewer.task.PastTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
 public class CircleControllerManager {
@@ -58,14 +56,16 @@ public class CircleControllerManager {
 			circleMenu.addCircleMenu(0, "Copy");
 		} else if (title.equals("Copy")) {
 			clear();
-			CopyTask.copyStart();
+//			CopyTask.copyStart();
+			LineViewManager.getManager().copyStart();
 			return true;
 		} else if(title.equals("Paste")){
 			circleMenu.clearCircleMenu();
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			PastTask.pasteStart();
+			LineViewManager.getManager().pastStart();
+//			PastTask.pasteStart();
 //		} else if(title.equals(MENU_GUARD_ON)) {
 //			textviewer.isGuard(true);
 //		} else if(title.equals(MENU_GUARD_OFF)) {

@@ -2,13 +2,13 @@ package info.kyorohiro.helloworld.textviewer.manager;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import android.graphics.Color;
-import android.view.MotionEvent;
+import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 
 public class SeparateUI extends SimpleDisplayObject {
-	public static int COLOR_UNLOCK = Color.GREEN;
-	public static int COLOR_LOCK = Color.RED;
+	public static int COLOR_UNLOCK = SimpleGraphicUtil.GREEN;
+	public static int COLOR_LOCK = SimpleGraphicUtil.RED;
 	private int mPrevTouchDownX = 0;
 	private int mPrevTouchDownY = 0;
 	private int mPrevX = 0;
@@ -91,7 +91,7 @@ public class SeparateUI extends SimpleDisplayObject {
 			}
 		}
 
-		if(action == MotionEvent.ACTION_DOWN){
+		if(action == SimpleMotionEvent.ACTION_DOWN){
 			mIsReachedAtOnce = mIsReached;
 			if(isInside(x, y)){
 				mIsInside = true;
@@ -103,7 +103,7 @@ public class SeparateUI extends SimpleDisplayObject {
 				mPrevY = getY();
 				return true;
 			}
-		} else if(action == MotionEvent.ACTION_MOVE) {
+		} else if(action == SimpleMotionEvent.ACTION_MOVE) {
 			if(mIsInside){
 				int[] xy = new int[2];
 				getGlobalXY(xy);
@@ -125,7 +125,7 @@ public class SeparateUI extends SimpleDisplayObject {
 				}
 				return true;
 			}
-		} else if(action == MotionEvent.ACTION_UP){
+		} else if(action == SimpleMotionEvent.ACTION_UP){
 			resetPosition();
 			mIsInside = false;
 			mIsReachedAtOnce = false;

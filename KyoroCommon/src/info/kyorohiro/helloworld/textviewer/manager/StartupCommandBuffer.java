@@ -11,10 +11,7 @@ import java.io.OutputStreamWriter;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
-import info.kyorohiro.helloworld.textviewer.KyoroApplication;
-import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import android.content.Context;
 
 public class StartupCommandBuffer extends TextViewer {
 
@@ -24,8 +21,8 @@ public class StartupCommandBuffer extends TextViewer {
 	public StartupCommandBuffer(int textSize, int width, int mergine) {
 		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine,
 				LineViewManager.getManager().getFont(),//new SimpleFontForAndroid(),
-				KyoroSetting.getCurrentCharset());
-		if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
+				LineViewManager.getManager().getCurrentCharset());
+		if(LineViewManager.getManager().currentBrIsLF()){
 			getLineView().isCrlfMode(false);
 		} else {
 			getLineView().isCrlfMode(true);
@@ -76,8 +73,7 @@ public class StartupCommandBuffer extends TextViewer {
 	
 	public void readStartupMessage() {
 		try {
-			Context c = KyoroApplication.getKyoroApplication().getApplicationContext();
-			File dir = c.getFilesDir();
+			File dir = LineViewManager.getManager().getFilesDir();
 			File filePathOfStartMessage = new File(dir, "startup_message.txt");
 			createStartupMessageIfNonExist(filePathOfStartMessage);
 			readFile(filePathOfStartMessage, false);
@@ -92,12 +88,12 @@ public class StartupCommandBuffer extends TextViewer {
 		// todo following code dependent application layer.
 		// refactring target
 		if(updataCurrentPath){
-			File datadata = KyoroApplication.getKyoroApplication().getFilesDir();
+			File datadata = LineViewManager.getManager().getFilesDir();
 			File parent = file.getParentFile();
 			File grandpa = parent.getParentFile();
 			if(!datadata.equals(parent)
 					&&!(grandpa!=null&&grandpa.equals(datadata))){
-				KyoroSetting.setCurrentFile(file.getAbsolutePath());
+				LineViewManager.getManager().setCurrentFile(file.getAbsolutePath());
 			}
 		}
 		return super.readFile(file, updataCurrentPath);

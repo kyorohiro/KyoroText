@@ -19,6 +19,8 @@ import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeActi
 import info.kyorohiro.helloworld.textviewer.manager.LineViewGroup;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.textviewer.manager.TextViewBuilder;
+import info.kyorohiro.helloworld.textviewer.task.CopyTask;
+import info.kyorohiro.helloworld.textviewer.task.PastTask;
 import info.kyorohiro.helloworld.textviewer.util.Util;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -91,6 +94,34 @@ public class KyoroTextViewerActivity extends MainActivity {
 		@Override
 		public SimpleFont newSimpleFont() {
 			return new SimpleFontForAndroid();
+		}
+		public void copyStart() {
+			CopyTask.copyStart();
+		}
+
+		@Override
+		public void pastStart() {
+			PastTask.pasteStart();
+		}
+		@Override
+		public File getFilesDir() {
+			return KyoroApplication.getKyoroApplication().getApplicationContext().getFilesDir();
+		}
+		@Override
+		public boolean currentBrIsLF() {
+			if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
+				return true;
+			} else {
+				return false;
+			}
+		}
+		@Override
+		public String getCurrentCharset() {
+			return KyoroSetting.getCurrentCharset();
+		}
+		@Override
+		public void setCurrentFile(String path) {
+			KyoroSetting.setCurrentFile(path);
 		}
 	}
 	

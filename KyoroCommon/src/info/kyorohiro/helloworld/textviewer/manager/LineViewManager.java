@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.textviewer.manager;
 
+import java.io.File;
+
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
@@ -24,8 +26,30 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		return sInstance;
 	}
 
+	public void setCurrentFile(String path) {
+		mBuilder.setCurrentFile(path);
+	}
+
+	public String getCurrentCharset() {
+		return mBuilder.getCurrentCharset();
+	}
 	public void setCurrentFontSize(int textSize) {
 		mTextSize = textSize;
+	}
+
+	public boolean currentBrIsLF() {
+		return mBuilder.currentBrIsLF();
+	}
+	public File getFilesDir() {
+		return mBuilder.getFilesDir();
+	}
+
+	public void copyStart() {
+		mBuilder.copyStart();
+	}
+
+	public void pastStart() {
+		mBuilder.pastStart();
 	}
 
 	private SimpleApplication mApplication = null;
