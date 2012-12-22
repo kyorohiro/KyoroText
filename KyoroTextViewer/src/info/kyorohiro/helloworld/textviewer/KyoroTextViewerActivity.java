@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleStageForAndroid;
 import info.kyorohiro.helloworld.pfdep.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
@@ -17,6 +18,7 @@ import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetec
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewGroup;
 import info.kyorohiro.helloworld.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.textviewer.manager.TextViewBuilder;
 import info.kyorohiro.helloworld.textviewer.util.Util;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -83,8 +85,15 @@ public class KyoroTextViewerActivity extends MainActivity {
 			}
 			return true;
 		}
-		
 	}
+
+	public static class MyBuilder extends TextViewBuilder {
+		@Override
+		public SimpleFont newSimpleFont() {
+			return new SimpleFontForAndroid();
+		}
+	}
+	
 	public void startStage() {
 		if(mStage != null) {
 			mStage.start();
@@ -172,7 +181,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		int screenMargine = mViewerWidth*1/20;
 		int screenWidth = mViewerWidth-screenMargine/2; // mod 2 is my feeling value so design only. 
 		int screenHeight = mViewerHeight;
-		return new LineViewManager(KyoroApplication.getKyoroApplication(), new SimpleFontForAndroid(), textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2inchi(22/2)));
+		return new LineViewManager(KyoroApplication.getKyoroApplication(), new MyBuilder(), textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2inchi(22/2)));
 	}
 
 	private void doFileOpenIntentAction() {

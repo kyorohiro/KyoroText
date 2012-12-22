@@ -9,7 +9,6 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 
 public class LineViewManager extends SimpleDisplayObjectContainer {
 	private static LineViewManager sInstance = null;
@@ -30,19 +29,19 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	private SimpleApplication mApplication = null;
-	private SimpleFont mFont = null;
+	private TextViewBuilder mBuilder = null;
 	public SimpleApplication getApplication() {
 		return mApplication;
 	}
 
 	public SimpleFont getFont() {
-		return new SimpleFontForAndroid();//mFont;
+		return mBuilder.newSimpleFont();
 	}
 
 	// ���Singletone�ɂ���B
-	public LineViewManager(SimpleApplication application, SimpleFont font,int textSize, int width, int height, int mergine, int menuWidth) {
+	public LineViewManager(SimpleApplication application, TextViewBuilder builder,int textSize, int width, int height, int mergine, int menuWidth) {
 		mApplication = application;
-		mFont = font;
+		mBuilder = builder;
 		sInstance = this;
 		mWidth = width;
 		mTextSize = textSize;
