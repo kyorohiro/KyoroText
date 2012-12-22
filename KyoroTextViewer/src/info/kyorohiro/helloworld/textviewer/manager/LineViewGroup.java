@@ -164,7 +164,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		mTextViewer = null;
 	}
 
-	public void combine(SeparateUI separate) {
+	public boolean combine(SeparateUI separate) {
 		Object parent = getParent();
 		SimpleDisplayObject child = null;
 		SimpleDisplayObject kill = null;
@@ -177,8 +177,8 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			kill = getChild(0);
 		}
 		if(!LineViewManager.getManager().notifyEvent(child, kill)){
-			mSeparate.resetPosition();
-			return;
+			//todo mSeparate.resetPosition();
+			return false;
 		}
 		if(child != null){
 			// refactaring
@@ -191,6 +191,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			}
 			dispose();
 		} 
+		return true;
 	}
 
 	private boolean includeFocusingChild() {

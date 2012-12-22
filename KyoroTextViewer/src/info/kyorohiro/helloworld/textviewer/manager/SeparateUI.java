@@ -80,16 +80,19 @@ public class SeparateUI extends SimpleDisplayObject {
 		super.setPoint(x, y);
 	}
 
+	private boolean mIsReachedAtOnce = false;
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		if(mIsInside&&!mIsReached){
+		if(mIsInside&&!mIsReachedAtOnce){
 			if(isVertical(x, y)){
 				mModeSeparate = MODE_SEPARATE_VERTICAL;					
 			} else {
 				mModeSeparate = MODE_SEPARATE_ORIENTATION;
 			}
 		}
+
 		if(action == MotionEvent.ACTION_DOWN){
+			mIsReachedAtOnce = mIsReached;
 			if(isInside(x, y)){
 				mIsInside = true;
 				int[] xy = new int[2];
@@ -106,22 +109,29 @@ public class SeparateUI extends SimpleDisplayObject {
 				getGlobalXY(xy);
 				setPoint(xy[0]+x-mPrevTouchDownX+mPrevX, xy[1]+y-mPrevTouchDownY+mPrevY);
 				
-				if(!mIsReached) {
+				if(!mIsReachedAtOnce) {
 					if(isReached(x, y)){
 						mIsReached = true;
 						mManager.divide(this);
 					}
 				} else {
 					if(isUnreached(x, y)){
-						mIsReached = false;
-						mManager.combine(this);
+						if(mManager.combine(this)){
+							mIsReached = false;
+						} else {
+							mIsReachedAtOnce = false;
+						}
 					}
 				}
 				return true;
 			}
 		} else if(action == MotionEvent.ACTION_UP){
-			mIsInside = false;				
+			resetPosition();
+			mIsInside = false;
+			mIsReachedAtOnce = false;
 		}
+
+
 		return super.onTouchTest(x, y, action);
 	}
 
@@ -164,10 +174,16 @@ public class SeparateUI extends SimpleDisplayObject {
 
 	public  void resetPosition() {
 		SimpleDisplayObject target = (SimpleDisplayObject)getParent();
-		if(isVertical()){
-			setPoint(getX(), target.getHeight()/2);			
+		int rate = 2;
+		if(mIsReached) {
+			rate = 2;
 		} else {
-			setPoint(target.getWidth()/4, getY());
+			rate = 3;
+		}
+		if(isVertical()){
+			setPoint(getX(), target.getHeight()/rate);			
+		} else {
+			setPoint(target.getWidth()/rate, getY());
 		}
 	}
 	private boolean isUnreached(int x, int y) {
