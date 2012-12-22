@@ -133,7 +133,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mCircleManager.init();
 		//
 		first.getTextViewer().getLineView().fittableToView();
-		LineViewGroup g = first.divideAndNew(true);
+		LineViewGroup g = first.divideAndNew(true, newTextViewrEmpty());
 		first.setSeparatorPoint(0.2f);
 		g.getTextViewer().getLineView().fittableToView(true);
 		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
@@ -148,7 +148,14 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	//
 	//
 	public TextViewer newTextViewr() {
-		TextViewer viewer = new StartupCommandBuffer(mTextSize, mWidth, mMergine);
+		TextViewer viewer = new StartupCommandBuffer(mTextSize, mWidth, mMergine ,true);
+		viewer.getLineView().setKeyEventManager(mKeyEventManager);
+		//viewer.getLineView().fittableToView(true);
+		return viewer;
+	}
+
+	public TextViewer newTextViewrEmpty() {
+		TextViewer viewer = new StartupCommandBuffer(mTextSize, mWidth, mMergine, false);
 		viewer.getLineView().setKeyEventManager(mKeyEventManager);
 		//viewer.getLineView().fittableToView(true);
 		return viewer;

@@ -21,7 +21,7 @@ public class StartupCommandBuffer extends TextViewer {
 	private SimpleSwitchButton mFitButton = null;
 	private SimpleSwitchButton mGuardButton = null;
 
-	public StartupCommandBuffer(int textSize, int width, int mergine) {
+	public StartupCommandBuffer(int textSize, int width, int mergine, boolean message) {
 		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine,
 				LineViewManager.getManager().getFont(),//new SimpleFontForAndroid(),
 				LineViewManager.getManager().getCurrentCharset());
@@ -30,7 +30,9 @@ public class StartupCommandBuffer extends TextViewer {
 		} else {
 			getLineView().isCrlfMode(true);
 		}
-		readStartupMessage();
+		if(message) {
+			readStartupMessage();
+		}
 		addChild(mFitButton = new SimpleSwitchButton("fit", 1, new FitAction(this)));
 		addChild(mGuardButton = new SimpleSwitchButton("guard", 3, new GuardAction(this)));
 	}

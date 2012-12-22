@@ -169,13 +169,13 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	public void divide(SeparateUI separate) {
 		if(separate.getPersentY()>0.5){
-			divideAndNew(true);
+			divideAndNew(true,LineViewManager.getManager().newTextViewr());
 		} else{
-			divideAndNew(false);
+			divideAndNew(false,LineViewManager.getManager().newTextViewr());
 		}		
 	}
 
-	public LineViewGroup divideAndNew(boolean leftOrTop) {
+	public LineViewGroup divideAndNew(boolean leftOrTop, TextViewer viewer) {
 		mSeparate.setmIsReached();
 		LineViewGroup ret = null;
 		// todo following yaxtuke sigoto
@@ -183,11 +183,11 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			return null;
 		}
 		if(leftOrTop){
-			addChild(ret = new LineViewGroup(LineViewManager.getManager().newTextViewr()));
+			addChild(ret = new LineViewGroup(viewer));
 			addChild(new LineViewGroup(mTextViewer));
 		} else{
 			addChild(new LineViewGroup(mTextViewer));
-			addChild(ret = new LineViewGroup(LineViewManager.getManager().newTextViewr()));
+			addChild(ret = new LineViewGroup(viewer));
 		}
 		removeChild(mTextViewer);
 		mTextViewer = null;

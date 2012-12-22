@@ -37,7 +37,9 @@ public class EditableLineView extends CursorableLineView {
 	public synchronized MyCursor getLeft() {
 		return super.getLeft();
 	}
-
+	public void iSearchForward() {
+		//TODO
+	}
 	public void recenter() {
 		int s = getShowingTextStartPosition();
 		int e = getShowingTextEndPosition();
