@@ -5,12 +5,19 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 
 public class Manager {
 	private int mCurPos = 0;
-	private Command[] mList = new Command[KeyEventManager.EMACS_SHORTCUT.length];
+	private Command[] mList = new Command[KeyEventManager.EMACS_SHORTCUT_BASIC.length];
 	private int mLength = 0;
+	private KeyEventManager mManager = null;
+
+	public Manager(KeyEventManager manager) {
+		mManager = manager;
+		clear();
+	}
 
 	public static void log(String log) {
 		//android.util.Log.v("kiyo", ""+log);
 	}
+
 	public boolean useHardKey() {
 		if(mCurPos != 0) {
 			return true;
@@ -19,9 +26,6 @@ public class Manager {
 		}
 	}
 
-	public Manager() {
-		clear();
-	} 
 	public boolean update(char code, boolean ctl, boolean alt,EditableLineView view, EditableLineViewBuffer buffer) {
 		int i=0;
 		log("#c="+code+",c/a="+ctl+"/"+alt);
@@ -52,9 +56,13 @@ public class Manager {
 
 	public void clear() {
 		mCurPos = 0;
-		if(mLength != KeyEventManager.EMACS_SHORTCUT.length)  {
-			mLength = KeyEventManager.EMACS_SHORTCUT.length;
-			System.arraycopy(KeyEventManager.EMACS_SHORTCUT, 0, mList, 0, mLength);
+		if(mLength != mManager.numOfCommnad())  {
+			mLength = mManager.numOfCommnad();
+			mList = new Command[mLength];
+			System.arraycopy(KeyEventManager.EMACS_SHORTCUT_BASIC, 0, mList, 0, KeyEventManager.EMACS_SHORTCUT_BASIC.length);
+			if(KeyEventManager.EMACS_SHORTCUT_BASIC.length < mLength) {
+				System.arraycopy(mManager.getEmacsShortExtra(), 0, mList, KeyEventManager.EMACS_SHORTCUT_BASIC.length, mLength-KeyEventManager.EMACS_SHORTCUT_BASIC.length);
+			}
 		}
 	}
 }

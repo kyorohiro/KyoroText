@@ -14,6 +14,14 @@ import info.kyorohiro.helloworld.text.KyoroString;
 public class KeyEventManager extends IMEController{
 
 
+	private Manager mManager = null;
+	public KeyEventManager() {
+		init();
+	}
+	private void init() {
+		mManager = new Manager(this);
+	}
+
 	@Override
 	public boolean tryUseBinaryKey(boolean shift, boolean ctl, boolean alt) {
 		if(mManager.useHardKey()) {
@@ -23,7 +31,7 @@ public class KeyEventManager extends IMEController{
 		}
 	}
 
-	public static Command[] EMACS_SHORTCUT = {
+	public static Command[] EMACS_SHORTCUT_BASIC = {
 		new Command(new CommandPart[]{new CommandPart('g', true, false)}, null),
 		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
 		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
@@ -46,8 +54,22 @@ public class KeyEventManager extends IMEController{
 		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
 	};
 
+	private static Command[] EMACS_SHORTCUT_EXTRA = {
+	};
 
-	private Manager mManager = new Manager();
+	public Command[] getEmacsShortExtra() {
+		return EMACS_SHORTCUT_EXTRA;
+	}
+	public int numOfCommnad() {
+		return EMACS_SHORTCUT_EXTRA.length + EMACS_SHORTCUT_BASIC.length; 
+	}
+	
+	public void setExtraCommand(Command[] extra) {
+		if(extra != null) {
+			EMACS_SHORTCUT_EXTRA = extra;
+		}
+	}
+
 	public void updateCommitTextFromIME(EditableLineView mTextView, EditableLineViewBuffer mTextBuffer) {
 		// following code is yaxutuke sigoto
 		if (!mTextView.isFocus()) {
