@@ -17,13 +17,23 @@ public class ISearchForward implements Task {
 		view.iSearchForward();
 	}
 
-	public class ISearchForwardTask {
+	public class ISearchForwardTask implements ModeLineTask{
 		private EditableLineView mTargetView = null;
 		public ISearchForwardTask(EditableLineView targetView) {
 			mTargetView = targetView;
 		}
-		public void enter(){
+
+		@Override
+		public void enter(String line){
 			mTargetView.iSearchForward();
+		}
+
+		@Override
+		public void begin() {
+		}
+
+		@Override
+		public void end() {
 		}
 	}
 }
