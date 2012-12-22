@@ -4,8 +4,8 @@ package info.kyorohiro.helloworld.display.simple;
 public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 	private int mX=0;
 	private int mY=0;
-	private int mW=0;
-	private int mH=0;
+	private int mW=100;
+	private int mH=100;
 	private Object mParent = null;
 
 	public static SimpleStage getStage(SimpleDisplayObjectSpec object) {
@@ -80,7 +80,13 @@ public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 	public int getHeight() {
 		return mH;
 	}
-
+	private boolean mIsVisible = true;
+	public boolean isVisible() {
+		return mIsVisible;
+	}
+	public void isVisible(boolean on) {
+		mIsVisible = on;
+	}
 	public abstract void paint(SimpleGraphics graphics);
 
 	/**

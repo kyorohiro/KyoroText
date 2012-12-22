@@ -39,6 +39,13 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		init(buffer, textSize, width, mergine, charset);
 	}
 
+	private boolean mIsExtraUI = true;
+	public boolean IsExtraUI() {
+		return mIsExtraUI;
+	}
+	public void IsExtraUI(boolean on) {
+		mIsExtraUI = on;
+	}
 	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine, String charset) {
 		mCurrentFontSize = textSize;
 		mCurrentCharset = charset;//KyoroSetting.getCurrentCharset();

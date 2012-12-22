@@ -9,6 +9,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
+import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.CircleControllerManager;
@@ -76,9 +77,20 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mTextSize = textSize;
 		mMergine = mergine;
 		mFocusingViewer = newTextViewr();
-		addChild(new LineViewGroup(mFocusingViewer));
+		LineViewGroup first = new LineViewGroup(mFocusingViewer);
+		addChild(first);
 		addChild(mCircleMenu);
 		mCircleManager.init();
+		//
+		first.getTextViewer().getLineView().fittableToView();
+		LineViewGroup g = first.divideAndNew(true);
+		first.setSeparatorPoint(0.2f);
+		g.getTextViewer().getLineView().fittableToView(true);
+		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
+		g.getTextViewer().isGuard(true);		
+		g.isVisible(false);
+		g.getTextViewer().IsExtraUI(false);
+//		first.setPoint(getWidth()/2, getHeight()/2);
 //		mCommand.getLineView().fittableToView(true);
 	}
 

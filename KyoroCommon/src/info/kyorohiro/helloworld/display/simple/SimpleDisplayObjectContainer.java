@@ -28,7 +28,9 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 							,child.getY()+graphics.getGlobalY());
 				}
 //				child.paint(childGraphics);
-				child.paint(mCashGraphics);
+				if(child.isVisible()) {
+					child.paint(mCashGraphics);
+				}
 			}
 		}
 	}

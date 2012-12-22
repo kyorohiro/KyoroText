@@ -32,6 +32,15 @@ public class SeparateUI extends SimpleDisplayObject {
 		setPoint(w*2, 0);
 	}
 
+	private boolean mIsVisible = true;
+	public void isVisible(boolean on) {
+		mIsVisible = on;
+	}
+
+	public void setPersentY(double p){
+		mPersentY = p;
+	}
+
 	public double getPersentY(){
 		return mPersentY;
 	}
@@ -45,6 +54,9 @@ public class SeparateUI extends SimpleDisplayObject {
 	}
 	@Override
 	public void paint(SimpleGraphics graphics) {
+		if(!mIsVisible){
+			return;
+		}
 		if(mIsReached){
 			graphics.setColor(COLOR_LOCK);			
 		} else {
@@ -174,6 +186,10 @@ public class SeparateUI extends SimpleDisplayObject {
 		}
 	}
 
+	@Deprecated
+	public void setmIsReached() {
+		mIsReached = true;
+	}
 	public  void resetPosition() {
 		SimpleDisplayObject target = (SimpleDisplayObject)getParent();
 		int rate = 2;
@@ -192,9 +208,9 @@ public class SeparateUI extends SimpleDisplayObject {
 		SimpleDisplayObject target = this;
 		int a = 0;
 		if(isVertical()){
-			a = (y+getY()-target.getHeight()*4);			
+			a = (y+getY()-target.getHeight());			
 		} else {
-			a = (x+getX()-target.getWidth()*4);
+			a = (x+getX()-target.getWidth());
 		}
 		if(a<0) {
 			return true;

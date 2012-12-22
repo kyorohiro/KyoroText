@@ -15,16 +15,27 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	private TextViewer mTextViewer = null;
 	private SeparateUI mSeparate = null;
 
+	public TextViewer getTextViewer() {
+		return mTextViewer;
+	}
+
 	public LineViewGroup(TextViewer textViewer) {
 		doAddSeparator();
 		addChild(textViewer);
 	}
 
+	@Deprecated
+	public void isVisible(boolean on) {
+		mSeparate.isVisible(on);
+	}
 	private void doAddSeparator() {
 		SeparateUI s=new SeparateUI(this);
 		addChild(s);
 	}
 
+	public void setSeparatorPoint(float persent) {
+		mSeparate.setPersentY(persent);
+	}
 	// following code isrefactring targe
 	// isEdit() and IsGuard is same code posint.
 	public boolean isGuard() {
@@ -151,20 +162,31 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	}
 
 	public void divide(SeparateUI separate) {
-		
+		if(separate.getPersentY()>0.5){
+			divideAndNew(true);
+		} else{
+			divideAndNew(false);
+		}		
+	}
+
+	public LineViewGroup divideAndNew(boolean leftOrTop) {
+		mSeparate.setmIsReached();
+		LineViewGroup ret = null;
 		// todo following yaxtuke sigoto
 		if(numOfChild()>=3){
-			return;
+			return null;
 		}
-		if(separate.getPersentY()>0.5){
-			addChild(new LineViewGroup(LineViewManager.getManager().newTextViewr()));
+		if(leftOrTop){
+			addChild(ret = new LineViewGroup(LineViewManager.getManager().newTextViewr()));
 			addChild(new LineViewGroup(mTextViewer));
 		} else{
 			addChild(new LineViewGroup(mTextViewer));
-			addChild(new LineViewGroup(LineViewManager.getManager().newTextViewr()));
+			addChild(ret = new LineViewGroup(LineViewManager.getManager().newTextViewr()));
 		}
 		removeChild(mTextViewer);
 		mTextViewer = null;
+		mSeparate.resetPosition();
+		return ret;
 	}
 
 	public boolean combine(SeparateUI separate) {
@@ -232,8 +254,10 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
-		if(SimpleMotionEvent.ACTION_DOWN == action){
-			focusTest(x, y);
+		if(mSeparate.isVisible()) {
+			if(SimpleMotionEvent.ACTION_DOWN == action){
+				focusTest(x, y);
+			}
 		}
 		return super.onTouchTest(x, y, action);
 	}

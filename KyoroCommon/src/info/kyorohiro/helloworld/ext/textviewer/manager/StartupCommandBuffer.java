@@ -19,6 +19,8 @@ public class StartupCommandBuffer extends TextViewer {
 	public static final String GUARD = "guard";
 	public static final String UNGUARD = "unguard";
 
+	private SimpleSwitchButton mFitButton = null;
+	private SimpleSwitchButton mGuardButton = null;
 	public StartupCommandBuffer(int textSize, int width, int mergine) {
 		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine,
 				LineViewManager.getManager().getFont(),//new SimpleFontForAndroid(),
@@ -29,9 +31,16 @@ public class StartupCommandBuffer extends TextViewer {
 			getLineView().isCrlfMode(true);
 		}
 		readStartupMessage();
-		addChild(new SimpleSwitchButton("fit", 1, new FitAction(this)));
-		addChild(new SimpleSwitchButton("guard", 3, new GuardAction(this)));
+		addChild(mFitButton = new SimpleSwitchButton("fit", 1, new FitAction(this)));
+		addChild(mGuardButton = new SimpleSwitchButton("guard", 3, new GuardAction(this)));
 	}
+
+	private boolean mIsMultiLine = true;
+	public void isMultiLine(boolean on) {
+		mIsMultiLine = on;
+	}
+
+
 	public class FitAction implements SimpleSwitchButton.SwithAction {
 		public TextViewer mViewer = null;
 		public FitAction(TextViewer viewer) {
@@ -64,7 +73,17 @@ public class StartupCommandBuffer extends TextViewer {
 
 	@Override
 	public void paintGroup(SimpleGraphics graphics) {
+		if(!IsExtraUI()) {
+			mFitButton.isVisible(false);
+			mGuardButton.isVisible(false);
+		} else {
+			mFitButton.isVisible(true);
+			mGuardButton.isVisible(true);
+		}
 		super.paintGroup(graphics);
+		if(!IsExtraUI()) {
+			return;
+		}
 		if(isGuard()) {
 			graphics.drawText(GUARD, graphics.getTextSize(), graphics.getTextSize());
 		} else {
@@ -114,11 +133,15 @@ public class StartupCommandBuffer extends TextViewer {
 		output.close();
 	}
 
-	String[] message = {
+	String[] message = {"" };
+/*
+ 	String[] message = {
+ 
 			"Sorry, this application is pre-alpha version\n",
 			"Testing and Developing.. now\n",
 			"Please mail kyorohiro.android@gmail.com, \n",
 			"If you have particular questions or comments, \n",
 			"please don't hesitate to contact me. Thank you. \n" };
+			*/
 	
 }
