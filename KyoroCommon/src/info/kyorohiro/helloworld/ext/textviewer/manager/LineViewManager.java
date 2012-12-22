@@ -90,6 +90,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		g.getTextViewer().isGuard(true);		
 		g.isVisible(false);
 		g.getTextViewer().IsExtraUI(false);
+		g.isControlBuffer(true);
 //		first.setPoint(getWidth()/2, getHeight()/2);
 //		mCommand.getLineView().fittableToView(true);
 	}

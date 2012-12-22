@@ -48,8 +48,7 @@ public class KeyEventManager extends IMEController{
 
 
 	private Manager mManager = new Manager();
-	public void updateCommitTextFromIME(EditableLineView mTextView,
-			EditableLineViewBuffer mTextBuffer) {
+	public void updateCommitTextFromIME(EditableLineView mTextView, EditableLineViewBuffer mTextBuffer) {
 		// following code is yaxutuke sigoto
 		if (!mTextView.isFocus()) {
 			return;
@@ -63,9 +62,14 @@ public class KeyEventManager extends IMEController{
 		mTextBuffer.IsCrlfMode(mTextView.isCrlfMode());
 		mTextView.getStage(mTextView).start();
 	
+		boolean first = true;
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {
+				if(first == true) {
+					cursorIsInShowingView(mTextView);
+					first = false;
+				}
 //				 android.util.Log.v("kiyo","key= #");
 				a(text, mTextView, mTextBuffer);
 			} else {
@@ -74,6 +78,14 @@ public class KeyEventManager extends IMEController{
 		}
 	}
 
+	private void cursorIsInShowingView(EditableLineView v) {
+		int s = v.getShowingTextStartPosition();
+		int e = v.getShowingTextEndPosition();
+		int c = v.getLeft().getCursorCol();
+		if(!(s<=c&&c<=e)) {
+			v.recenter();
+		}
+	}
 	 private void a(CommitText text, EditableLineView mTextView, EditableLineViewBuffer mTextBuffer) {
 //		 android.util.Log.v("kiyo","key= #"+text.getText().length()
 //				 +","+text.getText().charAt(0)+","

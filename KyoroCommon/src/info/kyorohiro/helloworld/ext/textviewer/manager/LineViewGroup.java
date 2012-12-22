@@ -78,7 +78,13 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			return false;
 		}
 	}
-
+	public boolean mIsControlBuffer = false;
+	public boolean isControlBuffer() {
+		return mIsControlBuffer;
+	}
+	public void isControlBuffer(boolean on) {
+		mIsControlBuffer = on;
+	}
 	private static boolean isEdit(SimpleDisplayObject child) {
 		if(child == null){
 			return false;
@@ -193,7 +199,9 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		Object parent = getParent();
 		SimpleDisplayObject child = null;
 		SimpleDisplayObject kill = null;
-		
+		if(isControlBuffer()) {
+			return false;
+		}
 		if(separate.getPersentY()>0.5){
 			child = getChild(0);
 			kill = getChild(1);

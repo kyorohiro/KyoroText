@@ -14,7 +14,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 	 */
 	public void paintGroup(SimpleGraphics graphics) {
 		for(SimpleDisplayObject child: mMyChildren){
-			if(child != null) {
+			if(child != null && child.isVisible()) {
 				if (mCashGraphics == null) {
 					//SimpleGraphics childGraphics 
 					mCashGraphics = graphics.getChildGraphics(
@@ -28,9 +28,9 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 							,child.getY()+graphics.getGlobalY());
 				}
 //				child.paint(childGraphics);
-				if(child.isVisible()) {
+//				if(child.isVisible()) {
 					child.paint(mCashGraphics);
-				}
+//				}
 			}
 		}
 	}
@@ -44,7 +44,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 	public boolean onKeyDown(int keycode) {
 		boolean  evaluated = false;
 		for(SimpleDisplayObject child: mMyChildren){
-			if(child != null) {
+			if(child != null && child.isVisible()) {
 				evaluated = child.onKeyDown(keycode);
 				if(evaluated == true){
 					//break; todo 
@@ -58,7 +58,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 	public boolean onKeyUp(int keycode) {
 		boolean  evaluated = false;
 		for(SimpleDisplayObject child: mMyChildren){
-			if(child != null) {
+			if(child != null && child.isVisible()) {
 				evaluated = child.onKeyUp(keycode);
 				if(evaluated == true){
 					//break; todo 
@@ -77,7 +77,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		int len = mMyChildren.size();
 		for(int i = len-1;i>=0;i--){
 			SimpleDisplayObject child = mMyChildren.get(i);
-			if(child != null) {
+			if(child != null && child.isVisible()) {
 				touched = child.onTouchTest(x-child.getX(), y-child.getY(), action);
 				if(touched == true){
 					break;
