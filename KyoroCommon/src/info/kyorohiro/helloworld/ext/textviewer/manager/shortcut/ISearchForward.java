@@ -16,5 +16,14 @@ public class ISearchForward implements Task {
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		view.iSearchForward();
 	}
-	
+
+	public class ISearchForwardTask {
+		private EditableLineView mTargetView = null;
+		public ISearchForwardTask(EditableLineView targetView) {
+			mTargetView = targetView;
+		}
+		public void enter(){
+			mTargetView.iSearchForward();
+		}
+	}
 }
