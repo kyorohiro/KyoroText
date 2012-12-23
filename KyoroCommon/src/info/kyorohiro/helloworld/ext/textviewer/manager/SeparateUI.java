@@ -196,7 +196,7 @@ public class SeparateUI extends SimpleDisplayObject {
 		if(mIsReached) {
 			rate = 2;
 		} else {
-			rate = 3;
+			rate = 5;
 		}
 		if(isVertical()){
 			setPoint(getX(), target.getHeight()/rate);			
