@@ -30,18 +30,25 @@ public class Differ {
 	}
 
 	public synchronized void addLine(int i, CharSequence line) {
+		debugPrint("begin addLine["+i+"]"+mLength+","+line);		
 		mAddAction.add(this, i, line);
 		mLength++;
+		debugPrint();	
 	}
 
 	public synchronized void setLine(int i, CharSequence line) {
+		debugPrint("begin setLine["+i+"]"+mLength+","+line);
 		deleteLine(i);
 		addLine(i, line);
+		debugPrint("end setLine["+i+"]"+mLength+","+line);
+		debugPrint();
 	}
 
 	public synchronized void deleteLine(int i) {
+		debugPrint("begin deleteLine["+i+"]"+mLength);
 		mDeleteAction.delete(this, i);
 		mLength -= 1;
+		debugPrint("end deleteLine["+i+"]"+mLength);
 	}
 
 
@@ -109,22 +116,28 @@ public class Differ {
 		public void insert(int index, CharSequence line);
 	}
 
+	public void debugPrint(String message) {
+		//android.util.Log.v("kiyo", "#Differ#"+message);
+	}
 	public void debugPrint() {	
 		if(true){
 			return;
 		}
-//		android.util.Log.v("ll", "---start---" + mLine.size());
+		/*
+		 android.util.Log.v("ll", "#---start---" + mLine.size());
+		 
 		int j = 0;
 		for (Line l : mLine) {
-		//	android.util.Log.v("ll", "" + l.length());
-	//		android.util.Log.v("ll", "" + l.toString());
+			android.util.Log.v("ll", "#" + l.length()+","+l.begin());
+			android.util.Log.v("ll", "#" + l.toString());
 			
-			//for (int i = 0; i < l.length(); i++) {
-//				android.util.Log.v("ll", "[" + j + "][" + i + "]=" + l.get(i)+","+l.begin()+","+l.length());
-//			}
+			for (int i = 0; i < l.length(); i++) {
+				android.util.Log.v("ll", "#[" + j + "][" + i + "]=" + l.get(i)+","+l.begin()+","+l.length());
+			}
 			j++;
 		}
-//		android.util.Log.v("ll", "---end---" + mLine.size());
+		android.util.Log.v("ll", "#---end---" + mLine.size());
+		*/
 	}
 
 }

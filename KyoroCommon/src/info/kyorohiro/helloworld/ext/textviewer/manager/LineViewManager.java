@@ -36,7 +36,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	public void otherWindow() {
-		android.util.Log.v("kiyo","----otherWindow");
+	//	android.util.Log.v("kiyo","----otherWindow");
 		TextViewer v = getFocusingTextViewer();
 		if(v.getParent() instanceof LineViewGroup) {
 			int i = ((LineViewGroup)v.getParent()).getIndex(v);
@@ -45,39 +45,39 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 				changeFocus(f);
 			}
 		}
-		android.util.Log.v("kiyo","----/otherWindow");
+		//android.util.Log.v("kiyo","----/otherWindow");
 	}
 
 	private TextViewer otherWindow(Object v, int index) {
-		android.util.Log.v("kiyo","----otherWindow -1-:" +index);
+		//android.util.Log.v("kiyo","----otherWindow -1-:" +index);
 		if(v instanceof LineViewGroup) {
-			android.util.Log.v("kiyo","----otherWindow -1-2:");
+			//android.util.Log.v("kiyo","----otherWindow -1-2:");
 			return otherWindow((LineViewGroup)v, index);
 		} else if(v instanceof TextViewer) {
-			android.util.Log.v("kiyo","----otherWindow -1-3:");
+			//android.util.Log.v("kiyo","----otherWindow -1-3:");
 			return (TextViewer)v;
 		} else {
-			android.util.Log.v("kiyo","----otherWindow -1-4:");
+			//android.util.Log.v("kiyo","----otherWindow -1-4:");
 			return otherWindow(mRoot, 0);
 		}
 	}
 	private TextViewer otherWindow(LineViewGroup v, int index) {
-		android.util.Log.v("kiyo","----otherWindow -2-" +index+","+v.numOfChild());
+		//android.util.Log.v("kiyo","----otherWindow -2-" +index+","+v.numOfChild());
 		for(int i=index;i<v.numOfChild();i++) {
 			if(v.getChild(i) instanceof TextViewer) {
-				android.util.Log.v("kiyo","----otherWindow -2-1 " +i);
+			//	android.util.Log.v("kiyo","----otherWindow -2-1 " +i);
 				return (TextViewer)v.getChild(i);
 			} else if(v.getChild(i) instanceof LineViewGroup) {
-				android.util.Log.v("kiyo","----otherWindow -2-2 " +i);
+				//android.util.Log.v("kiyo","----otherWindow -2-2 " +i);
 				return otherWindow(v.getChild(i), 0);
 			}
 		}
 		if(v instanceof SimpleDisplayObjectContainer){
 			int j = ((SimpleDisplayObjectContainer)v.getParent()).getIndex(v);
-			android.util.Log.v("kiyo","----otherWindow -3-"+j);
+			//android.util.Log.v("kiyo","----otherWindow -3-"+j);
 			return otherWindow(v.getParent(), j+1);
 		} else {
-			android.util.Log.v("kiyo","----otherWindow -4-");
+		//	android.util.Log.v("kiyo","----otherWindow -4-");
 			return otherWindow(this, 0);
 		}
 	}
@@ -133,7 +133,9 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mCircleManager.init();
 		//
 		first.getTextViewer().getLineView().fittableToView();
-		LineViewGroup g = first.divideAndNew(true, newTextViewrEmpty());
+		/*
+		 // command
+		 LineViewGroup g = first.divideAndNew(true, newTextViewrEmpty());
 		first.setSeparatorPoint(0.2f);
 		g.getTextViewer().getLineView().fittableToView(true);
 		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
@@ -141,6 +143,8 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		g.isVisible(false);
 		g.getTextViewer().IsExtraUI(false);
 		g.isControlBuffer(true);
+		*/
+		
 //		first.setPoint(getWidth()/2, getHeight()/2);
 //		mCommand.getLineView().fittableToView(true);
 	}

@@ -125,24 +125,43 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			buffer.setCursor(0, 0);
 
 			buffer.killLine();
+			{
+				String[] exp = { "fgh\r\n", "ijkl" };
+				checkData("ms1-a", exp, buffer);
+			}
 			buffer.yank();
 			checkData("mr1", data, buffer);
 
+			buffer.setCursor(0, 0);
 			buffer.killLine();
 			buffer.killLine();
+			{
+				String[] exp = { "\r\n", "ijkl" };
+				checkData("ms1-a", exp, buffer);
+			}
 			buffer.yank();
 			checkData("mr2", data, buffer);
 
+			buffer.setCursor(0, 0);
 			buffer.killLine();
 			buffer.killLine();
 			buffer.killLine();
+			{
+				String[] exp = { "ijkl" };
+				checkData("ms1-a", exp, buffer);
+			}
 			buffer.yank();
 			checkData("mr3", data, buffer);
 
+			buffer.setCursor(0, 0);
 			buffer.killLine();
 			buffer.killLine();
 			buffer.killLine();
 			buffer.killLine();
+			{
+				String[] exp = { "" };
+				checkData("ms1-a", exp, buffer);
+			}
 			buffer.yank();
 			checkData("mr4", data, buffer);
 		}
@@ -158,18 +177,21 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			buffer.killLine();
 			buffer.yank();
 			checkData("ms1", data, buffer);
-			
+
+			buffer.setCursor(2, 0);
 			buffer.killLine();
 			buffer.killLine();
 			buffer.yank();
 			checkData("ms2", data, buffer);
 
+			buffer.setCursor(2, 0);
 			buffer.killLine();
 			buffer.killLine();
 			buffer.killLine();
 			buffer.yank();
 			checkData("ms3", data, buffer);
 
+			buffer.setCursor(2, 0);
 			buffer.killLine();
 			buffer.killLine();
 			buffer.killLine();

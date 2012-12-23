@@ -92,7 +92,7 @@ public class KeyEventManager extends IMEController{
 					cursorIsInShowingView(mTextView);
 					first = false;
 				}
-//				 android.util.Log.v("kiyo","key= #");
+				// android.util.Log.v("kiyo","key= #");
 				a(text, mTextView, mTextBuffer);
 			} else {
 				break;
@@ -109,7 +109,8 @@ public class KeyEventManager extends IMEController{
 		}
 	}
 	 private void a(CommitText text, EditableLineView mTextView, EditableLineViewBuffer mTextBuffer) {
-//		 android.util.Log.v("kiyo","key= #"+text.getText().length()
+		// android.util.Log.v("kiyo","#key= #");
+//		 android.util.Log.v("kiyo","#key= #"+text.getText().length()
 //				 +","+text.getText().charAt(0)+","
 //				 +text.pushingCtrl()+","+ text.pushingAlt());
 		if(text.getText()!=null&&text.getText().length()==1&&mManager.update(text.getText().charAt(0),
@@ -122,7 +123,7 @@ public class KeyEventManager extends IMEController{
 		}
 		mTextBuffer.clearYank();
 		if (text.isKeyCode()) {
-//			android.util.Log.v("kiyo","key="+text.getKeyCode());
+	//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
 			switch (text.getKeyCode()) {
 			case SimpleKeyEvent.KEYCODE_BACK:
 			case SimpleKeyEvent.KEYCODE_DEL:
@@ -160,10 +161,13 @@ public class KeyEventManager extends IMEController{
 				break;
 			}
 		} else {
-//			android.util.Log.v("kiyo","key= -");
+			//android.util.Log.v("kiyo","#key= -");
 			mTextBuffer.pushCommit(text.getText(),
 					text.getNewCursorPosition());
 		}
+		
+
+		//android.util.Log.v("kiyo","#key= end");
 	}
 	 
 	 public interface Task {

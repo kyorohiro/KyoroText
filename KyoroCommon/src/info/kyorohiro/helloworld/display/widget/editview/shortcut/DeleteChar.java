@@ -11,7 +11,10 @@ public class DeleteChar implements Task {
 	}
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
+	//	android.util.Log.v("kiyo","#key(1)=");
 		buffer.deleteChar();
+	//	android.util.Log.v("kiyo","#key(2)=");
 		buffer.clearYank();
+//		android.util.Log.v("kiyo","#key(3)=");
 	}
  }
