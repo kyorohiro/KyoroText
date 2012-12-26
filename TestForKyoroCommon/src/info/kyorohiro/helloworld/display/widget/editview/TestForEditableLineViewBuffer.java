@@ -20,6 +20,127 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		assertTrue(true);
 	}
 
+
+	public void testCommitText1() {
+		String[] data = new String[0];//{""};
+		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+		setData(data, spec);
+		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+		buffer.IsCrlfMode(true);
+		buffer.setCursor(0, 0);
+		int[] inputCursor = {
+			1,1,1,1,1,1,1,
+		};
+		String[] inputText = {
+			"a","b","c","d","e","f","g"
+		};
+		String[][] expected = {
+				{ "a"},{"ab"},{"abc"},{"abcd"},{"abcde"},
+				{"abcde","f"},{"abcde","fg"}
+		};
+
+		for (int i = 0; i < expected.length; i++) {
+			android.util.Log.v("test", "--" + i + "--");
+			String[] exp = expected[i];
+			buffer.pushCommit(inputText[i], inputCursor[i]);
+			checkData("ms=" + i + ",", exp, buffer);
+		}
+	}
+
+	public void testCommitText2() {
+		String[] data = new String[0];//{""};
+		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+		setData(data, spec);
+		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+		buffer.IsCrlfMode(true);
+		buffer.setCursor(0, 0);
+		int[] inputCursor = {
+			1,1,1,1,1
+		};
+		String[] inputText = {
+			"abcdefg","hijklmn","o","p","qrstuvwxuz"
+		};
+		String[][] expected = {
+				{"abcde","fg"},
+				{"abcde","fghij","klmn"},
+				{"abcde","fghij","klmno"},
+				{"abcde","fghij","klmno","p"},
+				{"abcde","fghij","klmno","pqrst","uvwxu","z"}
+		};
+
+		for (int i = 0; i < expected.length; i++) {
+			android.util.Log.v("test", "--" + i + "--");
+			String[] exp = expected[i];
+			buffer.pushCommit(inputText[i], inputCursor[i]);
+			checkData("ms=" + i + ",", exp, buffer);
+		}
+	}
+
+
+	public void testCommitText3() {
+		String[] data = {"abcde", "fgh\r\n", "ijkl"};
+		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+		setData(data, spec);
+		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+		buffer.IsCrlfMode(true);
+		buffer.setCursor(0, 0);
+
+		int[] inputCursor = {
+			1,1,1,1,1
+		};
+
+		String[] inputText = {
+			"abcdefg","hijklmn","o","p","qrstuvwxuz"
+		};
+
+		String[][] expected = {
+				{"abcde","fgabc","defgh","\r\n", "ijkl"},
+				{"abcde","fghij","klmna","bcdef","gh\r\n", "ijkl"},
+				{"abcde","fghij","klmno","abcde", "fgh\r\n", "ijkl"},
+				{"abcde","fghij","klmno","pabcd","efgh\r","\n", "ijkl"}, // irrigal case
+				{"abcde","fghij","klmno","pqrst","uvwxu","zabcd","efgh\r","\n", "ijkl"}, //irregalcase
+		};
+
+		for (int i = 0; i < expected.length; i++) {
+			android.util.Log.v("test", "--" + i + "--");
+			String[] exp = expected[i];
+			buffer.pushCommit(inputText[i], inputCursor[i]);
+			checkData("ms=" + i + ",", exp, buffer);
+		}
+	}
+
+	public void testCommitText4() {
+		String[] data = {"abcde", "fgh\r\n", "ijkl"};
+		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+		setData(data, spec);
+		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
+		buffer.IsCrlfMode(true);
+		buffer.setCursor(2, 2);
+
+		int[] inputCursor = {
+			1,1,1,1,1
+		};
+
+		String[] inputText = {
+			"abcdefg","hijklmn","o","p","qrstuvwxuz"
+		};
+
+		String[][] expected = {
+				{"abcde", "fgh\r\n", "ijabc","defgk","l"},
+				{"abcde", "fgh\r\n", "ijabc","defgh","ijklm","nkl"},
+				{"abcde", "fgh\r\n", "ijabc","defgh","ijklm","nokl"},
+				{"abcde", "fgh\r\n", "ijabc","defgh","ijklm","nopkl"},
+				{"abcde", "fgh\r\n", "ijabc","defgh","ijklm","nopqr","stuvw","xuzkl"},
+		};
+
+		for (int i = 0; i < expected.length; i++) {
+			android.util.Log.v("test", "--" + i + "--");
+			String[] exp = expected[i];
+			buffer.pushCommit(inputText[i], inputCursor[i]);
+			checkData("ms=" + i + ",", exp, buffer);
+		}
+	}
+
 	public void testDeleteChar1() {
 		String[] data = { "abcde", "fgh\r\n", "ijkl" };
 		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
