@@ -30,9 +30,39 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private SimpleCircleControllerMenuPlus mCircleMenu = new SimpleCircleControllerMenuPlus();
 	private LineViewGroup mRoot = null;
 	private KeyEventManager mKeyEventManager = new KeyEventManagerPlus();
+	private TextViewer mModeLine = null;
 
 	public static LineViewManager getManager() {
 		return sInstance;
+	}
+
+	// ���Singletone�ɂ���B
+	public LineViewManager(SimpleApplication application, TextViewBuilder builder,int textSize, int width, int height, int mergine, int menuWidth) {
+		mApplication = application;
+		mBuilder = builder;
+		sInstance = this;
+		mWidth = width;
+		mTextSize = textSize;
+		mMergine = mergine;
+		mFocusingViewer = newTextViewr();
+		LineViewGroup first = new LineViewGroup(mFocusingViewer);
+		addChild(first);
+		addChild(mCircleMenu);
+		mCircleManager.init();
+		setCircleMenuRadius(menuWidth);
+		//
+		first.getTextViewer().getLineView().fittableToView();
+		///*
+		 // command
+		LineViewGroup g = first.divideAndNew(true, mModeLine = newTextViewrEmpty());
+		first.setSeparatorPoint(0.05f);
+		g.getTextViewer().getLineView().fittableToView(true);
+		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
+		g.getTextViewer().isGuard(true);		
+		g.isVisible(false);
+		g.getTextViewer().IsExtraUI(false);
+		g.isControlBuffer(true);
+		//*/
 	}
 
 	public void otherWindow() {
@@ -118,38 +148,6 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		return mBuilder.newSimpleFont();
 	}
 
-	// ���Singletone�ɂ���B
-	public LineViewManager(SimpleApplication application, TextViewBuilder builder,int textSize, int width, int height, int mergine, int menuWidth) {
-		mApplication = application;
-		mBuilder = builder;
-		sInstance = this;
-		mWidth = width;
-		mTextSize = textSize;
-		mMergine = mergine;
-		mFocusingViewer = newTextViewr();
-		LineViewGroup first = new LineViewGroup(mFocusingViewer);
-		addChild(first);
-		addChild(mCircleMenu);
-		mCircleManager.init();
-		setCircleMenuRadius(menuWidth);
-		//
-		first.getTextViewer().getLineView().fittableToView();
-		/*
-		 // command
-		 LineViewGroup g = first.divideAndNew(true, newTextViewrEmpty());
-		first.setSeparatorPoint(0.2f);
-		g.getTextViewer().getLineView().fittableToView(true);
-		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
-		g.getTextViewer().isGuard(true);		
-		g.isVisible(false);
-		g.getTextViewer().IsExtraUI(false);
-		g.isControlBuffer(true);
-		*/
-		
-//		first.setPoint(getWidth()/2, getHeight()/2);
-//		mCommand.getLineView().fittableToView(true);
-	}
-
 	//
 	//
 	public TextViewer newTextViewr() {
@@ -212,14 +210,6 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		int pw = getWidth(false);
 		int ph = getHeight(false);
 		mCircleMenu.setPoint(pw - cr, ph - cr);
-	}
-
-	public int getMergine() {
-		return mMergine;
-	}
-
-	public int getTextSize() {
-		return mTextSize;
 	}
 
 	public void changeFocus(TextViewer textViewer) {

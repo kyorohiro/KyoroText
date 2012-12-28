@@ -66,6 +66,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		addChild(mLineView);
 		addChild(new LayoutManager());
 		addChild(mScrollBar);
+		//ytodo
+		mBreakText.getSimpleFont().setAntiAlias(true);
+		mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);
 	}
 
 	// following code is refactring target
