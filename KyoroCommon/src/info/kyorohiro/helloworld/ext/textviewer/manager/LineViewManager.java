@@ -65,52 +65,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		//*/
 	}
 
-	public void otherWindow() {
-	//	android.util.Log.v("kiyo","----otherWindow");
-		TextViewer v = getFocusingTextViewer();
-		if(v.getParent() instanceof LineViewGroup) {
-			int i = ((LineViewGroup)v.getParent()).getIndex(v);
-			TextViewer f = otherWindow(v.getParent(), i+1);
-			if(f!=null) {
-				changeFocus(f);
-			}
-		}
-		//android.util.Log.v("kiyo","----/otherWindow");
-	}
 
-	private TextViewer otherWindow(Object v, int index) {
-		//android.util.Log.v("kiyo","----otherWindow -1-:" +index);
-		if(v instanceof LineViewGroup) {
-			//android.util.Log.v("kiyo","----otherWindow -1-2:");
-			return otherWindow((LineViewGroup)v, index);
-		} else if(v instanceof TextViewer) {
-			//android.util.Log.v("kiyo","----otherWindow -1-3:");
-			return (TextViewer)v;
-		} else {
-			//android.util.Log.v("kiyo","----otherWindow -1-4:");
-			return otherWindow(mRoot, 0);
-		}
-	}
-	private TextViewer otherWindow(LineViewGroup v, int index) {
-		//android.util.Log.v("kiyo","----otherWindow -2-" +index+","+v.numOfChild());
-		for(int i=index;i<v.numOfChild();i++) {
-			if(v.getChild(i) instanceof TextViewer) {
-			//	android.util.Log.v("kiyo","----otherWindow -2-1 " +i);
-				return (TextViewer)v.getChild(i);
-			} else if(v.getChild(i) instanceof LineViewGroup) {
-				//android.util.Log.v("kiyo","----otherWindow -2-2 " +i);
-				return otherWindow(v.getChild(i), 0);
-			}
-		}
-		if(v instanceof SimpleDisplayObjectContainer){
-			int j = ((SimpleDisplayObjectContainer)v.getParent()).getIndex(v);
-			//android.util.Log.v("kiyo","----otherWindow -3-"+j);
-			return otherWindow(v.getParent(), j+1);
-		} else {
-		//	android.util.Log.v("kiyo","----otherWindow -4-");
-			return otherWindow(this, 0);
-		}
-	}
 	public void setCurrentFile(String path) {
 		mBuilder.setCurrentFile(path);
 	}
@@ -234,7 +189,61 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	public TextViewer getFocusingTextViewer() {
 		return mFocusingViewer;
 	}
+	
 
+	//
+	// following code otherWindow must to be moving another class
+	//
+	public void otherWindow() {
+	//	android.util.Log.v("kiyo","----otherWindow");
+		TextViewer v = getFocusingTextViewer();
+		if(v.getParent() instanceof LineViewGroup) {
+			int i = ((LineViewGroup)v.getParent()).getIndex(v);
+			TextViewer f = otherWindow(v.getParent(), i+1);
+			if(f!=null) {
+				changeFocus(f);
+			}
+		}
+		//android.util.Log.v("kiyo","----/otherWindow");
+	}
+
+	private TextViewer otherWindow(Object v, int index) {
+		//android.util.Log.v("kiyo","----otherWindow -1-:" +index);
+		if(v instanceof LineViewGroup) {
+			//android.util.Log.v("kiyo","----otherWindow -1-2:");
+			return otherWindow((LineViewGroup)v, index);
+		} else if(v instanceof TextViewer) {
+			//android.util.Log.v("kiyo","----otherWindow -1-3:");
+			return (TextViewer)v;
+		} else {
+			//android.util.Log.v("kiyo","----otherWindow -1-4:");
+			return otherWindow(mRoot, 0);
+		}
+	}
+	private TextViewer otherWindow(LineViewGroup v, int index) {
+		//android.util.Log.v("kiyo","----otherWindow -2-" +index+","+v.numOfChild());
+		for(int i=index;i<v.numOfChild();i++) {
+			if(v.getChild(i) instanceof TextViewer) {
+			//	android.util.Log.v("kiyo","----otherWindow -2-1 " +i);
+				return (TextViewer)v.getChild(i);
+			} else if(v.getChild(i) instanceof LineViewGroup) {
+				//android.util.Log.v("kiyo","----otherWindow -2-2 " +i);
+				return otherWindow(v.getChild(i), 0);
+			}
+		}
+		if(v instanceof SimpleDisplayObjectContainer){
+			int j = ((SimpleDisplayObjectContainer)v.getParent()).getIndex(v);
+			//android.util.Log.v("kiyo","----otherWindow -3-"+j);
+			return otherWindow(v.getParent(), j+1);
+		} else {
+		//	android.util.Log.v("kiyo","----otherWindow -4-");
+			return otherWindow(this, 0);
+		}
+	}
+	/*
+	 * following logic dont use now. maybe delete 
+	// Event 
+	//
 	private Event mEvent = new EmptyEvent();
 	public void setEvent(Event event){
 		if(event == null){
@@ -259,4 +268,5 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			return true;
 		}
 	}
+	*/
 }
