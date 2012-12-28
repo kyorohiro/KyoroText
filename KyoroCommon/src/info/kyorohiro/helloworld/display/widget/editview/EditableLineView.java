@@ -33,10 +33,12 @@ public class EditableLineView extends CursorableLineView {
 	public void setKeyEventManager(KeyEventManager manager) {
 		mKeyEventManager = manager;
 	}
+
 	@Override
 	public synchronized MyCursor getLeft() {
 		return super.getLeft();
 	}
+
 	public void iSearchForward() {
 		//TODO
 	}
@@ -61,18 +63,29 @@ public class EditableLineView extends CursorableLineView {
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		modCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-		if (editable()&&isFocus()) {
-			try {
-				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-				updateCommitTextFromIME();
-				updateComposingTextFromIME();
-				getLeft().setCursorRow(mTextBuffer.getRow());
-				getLeft().setCursorCol(mTextBuffer.getCol());
-				// android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
-			} catch (Throwable e) {
-				e.printStackTrace();
+		if(isFocus()){
+			getLeft().isVisible(true);
+			getRight().isVisible(true);
+		} else {
+			getLeft().isVisible(false);
+			getRight().isVisible(false);			
+		}
+		if(isFocus()) {
+			if (editable()) {
+				try {
+					mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
+					updateCommitTextFromIME();
+					updateComposingTextFromIME();
+					getLeft().setCursorRow(mTextBuffer.getRow());
+					getLeft().setCursorCol(mTextBuffer.getCol());
+					// android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			} else {
+				
 			}
-		} 
+		}
 		super.paint(graphics);
 	}
 

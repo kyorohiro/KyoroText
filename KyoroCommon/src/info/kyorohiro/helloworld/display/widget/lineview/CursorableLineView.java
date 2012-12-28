@@ -31,6 +31,10 @@ public class CursorableLineView extends LineView {
 		return mLeft;
 	}
 
+	public MyCursor getRight() {
+		return mRight;
+	}
+
 	public String copy() {
 		try {
 			lock();
