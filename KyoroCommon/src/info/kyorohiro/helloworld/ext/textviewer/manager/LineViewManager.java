@@ -240,8 +240,9 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			return otherWindow(this, 0);
 		}
 	}
-	/*
-	 * following logic dont use now. maybe delete 
+
+	//
+	//following logic dont use now. maybe delete 
 	// Event 
 	//
 	private Event mEvent = new EmptyEvent();
@@ -268,5 +269,4 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			return true;
 		}
 	}
-	*/
 }

@@ -43,14 +43,9 @@ public class EditableLineView extends CursorableLineView {
 	public void recenter() {
 		int s = getShowingTextStartPosition();
 		int e = getShowingTextEndPosition();
-//		android.util.Log.v("kiyo","#1="+getPositionY()+","+getShowingTextSize()+","+s+","+e);
-//		android.util.Log.v("kiyo","#2="+getLeft().getCursorCol()+","+getPositionY()+","+getLineViewBuffer().getNumberOfStockedElement());
-//		setPositionY(-getLeft().getCursorCol()+getShowingTextStartPosition());
 		setPositionY(-getLeft().getCursorCol()+
 				-(getShowingTextEndPosition()-getShowingTextStartPosition())/2
 				+ getLineViewBuffer().getNumberOfStockedElement());
-//		android.util.Log.v("kiyo","#3="+getPositionY()+","+getShowingTextSize()+","+s+","+e);
-//		android.util.Log.v("kiyo","#4="+getLeft().getCursorCol()+","+getPositionY()+","+getLineViewBuffer().getNumberOfStockedElement());
 	}
 
 	private int mR = 0;
@@ -66,7 +61,7 @@ public class EditableLineView extends CursorableLineView {
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		modCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-		if (editable()) {
+		if (editable()&&isFocus()) {
 			try {
 				mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
 				updateCommitTextFromIME();
@@ -172,9 +167,6 @@ public class EditableLineView extends CursorableLineView {
 		int prev = mTextBuffer.getNumberOfStockedElement();
 		mKeyEventManager.updateCommitTextFromIME(this, mTextBuffer);
 		int current = mTextBuffer.getNumberOfStockedElement();
-		//android.util.Log.v("kiyo","#="+getPositionY()+","+getShowingTextSize()+","+getShowingTextEndPosition()+","+getShowingTextStartPosition());
-		//android.util.Log.v("kiyo","#="+getShowingTextEndPosition()+","+getShowingTextStartPosition());
-
 		if(getLeft().getCursorCol()+2<getShowingTextEndPosition()) {
 			setPositionY(getPositionY()+current-prev);
 		}
