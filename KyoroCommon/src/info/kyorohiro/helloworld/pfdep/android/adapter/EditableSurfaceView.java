@@ -15,6 +15,8 @@ import android.text.Editable;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.LogPrinter;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -168,6 +170,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			return super.dispatchKeyEventPreIme(event);
 		}
 	}
+
 	public void setMetaForCommit(boolean alt, boolean ctl){
 		log("#-esf-alt/ctl="+alt+"/"+ctl);
 		//mPushingAlt = alt;
@@ -196,7 +199,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("endBatchEdit");
 			return super.endBatchEdit();
 		}
-
+		
 		public CharSequence getComposingText() {
 			return mComposingText;
 		}
@@ -269,6 +272,12 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			return super.setSelection(start, end);
 		}
 
+
+		@Override
+		public boolean clearMetaKeyStates(int states) {
+			log("clearMEtaKetStates s="+states);	
+			return super.clearMetaKeyStates(states);
+		}
 		@Override
 		public boolean commitCompletion(CompletionInfo text) {
 			log("commitCompletion="+text);
@@ -288,6 +297,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 			log("--1--="+Selection.getSelectionStart(text));
 			log("--2--="+Selection.getSelectionEnd(text));
 			log("--3--a/c="+pushingAltForCommitText()+"/"+pushingCtlForCommitText());
+
 			mController.decorateKey(mCurrentInputConnection, text, newCursorPosition, false, pushingCtlForCommitText(), pushingAltForCommitText());		
 			mCommitText = text;
 			try{

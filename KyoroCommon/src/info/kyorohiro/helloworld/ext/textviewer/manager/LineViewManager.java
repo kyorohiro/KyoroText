@@ -131,6 +131,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		addChild(first);
 		addChild(mCircleMenu);
 		mCircleManager.init();
+		setCircleMenuRadius(menuWidth);
 		//
 		first.getTextViewer().getLineView().fittableToView();
 		/*

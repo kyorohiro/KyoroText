@@ -212,7 +212,14 @@ public class KyoroTextViewerActivity extends MainActivity {
 		int screenMargine = mViewerWidth*1/20;
 		int screenWidth = mViewerWidth-screenMargine/2; // mod 2 is my feeling value so design only. 
 		int screenHeight = mViewerHeight;
-		return new LineViewManager(KyoroApplication.getKyoroApplication(), new MyBuilder(), textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2inchi(22/2)));
+		
+		int circleSize = 18/2;
+		if(10<Util.inchi2pixel(mViewerWidth)){
+			circleSize = 22/2;
+		} else {
+			circleSize = 16/2;
+		}
+		return new LineViewManager(KyoroApplication.getKyoroApplication(), new MyBuilder(), textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2inchi(circleSize)));
 	}
 
 	private void doFileOpenIntentAction() {
