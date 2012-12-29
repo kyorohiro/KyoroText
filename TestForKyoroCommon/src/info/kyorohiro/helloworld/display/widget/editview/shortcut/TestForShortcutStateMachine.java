@@ -12,24 +12,29 @@ public class TestForShortcutStateMachine extends TestCase {
 	}
 
 	public void testFirst() {
+		boolean ret = false;
 		ShortcutStateMachine ssm = new ShortcutStateMachine(TEST_COMMAND);
 		TestTask.clear();
-		ssm.update('g', true, false, null, null);
+		ret = ssm.update('g', true, false, null, null);
+		assertEquals(true, ret);
 		assertEquals(1, TestTask.sNumOfAct);
 		assertEquals("g", TestTask.sLastAct);
 
 		TestTask.clear();
-		ssm.update('g', false, false, null, null);
+		ret = ssm.update('g', false, false, null, null);
+		assertEquals(false, ret);
 		assertEquals(0, TestTask.sNumOfAct);
 		assertEquals(TEST_COMMAND.length, ssm.getWorkList());
 
 		TestTask.clear();
-		ssm.update('g', false, true, null, null);
+		ret = ssm.update('g', false, true, null, null);
+		assertEquals(false, ret);
 		assertEquals(0, TestTask.sNumOfAct);
 		assertEquals(TEST_COMMAND.length, ssm.getWorkList());
 
 		TestTask.clear();
-		ssm.update('a', true, false, null, null);
+		ret = ssm.update('a', true, false, null, null);
+		assertEquals(true, ret);
 		assertEquals(0, TestTask.sNumOfAct);
 		assertEquals(4, ssm.getWorkList());
 		assertEquals("aa", ssm.getWork(0).getTask().getCommandName());
