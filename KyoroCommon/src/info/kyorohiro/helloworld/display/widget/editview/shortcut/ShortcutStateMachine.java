@@ -88,6 +88,7 @@ public class ShortcutStateMachine {
 
 	public void clear() {
 		mCurPos = 0;
+		mLength = mBaseLength;
 		System.arraycopy(mBase, 0, mWorkList, 0, mBaseLength);
 	}
 }
