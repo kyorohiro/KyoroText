@@ -440,7 +440,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 //		android.util.Log.v("kiyo", "elvb:" + log);
 	}
 
-	private LinkedList<String> mYankBuffer = new LinkedList<String>();
 
 	public synchronized void yank_debug() {
 		log("debug=#yank----begin-");
@@ -466,8 +465,12 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		return mYankBuffer.get(i);
 	}
 
-	private boolean mYankBufferClear = false;
-	public synchronized void clearYank() {
+	//
+	// TODO following yank
+	//
+	private static boolean mYankBufferClear = false;
+	private static LinkedList<String> mYankBuffer = new LinkedList<String>();
+	public static synchronized void clearYank() {
 		mYankBufferClear = true;
 	}
 	public synchronized void yank() {
@@ -486,7 +489,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
-	public void appendYankBuffer(String text) {
+	public static void appendYankBuffer(String text) {
 		if(mYankBufferClear) {
 			mYankBuffer.clear();
 			mYankBufferClear = false;
