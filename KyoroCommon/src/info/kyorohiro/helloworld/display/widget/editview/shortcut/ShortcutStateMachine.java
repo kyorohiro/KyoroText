@@ -9,10 +9,8 @@ public class ShortcutStateMachine {
 	private int mBaseLength = 0;
 	private Command[] mWorkList = new Command[KeyEventManager.EMACS_SHORTCUT_BASIC.length];
 	private int mLength = 0;
-	private KeyEventManager mManager = null;
 
-	public ShortcutStateMachine(KeyEventManager manager, Command[] base) {
-		mManager = manager;
+	public ShortcutStateMachine(Command[] base) {
 		updateCommnad(base);
 		clear();
 	}
@@ -20,6 +18,23 @@ public class ShortcutStateMachine {
 	public static void log(String log) {
 		//android.util.Log.v("kiyo", ""+log);
 	}
+
+	public Command getBase(int i) {
+		return mBase[i];
+	}
+
+	public int getBaseLength() {
+		return mBaseLength;
+	}
+
+	public Command getWork(int i) {
+		return mWorkList[i];
+	}
+
+	public int getWorkList() {
+		return mLength;
+	}
+	
 
 	public synchronized void updateCommnad(Command[] newCommand) {
 		mCurPos = 0;

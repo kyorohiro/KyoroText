@@ -4,6 +4,10 @@ import junit.framework.TestCase;
 
 public class TestForShortcutStateMachine extends TestCase {
 	public void testHello() {
-		assertTrue(false);
+		assertTrue(true);
+	}
+
+	public void testFirst() {
+		ShortcutStateMachine ssm = new ShortcutStateMachine(base);
 	}
 }

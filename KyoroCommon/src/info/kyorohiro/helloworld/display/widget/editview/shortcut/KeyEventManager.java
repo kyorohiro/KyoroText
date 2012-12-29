@@ -15,7 +15,7 @@ public class KeyEventManager extends IMEController{
 		init();
 	}
 	private void init() {
-		mManager = new ShortcutStateMachine(this, EMACS_SHORTCUT_BASIC);
+		mManager = new ShortcutStateMachine(EMACS_SHORTCUT_BASIC);
 	}
 
 	@Override
