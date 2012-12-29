@@ -67,6 +67,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new PreviousLine()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_LEFT, false, false)}, new BackwardWord()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
+		
 		//*/
 	};
 
@@ -99,6 +100,8 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DEL, false, false)}, new DeleteChar()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_ENTER, false, false)}, new CrlfTask()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),	
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_BACK, false, false)}, new DeleteChar()),
+
 	};
 
 	public static Command[] EMACS_SHORTCUT_MODELINE = {
@@ -119,6 +122,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
 		//
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DEL, false, false)}, new DeleteChar()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_BACK, false, false)}, new DeleteChar()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),		
 	};
 
