@@ -44,9 +44,11 @@ public class EditableLineView extends CursorableLineView {
 			mTextBuffer.clear();
 		}
 	}
+
 	public void iSearchForward() {
 		//TODO
 	}
+
 	public void recenter() {
 		int s = getShowingTextStartPosition();
 		int e = getShowingTextEndPosition();
