@@ -144,39 +144,11 @@ public class KeyEventManager extends IMEController{
 		mTextBuffer.clearYank();
 		if(getMode().equals(CursorableLineView.MODE_EDIT)) {
 			if (text.isKeyCode()) {
+				mManager.update(text.getKeyCode(), text.pushingCtrl(), text.pushingAlt(), mTextView, mTextBuffer);
 				//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
 				switch (text.getKeyCode()) {
-				case SimpleKeyEvent.KEYCODE_BACK:
-				case SimpleKeyEvent.KEYCODE_DEL:
-
-					mTextBuffer.deleteChar();
-					break;
 				case SimpleKeyEvent.KEYCODE_ENTER:
 					mTextBuffer.crlf();
-					break;
-				case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
-					mTextView.back();
-					mTextBuffer.setCursor(mTextView.getLeft()
-							.getCursorRow(), mTextView.getLeft()
-							.getCursorCol());
-					break;
-				case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
-					mTextView.front();
-					mTextBuffer.setCursor(mTextView.getLeft()
-							.getCursorRow(), mTextView.getLeft()
-							.getCursorCol());
-					break;
-				case SimpleKeyEvent.KEYCODE_DPAD_UP:
-					mTextView.prev();
-					mTextBuffer.setCursor(mTextView.getLeft()
-							.getCursorRow(), mTextView.getLeft()
-							.getCursorCol());
-					break;
-				case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
-					mTextView.next();
-					mTextBuffer.setCursor(mTextView.getLeft()
-							.getCursorRow(), mTextView.getLeft()
-							.getCursorCol());
 					break;
 				case SimpleKeyEvent.KEYCODE_SPACE:
 					mTextBuffer.pushCommit(" ", 1);
@@ -187,8 +159,6 @@ public class KeyEventManager extends IMEController{
 				mTextBuffer.pushCommit(text.getText(),
 						text.getNewCursorPosition());
 			}
-		} else {
-			
 		}
 		
 		//android.util.Log.v("kiyo","#key= end");

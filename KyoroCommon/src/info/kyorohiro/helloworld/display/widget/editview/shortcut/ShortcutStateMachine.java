@@ -60,6 +60,16 @@ public class ShortcutStateMachine {
 
 	public boolean update(int keycode, boolean ctl, boolean alt,EditableLineView view, EditableLineViewBuffer buffer) {		//
 		clear();
+		for(int j=0;j<mLength;j++) {
+			Command c = mWorkList[j];
+			if(c.match(0, keycode, ctl, alt)){
+				if(c.action(0, view, buffer)) {
+					clear();
+					return true;
+				} 
+				return true;
+			}
+		}
 		return false;
 	}
 

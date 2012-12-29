@@ -42,6 +42,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 	}
 
 	public static Command[] EMACS_SHORTCUT_VIEW = {
+		
 		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
 		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
 		new Command(new CommandPart[]{new CommandPart('n', true, false)}, new NextLine()),
@@ -58,7 +59,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
-		
+		//*/
 		//
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new BackwardWord()),
@@ -88,6 +89,12 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
+		//
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new BackwardWord()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_LEFT, false, false)}, new PreviousLine()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DEL, false, false)}, new DeleteChar()),
 	};
 
 	public static Command[] EMACS_SHORTCUT_MODELINE = {
@@ -101,6 +108,11 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
+		//
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new BackwardWord()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_LEFT, false, false)}, new PreviousLine()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
 
 	};
 
