@@ -5,6 +5,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.BackwardWord;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.BeginningOfBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.BeginningOfLine;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.CrlfTask;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.DeleteBackwardChar;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.DeleteChar;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.EndOfBuffer;
@@ -15,6 +16,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.KillLine;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.NextLine;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.PreviousLine;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Recenter;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.SingleByteSpaceTask;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Yank;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command.CommandPart;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
@@ -60,12 +62,12 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
 		//*/
-		//
+		///*
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new BackwardWord()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_LEFT, false, false)}, new PreviousLine()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
-		
+		//*/
 	};
 
 	public static Command[] EMACS_SHORTCUT_EDIT = {
@@ -95,6 +97,8 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_LEFT, false, false)}, new PreviousLine()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DEL, false, false)}, new DeleteChar()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_ENTER, false, false)}, new CrlfTask()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),	
 	};
 
 	public static Command[] EMACS_SHORTCUT_MODELINE = {
@@ -113,7 +117,9 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new BackwardWord()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_LEFT, false, false)}, new PreviousLine()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
-
+		//
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DEL, false, false)}, new DeleteChar()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),		
 	};
 
 

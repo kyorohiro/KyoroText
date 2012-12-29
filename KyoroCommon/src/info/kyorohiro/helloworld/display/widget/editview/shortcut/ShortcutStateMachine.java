@@ -16,7 +16,7 @@ public class ShortcutStateMachine {
 	}
 
 	public static void log(String log) {
-		//android.util.Log.v("kiyo", ""+log);
+		android.util.Log.v("kiyo", ""+log);
 	}
 
 	public Command getBase(int i) {
@@ -37,6 +37,7 @@ public class ShortcutStateMachine {
 	
 
 	public synchronized void updateCommnad(Command[] newCommand) {
+		log("#updateCommand="+newCommand);
 		mCurPos = 0;
 		mBaseLength = newCommand.length;
 		mLength = mBaseLength;
@@ -59,6 +60,7 @@ public class ShortcutStateMachine {
 	}
 
 	public boolean update(int keycode, boolean ctl, boolean alt,EditableLineView view, EditableLineViewBuffer buffer) {		//
+		log("#code="+keycode+",c/a="+ctl+"/"+alt);
 		clear();
 		for(int j=0;j<mLength;j++) {
 			Command c = mWorkList[j];

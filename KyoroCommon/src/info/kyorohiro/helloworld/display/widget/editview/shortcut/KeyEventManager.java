@@ -8,6 +8,7 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command.CommandPart;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.OtherWindow;
 
 
 public class KeyEventManager extends IMEController{
@@ -49,7 +50,7 @@ public class KeyEventManager extends IMEController{
 		}
 	}
 
-	public static Command[] EMACS_SHORTCUT_BASIC = {
+	public static Command[] EMACS_SHORTCUT_BASIC =  {
 		new Command(new CommandPart[]{new CommandPart('g', true, false)}, null),
 		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
 		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
@@ -68,6 +69,14 @@ public class KeyEventManager extends IMEController{
 		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart('<', false, true)}, new BeginningOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
+		//
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new BackwardWord()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_LEFT, false, false)}, new PreviousLine()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DEL, false, false)}, new DeleteChar()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_ENTER, false, false)}, new CrlfTask()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),	
 	};
 
 	private static Command[] EMACS_SHORTCUT_EXTRA = {
@@ -142,23 +151,13 @@ public class KeyEventManager extends IMEController{
 			mManager.clear();
 		}
 		mTextBuffer.clearYank();
-		if(getMode().equals(CursorableLineView.MODE_EDIT)) {
-			if (text.isKeyCode()) {
-				mManager.update(text.getKeyCode(), text.pushingCtrl(), text.pushingAlt(), mTextView, mTextBuffer);
-				//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
-				switch (text.getKeyCode()) {
-				case SimpleKeyEvent.KEYCODE_ENTER:
-					mTextBuffer.crlf();
-					break;
-				case SimpleKeyEvent.KEYCODE_SPACE:
-					mTextBuffer.pushCommit(" ", 1);
-					break;
-				}
-			} else {
-				//android.util.Log.v("kiyo","#key= -");
-				mTextBuffer.pushCommit(text.getText(),
-						text.getNewCursorPosition());
-			}
+		if (text.isKeyCode()) {
+			mManager.update(text.getKeyCode(), text.pushingCtrl(), text.pushingAlt(), mTextView, mTextBuffer);
+			//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
+		} else {
+			//android.util.Log.v("kiyo","#key= -");
+			mTextBuffer.pushCommit(text.getText(),
+					text.getNewCursorPosition());
 		}
 		
 		//android.util.Log.v("kiyo","#key= end");

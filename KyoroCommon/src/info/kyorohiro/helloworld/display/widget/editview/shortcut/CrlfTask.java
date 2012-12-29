@@ -4,14 +4,14 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager.Task;
 
-public class Yank implements Task {
+public class CrlfTask implements Task {
 	@Override
 	public String getCommandName() {
-		return "crlftask";
+		return "yank";
 	}
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
-		
+		buffer.crlf();
 		buffer.clearYank();
 	}
  }
