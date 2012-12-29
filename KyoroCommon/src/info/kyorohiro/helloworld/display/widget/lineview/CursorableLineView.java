@@ -38,7 +38,7 @@ public class CursorableLineView extends LineView {
 	public String copy() {
 		try {
 			lock();
-			if (mLeft.enable() && mRight.enable()) {
+			if (mLeft.isVisible() && mRight.isVisible()) {
 				MyCursor b = mLeft;
 				MyCursor e = mRight;
 				if (b.getCursorCol() > e.getCursorCol()
@@ -98,8 +98,6 @@ public class CursorableLineView extends LineView {
 	public void setMode(String mode) {
 		mMode = mode;
 		if (MODE_SELECT.equals(mode)) {
-			mLeft.enable(true);
-			mRight.enable(true);
 			int col = getShowingTextStartPosition();
 			mLeft.setCursorCol(col);
 			mLeft.setCursorRow(0);
@@ -108,12 +106,8 @@ public class CursorableLineView extends LineView {
 			// setScale(1.0f);
 		}
 		if (MODE_VIEW.equals(mode)) {
-			mLeft.enable(false);
-			mRight.enable(false);
 		}
 		if (MODE_EDIT.equals(mode)) {
-			mLeft.enable(true);
-			mRight.enable(false);
 		}
 	}
 
@@ -191,6 +185,18 @@ public class CursorableLineView extends LineView {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
+		if(isFocus()){
+			getLeft().isVisible(true);
+			if(mMode.equals(MODE_SELECT)) {
+				getRight().isVisible(true);
+			} else {
+				getRight().isVisible(false);				
+			}
+		} else {
+			getLeft().isVisible(false);
+			getRight().isVisible(false);			
+		}
+
 		super.paint(graphics);
 		if (null == getBreakText()) {
 			return;
@@ -222,7 +228,7 @@ public class CursorableLineView extends LineView {
 	}
 
 	private void drawBGForSelect(SimpleGraphics graphics) {
-		if (mLeft.enable() && mRight.enable()) {
+		if (mLeft.isVisible() && mRight.isVisible()) {
 			MyCursor b = mLeft;
 			MyCursor e = mRight;
 			int textSize = getShowingTextSize();

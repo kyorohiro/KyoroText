@@ -7,15 +7,37 @@ import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command.CommandPart;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 
 
 public class KeyEventManager extends IMEController{
 	private ShortcutStateMachine mManager = null;
+	private CharSequence mCurrentMode = "BASIC";
 	public KeyEventManager() {
 		init();
 	}
-	private void init() {
+
+	public void onUpdate(CharSequence mode) {
+		
+	}
+
+	public void setMode(CharSequence mode) {
+		if(!mCurrentMode.equals(mode)){
+			onUpdate(mode);
+		}
+		mCurrentMode = mode;
+	}
+
+	public CharSequence getMode() {
+		return mCurrentMode;
+	}
+
+	protected void init() {
 		mManager = new ShortcutStateMachine(EMACS_SHORTCUT_BASIC);
+	}
+
+	public ShortcutStateMachine getManager() {
+		return mManager;
 	}
 
 	@Override
@@ -69,6 +91,7 @@ public class KeyEventManager extends IMEController{
 		if (!mTextView.isFocus()) {
 			return;
 		}
+		setMode(mTextView.getMode());
 		mTextView.getMyInputConnection().setIMEController(KeyEventManager.this);
 		MyInputConnection c = mTextView.getMyInputConnection();
 		if (c == null) {
@@ -119,51 +142,83 @@ public class KeyEventManager extends IMEController{
 			mManager.clear();
 		}
 		mTextBuffer.clearYank();
-		if (text.isKeyCode()) {
-	//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
-			switch (text.getKeyCode()) {
-			case SimpleKeyEvent.KEYCODE_BACK:
-			case SimpleKeyEvent.KEYCODE_DEL:
-				mTextBuffer.deleteChar();
-				break;
-			case SimpleKeyEvent.KEYCODE_ENTER:
-				mTextBuffer.crlf();
-				break;
-			case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
-				mTextView.back();
-				mTextBuffer.setCursor(mTextView.getLeft()
-						.getCursorRow(), mTextView.getLeft()
-						.getCursorCol());
-				break;
-			case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
-				mTextView.front();
-				mTextBuffer.setCursor(mTextView.getLeft()
-						.getCursorRow(), mTextView.getLeft()
-						.getCursorCol());
-				break;
-			case SimpleKeyEvent.KEYCODE_DPAD_UP:
-				mTextView.prev();
-				mTextBuffer.setCursor(mTextView.getLeft()
-						.getCursorRow(), mTextView.getLeft()
-						.getCursorCol());
-				break;
-			case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
-				mTextView.next();
-				mTextBuffer.setCursor(mTextView.getLeft()
-						.getCursorRow(), mTextView.getLeft()
-						.getCursorCol());
-				break;
-			case SimpleKeyEvent.KEYCODE_SPACE:
-				mTextBuffer.pushCommit(" ", 1);
-				break;
+		if(getMode().equals(CursorableLineView.MODE_EDIT)) {
+			if (text.isKeyCode()) {
+				//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
+				switch (text.getKeyCode()) {
+				case SimpleKeyEvent.KEYCODE_BACK:
+				case SimpleKeyEvent.KEYCODE_DEL:
+
+					mTextBuffer.deleteChar();
+					break;
+				case SimpleKeyEvent.KEYCODE_ENTER:
+					mTextBuffer.crlf();
+					break;
+				case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
+					mTextView.back();
+					mTextBuffer.setCursor(mTextView.getLeft()
+							.getCursorRow(), mTextView.getLeft()
+							.getCursorCol());
+					break;
+				case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
+					mTextView.front();
+					mTextBuffer.setCursor(mTextView.getLeft()
+							.getCursorRow(), mTextView.getLeft()
+							.getCursorCol());
+					break;
+				case SimpleKeyEvent.KEYCODE_DPAD_UP:
+					mTextView.prev();
+					mTextBuffer.setCursor(mTextView.getLeft()
+							.getCursorRow(), mTextView.getLeft()
+							.getCursorCol());
+					break;
+				case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
+					mTextView.next();
+					mTextBuffer.setCursor(mTextView.getLeft()
+							.getCursorRow(), mTextView.getLeft()
+							.getCursorCol());
+					break;
+				case SimpleKeyEvent.KEYCODE_SPACE:
+					mTextBuffer.pushCommit(" ", 1);
+					break;
+				}
+			} else {
+				//android.util.Log.v("kiyo","#key= -");
+				mTextBuffer.pushCommit(text.getText(),
+						text.getNewCursorPosition());
 			}
 		} else {
-			//android.util.Log.v("kiyo","#key= -");
-			mTextBuffer.pushCommit(text.getText(),
-					text.getNewCursorPosition());
+			if (text.isKeyCode()) {
+				//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
+				switch (text.getKeyCode()) {
+				case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
+					mTextView.back();
+					mTextBuffer.setCursor(mTextView.getLeft()
+							.getCursorRow(), mTextView.getLeft()
+							.getCursorCol());
+					break;
+				case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
+					mTextView.front();
+					mTextBuffer.setCursor(mTextView.getLeft()
+							.getCursorRow(), mTextView.getLeft()
+							.getCursorCol());
+					break;
+				case SimpleKeyEvent.KEYCODE_DPAD_UP:
+					mTextView.prev();
+					mTextBuffer.setCursor(mTextView.getLeft()
+							.getCursorRow(), mTextView.getLeft()
+							.getCursorCol());
+					break;
+				case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
+					mTextView.next();
+					mTextBuffer.setCursor(mTextView.getLeft()
+							.getCursorRow(), mTextView.getLeft()
+							.getCursorCol());
+					break;
+				}
+			}			
 		}
 		
-
 		//android.util.Log.v("kiyo","#key= end");
 	}
 	 

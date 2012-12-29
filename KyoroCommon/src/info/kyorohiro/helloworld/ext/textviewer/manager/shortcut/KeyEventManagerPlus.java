@@ -1,31 +1,77 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.BackwardWord;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.BeginningOfBuffer;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.BeginningOfLine;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.DeleteBackwardChar;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.DeleteChar;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.EndOfBuffer;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.EndOfLine;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.FowardWord;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.KillLine;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.NextLine;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.PreviousLine;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.Recenter;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.Yank;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command.CommandPart;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 
 public class KeyEventManagerPlus extends KeyEventManager {
 
-	private static Command[] EMACS_SHORTCUT_EXTRA = {
+	public KeyEventManagerPlus() {
+		super();
+	}
+
+	// must to call
+	@Override
+	public void onUpdate(CharSequence mode) {
+		android.util.Log.v("kiyo","onUpdate:"+mode);
+		if(CursorableLineView.MODE_EDIT.equals(mode)) {
+			getManager().updateCommnad(EMACS_SHORTCUT_EDIT);			
+		} else {
+			getManager().updateCommnad(EMACS_SHORTCUT_VIEW);
+		}
+	}
+
+	public static Command[] EMACS_SHORTCUT_VIEW = {
+		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
+		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
+		new Command(new CommandPart[]{new CommandPart('n', true, false)}, new NextLine()),
+		new Command(new CommandPart[]{new CommandPart('p', true, false)}, new PreviousLine()),
+		new Command(new CommandPart[]{new CommandPart('f', true, false)}, new FowardWord()),
+		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
+		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('<', false, true)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
+
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
 	};
 
-	public KeyEventManagerPlus() {
-		super();
-		setExtraCommand(EMACS_SHORTCUT_EXTRA);	
-	}
-
-	public Command[] getEmacsShortExtra() {
-		return EMACS_SHORTCUT_EXTRA;
-	}
-
-	public void add(Command c) {
-		Command[] _tmp = EMACS_SHORTCUT_EXTRA;
-		Command[] _new = new Command[_tmp.length+1];
-		int i=0;
-		for(;i<_tmp.length;i++) {
-			_new[i] = _tmp[i];
-		}
-		_new[i] = c;
-	}
+	public static Command[] EMACS_SHORTCUT_EDIT = {
+		new Command(new CommandPart[]{new CommandPart('g', true, false)}, null),
+		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
+		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
+		new Command(new CommandPart[]{new CommandPart('n', true, false)}, new NextLine()),
+		new Command(new CommandPart[]{new CommandPart('p', true, false)}, new PreviousLine()),
+		new Command(new CommandPart[]{new CommandPart('f', true, false)}, new FowardWord()),
+		new Command(new CommandPart[]{new CommandPart('b', true, false)}, new BackwardWord()),
+		new Command(new CommandPart[]{new CommandPart('h', true, false)}, new DeleteChar()),
+		new Command(new CommandPart[]{new CommandPart('d', true, false)}, new DeleteBackwardChar()),
+		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
+		new Command(new CommandPart[]{new CommandPart('k', true, false)}, new KillLine()),
+		new Command(new CommandPart[]{new CommandPart('y', true, false)}, new Yank()),
+		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('<', false, true)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
+		//
+		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
+	};
 }

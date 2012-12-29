@@ -63,13 +63,6 @@ public class EditableLineView extends CursorableLineView {
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		modCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-		if(isFocus()){
-			getLeft().isVisible(true);
-			getRight().isVisible(true);
-		} else {
-			getLeft().isVisible(false);
-			getRight().isVisible(false);			
-		}
 		if(isFocus()) {
 			try {
 				updateCommitTextFromIME();

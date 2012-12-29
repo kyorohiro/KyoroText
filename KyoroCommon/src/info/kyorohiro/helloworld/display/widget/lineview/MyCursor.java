@@ -15,7 +15,6 @@ public class MyCursor extends SimpleDisplayObject {
 	private int px = 0;
 	private int py = 0;
 	private boolean focus = false;
-	private boolean mEnable = false;
 	private WeakReference<CursorableLineView> mParent;
 	private CharSequence mMessage = "";
 
@@ -24,13 +23,6 @@ public class MyCursor extends SimpleDisplayObject {
 		cursorCol = lineview.getPoint(0);
 	}
 
-	public boolean enable() {
-		return mEnable;
-	}
-
-	public void enable(boolean enable) {
-		mEnable = enable;
-	}
 
 	public void setMessage(CharSequence message) {
 		mMessage = message;
@@ -67,9 +59,6 @@ public class MyCursor extends SimpleDisplayObject {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-		if (!mEnable) {
-			return;
-		}
 		if(!updatable()){
 			return;
 		}
@@ -127,9 +116,6 @@ public class MyCursor extends SimpleDisplayObject {
 	public boolean onTouchTest(int x, int y, int action) {
 		// following code is yatuke sigoto
 		if(!mParent.get().isFocus()){
-			return false;
-		}
-		if (!mEnable) {
 			return false;
 		}
 		if(!updatable()){
