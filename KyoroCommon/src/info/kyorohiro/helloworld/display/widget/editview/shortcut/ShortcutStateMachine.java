@@ -58,6 +58,11 @@ public class ShortcutStateMachine {
 		}
 	}
 
+	public boolean update(int keycode, boolean ctl, boolean alt,EditableLineView view, EditableLineViewBuffer buffer) {		//
+		clear();
+		return false;
+	}
+
 	public boolean update(char code, boolean ctl, boolean alt,EditableLineView view, EditableLineViewBuffer buffer) {
 		int i=0;
 		log("#c="+code+",c/a="+ctl+"/"+alt);
@@ -69,7 +74,6 @@ public class ShortcutStateMachine {
 					clear();
 					return true;
 				} else {
-					//android.util.Log.v("kiyo","+++");
 					mWorkList[i]=c;
 					i++;
 				}
@@ -87,8 +91,10 @@ public class ShortcutStateMachine {
 	}
 
 	public void clear() {
-		mCurPos = 0;
-		mLength = mBaseLength;
-		System.arraycopy(mBase, 0, mWorkList, 0, mBaseLength);
+		if(mCurPos != 0) {
+			mCurPos = 0;
+			mLength = mBaseLength;
+			System.arraycopy(mBase, 0, mWorkList, 0, mBaseLength);
+		}
 	}
 }

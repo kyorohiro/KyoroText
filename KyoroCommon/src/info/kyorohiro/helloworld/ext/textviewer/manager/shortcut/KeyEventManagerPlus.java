@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 
+import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.BackwardWord;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.BeginningOfBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.BeginningOfLine;
@@ -17,6 +18,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.Recenter;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Yank;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command.CommandPart;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
+import info.kyorohiro.helloworld.ext.textviewer.manager.ModeLineBuffer;
 
 public class KeyEventManagerPlus extends KeyEventManager {
 
@@ -30,7 +32,11 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		android.util.Log.v("kiyo","onUpdate:"+mode);
 		if(CursorableLineView.MODE_EDIT.equals(mode)) {
 			getManager().updateCommnad(EMACS_SHORTCUT_EDIT);			
-		} else {
+		}
+		else if(ModeLineBuffer.MODE_LINE_BUFFER.equals(mode)) {
+			getManager().updateCommnad(EMACS_SHORTCUT_MODELINE);			
+		}
+		else {
 			getManager().updateCommnad(EMACS_SHORTCUT_VIEW);
 		}
 	}
@@ -39,6 +45,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
 		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
 		new Command(new CommandPart[]{new CommandPart('n', true, false)}, new NextLine()),
+		new Command(new CommandPart[]{new CommandPart('b', true, false)}, new BackwardWord()),
 		new Command(new CommandPart[]{new CommandPart('p', true, false)}, new PreviousLine()),
 		new Command(new CommandPart[]{new CommandPart('f', true, false)}, new FowardWord()),
 		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
@@ -49,7 +56,15 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('<', false, true)}, new BeginningOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
 
+		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
+		
+		//
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new BackwardWord()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_LEFT, false, false)}, new PreviousLine()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
+		
 	};
 
 	public static Command[] EMACS_SHORTCUT_EDIT = {
@@ -74,4 +89,20 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
 	};
+
+	public static Command[] EMACS_SHORTCUT_MODELINE = {
+		new Command(new CommandPart[]{new CommandPart('g', true, false)}, null),
+		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
+		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
+		new Command(new CommandPart[]{new CommandPart('n', true, false)}, new NextLine()),
+		new Command(new CommandPart[]{new CommandPart('p', true, false)}, new PreviousLine()),
+		new Command(new CommandPart[]{new CommandPart('f', true, false)}, new FowardWord()),
+		new Command(new CommandPart[]{new CommandPart('b', true, false)}, new BackwardWord()),
+		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
+		//
+		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
+
+	};
+
+
 }

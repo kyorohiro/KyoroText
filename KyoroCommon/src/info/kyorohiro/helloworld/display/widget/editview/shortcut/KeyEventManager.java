@@ -188,35 +188,7 @@ public class KeyEventManager extends IMEController{
 						text.getNewCursorPosition());
 			}
 		} else {
-			if (text.isKeyCode()) {
-				//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
-				switch (text.getKeyCode()) {
-				case SimpleKeyEvent.KEYCODE_DPAD_LEFT:
-					mTextView.back();
-					mTextBuffer.setCursor(mTextView.getLeft()
-							.getCursorRow(), mTextView.getLeft()
-							.getCursorCol());
-					break;
-				case SimpleKeyEvent.KEYCODE_DPAD_RIGHT:
-					mTextView.front();
-					mTextBuffer.setCursor(mTextView.getLeft()
-							.getCursorRow(), mTextView.getLeft()
-							.getCursorCol());
-					break;
-				case SimpleKeyEvent.KEYCODE_DPAD_UP:
-					mTextView.prev();
-					mTextBuffer.setCursor(mTextView.getLeft()
-							.getCursorRow(), mTextView.getLeft()
-							.getCursorCol());
-					break;
-				case SimpleKeyEvent.KEYCODE_DPAD_DOWN:
-					mTextView.next();
-					mTextBuffer.setCursor(mTextView.getLeft()
-							.getCursorRow(), mTextView.getLeft()
-							.getCursorCol());
-					break;
-				}
-			}			
+			
 		}
 		
 		//android.util.Log.v("kiyo","#key= end");
