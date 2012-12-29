@@ -11,7 +11,7 @@ public class Yank implements Task {
 	}
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
-		
+		buffer.yank();
 		buffer.clearYank();
 	}
  }
