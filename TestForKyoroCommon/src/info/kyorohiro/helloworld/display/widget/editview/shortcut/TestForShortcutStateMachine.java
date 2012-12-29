@@ -28,6 +28,14 @@ public class TestForShortcutStateMachine extends TestCase {
 		assertEquals(0, TestTask.sNumOfAct);
 		assertEquals(TEST_COMMAND.length, ssm.getWorkList());
 
+		TestTask.clear();
+		ssm.update('a', true, false, null, null);
+		assertEquals(0, TestTask.sNumOfAct);
+		assertEquals(4, ssm.getWorkList());
+		assertEquals("aa", ssm.getWork(0).getTask().getCommandName());
+		assertEquals("abc", ssm.getWork(1).getTask().getCommandName());
+		assertEquals("abd", ssm.getWork(2).getTask().getCommandName());
+		assertEquals("ad", ssm.getWork(3).getTask().getCommandName());
 	}
 
 	public static Command[] TEST_COMMAND = {
@@ -57,7 +65,7 @@ public class TestForShortcutStateMachine extends TestCase {
 
 		@Override
 		public String getCommandName() {
-			return null;
+			return mId;
 		}
 
 		@Override

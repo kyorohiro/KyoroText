@@ -12,7 +12,11 @@ public class Command {
 		mCommand = c;
 		mAction = action;
 	}
-	
+
+	public Task getTask() {
+		return mAction;
+	}
+
 	public boolean action(int index, EditableLineView view, EditableLineViewBuffer buffer) {
 		if(index+1==mCommand.length) {
 			if(mAction != null) {
