@@ -3,19 +3,36 @@ package info.kyorohiro.helloworld.display.widget.editview.shortcut;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 
-public class Manager {
+public class ShortcutStateMachine {
 	private int mCurPos = 0;
-	private Command[] mList = new Command[KeyEventManager.EMACS_SHORTCUT_BASIC.length];
+	private Command[] mBase = new Command[0];
+	private int mBaseLength = 0;
+	private Command[] mWorkList = new Command[KeyEventManager.EMACS_SHORTCUT_BASIC.length];
 	private int mLength = 0;
 	private KeyEventManager mManager = null;
 
-	public Manager(KeyEventManager manager) {
+	public ShortcutStateMachine(KeyEventManager manager, Command[] base) {
 		mManager = manager;
+		updateCommnad(base);
 		clear();
 	}
 
 	public static void log(String log) {
 		//android.util.Log.v("kiyo", ""+log);
+	}
+
+	public synchronized void updateCommnad(Command[] newCommand) {
+		mCurPos = 0;
+		mBaseLength = newCommand.length;
+		mLength = mBaseLength;
+		if(mBase.length < mBaseLength) {
+			mBase = new Command[mBaseLength];
+		}
+		if(mWorkList.length < mBaseLength) {
+			mWorkList = new Command[mBaseLength];
+		}
+		System.arraycopy(newCommand, 0, mBase, 0, mBaseLength);
+		System.arraycopy(newCommand, 0, mWorkList, 0, mLength);
 	}
 
 	public boolean useHardKey() {
@@ -31,14 +48,14 @@ public class Manager {
 		log("#c="+code+",c/a="+ctl+"/"+alt);
 		
 		for(int j=0;j<mLength;j++) {
-			Command c = mList[j];
+			Command c = mWorkList[j];
 			if(c.match(mCurPos, code, ctl, alt)){
 				if(c.action(mCurPos, view, buffer)) {
 					clear();
 					return true;
 				} else {
 					//android.util.Log.v("kiyo","+++");
-					mList[i]=c;
+					mWorkList[i]=c;
 					i++;
 				}
 			}
@@ -56,13 +73,6 @@ public class Manager {
 
 	public void clear() {
 		mCurPos = 0;
-		if(mLength != mManager.numOfCommnad())  {
-			mLength = mManager.numOfCommnad();
-			mList = new Command[mLength];
-			System.arraycopy(KeyEventManager.EMACS_SHORTCUT_BASIC, 0, mList, 0, KeyEventManager.EMACS_SHORTCUT_BASIC.length);
-			if(KeyEventManager.EMACS_SHORTCUT_BASIC.length < mLength) {
-				System.arraycopy(mManager.getEmacsShortExtra(), 0, mList, KeyEventManager.EMACS_SHORTCUT_BASIC.length, mLength-KeyEventManager.EMACS_SHORTCUT_BASIC.length);
-			}
-		}
+		System.arraycopy(mBase, 0, mWorkList, 0, mBaseLength);
 	}
 }

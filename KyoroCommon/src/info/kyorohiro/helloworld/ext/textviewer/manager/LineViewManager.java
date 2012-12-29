@@ -61,11 +61,15 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		g.getTextViewer().isGuard(true);		
 		g.isVisible(false);
 		g.getTextViewer().IsExtraUI(false);
-		g.isControlBuffer(true);
+		g.isControlBuffer(true);		
 		//*/
 	}
 
-
+	@Override
+	public void start() {
+		super.start();
+		changeFocus(mFocusingViewer);
+	}
 	public void setCurrentFile(String path) {
 		mBuilder.setCurrentFile(path);
 	}

@@ -71,19 +71,14 @@ public class EditableLineView extends CursorableLineView {
 			getRight().isVisible(false);			
 		}
 		if(isFocus()) {
-			if (editable()) {
-				try {
-					mTextBuffer.setCursor(getLeft().getCursorRow(), getLeft().getCursorCol());
-					updateCommitTextFromIME();
+			try {
+				updateCommitTextFromIME();
+				if (editable()) {
 					updateComposingTextFromIME();
-					getLeft().setCursorRow(mTextBuffer.getRow());
-					getLeft().setCursorCol(mTextBuffer.getCol());
-					// android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
-				} catch (Throwable e) {
-					e.printStackTrace();
 				}
-			} else {
-				
+				// android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());
+			} catch (Throwable e) {
+				e.printStackTrace();
 			}
 		}
 		super.paint(graphics);

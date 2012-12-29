@@ -121,9 +121,9 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent"+event.getKeyCode()+","+event.toString());
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
-		if(!mIMEIsShow) {
-			return super.dispatchKeyEvent(event);			
-		} else 
+		//if(!mIMEIsShow) {
+		//	return super.dispatchKeyEvent(event);			
+		//} else 
 		if(event.getKeyCode() == KeyEvent.KEYCODE_BACK
 				||event.getKeyCode() == KeyEvent.KEYCODE_MENU
 				||event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN
@@ -158,9 +158,9 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 //		android.util.Log.v("kiyo","dispatchKeyEventPreIme");
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 
-		if(!mIMEIsShow) {
-			return super.dispatchKeyEventPreIme(event);			
-		} else 
+		//if(!mIMEIsShow) {
+		//	return super.dispatchKeyEventPreIme(event);			
+		//} else 
 		if(mController.tryUseBinaryKey(event.isShiftPressed(), pushingCtl(event), event.isAltPressed())){
 			if(event.getAction() == KeyEvent.ACTION_DOWN) {
 				mController.binaryKey(mCurrentInputConnection, event.getKeyCode(), event.isShiftPressed(), pushingCtl(event), event.isAltPressed());

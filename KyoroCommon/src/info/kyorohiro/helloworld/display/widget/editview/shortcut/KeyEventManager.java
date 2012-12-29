@@ -1,7 +1,5 @@
 package info.kyorohiro.helloworld.display.widget.editview.shortcut;
 
-import java.nio.Buffer;
-
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.IMEController;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
@@ -9,17 +7,15 @@ import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command.CommandPart;
-import info.kyorohiro.helloworld.text.KyoroString;
+
 
 public class KeyEventManager extends IMEController{
-
-
-	private Manager mManager = null;
+	private ShortcutStateMachine mManager = null;
 	public KeyEventManager() {
 		init();
 	}
 	private void init() {
-		mManager = new Manager(this);
+		mManager = new ShortcutStateMachine(this, EMACS_SHORTCUT_BASIC);
 	}
 
 	@Override
@@ -44,12 +40,10 @@ public class KeyEventManager extends IMEController{
 		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
 		new Command(new CommandPart[]{new CommandPart('k', true, false)}, new KillLine()),
 		new Command(new CommandPart[]{new CommandPart('y', true, false)}, new Yank()),
-
 		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
-
 		new Command(new CommandPart[]{new CommandPart('<', false, true)}, new BeginningOfBuffer()),
 		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
 	};
@@ -93,7 +87,10 @@ public class KeyEventManager extends IMEController{
 					first = false;
 				}
 				// android.util.Log.v("kiyo","key= #");
+				mTextBuffer.setCursor(mTextView.getLeft().getCursorRow(), mTextView.getLeft().getCursorCol());
 				a(text, mTextView, mTextBuffer);
+				mTextView.getLeft().setCursorRow(mTextBuffer.getRow());
+				mTextView.getLeft().setCursorCol(mTextBuffer.getCol());
 			} else {
 				break;
 			}

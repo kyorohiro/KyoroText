@@ -18,7 +18,7 @@ public class CursorableLineView extends LineView {
 	private MyCursor mRight = new MyCursor(this);
 	private CharSequence mMode = MODE_VIEW;
 
-	private boolean mIsFocus = true;
+	private boolean mIsFocus = false;
 	public boolean isFocus(){
 //		android.util.Log.v("kiyo","adsdf[1]"+mIsFocus);
 		return mIsFocus;
