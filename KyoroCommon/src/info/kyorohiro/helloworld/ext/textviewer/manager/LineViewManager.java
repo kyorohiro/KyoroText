@@ -30,10 +30,14 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private SimpleCircleControllerMenuPlus mCircleMenu = new SimpleCircleControllerMenuPlus();
 	private LineViewGroup mRoot = null;
 	private KeyEventManager mKeyEventManager = new KeyEventManagerPlus();
-	private TextViewer mModeLine = null;
+	private ModeLineBuffer mModeLine = null;
 
 	public static LineViewManager getManager() {
 		return sInstance;
+	}
+
+	public ModeLineBuffer getModeLineBuffer() {
+		return mModeLine;
 	}
 
 	// ���Singletone�ɂ���B
@@ -52,9 +56,10 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		setCircleMenuRadius(menuWidth);
 		//
 		first.getTextViewer().getLineView().fittableToView();
-		/*
+		///*
 		 // command
-		LineViewGroup g = first.divideAndNew(true, mModeLine = newTextViewrEmpty());
+		LineViewGroup g = first.divideAndNew(true, mModeLine = new ModeLineBuffer(mTextSize, mWidth, mMergine, false));
+		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
 		first.setSeparatorPoint(0.05f);
 		g.getTextViewer().getLineView().fittableToView(true);
 		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
@@ -116,12 +121,6 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		return viewer;
 	}
 
-	public TextViewer newTextViewrEmpty() {
-		TextViewer viewer = new StartupCommandBuffer(mTextSize, mWidth, mMergine, false);
-		viewer.getLineView().setKeyEventManager(mKeyEventManager);
-		//viewer.getLineView().fittableToView(true);
-		return viewer;
-	}
 
 	@Override
 	public void insertChild(int index, SimpleDisplayObject child) {

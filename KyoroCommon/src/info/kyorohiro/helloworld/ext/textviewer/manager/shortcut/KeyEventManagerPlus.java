@@ -31,7 +31,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 	// must to call
 	@Override
 	public void onUpdate(CharSequence mode) {
-//		android.util.Log.v("kiyo","onUpdate:"+mode);
+		android.util.Log.v("kiyo","onUpdate:"+mode);
 		if(CursorableLineView.MODE_EDIT.equals(mode)) {
 			getManager().updateCommnad(EMACS_SHORTCUT_EDIT);			
 		}
@@ -69,6 +69,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_RIGHT, false, false)}, new FowardWord()),
 		
 		//*/
+		new Command(new CommandPart[]{new CommandPart('s', true, false)}, new ISearchForward()),
 	};
 
 	public static Command[] EMACS_SHORTCUT_EDIT = {
@@ -124,6 +125,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DEL, false, false)}, new DeleteChar()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_BACK, false, false)}, new DeleteChar()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),		
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_ENTER, false, false)}, new ModeLineTaskDone()),	
 	};
 
 

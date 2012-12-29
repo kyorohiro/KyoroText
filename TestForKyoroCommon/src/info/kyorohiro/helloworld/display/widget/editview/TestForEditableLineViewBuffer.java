@@ -20,24 +20,17 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		assertTrue(true);
 	}
 
-
 	public void testCommitText1() {
-		String[] data = new String[0];//{""};
+		String[] data = new String[0];// {""};
 		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
 		setData(data, spec);
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(0, 0);
-		int[] inputCursor = {
-			1,1,1,1,1,1,1,
-		};
-		String[] inputText = {
-			"a","b","c","d","e","f","g"
-		};
-		String[][] expected = {
-				{ "a"},{"ab"},{"abc"},{"abcd"},{"abcde"},
-				{"abcde","f"},{"abcde","fg"}
-		};
+		int[] inputCursor = { 1, 1, 1, 1, 1, 1, 1, };
+		String[] inputText = { "a", "b", "c", "d", "e", "f", "g" };
+		String[][] expected = { { "a" }, { "ab" }, { "abc" }, { "abcd" },
+				{ "abcde" }, { "abcde", "f" }, { "abcde", "fg" } };
 
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
@@ -48,25 +41,18 @@ public class TestForEditableLineViewBuffer extends TestCase {
 	}
 
 	public void testCommitText2() {
-		String[] data = new String[0];//{""};
+		String[] data = new String[0];// {""};
 		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
 		setData(data, spec);
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(0, 0);
-		int[] inputCursor = {
-			1,1,1,1,1
-		};
-		String[] inputText = {
-			"abcdefg","hijklmn","o","p","qrstuvwxuz"
-		};
-		String[][] expected = {
-				{"abcde","fg"},
-				{"abcde","fghij","klmn"},
-				{"abcde","fghij","klmno"},
-				{"abcde","fghij","klmno","p"},
-				{"abcde","fghij","klmno","pqrst","uvwxu","z"}
-		};
+		int[] inputCursor = { 1, 1, 1, 1, 1 };
+		String[] inputText = { "abcdefg", "hijklmn", "o", "p", "qrstuvwxuz" };
+		String[][] expected = { { "abcde", "fg" },
+				{ "abcde", "fghij", "klmn" }, { "abcde", "fghij", "klmno" },
+				{ "abcde", "fghij", "klmno", "p" },
+				{ "abcde", "fghij", "klmno", "pqrst", "uvwxu", "z" } };
 
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
@@ -76,29 +62,26 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		}
 	}
 
-
 	public void testCommitText3() {
-		String[] data = {"abcde", "fgh\r\n", "ijkl"};
+		String[] data = { "abcde", "fgh\r\n", "ijkl" };
 		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
 		setData(data, spec);
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(0, 0);
 
-		int[] inputCursor = {
-			1,1,1,1,1
-		};
+		int[] inputCursor = { 1, 1, 1, 1, 1 };
 
-		String[] inputText = {
-			"abcdefg","hijklmn","o","p","qrstuvwxuz"
-		};
+		String[] inputText = { "abcdefg", "hijklmn", "o", "p", "qrstuvwxuz" };
 
 		String[][] expected = {
-				{"abcde","fgabc","defgh","\r\n", "ijkl"},
-				{"abcde","fghij","klmna","bcdef","gh\r\n", "ijkl"},
-				{"abcde","fghij","klmno","abcde", "fgh\r\n", "ijkl"},
-				{"abcde","fghij","klmno","pabcd","efgh\r","\n", "ijkl"}, // irrigal case
-				{"abcde","fghij","klmno","pqrst","uvwxu","zabcd","efgh\r","\n", "ijkl"}, //irregalcase
+				{ "abcde", "fgabc", "defgh", "\r\n", "ijkl" },
+				{ "abcde", "fghij", "klmna", "bcdef", "gh\r\n", "ijkl" },
+				{ "abcde", "fghij", "klmno", "abcde", "fgh\r\n", "ijkl" },
+				{ "abcde", "fghij", "klmno", "pabcd", "efgh\r", "\n", "ijkl" }, // irrigal
+																				// case
+				{ "abcde", "fghij", "klmno", "pqrst", "uvwxu", "zabcd",
+						"efgh\r", "\n", "ijkl" }, // irregalcase
 		};
 
 		for (int i = 0; i < expected.length; i++) {
@@ -110,28 +93,24 @@ public class TestForEditableLineViewBuffer extends TestCase {
 	}
 
 	public void testCommitText4() {
-		String[] data = {"abcde", "fgh\r\n", "ijkl"};
+		String[] data = { "abcde", "fgh\r\n", "ijkl" };
 		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
 		setData(data, spec);
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(2, 2);
 
-		int[] inputCursor = {
-			1,1,1,1,1
-		};
+		int[] inputCursor = { 1, 1, 1, 1, 1 };
 
-		String[] inputText = {
-			"abcdefg","hijklmn","o","p","qrstuvwxuz"
-		};
+		String[] inputText = { "abcdefg", "hijklmn", "o", "p", "qrstuvwxuz" };
 
 		String[][] expected = {
-				{"abcde", "fgh\r\n", "ijabc","defgk","l"},
-				{"abcde", "fgh\r\n", "ijabc","defgh","ijklm","nkl"},
-				{"abcde", "fgh\r\n", "ijabc","defgh","ijklm","nokl"},
-				{"abcde", "fgh\r\n", "ijabc","defgh","ijklm","nopkl"},
-				{"abcde", "fgh\r\n", "ijabc","defgh","ijklm","nopqr","stuvw","xuzkl"},
-		};
+				{ "abcde", "fgh\r\n", "ijabc", "defgk", "l" },
+				{ "abcde", "fgh\r\n", "ijabc", "defgh", "ijklm", "nkl" },
+				{ "abcde", "fgh\r\n", "ijabc", "defgh", "ijklm", "nokl" },
+				{ "abcde", "fgh\r\n", "ijabc", "defgh", "ijklm", "nopkl" },
+				{ "abcde", "fgh\r\n", "ijabc", "defgh", "ijklm", "nopqr",
+						"stuvw", "xuzkl" }, };
 
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
@@ -148,16 +127,12 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(2, 2);
-		String[][] expected = {
-				{ "abcde", "fgh\r\n", "ikl" },// 0
-				{ "abcde", "fgh\r\n", "kl" },
-				{ "abcde", "fghkl" },//2
-				{ "abcde", "fgkl" },
-				{ "abcde", "fkl" },// 4
-				{ "abcde", "kl" },
-				{ "abcdk", "l" },// 6
-				{ "abckl" }, { "abkl" }, { "akl" }, { "kl" }, //10
-				{ "kl" },{ "kl" }, { "kl" }, };
+		String[][] expected = { { "abcde", "fgh\r\n", "ikl" },// 0
+				{ "abcde", "fgh\r\n", "kl" }, { "abcde", "fghkl" },// 2
+				{ "abcde", "fgkl" }, { "abcde", "fkl" },// 4
+				{ "abcde", "kl" }, { "abcdk", "l" },// 6
+				{ "abckl" }, { "abkl" }, { "akl" }, { "kl" }, // 10
+				{ "kl" }, { "kl" }, { "kl" }, };
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
 			String[] exp = expected[i];
@@ -173,19 +148,18 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(0, 2);
-		String[][] expected = { 
-				{ "abcde", "fgh" },// 0
+		String[][] expected = { { "abcde", "fgh" },// 0
 				{ "abcde", "fg" },// 1
 				{ "abcde", "f" },// 2
-				{ "abcde"},// 3
-				{ "abcd"},// 4
-				{ "abc"},// 0
-				{ "ab"},// 0
-				{ "a"},// 0
-				{ ""},// 0
-				{ ""},// 0
-				{ ""},// 0
-				{ ""},// 0
+				{ "abcde" },// 3
+				{ "abcd" },// 4
+				{ "abc" },// 0
+				{ "ab" },// 0
+				{ "a" },// 0
+				{ "" },// 0
+				{ "" },// 0
+				{ "" },// 0
+				{ "" },// 0
 		};
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
@@ -202,15 +176,14 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(0, 2);
-		String[][] expected = { 
-				{ "abc\r\n", "fgh"},// 0
-				{ "abc\r\n", "fg"},// 0
-				{ "abc\r\n", "f"},// 0
-				{ "abc\r\n", ""},// 0
-				{ "abc"},// 0
-				{ "ab"},// 0
-				{ "a"},// 0
-				{ ""},// 0
+		String[][] expected = { { "abc\r\n", "fgh" },// 0
+				{ "abc\r\n", "fg" },// 0
+				{ "abc\r\n", "f" },// 0
+				{ "abc\r\n", "" },// 0
+				{ "abc" },// 0
+				{ "ab" },// 0
+				{ "a" },// 0
+				{ "" },// 0
 		};
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
@@ -236,14 +209,16 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		}
 	}
 
-	public void testYank1_() {		
+	public void testYank1_() {
 		{
 			String[] data = { "abcde", "fgh\r\n", "ijkl" };
-			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(
+					5);
 			setData(data, spec);
 			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 			buffer.IsCrlfMode(true);
 			buffer.setCursor(0, 0);
+			buffer.clearYank();
 
 			buffer.killLine();
 			{
@@ -322,7 +297,8 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		}
 		{
 			String[] data = { "abcde", "fgh\r\n", "ijkl" };
-			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(
+					5);
 			setData(data, spec);
 			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 			buffer.IsCrlfMode(true);
@@ -339,20 +315,19 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			buffer.setCursor(2, 1);
 			buffer.killLine();
 			buffer.yank_debug();
-			buffer.killLine();// "abcde", "fgijk, "l"  | h \r\n
+			buffer.killLine();// "abcde", "fgijk, "l" | h \r\n
 			buffer.yank_debug();
 			buffer.yank();
 			checkData("mt2", data, buffer);
 			assertEquals(2, buffer.getCol());
 			assertEquals(0, buffer.getRow());
 
-			
 			buffer.setCursor(2, 1);
 			buffer.killLine();
 			buffer.yank_debug();
 			buffer.killLine();
 			buffer.yank_debug();
-			buffer.killLine();// "abcde", "fgl" |  h \r\n ijk
+			buffer.killLine();// "abcde", "fgl" | h \r\n ijk
 			buffer.yank_debug();
 			buffer.get_debug();
 			buffer.yank();
@@ -363,25 +338,25 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			buffer.setCursor(2, 1);
 			buffer.killLine();
 			buffer.killLine();
-			buffer.killLine();// "abcde", "fgl" |  h \r\n ijk
+			buffer.killLine();// "abcde", "fgl" | h \r\n ijk
 			assertEquals(1, buffer.getCol());
 			assertEquals(2, buffer.getRow());
 			{
-				String[] da = {"abcde", "fgl"};
+				String[] da = { "abcde", "fgl" };
 				checkData("mt3-1", da, buffer);
 			}
 
-			buffer.killLine();// "abcde", "fg" |  h \r\n ijk l
+			buffer.killLine();// "abcde", "fg" | h \r\n ijk l
 			assertEquals(1, buffer.getCol());
 			assertEquals(2, buffer.getRow());
 			{
-				String[] yankExp = {"h", "\r\n", "ijk", "l"};
-				for(int i=0;i<buffer.debugGetYankSize();i++){
+				String[] yankExp = { "h", "\r\n", "ijk", "l" };
+				for (int i = 0; i < buffer.debugGetYankSize(); i++) {
 					assertEquals(yankExp[i], buffer.debugGetYank(i));
 				}
 			}
 			{
-				String[] da = {"abcde", "fg"};
+				String[] da = { "abcde", "fg" };
 				checkData("mt3-1", da, buffer);
 			}
 			buffer.yank();
@@ -394,7 +369,8 @@ public class TestForEditableLineViewBuffer extends TestCase {
 	public void testKillLine_opt() {
 		{
 			String[] data = { "abcde", "fgl" };
-			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(
+					5);
 			setData(data, spec);
 			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 			buffer.IsCrlfMode(true);
@@ -402,20 +378,20 @@ public class TestForEditableLineViewBuffer extends TestCase {
 
 			buffer.killLine();
 			{
-				String[] da = {"abcde", "fg"};
+				String[] da = { "abcde", "fg" };
 				checkData("mt3-1", da, buffer);
 			}
 
-		}	
+		}
 	}
 
 	public void testCommit_opt() {
 		{
 			String[] data = { "abcde", "fgl" };
 			String[][] expected = { { "abcde", "fghl" },
-					{ "abcde", "fgh\r\n", "l" },
-					{ "abcde", "fgh\r\n", "ijkl" }};
-			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+					{ "abcde", "fgh\r\n", "l" }, { "abcde", "fgh\r\n", "ijkl" } };
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(
+					5);
 			setData(data, spec);
 			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 			buffer.IsCrlfMode(true);
@@ -435,11 +411,10 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		{
 			String[] data = { "abcde", "fg" };
 			String[][] expected = { { "abcde", "fgh" },
-					{ "abcde", "fgh\r\n", ""},
-					{ "abcde", "fgh\r\n", "ijk" },
-					{ "abcde", "fgh\r\n", "ijkl" },
-					};
-			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+					{ "abcde", "fgh\r\n", "" }, { "abcde", "fgh\r\n", "ijk" },
+					{ "abcde", "fgh\r\n", "ijkl" }, };
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(
+					5);
 			setData(data, spec);
 			EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 			buffer.IsCrlfMode(true);
@@ -463,7 +438,6 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		}
 
 	}
-
 
 	public void testKillLine1_() {
 		String[] data = { "abcde", "fgh\r\n", "ijkl" };
@@ -714,14 +688,13 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(1, 2);
-		String[][] expected = {
-				{ "abcde", "fgh\r\n", "ikl" },// 0
+		String[][] expected = { { "abcde", "fgh\r\n", "ikl" },// 0
 				{ "abcde", "fgh\r\n", "il" },// 0
 				{ "abcde", "fgh\r\n", "i" },// 0
 				{ "abcde", "fgh\r\n", "i" },// 0
 				{ "abcde", "fgh\r\n", "i" },// 0
 
-				};
+		};
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
 			String[] exp = expected[i];
@@ -737,14 +710,13 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(1, 2);
-		String[][] expected = {
-				{ "abcde", "fghjk", "ikl" },// 0
+		String[][] expected = { { "abcde", "fghjk", "ikl" },// 0
 				{ "abcde", "fghjk", "il" },// 0
 				{ "abcde", "fghjk", "i" },// 0
 				{ "abcde", "fghjk", "i" },// 0
 				{ "abcde", "fghjk", "i" },// 0
 
-				};
+		};
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
 			String[] exp = expected[i];
@@ -760,9 +732,8 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(3, 1);
-		String[][] expected = { 
-				{ "abc\r\n", "fgh"},// 0
-				{ "abc\r\n", "fgh"},// 0
+		String[][] expected = { { "abc\r\n", "fgh" },// 0
+				{ "abc\r\n", "fgh" },// 0
 		};
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
@@ -779,10 +750,9 @@ public class TestForEditableLineViewBuffer extends TestCase {
 		EditableLineViewBuffer buffer = new EditableLineViewBuffer(spec);
 		buffer.IsCrlfMode(true);
 		buffer.setCursor(1, 1);
-		String[][] expected = {
-				{ "abc\r\n", "fh\r\n", "" },// 0
+		String[][] expected = { { "abc\r\n", "fh\r\n", "" },// 0
 				{ "abc\r\n", "f\r\n", "" },// 0
-				{ "abc\r\n", "f"},// 0
+				{ "abc\r\n", "f" },// 0
 		};
 		for (int i = 0; i < expected.length; i++) {
 			android.util.Log.v("test", "--" + i + "--");
@@ -791,7 +761,6 @@ public class TestForEditableLineViewBuffer extends TestCase {
 			checkData("ms=" + i + ",", exp, buffer);
 		}
 	}
-
 
 	public void testBackwardDeleteChar3_opt() {
 		String[] data = { "abcde", "jkl" };

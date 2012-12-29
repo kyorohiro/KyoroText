@@ -29,6 +29,9 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		return mDiffer;
 	}
 
+	public void clear() {
+		mDiffer.clear();
+	}
 	public synchronized boolean isEdit() {
 		if (mIsNormalized) {
 			return (mDiffer.lengthOfLine() <= 1 ? false : true);

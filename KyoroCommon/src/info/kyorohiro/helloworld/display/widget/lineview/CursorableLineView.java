@@ -97,17 +97,13 @@ public class CursorableLineView extends LineView {
 
 	public void setMode(String mode) {
 		mMode = mode;
-		if (MODE_SELECT.equals(mode)) {
+		if (mode.startsWith(MODE_SELECT)){
 			int col = getShowingTextStartPosition();
 			mLeft.setCursorCol(col);
 			mLeft.setCursorRow(0);
 			mRight.setCursorCol(col);
 			mRight.setCursorRow(3);
 			// setScale(1.0f);
-		}
-		if (MODE_VIEW.equals(mode)) {
-		}
-		if (MODE_EDIT.equals(mode)) {
 		}
 	}
 
@@ -119,7 +115,7 @@ public class CursorableLineView extends LineView {
 		if (super.onTouchTest(x, y, action)) {
 			return true;
 		} else {
-			if (mMode == MODE_EDIT) {
+			if (mMode.toString().startsWith(MODE_EDIT)) {
 				if(action == SimpleMotionEvent.ACTION_DOWN) {
 					mIsEditClickActionX = x;
 					mIsEditClickActionY = y; 
@@ -147,7 +143,7 @@ public class CursorableLineView extends LineView {
 					}
 				}
 			}
-			if(mMode == MODE_SELECT){
+			if(mMode.toString().startsWith(MODE_SELECT)){
 				if(action == SimpleMotionEvent.ACTION_DOWN&&
 						0<x&&x<getWidth()&&0<y&&y<getHeight()) {
 					prevX = x;
@@ -187,7 +183,7 @@ public class CursorableLineView extends LineView {
 	public void paint(SimpleGraphics graphics) {
 		if(isFocus()){
 			getLeft().isVisible(true);
-			if(mMode.equals(MODE_SELECT)) {
+			if(mMode.toString().startsWith(MODE_SELECT)) {
 				getRight().isVisible(true);
 			} else {
 				getRight().isVisible(false);				
@@ -208,7 +204,7 @@ public class CursorableLineView extends LineView {
 		graphics.drawText(mMode, 20, this.getHeight() - 50);
 		drawBGForSelect(graphics);
 		//todo refactaring
-		if(mMode == MODE_SELECT){
+		if(mMode.toString().startsWith(MODE_SELECT)){
 			if(prevX !=-1&&prevY!=-1){
 				time++;
 				if(time >= 7){

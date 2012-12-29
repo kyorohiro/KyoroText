@@ -18,6 +18,10 @@ public class Differ {
 	private LinkedList<Line> mLine = new LinkedList<Line>();
 	private int mLength = 0;
 
+	public synchronized void clear() {
+		mLength = 0;
+		mLine.clear();
+	}
 	public int lengthOfLine() {
 		return mLine.size();
 	}

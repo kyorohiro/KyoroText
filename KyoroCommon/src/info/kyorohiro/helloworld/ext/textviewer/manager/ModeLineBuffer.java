@@ -15,11 +15,12 @@ import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpec
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ModeLineTask;
+import info.kyorohiro.helloworld.text.KyoroString;
 
 // now creating 
 public class ModeLineBuffer extends TextViewer {
 
-	public static final String MODE_LINE_BUFFER = "mode_line_buffer";
+	public static final String MODE_LINE_BUFFER = CursorableLineView.MODE_EDIT+"mode_line_buffer";
 	private ModeLineTask mTask = null;
 
 	public ModeLineBuffer(int textSize, int width, int mergine, boolean message) {
@@ -31,7 +32,19 @@ public class ModeLineBuffer extends TextViewer {
 		} else {
 			getLineView().isCrlfMode(true);
 		}
-		getLineView().setMode(MODE_LINE_BUFFER);
+		getLineView().setConstantMode(MODE_LINE_BUFFER);
+	}
+
+	public void done() {
+		if(mTask !=null) {
+			KyoroString text = this.getLineView().getKyoroString(0);
+			if(text != null) {
+				mTask.enter(text.toString());
+			}
+			mTask.end();
+			mTask = null;
+			this.getLineView().clear();
+		}
 	}
 
 	public void startModeLineTask(ModeLineTask task) {
