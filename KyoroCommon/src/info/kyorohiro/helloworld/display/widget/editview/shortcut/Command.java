@@ -18,16 +18,16 @@ public class Command {
 	}
 
 	public boolean action(int index, EditableLineView view, EditableLineViewBuffer buffer) {
-		android.util.Log.v("kiyo","==2A=1="+index+","+mCommand.length);
+//		android.util.Log.v("kiyo","==2A=1="+index+","+mCommand.length);
 		if (index + 1 == mCommand.length) {
 			if (mAction != null) {
-				android.util.Log.v("kiyo","==2A=2=");
+//				android.util.Log.v("kiyo","==2A=2=");
 				mAction.act(view, buffer);
 			}
-			android.util.Log.v("kiyo","==2A=3=");
+//			android.util.Log.v("kiyo","==2A=3=");
 			return true;
 		} else {
-			android.util.Log.v("kiyo","==2A=4=");
+//			android.util.Log.v("kiyo","==2A=4=");
 			return false;
 		}
 	}
@@ -75,10 +75,10 @@ public class Command {
 				return false;
 			}
 			if (keycode == mKeycode && mCtl == ctl && mAlt == alt) {
-				android.util.Log.v("kiyo","==2A=="+keycode+","+mKeycode);
+//				android.util.Log.v("kiyo","==2A=="+keycode+","+mKeycode);
 				return true;
 			} else {
-				android.util.Log.v("kiyo","==2B=="+keycode+","+mKeycode);
+//				android.util.Log.v("kiyo","==2B=="+keycode+","+mKeycode);
 				return false;
 			}
 		}

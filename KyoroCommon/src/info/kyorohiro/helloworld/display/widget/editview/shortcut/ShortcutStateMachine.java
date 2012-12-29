@@ -16,7 +16,7 @@ public class ShortcutStateMachine {
 	}
 
 	public static void log(String log) {
-		android.util.Log.v("kiyo", ""+log);
+//		android.util.Log.v("kiyo", ""+log);
 	}
 
 	public Command getBase(int i) {
@@ -103,10 +103,10 @@ public class ShortcutStateMachine {
 	}
 
 	public void clear() {
-		if(mCurPos != 0) {
+		//if(mCurPos != 0) {
 			mCurPos = 0;
 			mLength = mBaseLength;
 			System.arraycopy(mBase, 0, mWorkList, 0, mBaseLength);
-		}
+		//}
 	}
 }

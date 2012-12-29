@@ -155,14 +155,15 @@ public class KeyEventManager extends IMEController{
 			mManager.update(text.getKeyCode(), text.pushingCtrl(), text.pushingAlt(), mTextView, mTextBuffer);
 			//		android.util.Log.v("kiyo","#key="+text.getKeyCode());
 		} else {
-			//android.util.Log.v("kiyo","#key= -");
-			mTextBuffer.pushCommit(text.getText(),
-					text.getNewCursorPosition());
+//			android.util.Log.v("kiyo","#key= -");
+			if(getMode().equals(CursorableLineView.MODE_EDIT)) {
+				mTextBuffer.pushCommit(text.getText(),
+						text.getNewCursorPosition());
+			}
 		}
-		
-		//android.util.Log.v("kiyo","#key= end");
-	}
-	 
+	 }
+	 //android.util.Log.v("kiyo","#key= end");
+
 	 public interface Task {
 		 public String getCommandName();
 		 public void act(EditableLineView view, EditableLineViewBuffer buffer);

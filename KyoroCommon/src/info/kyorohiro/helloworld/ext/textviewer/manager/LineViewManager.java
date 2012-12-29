@@ -52,7 +52,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		setCircleMenuRadius(menuWidth);
 		//
 		first.getTextViewer().getLineView().fittableToView();
-		///*
+		/*
 		 // command
 		LineViewGroup g = first.divideAndNew(true, mModeLine = newTextViewrEmpty());
 		first.setSeparatorPoint(0.05f);

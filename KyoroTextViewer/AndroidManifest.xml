@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.kyorohiro.helloworld.textviewer"
-    android:versionCode="160"
+    android:versionCode="161"
     android:installLocation="auto"
-    android:versionName="0.1854 160 unstable">
+    android:versionName="0.1854 161 unstable">
 
     <uses-sdk android:minSdkVersion="4" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
