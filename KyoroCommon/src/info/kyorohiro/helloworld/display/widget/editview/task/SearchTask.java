@@ -34,7 +34,7 @@ public class SearchTask implements Runnable {
 				l.add(str, 0, str.length());
 				row = 0;
 			}
-			if(str.includeLF()) {
+			if(str.includeLF()||index+1==buffer.getNumberOfStockedElement()) {
 				if(l.find()) {
 					android.util.Log.v("kiyo","=0=i-"+index);
 					android.util.Log.v("kiyo","=0=-"+mTargetView.getLeft().getCursorCol()+","+l.length());
@@ -82,8 +82,10 @@ public class SearchTask implements Runnable {
 		}
 
 		public boolean find() {
+			
 			Matcher mMatcher = mPattern.matcher(mBuffer.toString());
 			boolean ret = mMatcher.find();
+			android.util.Log.v("kiyo","----ret="+ret+","+mBuffer.toString());
 			if(ret) {
 				int start = mMatcher.start();
 				int end = mMatcher.end();
@@ -93,7 +95,7 @@ public class SearchTask implements Runnable {
 				for(int i=0;i<mLength.size();i++) {
 					len +=mLength.get(i);
 					android.util.Log.v("kiyo","get="+len+","+end+"-"+prev);
-					if(end<len) {
+					if(end<=len) {
 						mY = i;
 						mX = end-prev;
 						break;

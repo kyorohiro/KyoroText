@@ -20,16 +20,49 @@ public class TestForSearchTask extends TestCase {
 			setData(data, spec);
 			EditableLineView view = new EditableLineView(spec, 12, 100);
 
-			SearchTask task = new SearchTask(view, "f");
-			AsyncronousTask atask = new AsyncronousTask(task);
-			Thread t = new Thread(atask);
-			view.getLeft().setCursorCol(0);
-			view.getLeft().setCursorRow(0);
-			t.start();
-
-			atask.waitForTask();
-			assertEquals(1, view.getLeft().getCursorRow());
-			assertEquals(1, view.getLeft().getCursorCol());
+			{
+				SearchTask task = new SearchTask(view, "f");
+				AsyncronousTask atask = new AsyncronousTask(task);
+				Thread t = new Thread(atask);
+				view.getLeft().setCursorCol(0);
+				view.getLeft().setCursorRow(0);
+				t.start();
+				atask.waitForTask();
+				assertEquals(1, view.getLeft().getCursorRow());
+				assertEquals(1, view.getLeft().getCursorCol());
+			}
+			{
+				android.util.Log.v("kiyo","--3--");
+				SearchTask task = new SearchTask(view, "f");
+				AsyncronousTask atask = new AsyncronousTask(task);
+				Thread t = new Thread(atask);
+				t.start();
+				atask.waitForTask();
+				assertEquals(1, view.getLeft().getCursorRow());
+				assertEquals(1, view.getLeft().getCursorCol());
+			}
+			{
+				android.util.Log.v("kiyo","--4--");
+				SearchTask task = new SearchTask(view, "a");
+				AsyncronousTask atask = new AsyncronousTask(task);
+				Thread t = new Thread(atask);
+				view.getLeft().setCursorCol(0);
+				view.getLeft().setCursorRow(0);
+				t.start();
+				atask.waitForTask();
+				assertEquals(1, view.getLeft().getCursorRow());
+				assertEquals(0, view.getLeft().getCursorCol());
+			}
+			{
+				android.util.Log.v("kiyo","--5--");
+				SearchTask task = new SearchTask(view, "a");
+				AsyncronousTask atask = new AsyncronousTask(task);
+				Thread t = new Thread(atask);
+				t.start();
+				atask.waitForTask();
+				assertEquals(2, view.getLeft().getCursorCol());
+				assertEquals(5, view.getLeft().getCursorRow());
+			}
 		}
 	}
 
