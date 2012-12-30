@@ -60,9 +60,41 @@ public class TestForSearchTask extends TestCase {
 				Thread t = new Thread(atask);
 				t.start();
 				atask.waitForTask();
-				assertEquals(2, view.getLeft().getCursorCol());
 				assertEquals(5, view.getLeft().getCursorRow());
+				assertEquals(2, view.getLeft().getCursorCol());
 			}
+			{
+				android.util.Log.v("kiyo","--6--");
+				SearchTask task = new SearchTask(view, "a");
+				AsyncronousTask atask = new AsyncronousTask(task);
+				Thread t = new Thread(atask);
+				t.start();
+				atask.waitForTask();
+				assertEquals(1, view.getLeft().getCursorRow());
+				assertEquals(0, view.getLeft().getCursorCol());
+			}
+			{
+				android.util.Log.v("kiyo","--7--");
+				SearchTask task = new SearchTask(view, "efg");
+				AsyncronousTask atask = new AsyncronousTask(task);
+				Thread t = new Thread(atask);
+				t.start();
+				atask.waitForTask();
+				assertEquals(2, view.getLeft().getCursorRow());
+				assertEquals(1, view.getLeft().getCursorCol());
+			}
+
+			{
+				android.util.Log.v("kiyo","--8--");
+				SearchTask task = new SearchTask(view, "aaaaa");
+				AsyncronousTask atask = new AsyncronousTask(task);
+				Thread t = new Thread(atask);
+				t.start();
+				atask.waitForTask();
+				assertEquals(2, view.getLeft().getCursorRow());
+				assertEquals(1, view.getLeft().getCursorCol());
+			}
+
 		}
 	}
 
