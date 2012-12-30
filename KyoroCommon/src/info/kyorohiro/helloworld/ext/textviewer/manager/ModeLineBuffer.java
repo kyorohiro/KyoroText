@@ -58,6 +58,17 @@ public class ModeLineBuffer extends TextViewer {
 			mTask = null;
 			this.getLineView().clear();
 		}
+		hideModeLine();
+	}
+
+	public void hideModeLine() {
+		Object o = getParent();
+		android.util.Log.v("kiyo","-----A");
+		if(o instanceof LineViewGroup){
+			android.util.Log.v("kiyo","-----B");
+			((LineViewGroup)o).setSeparatorPoint(0.2f);
+		}
+		android.util.Log.v("kiyo","-----C");
 	}
 
 	public void startModeLineTask(ModeLineTask task) {

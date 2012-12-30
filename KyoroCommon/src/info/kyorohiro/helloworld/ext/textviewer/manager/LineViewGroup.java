@@ -36,6 +36,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	public void setSeparatorPoint(float persent) {
 		mSeparate.setPersentY(persent);
 	}
+
 	// following code isrefactring targe
 	// isEdit() and IsGuard is same code posint.
 	public boolean isGuard() {
