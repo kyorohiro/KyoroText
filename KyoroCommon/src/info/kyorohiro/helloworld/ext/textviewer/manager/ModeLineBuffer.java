@@ -35,6 +35,19 @@ public class ModeLineBuffer extends TextViewer {
 		getLineView().setConstantMode(MODE_LINE_BUFFER);
 	}
 
+	public boolean isEmptyTask() {
+		if(mTask == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	@Override
+	public boolean readFile(File file, boolean updataCurrentPath)
+			throws FileNotFoundException, NullPointerException {
+		return false;
+	}
+
 	public void done() {
 		if(mTask !=null) {
 			KyoroString text = this.getLineView().getKyoroString(0);

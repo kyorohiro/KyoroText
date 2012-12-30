@@ -196,7 +196,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 
 	//
 	// following code otherWindow must to be moving another class
-	//
+	//　
 	public void otherWindow() {
 	//	android.util.Log.v("kiyo","----otherWindow");
 		TextViewer v = getFocusingTextViewer();
@@ -206,6 +206,9 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 			if(f!=null) {
 				changeFocus(f);
 			}
+		}
+		if(getFocusingTextViewer() == mModeLine&& mModeLine.isEmptyTask()) {
+			otherWindow();
 		}
 		//android.util.Log.v("kiyo","----/otherWindow");
 	}
