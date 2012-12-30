@@ -32,6 +32,7 @@ public class SearchTask implements Runnable {
 				f = false;
 			} else {
 				l.add(str, 0, str.length());
+				row = 0;
 			}
 			if(str.includeLF()) {
 				if(l.find()) {
@@ -40,6 +41,7 @@ public class SearchTask implements Runnable {
 					mTargetView.recenter();
 					break;
 				}
+				l.clear();
 			}
 			index++;
 		}
@@ -62,6 +64,7 @@ public class SearchTask implements Runnable {
 
 		public void add(CharSequence str, int begin, int end) {
 			mBuffer.append(str.subSequence(begin, end));
+			mLength.add(end-begin);
 		}
 
 		public void clear() {
@@ -79,19 +82,24 @@ public class SearchTask implements Runnable {
 				int end = mMatcher.end();
 				int len = 0;
 				int prev = 0;
+				android.util.Log.v("kiyo","get=-----");
 				for(int i=0;i<mLength.size();i++) {
 					len +=mLength.get(i);
-					if(end>=len) {
+					android.util.Log.v("kiyo","get="+len+","+end+"-"+prev);
+					if(end<len) {
 						mY = i;
 						mX = end-prev;
+						break;
 					}
 					prev = len;
 				}
+				android.util.Log.v("kiyo","get=-----");
 			}
 			return ret;
 		}
 
 		public int getX() {
+			android.util.Log.v("kiyo","get=-"+mX);
 			return mX;
 		}
 
