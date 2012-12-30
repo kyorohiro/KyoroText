@@ -4,6 +4,7 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.util.AsyncronousTask;
 import junit.framework.TestCase;
 
 public class TestForSearchTask extends TestCase {
@@ -13,12 +14,23 @@ public class TestForSearchTask extends TestCase {
 	}
 
 	public void testFirst() {
-		String[] data = { "abcde", "fgh\r\n", "ijkl" };
-		EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
-		setData(data, spec);
+		{
+			String[] data = { "abcde", "fgh\r\n", "ijkla" };
+			EmptyLineViewBufferSpecImpl spec = new EmptyLineViewBufferSpecImpl(5);
+			setData(data, spec);
+			EditableLineView view = new EditableLineView(spec, 12, 100);
 
-		EditableLineView view = new EditableLineView(spec, 12, 100);
-		SearchTask task = new SearchTask(view, "abcde");
+			SearchTask task = new SearchTask(view, "f");
+			AsyncronousTask atask = new AsyncronousTask(task);
+			Thread t = new Thread(atask);
+			view.getLeft().setCursorCol(0);
+			view.getLeft().setCursorRow(0);
+			t.start();
+
+			atask.waitForTask();
+			assertEquals(1, view.getLeft().getCursorRow());
+			assertEquals(1, view.getLeft().getCursorCol());
+		}
 	}
 
 	private void setData(String[] data, EmptyLineViewBufferSpecImpl buffer) {
