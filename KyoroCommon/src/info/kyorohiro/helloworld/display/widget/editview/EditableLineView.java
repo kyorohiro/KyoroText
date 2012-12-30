@@ -20,11 +20,6 @@ public class EditableLineView extends CursorableLineView {
 	private EditableLineViewBuffer mTextBuffer = null;
 	private KeyEventManager mKeyEventManager = new KeyEventManager();
 
-	public EditableLineView(EditableLineViewBuffer v, int textSize, int cashSize) {
-		super(v, textSize, cashSize);
-		mTextBuffer = (EditableLineViewBuffer) getLineViewBuffer();
-	}
-
 	public EditableLineView(LineViewBufferSpec v, int textSize, int cashSize) {
 		super(new EditableLineViewBuffer(v), textSize, cashSize);
 		mTextBuffer = (EditableLineViewBuffer) getLineViewBuffer();
