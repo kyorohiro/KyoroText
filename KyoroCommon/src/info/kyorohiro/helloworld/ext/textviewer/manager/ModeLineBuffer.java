@@ -24,7 +24,7 @@ public class ModeLineBuffer extends TextViewer {
 	private ModeLineTask mTask = null;
 
 	public ModeLineBuffer(int textSize, int width, int mergine, boolean message) {
-		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine,
+		super(new EmptyLineViewBufferSpecImpl(400, LineViewManager.getManager().getFont()),textSize, width, mergine,
 				LineViewManager.getManager().getFont(),//new SimpleFontForAndroid(),
 				LineViewManager.getManager().getCurrentCharset());
 		if(LineViewManager.getManager().currentBrIsLF()){

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.simple.EmptyBreakText;
 import info.kyorohiro.helloworld.display.simple.EmptySimpleFont;
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
@@ -14,6 +15,10 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 
 	public EmptyLineViewBufferSpecImpl(int maxLineLength) {
 		EmptySimpleFont font = new EmptySimpleFont();
+		mBreakText = new EmptyBreakText(font,(int)(font.getFontSize()*maxLineLength)+(int)font.getFontSize()/2);
+	}
+
+	public EmptyLineViewBufferSpecImpl(int maxLineLength, SimpleFont font) {
 		mBreakText = new EmptyBreakText(font,(int)(font.getFontSize()*maxLineLength)+(int)font.getFontSize()/2);
 	}
 
