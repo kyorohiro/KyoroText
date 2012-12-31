@@ -44,7 +44,7 @@ public class TestForSearchTask extends TestCase {
 				}
 				{
 					android.util.Log.v("kiyo","--5--");
-					SearchTask task = new SearchTask(view, "a");
+					SearchTask task = new SearchTask(view, "b");
 					AsyncronousTask atask = new AsyncronousTask(task);
 					Thread t = new Thread(atask);
 					t.start();
@@ -54,7 +54,7 @@ public class TestForSearchTask extends TestCase {
 				}
 				{
 					android.util.Log.v("kiyo","--6--");
-					SearchTask task = new SearchTask(view, "a");
+					SearchTask task = new SearchTask(view, "b");
 					AsyncronousTask atask = new AsyncronousTask(task);
 					Thread t = new Thread(atask);
 					t.start();

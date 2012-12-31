@@ -50,11 +50,10 @@ public class SearchTask implements Runnable {
 				f = false;
 			} else {
 				l.add(str, 0, str.length());
-				row = 0;
 			}
 			if(str.includeLF()||index+1==buffer.getNumberOfStockedElement()||index+1==end) {
 				if(l.find()) {
-					android.util.Log.v("kiyo","=0=i-"+index);
+					android.util.Log.v("kiyo","=0=i-"+index+","+row);
 					android.util.Log.v("kiyo","=0=-"+mTargetView.getLeft().getCursorCol()+","+l.length());
 					mTargetView.getLeft().setCursorCol(l.getY()+index - (l.length())+1);
 					mTargetView.getLeft().setCursorRow(l.getX()+(l.getY()==0?row:0));
@@ -64,11 +63,12 @@ public class SearchTask implements Runnable {
 					break;
 				}
 				l.clear();
+				row = 0;
 			}
 			index++;
 		}
 		} finally {
-			//buffer.isSync(false);
+			buffer.isSync(false);
 		}
 	}
 

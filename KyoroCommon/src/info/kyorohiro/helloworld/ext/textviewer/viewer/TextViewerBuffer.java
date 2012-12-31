@@ -116,7 +116,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		try {
 			//
 			resetBufferedStartEndPosition(i);
-			if(lineIsLoaded(i)) {
+			if(!lineIsLoaded(i)||super.getNumberOfStockedElement()<=lineNumberToBufferedNumber(i)) {
+			} else {
 				KyoroString bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
 				return bufferedDataForReturn;
 			}
