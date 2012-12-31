@@ -26,7 +26,7 @@ public class SearchTask implements Runnable {
 		EditableLineViewBuffer buffer = (EditableLineViewBuffer) mTargetView
 				.getLineViewBuffer();
 		try {
-			mTargetView.isLockScreen(true);
+			//mTargetView.isLockScreen(true);
 			buffer.isSync(true);
 			Line l = new Line(mRegex);
 			boolean f = true;
@@ -84,13 +84,13 @@ public class SearchTask implements Runnable {
 					//	android.util.Log.v("kiyo", "=2=-"
 					//			+ mTargetView.getLeft().getCursorCol());
 						break;
-					}// else {
-					//	mTargetView.getLeft().setCursorCol(
-					//			l.getY() + index - (l.length()) + 1);
-					//	mTargetView.getLeft().setCursorRow(
-					//			l.getX() + (l.getY() == 0 ? row : 0));
-					//	mTargetView.recenter();
-					//}
+					} else {
+						mTargetView.getLeft().setCursorCol(
+								l.getY() + index - (l.length()) + 1);
+						mTargetView.getLeft().setCursorRow(
+								l.getX() + (l.getY() == 0 ? row : 0));
+						mTargetView.recenter();
+					}
 					l.clear();
 					row = 0;
 				}

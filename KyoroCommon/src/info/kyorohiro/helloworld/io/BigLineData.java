@@ -20,7 +20,6 @@ public class BigLineData {
 	private MarkableReader mReader = null;
 	private SimpleTextDecoder mDecoder = null;
 	private static final String EOF ="\0";
-	
 
 	private long mCurrentPosition = 0;
 	private long mLinePosition = 0;

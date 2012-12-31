@@ -19,7 +19,10 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	private int mCurrentPosition = 0;
 	private KyoroString mErrorLineMessage = new KyoroString("error..\n", SimpleGraphicUtil.parseColor("#FFFF0000"));
 	private KyoroString mLoadingLineMessage = new KyoroString("loading..\n", SimpleGraphicUtil.parseColor("#33FFFF00"));
-	private NeiborhoodCashing mCashing = null;
+
+	public static final int SYNC_GET_LINE_COLOR = SimpleGraphicUtil.parseColor("#FF2222FF"); 
+	private NeiborhoodCashing mNeiborCashing = null;
+	private LatestAccessCashing mLatestCashing = new LatestAccessCashing(500);
 	private long mNumberOfStockedElement = 0;
 	private boolean mIsSync = false;
 
@@ -28,7 +31,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		mErrorLineMessage.isNowLoading(true);
 		mLoadingLineMessage.isNowLoading(true);
 		mLineManagerFromFile = new BigLineData(path, charset, breakText);
-		mCashing = new NeiborhoodCashing(this);
+		mNeiborCashing = new NeiborhoodCashing(this);
 	}
 
 	public BigLineData getBigLineData() {
@@ -53,21 +56,21 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	}
 
 	public void startReadFile() {
-		mCashing.startReadForward(-1);
+		mNeiborCashing.startReadForward(-1);
 	}
 
 	public void startReadFile(int pos) {
-		mCashing.startReadForward(pos);
+		mNeiborCashing.startReadForward(pos);
 	}
 
 	public void dispose() {
 //		android.util.Log.v("kiyo","buffer =dispose()");
 		if (null != mLineManagerFromFile) {
 			try {
-				if(mCashing != null){
-					mCashing.dispose();
+				if(mNeiborCashing != null){
+					mNeiborCashing.dispose();
 //					mCashing.stopTask();
-					mCashing = null;
+					mNeiborCashing = null;
 				}
 				mLineManagerFromFile.close();
 				mLineManagerFromFile = null;
@@ -108,6 +111,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 	}
 
+	
 	// so bad performance!! must to improve
 	private KyoroString getSync(int i) {
 		if (i < 0) {
@@ -120,8 +124,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			mLineManagerFromFile.moveLine(i);
 			// = mLineManagerFromFile.getLastLinePosition();
 			KyoroString ret = mLineManagerFromFile.readLine();
-
-//			android.util.Log.v("kiyo","-mNumberOfStockedElement-1--"+mNumberOfStockedElement+","+ret.getLinePosition());
+			ret.setColor(SYNC_GET_LINE_COLOR);
+			android.util.Log.v("kiyo","#sync=mNumberOfStockedElement-1--"+mNumberOfStockedElement+","+ret.getLinePosition());
 			setNumberOfStockedElement(ret);
 			return ret;
 		} catch (IOException e) {
@@ -160,18 +164,25 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			t.printStackTrace();
 			return mErrorLineMessage;
 		} finally {
-			if (mCashing != null && alookhead) {
-				mCashing.updateBufferedStatus();
+			if (mNeiborCashing != null && alookhead) {
+				mNeiborCashing.updateBufferedStatus();
 			}
 		}		
 	}
 
 	public synchronized KyoroString get(int i) {
-		if(mIsSync) {
-			return getSync(i);			
-		} else {
-			return getAsync(i, true);
+		KyoroString ret = mLatestCashing.get(i);
+		if(ret == null) {
+			if(mIsSync) {
+				ret = getSync(i);			
+			} else {
+				ret = getAsync(i, true);
+			}
 		}
+		if(!ret.isNowLoading()) {
+			mLatestCashing.addLine(ret);
+		}
+		return ret;
 	}
 
 	private int lineNumberToBufferedNumber(int lineNumber) {
@@ -216,7 +227,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	public void isSync(boolean isSync) {
 		 mIsSync = isSync;
 		 if(isSync){
-			 mCashing.stopTask();
+			 mNeiborCashing.stopTask();
 		 }
 	}
 	@Override
