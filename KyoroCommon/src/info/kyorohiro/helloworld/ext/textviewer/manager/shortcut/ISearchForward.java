@@ -26,6 +26,15 @@ public class ISearchForward implements Task {
 	}
 
 	public static String PREV_LINE = "";
+	public static Thread th = null;
+	public void startTask(Runnable task) {
+		if(th !=null && th.isAlive()) {
+			th.interrupt();
+			th = null;
+		}
+		th = new Thread(task);
+		th.start();
+	}
 	public class ISearchForwardTask implements ModeLineTask{
 		private EditableLineView mTargetView = null;
 		public ISearchForwardTask(EditableLineView targetView) {
@@ -36,8 +45,7 @@ public class ISearchForward implements Task {
 		public void enter(String line){
 			PREV_LINE = line;
 			android.util.Log.v("kiyo","#-#ISearchForward-enter"+line);
-			Thread t = new Thread(new SearchTask(mTargetView, line));
-			t.start();
+			startTask(new SearchTask(mTargetView, line));
 		}
 
 		@Override

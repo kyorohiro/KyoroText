@@ -105,14 +105,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 	}
 
+	// so bad performance!! must to improve
 	private KyoroString getSync(int i) {
-		KyoroString ret = null;
-		do {
-			ret = getAsync(i);
-		}while(ret == mLoadingLineMessage);
-		return ret;
-//		android.util.Log.v("kiyo","---"+i+"---"+isLoading());
-		/*
 		if (i < 0) {
 			return mErrorLineMessage;
 		}
@@ -122,7 +116,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		try {
 			mLineManagerFromFile.moveLine(i);
 			mNumberOfStockedElement = mLineManagerFromFile.getLastLinePosition();
-			if(!mLineManagerFromFile.isEOF()){
+			if(!mLineManagerFromFile.wasEOF()){
 				mNumberOfStockedElement++;
 			}
 			return mLineManagerFromFile.readLine();
@@ -130,7 +124,6 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			e.printStackTrace();
 			return mErrorLineMessage;
 		}
-		*/
 	}
 	private KyoroString getAsync(int i) {
 		if (i < 0) {

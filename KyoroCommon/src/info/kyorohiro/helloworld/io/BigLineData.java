@@ -85,6 +85,7 @@ public class BigLineData {
 	public boolean isEOF() {
 		try {
 			if (mReader.length() <= mReader.getFilePointer()) {
+//			if (mReader.length() <= mLastFilePointer) {
 				return true;
 			} else {
 				return false;
