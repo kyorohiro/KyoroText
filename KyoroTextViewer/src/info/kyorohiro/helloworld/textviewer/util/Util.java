@@ -11,9 +11,14 @@ public class Util {
 		return from/((metrics.xdpi+metrics.ydpi)/2.0);///metrics.density);
 	}
 
+	public static double inchi2fontSize(double from) {
+		DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+//		android.util.Log.v("kiyo","###"+metrics.xdpi+","+metrics.ydpi+","+metrics.density+","+metrics.scaledDensity);
+		return from*metrics.densityDpi;
+	}
 	public static double inchi2pixel(double from) {
 		DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-	//	android.util.Log.v("kiyo","###"+metrics.xdpi+","+metrics.ydpi+","+metrics.density+","+metrics.scaledDensity);
+//		android.util.Log.v("kiyo","###"+metrics.xdpi+","+metrics.ydpi+","+metrics.density+","+metrics.scaledDensity);
 		return from*((metrics.xdpi+metrics.ydpi)/2.0);//*metrics.density);
 	}
 

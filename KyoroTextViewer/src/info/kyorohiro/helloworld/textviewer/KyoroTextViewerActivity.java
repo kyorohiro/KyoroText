@@ -36,15 +36,15 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-
 public class KyoroTextViewerActivity extends MainActivity {
 	private SimpleStageForAndroid mStage = null;
-//	private TextViewer mTextViewer = null;
+	// private TextViewer mTextViewer = null;
 	private int mViewerWidth = 100;
 	private int mViewerHeight = 100;
 	@SuppressWarnings("unused")
-	private boolean modifyIntent = false; 
+	private boolean modifyIntent = false;
 	private LineViewManager mViewerManager = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,18 +52,19 @@ public class KyoroTextViewerActivity extends MainActivity {
 		mViewerManager = newTextManager();
 		mStage = new SimpleStageForAndroid(this);
 		mStage.getRoot().addChild(mViewerManager);
-		int modeForDisableSoftKeyboard = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
+		int modeForDisableSoftKeyboard = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+				| WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
 		getWindow().setSoftInputMode(modeForDisableSoftKeyboard);
-		
+
 		LinearLayout layout = new LinearLayout(this);
 		layout.addView(mStage);
 		setContentView(layout);
-	//	setContentView(mStage);
+		// setContentView(mStage);
 
 		setMenuAction(new MainActivityOpenFileAction(mViewerManager));
 		setMenuAction(new MainActivitySetCharsetAction(mViewerManager));
 		setMenuAction(new MainActivitySetTextSizeAction(mViewerManager));
-		setMenuAction(new MainActivitySetCharsetDetectionAction(mViewerManager));		
+		setMenuAction(new MainActivitySetCharsetDetectionAction(mViewerManager));
 		setMenuAction(new MainActivitySaveFileAction(mViewerManager));
 		setMenuAction(new MainActivitySetCRLFAction(mViewerManager));
 		// todo following yaxtuke sigoto
@@ -74,18 +75,18 @@ public class KyoroTextViewerActivity extends MainActivity {
 	// guard for editeed text can not be removed
 	private class A implements LineViewManager.Event {
 		@Override
-		public boolean startCombine(SimpleDisplayObject alive, SimpleDisplayObject killtarget) {
-			if(killtarget instanceof TextViewer){
+		public boolean startCombine(SimpleDisplayObject alive,
+				SimpleDisplayObject killtarget) {
+			if (killtarget instanceof TextViewer) {
 				TextViewer target = null;
-				target = (TextViewer)killtarget;
+				target = (TextViewer) killtarget;
 				return !target.isGuard();
-//				return !target.isEdit();
-			}
-			else if(killtarget instanceof LineViewGroup) {
+				// return !target.isEdit();
+			} else if (killtarget instanceof LineViewGroup) {
 				LineViewGroup target = null;
-				target = (LineViewGroup)killtarget;
+				target = (LineViewGroup) killtarget;
 				return !target.isGuard();
-//				return !target.isEdit();
+				// return !target.isEdit();
 			}
 			return true;
 		}
@@ -96,6 +97,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		public SimpleFont newSimpleFont() {
 			return new SimpleFontForAndroid();
 		}
+
 		public void copyStart() {
 			CopyTask.copyStart();
 		}
@@ -104,36 +106,41 @@ public class KyoroTextViewerActivity extends MainActivity {
 		public void pastStart() {
 			PastTask.pasteStart();
 		}
+
 		@Override
 		public File getFilesDir() {
-			return KyoroApplication.getKyoroApplication().getApplicationContext().getFilesDir();
+			return KyoroApplication.getKyoroApplication()
+					.getApplicationContext().getFilesDir();
 		}
+
 		@Override
 		public boolean currentBrIsLF() {
-			if(KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())){
+			if (KyoroSetting.VALUE_LF.equals(KyoroSetting.getCurrentCRLF())) {
 				return true;
 			} else {
 				return false;
 			}
 		}
+
 		@Override
 		public String getCurrentCharset() {
 			return KyoroSetting.getCurrentCharset();
 		}
+
 		@Override
 		public void setCurrentFile(String path) {
 			KyoroSetting.setCurrentFile(path);
 		}
 	}
-	
+
 	public void startStage() {
-		if(mStage != null) {
+		if (mStage != null) {
 			mStage.start();
 		}
 	}
 
 	public void stopStage() {
-		if(mStage != null) {
+		if (mStage != null) {
 			mStage.stop();
 		}
 	}
@@ -153,7 +160,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		startStage();
-		if(keyCode == KeyEvent.KEYCODE_BACK){
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			showDialog();
 			return true;
 		} else {
@@ -175,7 +182,8 @@ public class KyoroTextViewerActivity extends MainActivity {
 		mStage.start();
 		//
 		// �ҏW����Buffer���Ǘ�����N���X��start/stop����^�C�~���O�����߂�B
-		KyoroServiceForForgroundApp.startForgroundService(KyoroApplication.getKyoroApplication(), "start");
+		KyoroServiceForForgroundApp.startForgroundService(
+				KyoroApplication.getKyoroApplication(), "start");
 	}
 
 	@Override
@@ -192,12 +200,12 @@ public class KyoroTextViewerActivity extends MainActivity {
 		super.onDestroy();
 	}
 
-	private int[] getWindowSize(){
-		WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+	private int[] getWindowSize() {
+		WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
 		int width = disp.getWidth();
 		int height = disp.getHeight();
-		return new int[]{width, height};
+		return new int[] { width, height };
 	}
 
 	private LineViewManager newTextManager() {
@@ -205,22 +213,28 @@ public class KyoroTextViewerActivity extends MainActivity {
 		int[] widthHeight = getWindowSize();
 		mViewerWidth = widthHeight[0];
 		mViewerHeight = widthHeight[1];
-		if (mViewerWidth>mViewerHeight) {
+		if (mViewerWidth > mViewerHeight) {
 			int t = mViewerWidth;
 			mViewerWidth = mViewerHeight;
 			mViewerHeight = t;
 		}
-		int screenMargine = mViewerWidth*1/20;
-		int screenWidth = mViewerWidth-screenMargine/2; // mod 2 is my feeling value so design only. 
+		int screenMargine = mViewerWidth * 1 / 20;
+		int screenWidth = mViewerWidth - screenMargine / 2; // mod 2 is my
+															// feeling value so
+															// design only.
 		int screenHeight = mViewerHeight;
-		
-		int circleSize = 18/2;
-		if(10<Util.inchi2pixel(mViewerWidth)){
-			circleSize = 22/2;
+
+		int circleSize = 18 / 2;
+		if (10 < Util.inchi2pixel(mViewerWidth)) {
+			circleSize = 22 / 2;
 		} else {
-			circleSize = 16/2;
+			circleSize = 16 / 2;
 		}
-		return new LineViewManager(KyoroApplication.getKyoroApplication(), new MyBuilder(), textSize, screenWidth,screenHeight, screenMargine,(int)Util.inchi2pixel(Util.mm2inchi(circleSize)));
+		int baseTextSize = (int) Util.inchi2pixel(Util.mm2inchi(1.6));
+		return new LineViewManager(KyoroApplication.getKyoroApplication(),
+				new MyBuilder(), baseTextSize, textSize, screenWidth,
+				screenHeight, screenMargine, (int) Util.inchi2pixel(Util
+						.mm2inchi(circleSize)));
 	}
 
 	private void doFileOpenIntentAction() {
@@ -233,19 +247,20 @@ public class KyoroTextViewerActivity extends MainActivity {
 					Uri uri = intentFromExteralApplication.getData();
 					if (uri != null) {
 						TextViewer fo = mViewerManager.getFocusingTextViewer();
-						if(fo instanceof ModeLineBuffer) {
-							 mViewerManager.otherWindow();
+						if (fo instanceof ModeLineBuffer) {
+							mViewerManager.otherWindow();
 							fo = mViewerManager.getFocusingTextViewer();
 						}
-						mViewerManager.getFocusingTextViewer().readFile(new File(uri.getPath()), true);
+						mViewerManager.getFocusingTextViewer().readFile(
+								new File(uri.getPath()), true);
 					}
 				}
 			}
-		} catch(Throwable t) {
+		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
-	
+
 	public void showDialog() {
 		AlertDialog.Builder b = new AlertDialog.Builder(this);
 		b.setMessage("if delete editing/viewing data ");
@@ -265,5 +280,5 @@ public class KyoroTextViewerActivity extends MainActivity {
 		@Override
 		public void onClick(DialogInterface arg0, int arg1) {
 		}
-	}	
+	}
 }

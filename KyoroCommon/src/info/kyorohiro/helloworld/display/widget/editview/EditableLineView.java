@@ -145,7 +145,7 @@ public class EditableLineView extends CursorableLineView {
 
 	private boolean editable() {
 		if (getMode() == CursorableLineView.MODE_EDIT
-				|| getMode().equals(CursorableLineView.MODE_EDIT)) {
+				|| getMode().toString().startsWith(CursorableLineView.MODE_EDIT)) {
 			return true;
 		} else {
 			return false;

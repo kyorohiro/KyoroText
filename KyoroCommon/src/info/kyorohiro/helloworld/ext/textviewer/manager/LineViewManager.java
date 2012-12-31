@@ -41,7 +41,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	// ���Singletone�ɂ���B
-	public LineViewManager(SimpleApplication application, TextViewBuilder builder,int textSize, int width, int height, int mergine, int menuWidth) {
+	public LineViewManager(SimpleApplication application, TextViewBuilder builder,int baseTextSize, int textSize, int width, int height, int mergine, int menuWidth) {
 		mApplication = application;
 		mBuilder = builder;
 		sInstance = this;
@@ -58,7 +58,9 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		first.getTextViewer().getLineView().fittableToView();
 		///*
 		 // command
-		LineViewGroup g = first.divideAndNew(true, mModeLine = new ModeLineBuffer(mTextSize, mWidth, mMergine, false));
+		android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
+		LineViewGroup g = first.divideAndNew(true, mModeLine = new ModeLineBuffer(baseTextSize, mWidth, mMergine, false));
+//		mModeLine.setCurrentFontSize(baseTextSize);
 		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
 		first.setSeparatorPoint(0.05f);
 		g.getTextViewer().getLineView().fittableToView(true);

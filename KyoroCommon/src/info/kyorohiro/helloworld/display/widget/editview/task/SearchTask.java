@@ -23,19 +23,28 @@ public class SearchTask implements Runnable {
 		int index = cursor.getCursorCol();
 		int row = cursor.getCursorRow();
 		EditableLineViewBuffer buffer = (EditableLineViewBuffer)mTargetView.getLineViewBuffer();
+		try {
+		//buffer.isSync(true);
 		Line l = new Line(mRegex);
 		boolean f = true;
 		int end = buffer.getNumberOfStockedElement();
 		if(index>0) {
-			end = index-1;
+			end = index;
+		}
+		if(0==buffer.getNumberOfStockedElement()) {
+			return;
 		}
 		android.util.Log.v("kiyo","=end="+end);
-		while(index!=end) {
+		boolean lastoneline = false;
+		while(index!=end||f||!lastoneline) {
+			if(index==end&&!f) {
+				lastoneline = true;
+			}
 			if(index>=buffer.getNumberOfStockedElement()) {
 				index = 0;
 			}
 			KyoroString str = buffer.get(index);
-			android.util.Log.v("kiyo","=i="+index+","+str);
+			android.util.Log.v("kiyo","=i="+index+","+end+","+str);
 			if(f) {
 				l.add(str,row, str.length());
 				f = false;
@@ -57,6 +66,9 @@ public class SearchTask implements Runnable {
 				l.clear();
 			}
 			index++;
+		}
+		} finally {
+			//buffer.isSync(false);
 		}
 	}
 
