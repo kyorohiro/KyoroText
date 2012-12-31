@@ -48,6 +48,9 @@ public class KyoroSetting {
 			}
 		}catch(Throwable t){
 		}
+		if(fontSize<8) {
+			fontSize = 8;
+		}
 		return fontSize;
 	}
 
