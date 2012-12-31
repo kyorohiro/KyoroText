@@ -66,15 +66,6 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 	}
 
 	@Override
-	public KyoroString[] getElements(KyoroString[] ret, int start, int end) {
-		int len = end-start;
-		for(int i=0;i<len;i++){
-			ret[i] = mList.get(i+start);
-		}
-		return ret;
-	}
-
-	@Override
 	public BreakText getBreakText() {
 		return mBreakText;
 	}

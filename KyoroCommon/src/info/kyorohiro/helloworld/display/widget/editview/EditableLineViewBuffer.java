@@ -89,14 +89,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		return mOwner.getBreakText();
 	}
 
-	@Override
-	public KyoroString[] getElements(KyoroString[] ret, int start, int end) {
-		for (int i = start, j = 0; i < end; i++, j++) {
-			ret[j] = get(i);
-		}
-		return ret;
-	}
-
 	public synchronized int getRow() {
 		return mCursorRow;
 	}

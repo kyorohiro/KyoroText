@@ -66,11 +66,6 @@ public class ManagedLineViewBuffer implements LineViewBufferSpec {
 	}
 
 	@Override
-	public KyoroString[] getElements(KyoroString[] ret, int start, int end) {
-		return mBase.getElements(ret, start, end);
-	}
-
-	@Override
 	public BreakText getBreakText() {
 		return mBase.getBreakText();
 	}

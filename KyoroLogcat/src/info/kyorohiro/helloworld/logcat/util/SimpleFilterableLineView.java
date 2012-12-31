@@ -172,15 +172,6 @@ public class SimpleFilterableLineView extends SimpleDisplayObjectContainer {
 		}
 
 		@Override
-		public KyoroString[] getElements(KyoroString[] ret, int start, int end) {
-			CyclingListInter<KyoroString> b = mBuffer.get();
-			if(b != null) {
-				return b.getElements(ret, start, end);
-			}
-			return new KyoroString[0];
-		}
-
-		@Override
 		public KyoroString get(int i) {
 			CyclingListInter<KyoroString> b = mBuffer.get();
 			if(b != null) {

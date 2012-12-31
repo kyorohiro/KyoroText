@@ -11,7 +11,6 @@ public interface LineViewBufferSpec {
 	public KyoroString get(int i);
 	public int getNumberOfStockedElement();
 	public int getMaxOfStackedElement();
-	public KyoroString[] getElements(KyoroString[] ret, int start, int end) ;
 	public BreakText getBreakText();
 	public void dispose();
 	public boolean isLoading();
