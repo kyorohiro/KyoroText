@@ -13,13 +13,12 @@ import java.util.ArrayList;
 //
 //@Deprecated
 public class BigLineData {
-	public static int FILE_LIME = 100;
+	public static int FILE_LIME = 50;
 
 	private File mPath;
 	private String mCharset = "utf8";
 	private MarkableReader mReader = null;
 	private SimpleTextDecoder mDecoder = null;
-	private static final String EOF ="\0";
 
 	private long mCurrentPosition = 0;
 	private long mLinePosition = 0;
@@ -61,7 +60,12 @@ public class BigLineData {
 		}
 		long index = lineNumber/FILE_LIME;
 		long number = lineNumber%FILE_LIME;
-		moveLinePer100((int)index);
+		long t = lineNumber-mLastLinePosition;
+		if(t<0||t>number) {
+			moveLinePer100((int)index);
+		} else {
+			number = Math.abs(mLastLinePosition-lineNumber);
+		}
 		for(int i=0;i<number;i++){
 			readLine();
 		}

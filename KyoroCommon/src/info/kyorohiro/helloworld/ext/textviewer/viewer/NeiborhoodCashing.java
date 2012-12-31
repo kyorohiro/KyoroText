@@ -13,7 +13,7 @@ public class NeiborhoodCashing {
 	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
 	private Thread mTaskRunnter = null;
 	public static final int LOOKAGEAD_lentgth = 2;
-	public static final int CHANK_SIZE = 100;
+	public static final int CHANK_SIZE = BigLineData.FILE_LIME;
 	public static final int MOVE_FORWARD = 1;
 	public static final int CLEAR_AND_MOVE_FORWARD = 2;
 	public static final int MOVE_BACK = 3;
