@@ -57,6 +57,13 @@ public class BigLineData {
 	}
 
 	public void moveLine(long lineNumber) throws IOException {
+		//
+		if(mLinePosition == lineNumber) {
+			android.util.Log.v("kiyo","--lineNumber="+lineNumber);
+			return;
+		}
+		//
+		//
 		if(lineNumber == getNextLinePosition()){
 			return;
 		}
@@ -168,7 +175,8 @@ public class BigLineData {
 	public long getNextLinePosition() {
 		return mLinePosition;
 	}
-//	@Deprecated
+
+	//	@Deprecated
 	public long getLastLinePosition() {
 		return mLastLinePosition;
 	}

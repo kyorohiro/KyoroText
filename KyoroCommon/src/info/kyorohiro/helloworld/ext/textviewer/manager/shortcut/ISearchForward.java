@@ -55,6 +55,8 @@ public class ISearchForward implements Task {
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
 			buffer.clear();
 			buffer.pushCommit(PREV_LINE, 1);
+			modeBuffer.getLineView().getLeft().setCursorCol(0);
+			modeBuffer.getLineView().getLeft().setCursorRow(0);
 			modeBuffer.getLineView().recenter();
 //			LineViewManager.getManager().getModeLineBuffer().getLineView().getLineViewBuffer()
 		}

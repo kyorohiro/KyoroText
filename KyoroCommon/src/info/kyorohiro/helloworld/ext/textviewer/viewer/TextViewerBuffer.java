@@ -107,6 +107,12 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 
 	// so bad performance!! must to improve
 	private KyoroString getSync(int i) {
+		if(lineIsLoaded(i)) {
+			KyoroString str = getAsync(i);
+			if(!str.isNowLoading()) {
+				return str;
+			}
+		}
 		if (i < 0) {
 			return mErrorLineMessage;
 		}
@@ -125,6 +131,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			return mErrorLineMessage;
 		}
 	}
+
 	private KyoroString getAsync(int i) {
 		if (i < 0) {
 			return mErrorLineMessage;
