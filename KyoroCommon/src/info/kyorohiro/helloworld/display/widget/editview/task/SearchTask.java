@@ -24,7 +24,7 @@ public class SearchTask implements Runnable {
 		int row = cursor.getCursorRow();
 		EditableLineViewBuffer buffer = (EditableLineViewBuffer)mTargetView.getLineViewBuffer();
 		try {
-		//buffer.isSync(true);
+		buffer.isSync(true);
 		Line l = new Line(mRegex);
 		boolean f = true;
 		int end = buffer.getNumberOfStockedElement();

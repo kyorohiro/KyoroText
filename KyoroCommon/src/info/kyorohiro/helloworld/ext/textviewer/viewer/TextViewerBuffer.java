@@ -106,7 +106,13 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	}
 
 	private KyoroString getSync(int i) {
+		KyoroString ret = null;
+		do {
+			ret = getAsync(i);
+		}while(ret == mLoadingLineMessage);
+		return ret;
 //		android.util.Log.v("kiyo","---"+i+"---"+isLoading());
+		/*
 		if (i < 0) {
 			return mErrorLineMessage;
 		}
@@ -114,14 +120,6 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			return mErrorLineMessage;
 		}
 		try {
-			//
-			resetBufferedStartEndPosition(i);
-			if(!lineIsLoaded(i)||super.getNumberOfStockedElement()<=lineNumberToBufferedNumber(i)) {
-			} else {
-				KyoroString bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
-				return bufferedDataForReturn;
-			}
-			//
 			mLineManagerFromFile.moveLine(i);
 			mNumberOfStockedElement = mLineManagerFromFile.getLastLinePosition();
 			if(!mLineManagerFromFile.isEOF()){
@@ -132,7 +130,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			e.printStackTrace();
 			return mErrorLineMessage;
 		}
-		
+		*/
 	}
 	private KyoroString getAsync(int i) {
 		if (i < 0) {
