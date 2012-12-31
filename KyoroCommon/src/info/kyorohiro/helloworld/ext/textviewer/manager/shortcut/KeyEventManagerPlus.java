@@ -116,6 +116,11 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('f', true, false)}, new FowardWord()),
 		new Command(new CommandPart[]{new CommandPart('b', true, false)}, new BackwardWord()),
 		new Command(new CommandPart[]{new CommandPart('l', true, false)}, new Recenter()),
+		new Command(new CommandPart[]{new CommandPart('k', true, false)}, new KillLine()),
+		new Command(new CommandPart[]{new CommandPart('y', true, false)}, new Yank()),
+		new Command(new CommandPart[]{new CommandPart('h', true, false)}, new DeleteChar()),
+		new Command(new CommandPart[]{new CommandPart('d', true, false)}, new DeleteBackwardChar()),
+
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
 		//

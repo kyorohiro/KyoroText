@@ -125,7 +125,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			// = mLineManagerFromFile.getLastLinePosition();
 			KyoroString ret = mLineManagerFromFile.readLine();
 			ret.setColor(SYNC_GET_LINE_COLOR);
-			android.util.Log.v("kiyo","#sync=mNumberOfStockedElement-1--"+mNumberOfStockedElement+","+ret.getLinePosition());
+//			android.util.Log.v("kiyo","#sync=mNumberOfStockedElement-1--"+mNumberOfStockedElement+","+ret.getLinePosition());
 			setNumberOfStockedElement(ret);
 			return ret;
 		} catch (IOException e) {
