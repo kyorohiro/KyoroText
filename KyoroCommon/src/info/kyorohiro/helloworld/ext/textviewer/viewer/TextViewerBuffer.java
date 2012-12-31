@@ -19,7 +19,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	private int mCurrentPosition = 0;
 	private KyoroString mErrorLineMessage = new KyoroString("error..\n", SimpleGraphicUtil.parseColor("#FFFF0000"));
 	private KyoroString mLoadingLineMessage = new KyoroString("loading..\n", SimpleGraphicUtil.parseColor("#33FFFF00"));
-	private LookAheadCaching mCashing = null;
+	private NeiborhoodCashing mCashing = null;
 	private long mNumberOfStockedElement = 0;
 	private boolean mIsSync = false;
 
@@ -28,7 +28,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		mErrorLineMessage.isNowLoading(true);
 		mLoadingLineMessage.isNowLoading(true);
 		mLineManagerFromFile = new BigLineData(path, charset, breakText);
-		mCashing = new LookAheadCaching(this);
+		mCashing = new NeiborhoodCashing(this);
 	}
 
 	public BigLineData getBigLineData() {

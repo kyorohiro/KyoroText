@@ -6,23 +6,20 @@ import info.kyorohiro.helloworld.text.KyoroString;
 import java.lang.ref.WeakReference;
 
 
-public class LookAheadCaching {
+public class NeiborhoodCashing {
 	private boolean mIsDispose = false;
 	private WeakReference<TextViewerBuffer> mBuffer = null;
 	private ReadBackBuilder mBackBuilder = new ReadBackBuilder();
 	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
 	private Thread mTaskRunnter = null;
-
 	public static final int LOOKAGEAD_lentgth = 2;
 	public static final int CHANK_SIZE = 100;
-	
-	
 	public static final int MOVE_FORWARD = 1;
 	public static final int CLEAR_AND_MOVE_FORWARD = 2;
 	public static final int MOVE_BACK = 3;
 	public static final int MOVE_KEEP = 4;
 
-	public LookAheadCaching(TextViewerBuffer buffer) {
+	public NeiborhoodCashing(TextViewerBuffer buffer) {
 		mBuffer = new WeakReference<TextViewerBuffer>(buffer);
 	}
 
@@ -55,6 +52,7 @@ public class LookAheadCaching {
 			break;
 		}
 	}
+
 	private int nextAction(TextViewerBuffer buffer){
 		int sp = buffer.getCurrentBufferStartLinePosition();
 		int ep = buffer.getCurrentBufferEndLinePosition();

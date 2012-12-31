@@ -26,7 +26,7 @@ public class SearchTask implements Runnable {
 		EditableLineViewBuffer buffer = (EditableLineViewBuffer) mTargetView
 				.getLineViewBuffer();
 		try {
-			//mTargetView.isLockScreen(true);
+			mTargetView.isLockScreen(true);
 			buffer.isSync(true);
 			Line l = new Line(mRegex);
 			boolean f = true;
