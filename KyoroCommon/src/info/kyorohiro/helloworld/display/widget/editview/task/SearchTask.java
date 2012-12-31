@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 public class SearchTask implements Runnable {
 	private EditableLineView mTargetView = null;
 	private String mRegex = "";
+
 	public SearchTask(EditableLineView targetView, String regex) {
 		mRegex = regex;
 		mTargetView = targetView;
@@ -22,55 +23,74 @@ public class SearchTask implements Runnable {
 		MyCursor cursor = mTargetView.getLeft();
 		int index = cursor.getCursorCol();
 		int row = cursor.getCursorRow();
-		EditableLineViewBuffer buffer = (EditableLineViewBuffer)mTargetView.getLineViewBuffer();
+		EditableLineViewBuffer buffer = (EditableLineViewBuffer) mTargetView
+				.getLineViewBuffer();
 		try {
-			mTargetView.isLockScreen(true);
+			//mTargetView.isLockScreen(true);
 			buffer.isSync(true);
 			Line l = new Line(mRegex);
 			boolean f = true;
 			int end = buffer.getNumberOfStockedElement();
 			int indexa = index;
-			if(indexa>0) {
+			if (indexa > 0) {
 				end = index;
 			}
-			if(0==buffer.getNumberOfStockedElement()) {
+			if (0 == buffer.getNumberOfStockedElement()) {
 				return;
 			}
-			android.util.Log.v("kiyo","=end="+end);
+			//android.util.Log.v("kiyo", "=end=" + end);
 			boolean lastoneline = false;
-			while(index!=end||f||!lastoneline) {
+			while (index != end || f || !lastoneline) {
 				Thread.sleep(0);
-				//
-				end = buffer.getNumberOfStockedElement();
-				if(indexa>0) {
-					end = indexa;
-				}
-				//
-				if(index==end&&!f) {
+				if (index == end && !f) {
 					lastoneline = true;
 				}
-				if(index>=buffer.getNumberOfStockedElement()) {
+				//android.util.Log.v("kiyo", "#=i==111===" + index + "," + end
+				//		+ ",bl=" + buffer.getNumberOfStockedElement());
+				if (index >= buffer.getNumberOfStockedElement()) {
 					index = 0;
 				}
 				KyoroString str = buffer.get(index);
-				android.util.Log.v("kiyo","=i="+index+","+end+","+str);
-				if(f) {
-					l.add(str,row, str.length());
+				//
+				end = buffer.getNumberOfStockedElement();
+				if (indexa > 0) {
+					end = indexa;
+				}
+				//
+				//android.util.Log.v("kiyo", "#=i=====" + index + "," + end
+				//		+ ",bl=" + buffer.getNumberOfStockedElement() + ","
+				//		+ str);
+				if (f) {
+					l.add(str, row, str.length());
 					f = false;
 				} else {
 					l.add(str, 0, str.length());
 				}
-				if(str.includeLF()||index+1==buffer.getNumberOfStockedElement()||index+1==end) {
-					if(l.find()) {
-						android.util.Log.v("kiyo","=0=i-"+index+","+row);
-						android.util.Log.v("kiyo","=0=-"+mTargetView.getLeft().getCursorCol()+","+l.length());
-						mTargetView.getLeft().setCursorCol(l.getY()+index - (l.length())+1);
-						mTargetView.getLeft().setCursorRow(l.getX()+(l.getY()==0?row:0));
-						android.util.Log.v("kiyo","=1=-"+mTargetView.getLeft().getCursorCol());
+				if (str.includeLF()
+						|| index + 1 == buffer.getNumberOfStockedElement()
+						|| index + 1 == end) {
+					if (l.find()) {
+					//	android.util.Log.v("kiyo", "=0=i-" + index + "," + row);
+					//	android.util.Log.v("kiyo", "=0=-"
+					//			+ mTargetView.getLeft().getCursorCol() + ","
+					//			+ l.length());
+						mTargetView.getLeft().setCursorCol(
+								l.getY() + index - (l.length()) + 1);
+						mTargetView.getLeft().setCursorRow(
+								l.getX() + (l.getY() == 0 ? row : 0));
+					//	android.util.Log.v("kiyo", "=1=-"
+					//			+ mTargetView.getLeft().getCursorCol());
 						mTargetView.recenter();
-						android.util.Log.v("kiyo","=2=-"+mTargetView.getLeft().getCursorCol());
+					//	android.util.Log.v("kiyo", "=2=-"
+					//			+ mTargetView.getLeft().getCursorCol());
 						break;
-					}
+					}// else {
+					//	mTargetView.getLeft().setCursorCol(
+					//			l.getY() + index - (l.length()) + 1);
+					//	mTargetView.getLeft().setCursorRow(
+					//			l.getX() + (l.getY() == 0 ? row : 0));
+					//	mTargetView.recenter();
+					//}
 					l.clear();
 					row = 0;
 				}
@@ -95,18 +115,18 @@ public class SearchTask implements Runnable {
 		private Pattern mPattern = null;
 		private int mX = 0;
 		private int mY = 0;
-		
+
 		public int length() {
 			return mLength.size();
 		}
-		
+
 		public Line(String regex) {
 			mPattern = Pattern.compile(regex);
 		}
 
 		public void add(CharSequence str, int begin, int end) {
 			mBuffer.append(str.subSequence(begin, end));
-			mLength.add(end-begin);
+			mLength.add(end - begin);
 		}
 
 		public void clear() {
@@ -117,38 +137,40 @@ public class SearchTask implements Runnable {
 		}
 
 		public boolean find() {
-			
+
 			Matcher mMatcher = mPattern.matcher(mBuffer.toString());
 			boolean ret = mMatcher.find();
-			android.util.Log.v("kiyo","----ret="+ret+","+mBuffer.toString());
-			if(ret) {
+//			android.util.Log.v("kiyo",
+//					"----ret=" + ret + "," + mBuffer.toString());
+			if (ret) {
 				int start = mMatcher.start();
 				int end = mMatcher.end();
 				int len = 0;
 				int prev = 0;
-				android.util.Log.v("kiyo","get=-----");
-				for(int i=0;i<mLength.size();i++) {
-					len +=mLength.get(i);
-					android.util.Log.v("kiyo","get="+len+","+end+"-"+prev);
-					if(end<=len) {
+//				android.util.Log.v("kiyo", "get=-----");
+				for (int i = 0; i < mLength.size(); i++) {
+					len += mLength.get(i);
+//					android.util.Log.v("kiyo", "get=" + len + "," + end + "-"
+//							+ prev);
+					if (end <= len) {
 						mY = i;
-						mX = end-prev;
+						mX = end - prev;
 						break;
 					}
 					prev = len;
 				}
-				android.util.Log.v("kiyo","get=-----");
+//				android.util.Log.v("kiyo", "get=-----");
 			}
 			return ret;
 		}
 
 		public int getX() {
-			android.util.Log.v("kiyo","getX=-"+mX);
+//			android.util.Log.v("kiyo", "getX=-" + mX);
 			return mX;
 		}
 
 		public int getY() {
-			android.util.Log.v("kiyo","getY=-"+mY);
+//			android.util.Log.v("kiyo", "getY=-" + mY);
 			return mY;
 		}
 	}

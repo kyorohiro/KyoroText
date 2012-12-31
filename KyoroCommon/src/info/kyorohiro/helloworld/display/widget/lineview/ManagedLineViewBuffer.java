@@ -87,5 +87,11 @@ public class ManagedLineViewBuffer implements LineViewBufferSpec {
 	public boolean isLoading() {
 		return mBase.isLoading();
 	}
-	
+
+	//
+	//	@Override
+	//	public KyoroString getCash(int i) {
+	//		return mBase.getCash(i);
+	//	}
+	//	
 }

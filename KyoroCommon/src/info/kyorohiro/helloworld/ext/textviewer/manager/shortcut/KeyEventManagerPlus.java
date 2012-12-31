@@ -31,7 +31,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 	// must to call
 	@Override
 	public void onUpdate(CharSequence mode) {
-		android.util.Log.v("kiyo","onUpdate:"+mode);
+//		android.util.Log.v("kiyo","onUpdate:"+mode);
 		if(CursorableLineView.MODE_EDIT.equals(mode)) {
 			getManager().updateCommnad(EMACS_SHORTCUT_EDIT);			
 		}

@@ -19,7 +19,7 @@ public class KeyEventManager extends IMEController{
 	}
 
 	public void onUpdate(CharSequence mode) {
-		android.util.Log.v("kiyo","#mode="+mode);
+	//	android.util.Log.v("kiyo","#mode="+mode);
 	}
 
 	public void setMode(CharSequence mode) {
@@ -152,10 +152,10 @@ public class KeyEventManager extends IMEController{
 		}
 		mTextBuffer.clearYank();
 		if (text.isKeyCode()) {
-			android.util.Log.v("kiyo","#key  --1-- ="+text.getKeyCode());
+			//android.util.Log.v("kiyo","#key  --1-- ="+text.getKeyCode());
 			mManager.update(text.getKeyCode(), text.pushingCtrl(), text.pushingAlt(), mTextView, mTextBuffer);
 		} else {
-			android.util.Log.v("kiyo","#key  --2-- ="+text.getText());
+			//android.util.Log.v("kiyo","#key  --2-- ="+text.getText());
 			if(getMode().toString().startsWith(CursorableLineView.MODE_EDIT)) {
 				mTextBuffer.pushCommit(text.getText(),
 						text.getNewCursorPosition());

@@ -44,7 +44,7 @@ public class ISearchForward implements Task {
 		@Override
 		public void enter(String line){
 			PREV_LINE = line;
-			android.util.Log.v("kiyo","#-#ISearchForward-enter"+line);
+//			android.util.Log.v("kiyo","#-#ISearchForward-enter"+line);
 			startTask(new SearchTask(mTargetView, line));
 		}
 

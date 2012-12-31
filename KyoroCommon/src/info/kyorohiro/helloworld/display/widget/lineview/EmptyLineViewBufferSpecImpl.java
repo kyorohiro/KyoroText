@@ -46,8 +46,14 @@ public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
 
 	@Override
 	public KyoroString get(int i) {
-		return mList.get(i);
+		if(i < mList.size()) {
+			return mList.get(i);
+		} else {
+			return EMPTY;
+		}
 	}
+
+	public static final KyoroString EMPTY = new KyoroString("");
 
 	@Override
 	public int getNumberOfStockedElement() {

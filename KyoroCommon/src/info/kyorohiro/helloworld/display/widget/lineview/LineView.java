@@ -515,8 +515,20 @@ public class LineView extends SimpleDisplayObjectContainer {
 			}
 			mCashBuffer = new KyoroString[buffeSize];
 		}
-		mCashBuffer = showingText.getElements(mCashBuffer, start, end);
+//		if(showingText.isSync()) {
+			cashing(showingText, start, end);
+//		} else {
+//			mCashBuffer = showingText.getElements(mCashBuffer, start, end);
+//		}
 		return len;
+	}
+
+	private void cashing(LineViewBufferSpec showingText, int start, int end) {
+		int len = end -start;
+		for(int i =0;i<len&&i+start<showingText.getNumberOfStockedElement();i++) {
+//			android.util.Log.v("kiyo","#len#==-"+(start+i)+","+showingText.getNumberOfStockedElement());
+			mCashBuffer[i] = showingText.get(start+i);
+		}
 	}
 
 	protected void _updateStatus(LineViewBufferSpec showingText) {

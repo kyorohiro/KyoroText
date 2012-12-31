@@ -94,6 +94,9 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		super.add(element);
 		if (element instanceof KyoroString) {
 			KyoroString b = (KyoroString)element;
+			//
+			// change to folllowing code . need to test
+//			setNumberOfStockedElement(b);
 			long pos = b.getLinePosition();
 			if(mNumberOfStockedElement<(pos+1)) {
 				mNumberOfStockedElement = pos+1;
@@ -107,12 +110,6 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 
 	// so bad performance!! must to improve
 	private KyoroString getSync(int i) {
-		if(lineIsLoaded(i)) {
-			KyoroString str = getAsync(i);
-			if(!str.isNowLoading()) {
-				return str;
-			}
-		}
 		if (i < 0) {
 			return mErrorLineMessage;
 		}
@@ -121,18 +118,26 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 		try {
 			mLineManagerFromFile.moveLine(i);
-			mNumberOfStockedElement = mLineManagerFromFile.getLastLinePosition();
-			if(!mLineManagerFromFile.wasEOF()){
-				mNumberOfStockedElement++;
-			}
-			return mLineManagerFromFile.readLine();
+			// = mLineManagerFromFile.getLastLinePosition();
+			KyoroString ret = mLineManagerFromFile.readLine();
+
+//			android.util.Log.v("kiyo","-mNumberOfStockedElement-1--"+mNumberOfStockedElement+","+ret.getLinePosition());
+			setNumberOfStockedElement(ret);
+			return ret;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return mErrorLineMessage;
 		}
 	}
 
-	private KyoroString getAsync(int i) {
+	public void setNumberOfStockedElement(KyoroString ret) {
+		if(!mLineManagerFromFile.wasEOF()&&mNumberOfStockedElement<=ret.getLinePosition()+2){
+			mNumberOfStockedElement = ret.getLinePosition()+2;
+			setNumOfAdd(getNumOfAdd()+2);
+//			android.util.Log.v("kiyo","-mNumberOfStockedElement-2--"+mNumberOfStockedElement);
+		}
+	}
+	private KyoroString getAsync(int i, boolean alookhead) {
 		if (i < 0) {
 			return mErrorLineMessage;
 		}
@@ -143,6 +148,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			}
 
 			KyoroString bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
+			// todo
+			setNumberOfStockedElement(bufferedDataForReturn);
 			if (bufferedDataForReturn == null) {
 			//	android.util.Log.v("kiyo","ERROR --2--");
 				return mErrorLineMessage;
@@ -153,7 +160,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			t.printStackTrace();
 			return mErrorLineMessage;
 		} finally {
-			if (mCashing != null) {
+			if (mCashing != null && alookhead) {
 				mCashing.updateBufferedStatus();
 			}
 		}		
@@ -163,7 +170,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		if(mIsSync) {
 			return getSync(i);			
 		} else {
-			return getAsync(i);
+			return getAsync(i, true);
 		}
 	}
 

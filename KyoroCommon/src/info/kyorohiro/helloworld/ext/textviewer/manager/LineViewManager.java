@@ -58,7 +58,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		first.getTextViewer().getLineView().fittableToView();
 		///*
 		 // command
-		android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
+//		android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
 		LineViewGroup g = first.divideAndNew(true, mModeLine = new ModeLineBuffer(baseTextSize, mWidth, mMergine, false));
 //		mModeLine.setCurrentFontSize(baseTextSize);
 		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
