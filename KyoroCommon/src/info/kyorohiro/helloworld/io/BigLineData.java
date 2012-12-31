@@ -39,7 +39,7 @@ public class BigLineData {
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
-		mReader = new MarkableFileReader(mPath, 1024*2);
+		mReader = new MarkableFileReader(mPath, 1024*1);
 		/*
 		try {
 			mReader = new MarkableReaderPlusEOF(new MarkableFileReader(mPath, 1024*2));

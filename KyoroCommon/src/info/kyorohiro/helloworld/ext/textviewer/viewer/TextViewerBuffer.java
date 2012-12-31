@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.ext.textviewer.viewer;
 import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.LockableCyclingList;
@@ -22,12 +23,14 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 
 	public static final int SYNC_GET_LINE_COLOR = SimpleGraphicUtil.parseColor("#FF2222FF"); 
 	private NeiborhoodCashing mNeiborCashing = null;
-	private LatestAccessCashing mLatestCashing = new LatestAccessCashing(500);
+	private LatestAccessCashing mLatestCashing = new LatestAccessCashing(100);
 	private long mNumberOfStockedElement = 0;
 	private boolean mIsSync = false;
 
-	public TextViewerBuffer(int listSize, BreakText breakText, File path, String charset) throws FileNotFoundException {
+	public TextViewerBuffer(int listSize, int cash2, BreakText breakText, File path, String charset) throws FileNotFoundException {
 		super(listSize);
+		//android.util.Log.v("kiyo","cash2="+cash2);
+		mLatestCashing = new LatestAccessCashing(cash2);
 		mErrorLineMessage.isNowLoading(true);
 		mLoadingLineMessage.isNowLoading(true);
 		mLineManagerFromFile = new BigLineData(path, charset, breakText);

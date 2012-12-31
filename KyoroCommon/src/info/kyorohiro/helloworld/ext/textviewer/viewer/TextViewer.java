@@ -146,7 +146,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);
 			mBreakText.getSimpleFont().setAntiAlias(true);
 			mBreakText.setBufferWidth(mBufferWidth);
-			mBuffer = new ManagedLineViewBuffer(new TextViewerBufferWithColorFilter(3000, mBreakText, file, mCurrentCharset));
+			int cash2 = (int)(mBreakText.getWidth()*2/6);
+			mBuffer = new ManagedLineViewBuffer(new TextViewerBufferWithColorFilter(1000, cash2, mBreakText, file, mCurrentCharset));
 		} catch (FileNotFoundException e) {
 			FileNotFoundException fnfe = new FileNotFoundException("--3--");
 			fnfe.setStackTrace(e.getStackTrace());
@@ -205,9 +206,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	private static class TextViewerBufferWithColorFilter extends TextViewerBuffer {
-		public TextViewerBufferWithColorFilter(int listSize, BreakText breakText,
+		public TextViewerBufferWithColorFilter(int listSize, int cash2, BreakText breakText,
 				File path, String charset) throws FileNotFoundException {
-			super(listSize, breakText, path, charset);
+			super(listSize, cash2,breakText, path, charset);
 		}
 
 		@Override
