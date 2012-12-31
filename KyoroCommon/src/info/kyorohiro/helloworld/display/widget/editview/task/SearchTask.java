@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.display.widget.editview.task;
 
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.text.KyoroString;
 
@@ -23,6 +24,8 @@ public class SearchTask implements Runnable {
 		MyCursor cursor = mTargetView.getLeft();
 		int index = cursor.getCursorCol();
 		int row = cursor.getCursorRow();
+		int baseIndex = index;
+		int baseRow = row;
 		EditableLineViewBuffer buffer = (EditableLineViewBuffer) mTargetView
 				.getLineViewBuffer();
 		try {
@@ -40,6 +43,7 @@ public class SearchTask implements Runnable {
 			}
 			//android.util.Log.v("kiyo", "=end=" + end);
 			boolean lastoneline = false;
+			boolean find = false;
 			while (index != end || f || !lastoneline) {
 				Thread.sleep(0);
 				if (index == end && !f) {
@@ -81,6 +85,7 @@ public class SearchTask implements Runnable {
 					//	android.util.Log.v("kiyo", "=1=-"
 					//			+ mTargetView.getLeft().getCursorCol());
 						mTargetView.recenter();
+						find = true;
 					//	android.util.Log.v("kiyo", "=2=-"
 					//			+ mTargetView.getLeft().getCursorCol());
 						break;
@@ -95,6 +100,10 @@ public class SearchTask implements Runnable {
 					row = 0;
 				}
 				index++;
+			}
+			if(!find) {
+				mTargetView.getLeft().setCursorCol(baseIndex);
+				mTargetView.getLeft().setCursorRow(baseRow);
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

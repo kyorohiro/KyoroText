@@ -12,7 +12,7 @@ public class CircleControllerEvent implements CircleControllerAction {
 	public void moveCircle(int action, int degree, int rateDegree) {
 		TextViewer viewer = LineViewManager.getManager()
 				.getFocusingTextViewer();
-		if (CursorableLineView.MODE_EDIT == viewer.getLineView().getMode()) {
+		if (viewer.getLineView().getMode().toString().startsWith(CursorableLineView.MODE_EDIT)) {
 			moveCircleAtEditMode(action, degree, rateDegree);
 		} else {
 			moveCircleAtViewMode(action, degree, rateDegree);
