@@ -102,6 +102,15 @@ public class EditableLineView extends CursorableLineView {
 	}
 
 	@Override
+	public void isFocus(boolean isFocus) {
+		super.isFocus(isFocus);
+		if(isFocus()) {
+			if (editable()) {
+				showIME();
+			}
+		}
+	}
+	@Override
 	public boolean onTouchTest(int x, int y, int action) {
 		if (editable() && inside(x, y)) {
 			showIME();

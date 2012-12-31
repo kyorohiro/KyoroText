@@ -114,6 +114,13 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			return mErrorLineMessage;
 		}
 		try {
+			//
+			resetBufferedStartEndPosition(i);
+			if(lineIsLoaded(i)) {
+				KyoroString bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
+				return bufferedDataForReturn;
+			}
+			//
 			mLineManagerFromFile.moveLine(i);
 			mNumberOfStockedElement = mLineManagerFromFile.getLastLinePosition();
 			if(!mLineManagerFromFile.isEOF()){
