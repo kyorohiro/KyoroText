@@ -74,7 +74,6 @@ public class KeyEventManagerPlus extends KeyEventManager {
 	};
 
 	public static Command[] EMACS_SHORTCUT_EDIT = {
-		new Command(new CommandPart[]{new CommandPart('g', true, false)}, null),
 		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
 		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
 		new Command(new CommandPart[]{new CommandPart('n', true, false)}, new NextLine()),
@@ -110,7 +109,6 @@ public class KeyEventManagerPlus extends KeyEventManager {
 	};
 
 	public static Command[] EMACS_SHORTCUT_MODELINE = {
-		new Command(new CommandPart[]{new CommandPart('g', true, false)}, null),
 		new Command(new CommandPart[]{new CommandPart('a', true, false)}, new BeginningOfLine()),
 		new Command(new CommandPart[]{new CommandPart('e', true, false)}, new EndOfLine()),
 		new Command(new CommandPart[]{new CommandPart('n', true, false)}, new NextLine()),

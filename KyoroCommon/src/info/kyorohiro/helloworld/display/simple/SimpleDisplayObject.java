@@ -39,8 +39,15 @@ public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 	}
 
 
-	public void dispose() {
+	private boolean mIsDisposed = false;
 
+	public boolean isDispose() {
+//		android.util.Log.v("kiyo","isDisposed="+mIsDisposed);
+		return mIsDisposed;
+	}
+
+	public void dispose() {
+		mIsDisposed = true;
 	};
 
 	public boolean includeParentRect() {

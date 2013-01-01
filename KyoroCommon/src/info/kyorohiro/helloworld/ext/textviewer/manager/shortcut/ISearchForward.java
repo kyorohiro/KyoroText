@@ -45,6 +45,9 @@ public class ISearchForward implements Task {
 		@Override
 		public void enter(String line){
 			PREV_LINE = line;
+			if(mTargetView.isDispose()) {
+				return;
+			}
 //			android.util.Log.v("kiyo","#-#ISearchForward-enter"+line);
 			ModeLineBuffer modeBuffer = LineViewManager.getManager().getModeLineBuffer();
 			modeBuffer.startTask(new SearchTask(mTargetView, line));

@@ -27,6 +27,7 @@ public class ModeLineBuffer extends TextViewer {
 		super(new EmptyLineViewBufferSpecImpl(400, LineViewManager.getManager().getFont()),textSize, width, mergine,
 				LineViewManager.getManager().getFont(),//new SimpleFontForAndroid(),
 				LineViewManager.getManager().getCurrentCharset());
+		//android.util.Log.v("kiyo","new");
 		if(LineViewManager.getManager().currentBrIsLF()){
 			getLineView().isCrlfMode(false);
 		} else {
@@ -37,8 +38,10 @@ public class ModeLineBuffer extends TextViewer {
 
 	public boolean isEmptyTask() {
 		if(mTask == null) {
+		//	android.util.Log.v("kiyo","true");
 			return true;
 		} else {
+		//	android.util.Log.v("kiyo","false");
 			return false;
 		}
 	}
@@ -49,14 +52,21 @@ public class ModeLineBuffer extends TextViewer {
 	}
 
 	public void done() {
-		if(mTask !=null) {
+		ModeLineTask task = mTask;
+		if(task !=null) {
 			KyoroString text = this.getLineView().getKyoroString(0);
 			if(text != null) {
-				mTask.enter(text.toString());
+				task.enter(text.toString());
 			}
-			mTask.end();
+			task.end();
+			//todo
 			mTask = null;
-			this.getLineView().clear();
+			if(getLineView() != null) {
+				getLineView().clear();
+			}
+			// 
+			// todo refactring target
+//			endTask();
 		}
 		hideModeLine();
 	}
@@ -78,13 +88,19 @@ public class ModeLineBuffer extends TextViewer {
 
 	public Thread mCurrentTask = null;
 	public void endTask() {
+		//android.util.Log.v("kiyo","endTask");
 		if(mCurrentTask !=null && mCurrentTask.isAlive()) {
 			mCurrentTask.interrupt();
 			mCurrentTask = null;
 		}
 		mCurrentTask = null;
+		mTask = null;
+		if(getLineView() != null) {
+			getLineView().clear();
+		}
 	}
 	public void startTask(Runnable task) {
+		//android.util.Log.v("kiyo","startTask");
 		if(task == null) {
 			endTask();
 			return;

@@ -108,10 +108,15 @@ public class SearchTask implements Runnable {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch(Throwable e) {
+			// todo 面倒なので...
+			e.printStackTrace();
 		} finally {
-			buffer.isSync(false);
-			mTargetView.isLockScreen(false);
-			mTargetView.recenter();
+			if(mTargetView !=null && !mTargetView.isDispose()) {
+				buffer.isSync(false);
+				mTargetView.isLockScreen(false);
+				mTargetView.recenter();
+			}
 		}
 	}
 

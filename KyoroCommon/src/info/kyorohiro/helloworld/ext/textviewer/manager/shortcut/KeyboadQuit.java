@@ -17,6 +17,7 @@ public class KeyboadQuit implements Task {
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		LineViewManager.getManager().getModeLineBuffer().endTask();
 		buffer.clearYank();
+		LineViewManager.getManager().otherWindow();
 	}
 
 }

@@ -199,7 +199,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 				removeChild(this);
 			}
 		}
-//		super.dispose();
+		super.dispose();
 	}
 
 	@Override
