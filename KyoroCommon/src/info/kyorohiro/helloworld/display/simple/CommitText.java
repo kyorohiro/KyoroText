@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.display.simple;
 
+//
+//todo don't fix
 public class CommitText {
 	    // todo commit text keycode 
 		private CharSequence mText = null;

@@ -3,8 +3,8 @@ package info.kyorohiro.helloworld.display.simple;
 import java.util.HashMap;
 
 
-// this class is hard-coding. 
-// todo refactaring
+//
+//todo don't fix
 public class IMEController {
 
 	private boolean mIsUseBinaryKey = false;
