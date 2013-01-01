@@ -115,7 +115,7 @@ public class CursorableLineView extends LineView {
 		if (super.onTouchTest(x, y, action)) {
 			return true;
 		} else {
-			if (mMode.toString().startsWith(MODE_EDIT)) {
+			if (mMode.toString().startsWith(MODE_EDIT)||mMode.toString().startsWith(MODE_VIEW)) {
 				if(action == SimpleMotionEvent.ACTION_DOWN) {
 					mIsEditClickActionX = x;
 					mIsEditClickActionY = y; 
