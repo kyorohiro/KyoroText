@@ -23,18 +23,19 @@ public class ISearchForward implements Task {
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		LineViewManager.getManager().getModeLineBuffer().startModeLineTask(new ISearchForwardTask(view));
+		buffer.clearYank();
 	}
 
 	public static String PREV_LINE = "";
-	public static Thread th = null;
-	public void startTask(Runnable task) {
-		if(th !=null && th.isAlive()) {
-			th.interrupt();
-			th = null;
-		}
-		th = new Thread(task);
-		th.start();
-	}
+//	public static Thread th = null;
+//	public void startTask(Runnable task) {
+//		if(th !=null && th.isAlive()) {
+//			th.interrupt();
+//			th = null;
+//		}
+//		th = new Thread(task);
+//		th.start();
+//	}
 	public class ISearchForwardTask implements ModeLineTask{
 		private EditableLineView mTargetView = null;
 		public ISearchForwardTask(EditableLineView targetView) {
@@ -45,7 +46,8 @@ public class ISearchForward implements Task {
 		public void enter(String line){
 			PREV_LINE = line;
 //			android.util.Log.v("kiyo","#-#ISearchForward-enter"+line);
-			startTask(new SearchTask(mTargetView, line));
+			ModeLineBuffer modeBuffer = LineViewManager.getManager().getModeLineBuffer();
+			modeBuffer.startTask(new SearchTask(mTargetView, line));
 		}
 
 		@Override

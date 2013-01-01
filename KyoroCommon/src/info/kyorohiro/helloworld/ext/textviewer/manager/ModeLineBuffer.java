@@ -75,5 +75,26 @@ public class ModeLineBuffer extends TextViewer {
 		mTask = task;
 		mTask.begin();
 	}
+
+	public Thread mCurrentTask = null;
+	public void endTask() {
+		if(mCurrentTask !=null && mCurrentTask.isAlive()) {
+			mCurrentTask.interrupt();
+			mCurrentTask = null;
+		}
+		mCurrentTask = null;
+	}
+	public void startTask(Runnable task) {
+		if(task == null) {
+			endTask();
+			return;
+		}
+		if(mCurrentTask !=null && mCurrentTask.isAlive()) {
+			mCurrentTask.interrupt();
+			mCurrentTask = null;
+		}
+		mCurrentTask = new Thread(task);
+		mCurrentTask.start();
+	}
 	
 }
