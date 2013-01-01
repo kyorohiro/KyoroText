@@ -2,9 +2,9 @@ package info.kyorohiro.helloworld.display.widget.editview;
 
 import java.util.LinkedList;
 
-import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
+import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.display.widget.editview.IMEClient;

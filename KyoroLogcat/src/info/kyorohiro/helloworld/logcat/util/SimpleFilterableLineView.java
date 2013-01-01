@@ -5,11 +5,11 @@ import java.util.regex.Pattern;
 
 import android.view.ViewDebug.ExportedProperty;
 import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
-import info.kyorohiro.helloworld.display.simple.BreakText;
-import info.kyorohiro.helloworld.display.simple.MyBreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.sample.BreakText;
+import info.kyorohiro.helloworld.display.simple.sample.MyBreakText;
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;

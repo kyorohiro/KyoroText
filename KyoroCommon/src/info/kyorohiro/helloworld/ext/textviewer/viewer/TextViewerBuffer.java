@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
-import info.kyorohiro.helloworld.display.simple.BreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
+import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.io.BigLineData;

@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import info.kyorohiro.helloworld.display.simple.BreakText;
+import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public interface LineViewBufferSpec {

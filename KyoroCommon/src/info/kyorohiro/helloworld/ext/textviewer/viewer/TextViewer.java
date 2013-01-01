@@ -3,13 +3,13 @@ package info.kyorohiro.helloworld.ext.textviewer.viewer;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import info.kyorohiro.helloworld.display.simple.BreakText;
-import info.kyorohiro.helloworld.display.simple.MyBreakText;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.sample.BreakText;
+import info.kyorohiro.helloworld.display.simple.sample.MyBreakText;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;

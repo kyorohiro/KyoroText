@@ -2,10 +2,10 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 import java.util.LinkedList;
 
-import info.kyorohiro.helloworld.display.simple.BreakText;
-import info.kyorohiro.helloworld.display.simple.EmptyBreakText;
-import info.kyorohiro.helloworld.display.simple.EmptySimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
+import info.kyorohiro.helloworld.display.simple.sample.BreakText;
+import info.kyorohiro.helloworld.display.simple.sample.EmptyBreakText;
+import info.kyorohiro.helloworld.display.simple.sample.EmptySimpleFont;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{
