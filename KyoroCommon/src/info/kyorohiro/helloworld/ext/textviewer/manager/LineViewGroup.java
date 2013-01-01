@@ -81,6 +81,20 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 	}
 	public boolean mIsControlBuffer = false;
 	public boolean isControlBuffer() {
+		// todo refactring target
+		//for(int i=0;i<numOfChild();i++) {
+		//	if(getChild(i)
+		ModeLineBuffer compare = LineViewManager.getManager().getModeLineBuffer();
+		Object p = compare.getParent();
+		Object pp = (compare.getParent()!=null?((SimpleDisplayObject)p).getParent():null);
+		if(this == p || mTextViewer == compare || this == pp){
+//			android.util.Log.v("kiyo","isCont=true");
+			return true;
+		}
+		//		return true;
+		//	}
+		//}
+//		android.util.Log.v("kiyo","isCont="+mIsControlBuffer);
 		return mIsControlBuffer;
 	}
 	public void isControlBuffer(boolean on) {
