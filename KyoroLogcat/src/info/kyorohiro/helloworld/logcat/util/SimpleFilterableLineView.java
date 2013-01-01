@@ -14,8 +14,8 @@ import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffe
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndMoveActionForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.logcat.KyoroLogcatSetting;
 import info.kyorohiro.helloworld.logcat.util.SimpleFilterableLineView;
 import info.kyorohiro.helloworld.text.KyoroString;

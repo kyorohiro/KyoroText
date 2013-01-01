@@ -8,8 +8,8 @@ import android.graphics.Color;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.flowinglineview.FlowingLineBuffer;
-import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndMoveActionForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndZoomForLineView;
 
 
 public class LogcatViewer extends SimpleFilterableLineView {

@@ -13,9 +13,9 @@ import info.kyorohiro.helloworld.display.simple.sample.MyBreakText;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;
-import info.kyorohiro.helloworld.display.widget.lineview.TouchAndMoveActionForLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.TouchAndZoomForLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.ScrollBar;
+import info.kyorohiro.helloworld.display.widget.lineview.extraparts.ScrollBar;
+import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndMoveActionForLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.text.KyoroString;
 //import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 

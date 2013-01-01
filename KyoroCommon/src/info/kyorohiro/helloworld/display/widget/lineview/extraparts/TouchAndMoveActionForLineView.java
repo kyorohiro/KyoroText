@@ -1,10 +1,11 @@
-package info.kyorohiro.helloworld.display.widget.lineview;
+package info.kyorohiro.helloworld.display.widget.lineview.extraparts;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.display.simple.SimplePoint;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
+import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 
 // this class is refactraing target.
 public class TouchAndMoveActionForLineView extends SimpleDisplayObject {

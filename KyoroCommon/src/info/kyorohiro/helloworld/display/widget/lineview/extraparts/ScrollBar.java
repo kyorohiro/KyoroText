@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget.lineview;
+package info.kyorohiro.helloworld.display.widget.lineview.extraparts;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
