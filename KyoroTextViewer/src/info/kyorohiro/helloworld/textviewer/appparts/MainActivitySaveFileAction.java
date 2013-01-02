@@ -12,6 +12,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.SaveBuffer;
 import info.kyorohiro.helloworld.textviewer.task.SaveTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
@@ -43,65 +44,15 @@ public class MainActivitySaveFileAction implements MainActivityMenuAction {
 	public boolean onMenuItemSelected(Activity activity, int featureId,
 			MenuItem item) {
 		if (item.getTitle().equals(TITLE)) {
-			showExplorer(activity);
+			save();
 			return true;
 		}
 		return false;
 	}
-
-	private WeakReference<Activity> mRefActivity = null;
-	private void showExplorer(Activity activity) {
-		mRefActivity = new WeakReference<Activity>(activity);
-		File directory = new File(KyoroSetting.getCurrentFile());
-		File firstCandidateDirectory = directory.getParentFile();
-		File secondCandidateDirectory = Environment.getExternalStorageDirectory();
-		File thirdCandidateDirectory = Environment.getRootDirectory();
-
-		File showedDirectry = firstCandidateDirectory;
-		if (showedDirectry == null || !showedDirectry.exists() || !showedDirectry.canRead()) {
-			showedDirectry = secondCandidateDirectory;
-		} 
-
-		if (showedDirectry == null || !showedDirectry.exists()||!showedDirectry.canRead()) {
-			showedDirectry = thirdCandidateDirectory;
-		} 
-
-		SimpleFileExplorer dialog = SimpleFileExplorer.createDialog(activity, showedDirectry,
-				SimpleFileExplorer.MODE_FILE_SELECT|SimpleFileExplorer.MODE_NEW_FILE);
-		((KyoroTextViewerActivity)activity).stopStage();
-		dialog.show();
-		dialog.setOnSelectedFileAction(new SelectedFileAction() {
-			@Override
-			public boolean onSelectedFile(File file, String action) {
-				if (file.isDirectory()){
-					return false;
-				}
-				if(mViewer.getFocusingTextViewer() == null){
-					return false;
-				}
-				TextViewer tViewr = mViewer.getFocusingTextViewer();
-				Thread th = new Thread(new SaveTask(tViewr,file));
-				th.start();
-				return true;
-			}
-		});
-		dialog.setOnCancelListener(new OnCancelListener() {			
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				if(mRefActivity!=null){
-					Activity a = mRefActivity.get();
-					((KyoroTextViewerActivity)a).startStage();
-				}
-			}
-		});
-		dialog.setOnDismissListener(new OnDismissListener() {
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				if(mRefActivity!=null){
-					Activity a = mRefActivity.get();
-					((KyoroTextViewerActivity)a).startStage();
-				}
-			}
-		});
+	private void save() {
+		TextViewer target = LineViewManager.getManager().getFocusingTextViewer();
+		SaveBuffer buffer = new SaveBuffer();
+		buffer.act(target.getLineView(), (EditableLineViewBuffer)target.getLineView().getLineViewBuffer());
 	}
+
 }

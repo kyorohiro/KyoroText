@@ -12,6 +12,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySaveFileAction;
+import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySaveasFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCRLFAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetectionAction;
@@ -65,6 +66,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivitySetCharsetAction(mViewerManager));
 		setMenuAction(new MainActivitySetTextSizeAction(mViewerManager));
 		setMenuAction(new MainActivitySetCharsetDetectionAction(mViewerManager));
+		setMenuAction(new MainActivitySaveasFileAction(mViewerManager));
 		setMenuAction(new MainActivitySaveFileAction(mViewerManager));
 		setMenuAction(new MainActivitySetCRLFAction(mViewerManager));
 		// todo following yaxtuke sigoto
