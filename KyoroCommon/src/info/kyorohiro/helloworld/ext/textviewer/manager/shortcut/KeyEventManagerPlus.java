@@ -62,6 +62,8 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
 		new Command(new CommandPart[]{new CommandPart('g', true, false)}, new KeyboadQuit()),
+		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('s', true, false)}, new SaveBuffer()),
+
 		//*/
 		///*
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
@@ -94,6 +96,8 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
 		new Command(new CommandPart[]{new CommandPart('g', true, false)}, new KeyboadQuit()),
+		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('s', true, false)}, new SaveBuffer()),
+
 		//
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new PreviousLine()),
@@ -124,6 +128,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('o', false, false)}, new OtherWindow()),
 		new Command(new CommandPart[]{new CommandPart('g', true, false)}, new KeyboadQuit()),
+
 		//
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_UP, false, false)}, new PreviousLine()),

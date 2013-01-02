@@ -55,7 +55,7 @@ public class SaveTask implements Runnable {
 
 	public void action() throws IOException {
 		try {
-			mEditor.isLockScreen(true);
+			//mEditor.isLockScreen(true);
 			mBuffer.isSync(true);
 			mViewer.getManagedLineViewBuffer().reserve();
 			save_init();
@@ -85,6 +85,8 @@ public class SaveTask implements Runnable {
 				}
 				mStream.write(b, 0, b.length);
 				Thread.yield();
+				mViewer.getLineView().getLeft().setCursorCol(i);
+				mViewer.getLineView().recenter();
 			}
 // version 3 now creating
 			// �����̃t�@�C������ʖ��ŋL�^���Ă���
