@@ -5,6 +5,7 @@ import java.io.File;
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.sample.EmptySimpleFont;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ModeLineTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import junit.framework.TestCase;
 
@@ -14,7 +15,7 @@ public class TestForLineViewManager extends TestCase {
 
 	}
 
-	public void otherWindow() {
+	public void testOtherWindow() {
 		SimpleApplication application = new MyApplication();
 		TextViewBuilder builder = new MyBuilder();
 		int baseTextSize = 12;
@@ -31,10 +32,27 @@ public class TestForLineViewManager extends TestCase {
 			assertEquals(v, manager.getFocusingTextViewer());
 		}
 		{
-
+			LineViewManager manager = new LineViewManager(application, builder,
+					baseTextSize, textSize, width, height, mergine, menuWidth);
+			TextViewer v = manager.getFocusingTextViewer();
+			manager.getModeLineBuffer().startModeLineTask(new MyTask());
+			manager.otherWindow();
+			assertEquals(manager.getModeLineBuffer(), manager.getFocusingTextViewer());
 		}
+
 	}
 
+	public class MyTask implements ModeLineTask {
+		@Override
+		public void enter(String line) {
+		}
+		@Override
+		public void begin() {
+		}
+		@Override
+		public void end() {
+		}		
+	}
 	public static class MyApplication implements SimpleApplication {
 		@Override
 		public File getApplicationDirectory() {
