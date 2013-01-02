@@ -19,6 +19,8 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.StartupCommandBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.TextViewBuilder;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.KeyEventManagerPlus;
+import info.kyorohiro.helloworld.ext.textviewer.manager.task.OtherWindowTask;
+import info.kyorohiro.helloworld.util.AsyncronousTask;
 
 public class LineViewManager extends SimpleDisplayObjectContainer {
 	private static LineViewManager sInstance = null;
@@ -35,6 +37,8 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	public static LineViewManager getManager() {
 		return sInstance;
 	}
+
+
 
 	public ModeLineBuffer getModeLineBuffer() {
 		return mModeLine;
@@ -199,54 +203,12 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	//
 	// following code otherWindow must to be moving another class
 	//　
-	public void otherWindow() {
-	//	android.util.Log.v("kiyo","----otherWindow");
-		TextViewer v = getFocusingTextViewer();
-		if(v.getParent() instanceof LineViewGroup) {
-			int i = ((LineViewGroup)v.getParent()).getIndex(v);
-			TextViewer f = otherWindow(v.getParent(), i+1);
-			if(f!=null) {
-				changeFocus(f);
-			}
-		}
-		if(getFocusingTextViewer() == mModeLine&& mModeLine.isEmptyTask()) {
-			otherWindow();
-		}
-		//android.util.Log.v("kiyo","----/otherWindow");
-	}
-
-	private TextViewer otherWindow(Object v, int index) {
-		//android.util.Log.v("kiyo","----otherWindow -1-:" +index);
-		if(v instanceof LineViewGroup) {
-			//android.util.Log.v("kiyo","----otherWindow -1-2:");
-			return otherWindow((LineViewGroup)v, index);
-		} else if(v instanceof TextViewer) {
-			//android.util.Log.v("kiyo","----otherWindow -1-3:");
-			return (TextViewer)v;
-		} else {
-			//android.util.Log.v("kiyo","----otherWindow -1-4:");
-			return otherWindow(mRoot, 0);
-		}
-	}
-	private TextViewer otherWindow(LineViewGroup v, int index) {
-		//android.util.Log.v("kiyo","----otherWindow -2-" +index+","+v.numOfChild());
-		for(int i=index;i<v.numOfChild();i++) {
-			if(v.getChild(i) instanceof TextViewer) {
-			//	android.util.Log.v("kiyo","----otherWindow -2-1 " +i);
-				return (TextViewer)v.getChild(i);
-			} else if(v.getChild(i) instanceof LineViewGroup) {
-				//android.util.Log.v("kiyo","----otherWindow -2-2 " +i);
-				return otherWindow(v.getChild(i), 0);
-			}
-		}
-		if(v instanceof SimpleDisplayObjectContainer){
-			int j = ((SimpleDisplayObjectContainer)v.getParent()).getIndex(v);
-			//android.util.Log.v("kiyo","----otherWindow -3-"+j);
-			return otherWindow(v.getParent(), j+1);
-		} else {
-		//	android.util.Log.v("kiyo","----otherWindow -4-");
-			return otherWindow(this, 0);
-		}
+	public synchronized void otherWindow() {
+	///*
+	  	OtherWindowTask task = new OtherWindowTask();
+		AsyncronousTask atask = new AsyncronousTask(task);
+		getModeLineBuffer().startTask(atask);
+		atask.waitForTask();
 	}
 
 	//
