@@ -81,4 +81,9 @@ public class KyoroApplication extends Application implements SimpleApplication {
 			} 
 		}
 	}
+
+	@Override
+	public void showMessage(CharSequence message) {
+		KyoroApplication.showMessage(""+message);
+	}
 }

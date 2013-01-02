@@ -88,6 +88,11 @@ public class TestForLineViewManager extends TestCase {
 		public File getApplicationDirectory() {
 			return null;
 		}
+
+		@Override
+		public void showMessage(CharSequence message) {
+			System.out.println(""+message);
+		}
 	}
 
 	public static class MyBuilder extends TextViewBuilder {
