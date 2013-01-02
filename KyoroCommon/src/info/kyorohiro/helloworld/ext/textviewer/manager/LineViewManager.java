@@ -33,12 +33,15 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	private LineViewGroup mRoot = null;
 	private KeyEventManager mKeyEventManager = new KeyEventManagerPlus();
 	private ModeLineBuffer mModeLine = null;
-
+	private LineViewList mList = new LineViewList();
 	public static LineViewManager getManager() {
 		return sInstance;
 	}
 
 
+	public LineViewList getBufferList() {
+		return mList;
+	}
 
 	public ModeLineBuffer getModeLineBuffer() {
 		return mModeLine;
@@ -123,6 +126,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	public TextViewer newTextViewr() {
 		TextViewer viewer = new StartupCommandBuffer(mTextSize, mWidth, mMergine ,true);
 		viewer.getLineView().setKeyEventManager(mKeyEventManager);
+		mList.add(viewer);
 		//viewer.getLineView().fittableToView(true);
 		return viewer;
 	}

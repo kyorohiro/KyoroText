@@ -11,6 +11,7 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewList;
 import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
@@ -90,9 +91,17 @@ public class SaveTask implements Runnable {
 			}
 // version 3 now creating
 			// �����̃t�@�C������ʖ��ŋL�^���Ă���
+			mEditor.isLockScreen(true);
 			mBakFilePath.delete();
+			//
+			//
+			LineViewList bufferList = LineViewManager.getManager().getBufferList();
+			bufferList.lockAll();
+			bufferList.updateFileName(mSaveFilePath, mBakFilePath);
 			mSaveFilePath.renameTo(mBakFilePath.getAbsoluteFile());
-			
+			bufferList.unlockAll();
+			//
+			//
 			// �ꎞ�ۑ������t�@�C�����ړ�����B
 			mTmpFilePath.renameTo(mSaveFilePath.getAbsoluteFile());
 		}

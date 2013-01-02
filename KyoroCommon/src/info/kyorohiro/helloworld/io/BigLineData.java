@@ -35,6 +35,13 @@ public class BigLineData {
 		init(path, charset);
 	}
 
+	public synchronized void asisChangePath(File path) throws FileNotFoundException {
+		mReader = new MarkableFileReader(mPath=path, (int)(512*1.5));
+	}
+
+	public File getPath() {
+		return mPath;
+	}
 	private void init(File path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
@@ -43,11 +50,11 @@ public class BigLineData {
 		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
 	}
 
-	public BreakText getBreakText(){
+	public synchronized BreakText getBreakText(){
 		return mBreakText;
 	}
 
-	public void moveLine(long lineNumber) throws IOException {
+	public synchronized void moveLine(long lineNumber) throws IOException {
 		//
 		if(mLinePosition == lineNumber) {
 //			android.util.Log.v("kiyo","--lineNumber="+lineNumber);
@@ -71,7 +78,7 @@ public class BigLineData {
 		}
 	}
 
-	public boolean wasEOF() {
+	public synchronized boolean wasEOF() {
 		try {
 			//android.util.Log.v("kiyo","reader="+mReader.length()+","+mLastFilePointer);
 			if (mReader.length() > mLastFilePointer) {
@@ -85,7 +92,7 @@ public class BigLineData {
 		return false;
 		
 	}
-	public boolean isEOF() {
+	public synchronized boolean isEOF() {
 		try {
 			if (mReader.length() <= mReader.getFilePointer()) {
 //			if (mReader.length() <= mLastFilePointer) {
@@ -100,7 +107,7 @@ public class BigLineData {
 	}
 
 	private long mLastFilePointer = 0;
-	public KyoroString readLine() throws IOException {
+	public synchronized KyoroString readLine() throws IOException {
 		KyoroString tmp = new KyoroString(new char[]{}, 0);
 		int lineNumber = (int) mLinePosition;
 		long begin = 0;
@@ -127,7 +134,7 @@ public class BigLineData {
 		return tmp;
 	}
 
-	public void close() throws IOException {
+	public synchronized void close() throws IOException {
 		mReader.close();
 	}
 
@@ -163,12 +170,12 @@ public class BigLineData {
 	}
 
 
-	public long getNextLinePosition() {
+	public synchronized long getNextLinePosition() {
 		return mLinePosition;
 	}
 
 	//	@Deprecated
-	public long getLastLinePosition() {
+	public synchronized long getLastLinePosition() {
 		return mLastLinePosition;
 	}
 

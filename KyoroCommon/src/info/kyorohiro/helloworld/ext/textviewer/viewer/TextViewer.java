@@ -83,6 +83,18 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return mGuard;
 	}
 
+	public File asisGetBufferPath() {
+		if(mAsisTextBuffer != null) {
+			return mAsisTextBuffer.getBigLineData().getPath();
+		} else {
+			return new File("");
+		}
+	}
+	public void asisChangeBufferPath(File bufferPath) throws FileNotFoundException {
+		if(mAsisTextBuffer != null) {
+			mAsisTextBuffer.getBigLineData().asisChangePath(bufferPath);
+		}
+	}
 	public String getCurrentPath() {
 		return mCurrentPath;
 	}
@@ -130,6 +142,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	private TextViewerBuffer mAsisTextBuffer = null;
 	public boolean readFile(File file, boolean updataCurrentPath) throws FileNotFoundException, NullPointerException {
 
 		if (file == null) {
@@ -145,7 +158,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			mBreakText.getSimpleFont().setAntiAlias(true);
 			mBreakText.setBufferWidth(mBufferWidth);
 			int cash2 = (int)(mBreakText.getWidth()*2/6);
-			mBuffer = new ManagedLineViewBuffer(new TextViewerBufferWithColorFilter(1000, cash2, mBreakText, file, mCurrentCharset));
+			mBuffer = new ManagedLineViewBuffer(mAsisTextBuffer = new TextViewerBufferWithColorFilter(1000, cash2, mBreakText, file, mCurrentCharset));
 		} catch (FileNotFoundException e) {
 			FileNotFoundException fnfe = new FileNotFoundException("--3--");
 			fnfe.setStackTrace(e.getStackTrace());
