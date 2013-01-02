@@ -61,14 +61,14 @@ public class KyoroTextViewerActivity extends MainActivity {
 		layout.addView(mStage);
 		setContentView(layout);
 		// setContentView(mStage);
-
-		setMenuAction(new MainActivityOpenFileAction(mViewerManager));
-		setMenuAction(new MainActivitySetCharsetAction(mViewerManager));
-		setMenuAction(new MainActivitySetTextSizeAction(mViewerManager));
 		setMenuAction(new MainActivitySetCharsetDetectionAction(mViewerManager));
-		setMenuAction(new MainActivitySaveasFileAction(mViewerManager));
+		setMenuAction(new MainActivityOpenFileAction(mViewerManager));
 		setMenuAction(new MainActivitySaveFileAction(mViewerManager));
+		setMenuAction(new MainActivitySaveasFileAction(mViewerManager));
+		setMenuAction(new MainActivitySetTextSizeAction(mViewerManager));
+		setMenuAction(new MainActivitySetCharsetAction(mViewerManager));
 		setMenuAction(new MainActivitySetCRLFAction(mViewerManager));
+
 		// todo following yaxtuke sigoto
 		mViewerManager.setEvent(new A());
 	}
