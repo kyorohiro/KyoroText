@@ -7,7 +7,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManage
 public class Yank implements Task {
 	@Override
 	public String getCommandName() {
-		return "crlftask";
+		return "yank";
 	}
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {

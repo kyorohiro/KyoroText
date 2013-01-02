@@ -238,6 +238,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 				chFocus((SimpleDisplayObject)parent); 
 			}
 			dispose();
+			LineViewManager.getManager().getBufferList().doGrabage();
 		} 
 		return true;
 	}
