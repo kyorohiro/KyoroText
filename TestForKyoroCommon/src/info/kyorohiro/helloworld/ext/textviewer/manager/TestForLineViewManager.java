@@ -25,6 +25,9 @@ public class TestForLineViewManager extends TestCase {
 		int mergine = 12;
 		int menuWidth = 12;
 		{
+			//
+			// initial state
+			//
 			LineViewManager manager = new LineViewManager(application, builder,
 					baseTextSize, textSize, width, height, mergine, menuWidth);
 			TextViewer v = manager.getFocusingTextViewer();
@@ -32,12 +35,39 @@ public class TestForLineViewManager extends TestCase {
 			assertEquals(v, manager.getFocusingTextViewer());
 		}
 		{
+			//
+			// modeline and lineviewmanager
+			//
 			LineViewManager manager = new LineViewManager(application, builder,
 					baseTextSize, textSize, width, height, mergine, menuWidth);
 			TextViewer v = manager.getFocusingTextViewer();
+
+			// set task
 			manager.getModeLineBuffer().startModeLineTask(new MyTask());
 			manager.otherWindow();
 			assertEquals(manager.getModeLineBuffer(), manager.getFocusingTextViewer());
+
+			//
+			manager.otherWindow();
+			assertEquals(v, manager.getFocusingTextViewer());
+
+			//
+			manager.getModeLineBuffer().endTask();
+			manager.otherWindow();
+			assertEquals(v, manager.getFocusingTextViewer());
+			//
+			manager.otherWindow();
+			assertEquals(v, manager.getFocusingTextViewer());
+		}
+		{
+			//
+			// dividewindow
+			//
+			LineViewManager manager = new LineViewManager(application, builder,
+					baseTextSize, textSize, width, height, mergine, menuWidth);
+			TextViewer v = manager.getFocusingTextViewer();
+			manager.otherWindow();
+			assertEquals(v, manager.getFocusingTextViewer());
 		}
 
 	}
