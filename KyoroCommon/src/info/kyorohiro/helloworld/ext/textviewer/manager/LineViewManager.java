@@ -41,7 +41,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	// ���Singletone�ɂ���B
-	public LineViewManager(SimpleApplication application, TextViewBuilder builder,int baseTextSize, int textSize, int width, int height, int mergine, int menuWidth) {
+	public LineViewManager(SimpleApplication application, TextViewBuilder builder, int baseTextSize, int textSize, int width, int height, int mergine, int menuWidth) {
 		mApplication = application;
 		mBuilder = builder;
 		sInstance = this;
