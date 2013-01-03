@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget.lineview;
+package info.kyorohiro.helloworld.display.widget.lineview.sample;
 
 import java.util.LinkedList;
 
@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.display.simple.sample.EmptyBreakText;
 import info.kyorohiro.helloworld.display.simple.sample.EmptySimpleFont;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class EmptyLineViewBufferSpecImpl implements LineViewBufferSpec{

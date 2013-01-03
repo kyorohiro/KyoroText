@@ -1,7 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.editview;
 
-import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.text.KyoroString;
 import junit.framework.TestCase;
 

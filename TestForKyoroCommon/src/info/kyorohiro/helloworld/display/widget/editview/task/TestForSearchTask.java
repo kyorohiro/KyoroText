@@ -1,8 +1,8 @@
 package info.kyorohiro.helloworld.display.widget.editview.task;
 
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
-import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.AsyncronousTask;
 import junit.framework.TestCase;

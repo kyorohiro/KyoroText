@@ -1,0 +1,13 @@
+C-g : keyboad-quit
+C-d : delete-char
+C-h : delete-backward-char
+M-< : beginning-of-buffer
+M-> : end-of-buffer
+C-a : beginning-of-line
+C-b : backward-word
+C-n : next-line
+C-p : previous-line
+C-f : foward-word
+C-l : recenter
+C-k : kill-line
+C-y : yank

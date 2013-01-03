@@ -1,0 +1,3 @@
+C-x o : other-window
+C-s : isearch-forward
+C-x C-s : save-buffer
