@@ -4,7 +4,7 @@ import java.io.File;
 
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 
-public abstract class TextViewBuilder {
+public abstract class AppDependentAction {
 	public abstract SimpleFont newSimpleFont();
 	public abstract void copyStart();
 	public abstract void pastStart();

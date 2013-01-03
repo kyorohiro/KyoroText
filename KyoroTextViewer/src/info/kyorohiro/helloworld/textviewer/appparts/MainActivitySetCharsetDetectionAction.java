@@ -5,7 +5,7 @@ import java.io.File;
 import info.kyorohiro.helloworld.pfdep.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.textviewer.util.CharsetDetectorSample;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
@@ -21,9 +21,9 @@ import android.widget.ListView;
 public class MainActivitySetCharsetDetectionAction implements MainActivityMenuAction {
 
 	public static String TITLE = "charset auto detection";
-	private LineViewManager mDisplayedTextViewer = null;
+	private BufferManager mDisplayedTextViewer = null;
 
-	public MainActivitySetCharsetDetectionAction(LineViewManager viewer) {
+	public MainActivitySetCharsetDetectionAction(BufferManager viewer) {
 		mDisplayedTextViewer = viewer;
 	}
 
@@ -38,7 +38,7 @@ public class MainActivitySetCharsetDetectionAction implements MainActivityMenuAc
 				 public void run(Activity c){
 						showDialog(c);
 				 }
-			 }, LineViewManager.getManager().getFocusingTextViewer().isEdit());
+			 }, BufferManager.getManager().getFocusingTextViewer().isEdit());
 
 			return true;
 		}

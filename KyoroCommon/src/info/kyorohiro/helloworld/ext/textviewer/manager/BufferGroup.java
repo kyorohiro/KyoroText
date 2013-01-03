@@ -6,11 +6,11 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewGroup;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferGroup;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.SeparateUI;
 
-public class LineViewGroup extends SimpleDisplayObjectContainer{
+public class BufferGroup extends SimpleDisplayObjectContainer{
 
 	private TextViewer mTextViewer = null;
 	private SeparateUI mSeparate = null;
@@ -19,7 +19,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		return mTextViewer;
 	}
 
-	public LineViewGroup(TextViewer textViewer) {
+	public BufferGroup(TextViewer textViewer) {
 		doAddSeparator();
 		addChild(textViewer);
 	}
@@ -59,8 +59,8 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			TextViewer v = (TextViewer)child;
 			return v.isGuard();
 		}
-		else if(child instanceof LineViewGroup){
-			LineViewGroup v = (LineViewGroup)child;
+		else if(child instanceof BufferGroup){
+			BufferGroup v = (BufferGroup)child;
 			return v.isGuard();
 		}
 		else  {
@@ -84,7 +84,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		// todo refactring target
 		//for(int i=0;i<numOfChild();i++) {
 		//	if(getChild(i)
-		ModeLineBuffer compare = LineViewManager.getManager().getModeLineBuffer();
+		ModeLineBuffer compare = BufferManager.getManager().getModeLineBuffer();
 		Object p = compare.getParent();
 		Object pp = (compare.getParent()!=null?((SimpleDisplayObject)p).getParent():null);
 		if(this == p || mTextViewer == compare || this == pp){
@@ -108,8 +108,8 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			TextViewer v = (TextViewer)child;
 			return v.isEdit();
 		}
-		else if(child instanceof LineViewGroup){
-			LineViewGroup v = (LineViewGroup)child;
+		else if(child instanceof BufferGroup){
+			BufferGroup v = (BufferGroup)child;
 			return v.isEdit();
 		}
 		else  {
@@ -123,7 +123,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 		int j=0;
 		for(int i=0;i<numOfChild();i++) {
-			if(getChild(i) instanceof TextViewer||getChild(i) instanceof LineViewGroup) {
+			if(getChild(i) instanceof TextViewer||getChild(i) instanceof BufferGroup) {
 				obj[j] = getChild(i);
 				j++;
 				if(j>=2){
@@ -172,7 +172,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			mSeparate = (SeparateUI)child;
 			super.addChild(child);
 		}
-		else if(child instanceof LineViewGroup) {
+		else if(child instanceof BufferGroup) {
 			int num = super.numOfChild()-1;
 		 	if(num<0){num = 0;}
 			super.insertChild(num, child);			
@@ -184,25 +184,25 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 
 	public void divide(SeparateUI separate) {
 		if(separate.getPersentY()>0.5){
-			divideAndNew(true,LineViewManager.getManager().newTextViewr());
+			divideAndNew(true,BufferManager.getManager().newTextViewr());
 		} else{
-			divideAndNew(false,LineViewManager.getManager().newTextViewr());
+			divideAndNew(false,BufferManager.getManager().newTextViewr());
 		}		
 	}
 
-	public LineViewGroup divideAndNew(boolean leftOrTop, TextViewer viewer) {
+	public BufferGroup divideAndNew(boolean leftOrTop, TextViewer viewer) {
 		mSeparate.setmIsReached();
-		LineViewGroup ret = null;
+		BufferGroup ret = null;
 		// todo following yaxtuke sigoto
 		if(numOfChild()>=3){
 			return null;
 		}
 		if(leftOrTop){
-			addChild(ret = new LineViewGroup(viewer));
-			addChild(new LineViewGroup(mTextViewer));
+			addChild(ret = new BufferGroup(viewer));
+			addChild(new BufferGroup(mTextViewer));
 		} else{
-			addChild(new LineViewGroup(mTextViewer));
-			addChild(ret = new LineViewGroup(viewer));
+			addChild(new BufferGroup(mTextViewer));
+			addChild(ret = new BufferGroup(viewer));
 		}
 		removeChild(mTextViewer);
 		mTextViewer = null;
@@ -224,7 +224,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 			child = getChild(1);
 			kill = getChild(0);
 		}
-		if(!LineViewManager.getManager().notifyEvent(child, kill)){
+		if(!BufferManager.getManager().notifyEvent(child, kill)){
 			//todo mSeparate.resetPosition();
 			return false;
 		}
@@ -238,14 +238,14 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 				chFocus((SimpleDisplayObject)parent); 
 			}
 			dispose();
-			LineViewManager.getManager().getBufferList().doGrabage();
+			BufferManager.getManager().getBufferList().doGrabage();
 		} 
 		return true;
 	}
 
 	private boolean includeFocusingChild() {
-		SimpleDisplayObject o = LineViewManager.getManager().getFocusingTextViewer();
-		SimpleDisplayObject c = LineViewManager.getManager().getFocusingTextViewer();
+		SimpleDisplayObject o = BufferManager.getManager().getFocusingTextViewer();
+		SimpleDisplayObject c = BufferManager.getManager().getFocusingTextViewer();
 		SimpleDisplayObject root = SimpleDisplayObject.getStage(o).getRoot();
 		while(o != null && o!=root) {
 			if(c == o){
@@ -260,13 +260,13 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 		if(parent instanceof TextViewer) {
 			TextViewer v = (TextViewer)parent;
 			v.getLineView().isFocus(true);
-			LineViewManager.getManager().changeFocus(v);
+			BufferManager.getManager().changeFocus(v);
 			return true;
 		}
 		if(parent instanceof SimpleDisplayObjectContainer){
 			SimpleDisplayObjectContainer _parent = (SimpleDisplayObjectContainer)parent;
 			for(int i=0;i<_parent.numOfChild();i++){
-				if(_parent.getChild(i) instanceof TextViewer || _parent.getChild(i) instanceof LineViewGroup) {
+				if(_parent.getChild(i) instanceof TextViewer || _parent.getChild(i) instanceof BufferGroup) {
 					if(chFocus(_parent.getChild(i))){
 						return true;
 					}
@@ -295,7 +295,7 @@ public class LineViewGroup extends SimpleDisplayObjectContainer{
 				int ch = ((TextViewer)getChild(i)).getHeight();
 				if(cx<x&&x<cx+cw) {
 					if(cy<y&&y<cy+ch){
-						LineViewManager.getManager().changeFocus((TextViewer)getChild(i));
+						BufferManager.getManager().changeFocus((TextViewer)getChild(i));
 						break;
 					}
 				}

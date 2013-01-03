@@ -3,14 +3,14 @@ package info.kyorohiro.helloworld.ext.textviewer.manager;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController.CircleControllerAction;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 
 public class CircleControllerEvent implements CircleControllerAction {
 	private int mCurrentDegree = -999;
 	private boolean mMoved = false;
 
 	public void moveCircle(int action, int degree, int rateDegree) {
-		TextViewer viewer = LineViewManager.getManager()
+		TextViewer viewer = BufferManager.getManager()
 				.getFocusingTextViewer();
 		if (viewer.getLineView().getMode().toString().startsWith(CursorableLineView.MODE_EDIT)) {
 			moveCircleAtEditMode(action, degree, rateDegree);
@@ -56,7 +56,7 @@ public class CircleControllerEvent implements CircleControllerAction {
 	}
 
 	private void move(boolean isReverse) {
-		CursorableLineView cv = LineViewManager.getManager()
+		CursorableLineView cv = BufferManager.getManager()
 				.getFocusingTextViewer().getLineView();
 
 		if (-50 < mCurrentDegree && mCurrentDegree < 50) {
@@ -91,12 +91,12 @@ public class CircleControllerEvent implements CircleControllerAction {
 			if (Math.abs(mCurrentDegree - degree) > 20) {
 				mCurrentDegree = -999;
 			}
-			LineViewManager
+			BufferManager
 					.getManager()
 					.getFocusingTextViewer()
 					.getLineView()
 					.setPositionY(
-							LineViewManager.getManager()
+							BufferManager.getManager()
 									.getFocusingTextViewer().getLineView()
 									.getPositionY()
 									+ rateDegree * 2);
@@ -104,21 +104,21 @@ public class CircleControllerEvent implements CircleControllerAction {
 	}
 
 	public void upButton(int action) {
-		TextViewer viewer = LineViewManager.getManager()
+		TextViewer viewer = BufferManager.getManager()
 				.getFocusingTextViewer();
 		if (CursorableLineView.MODE_VIEW == viewer.getLineView().getMode()) {
 			viewer.getLineView().setPositionY(
-					LineViewManager.getManager().getFocusingTextViewer()
+					BufferManager.getManager().getFocusingTextViewer()
 							.getLineView().getPositionY() + 1);
 		}
 	}
 
 	public void downButton(int action) {
-		TextViewer viewer = LineViewManager.getManager()
+		TextViewer viewer = BufferManager.getManager()
 				.getFocusingTextViewer();
 		if (CursorableLineView.MODE_VIEW == viewer.getLineView().getMode()) {
 			viewer.getLineView().setPositionY(
-					LineViewManager.getManager().getFocusingTextViewer()
+					BufferManager.getManager().getFocusingTextViewer()
 							.getLineView().getPositionY() - 1);
 		}
 	}

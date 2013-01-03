@@ -13,7 +13,7 @@ import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ModeLineTask;
 import info.kyorohiro.helloworld.text.KyoroString;
 
@@ -24,11 +24,11 @@ public class ModeLineBuffer extends TextViewer {
 	private ModeLineTask mTask = null;
 
 	public ModeLineBuffer(int textSize, int width, int mergine, boolean message) {
-		super(new EmptyLineViewBufferSpecImpl(400, LineViewManager.getManager().getFont()),textSize, width, mergine,
-				LineViewManager.getManager().getFont(),//new SimpleFontForAndroid(),
-				LineViewManager.getManager().getCurrentCharset());
+		super(new EmptyLineViewBufferSpecImpl(400, BufferManager.getManager().getFont()),textSize, width, mergine,
+				BufferManager.getManager().getFont(),//new SimpleFontForAndroid(),
+				BufferManager.getManager().getCurrentCharset());
 		//android.util.Log.v("kiyo","new");
-		if(LineViewManager.getManager().currentBrIsLF()){
+		if(BufferManager.getManager().currentBrIsLF()){
 			getLineView().isCrlfMode(false);
 		} else {
 			getLineView().isCrlfMode(true);
@@ -74,9 +74,9 @@ public class ModeLineBuffer extends TextViewer {
 	public void hideModeLine() {
 		Object o = getParent();
 //		android.util.Log.v("kiyo","-----A");
-		if(o instanceof LineViewGroup){
+		if(o instanceof BufferGroup){
 //			android.util.Log.v("kiyo","-----B");
-			((LineViewGroup)o).setSeparatorPoint(0.2f);
+			((BufferGroup)o).setSeparatorPoint(0.2f);
 		}
 //		android.util.Log.v("kiyo","-----C");
 	}

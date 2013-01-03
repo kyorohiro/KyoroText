@@ -17,10 +17,10 @@ import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCRLFAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetectionAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewGroup;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferGroup;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.ModeLineBuffer;
-import info.kyorohiro.helloworld.ext.textviewer.manager.TextViewBuilder;
+import info.kyorohiro.helloworld.ext.textviewer.manager.AppDependentAction;
 import info.kyorohiro.helloworld.textviewer.task.CopyTask;
 import info.kyorohiro.helloworld.textviewer.task.PastTask;
 import info.kyorohiro.helloworld.textviewer.util.Util;
@@ -44,7 +44,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 	private int mViewerHeight = 100;
 	@SuppressWarnings("unused")
 	private boolean modifyIntent = false;
-	private LineViewManager mViewerManager = null;
+	private BufferManager mViewerManager = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 
 	// todo following yaxtuke sigoto
 	// guard for editeed text can not be removed
-	private class A implements LineViewManager.Event {
+	private class A implements BufferManager.Event {
 		@Override
 		public boolean startCombine(SimpleDisplayObject alive,
 				SimpleDisplayObject killtarget) {
@@ -84,9 +84,9 @@ public class KyoroTextViewerActivity extends MainActivity {
 				target = (TextViewer) killtarget;
 				return !target.isGuard();
 				// return !target.isEdit();
-			} else if (killtarget instanceof LineViewGroup) {
-				LineViewGroup target = null;
-				target = (LineViewGroup) killtarget;
+			} else if (killtarget instanceof BufferGroup) {
+				BufferGroup target = null;
+				target = (BufferGroup) killtarget;
 				return !target.isGuard();
 				// return !target.isEdit();
 			}
@@ -94,7 +94,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		}
 	}
 
-	public static class MyBuilder extends TextViewBuilder {
+	public static class MyBuilder extends AppDependentAction {
 		@Override
 		public SimpleFont newSimpleFont() {
 			return new SimpleFontForAndroid();
@@ -210,7 +210,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 		return new int[] { width, height };
 	}
 
-	private LineViewManager newTextManager() {
+	private BufferManager newTextManager() {
 		int textSize = KyoroSetting.getCurrentFontSize();
 		int[] widthHeight = getWindowSize();
 		mViewerWidth = widthHeight[0];
@@ -233,7 +233,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 			circleSize = 18/ 2;
 		} 
 		int baseTextSize = (int) Util.inchi2pixel(Util.mm2inchi(1.6));
-		return new LineViewManager(KyoroApplication.getKyoroApplication(),
+		return new BufferManager(KyoroApplication.getKyoroApplication(),
 				new MyBuilder(), baseTextSize, textSize, screenWidth,
 				screenHeight, screenMargine, (int) Util.inchi2pixel(Util
 						.mm2inchi(circleSize)));

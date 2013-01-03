@@ -12,20 +12,20 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
 import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 
-public class StartupCommandBuffer extends TextViewer {
+public class StartupBuffer extends TextViewer {
 
 	public static final String GUARD = "guard";
 	public static final String UNGUARD = "unguard";
 	private SimpleSwitchButton mFitButton = null;
 	private SimpleSwitchButton mGuardButton = null;
 
-	public StartupCommandBuffer(int textSize, int width, int mergine, boolean message) {
+	public StartupBuffer(int textSize, int width, int mergine, boolean message) {
 		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine,
-				LineViewManager.getManager().getFont(),//new SimpleFontForAndroid(),
-				LineViewManager.getManager().getCurrentCharset());
-		if(LineViewManager.getManager().currentBrIsLF()){
+				BufferManager.getManager().getFont(),//new SimpleFontForAndroid(),
+				BufferManager.getManager().getCurrentCharset());
+		if(BufferManager.getManager().currentBrIsLF()){
 			getLineView().isCrlfMode(false);
 		} else {
 			getLineView().isCrlfMode(true);
@@ -91,7 +91,7 @@ public class StartupCommandBuffer extends TextViewer {
 	
 	public void readStartupMessage() {
 		try {
-			File dir = LineViewManager.getManager().getFilesDir();
+			File dir = BufferManager.getManager().getFilesDir();
 			File filePathOfStartMessage = new File(dir, "startup_message.txt");
 			createStartupMessageIfNonExist(filePathOfStartMessage);
 			readFile(filePathOfStartMessage, false);
@@ -106,12 +106,12 @@ public class StartupCommandBuffer extends TextViewer {
 		// todo following code dependent application layer.
 		// refactring target
 		if(updataCurrentPath){
-			File datadata = LineViewManager.getManager().getFilesDir();
+			File datadata = BufferManager.getManager().getFilesDir();
 			File parent = file.getParentFile();
 			File grandpa = parent.getParentFile();
 			if(!datadata.equals(parent)
 					&&!(grandpa!=null&&grandpa.equals(datadata))){
-				LineViewManager.getManager().setCurrentFile(file.getAbsolutePath());
+				BufferManager.getManager().setCurrentFile(file.getAbsolutePath());
 			}
 		}
 		return super.readFile(file, updataCurrentPath);

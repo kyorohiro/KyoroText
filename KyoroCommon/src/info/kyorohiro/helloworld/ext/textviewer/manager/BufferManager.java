@@ -14,32 +14,32 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManage
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.CircleControllerManager;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewGroup;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
-import info.kyorohiro.helloworld.ext.textviewer.manager.StartupCommandBuffer;
-import info.kyorohiro.helloworld.ext.textviewer.manager.TextViewBuilder;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferGroup;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.StartupBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.AppDependentAction;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.KeyEventManagerPlus;
 import info.kyorohiro.helloworld.ext.textviewer.manager.task.OtherWindowTask;
 import info.kyorohiro.helloworld.util.AsyncronousTask;
 
-public class LineViewManager extends SimpleDisplayObjectContainer {
-	private static LineViewManager sInstance = null;
+public class BufferManager extends SimpleDisplayObjectContainer {
+	private static BufferManager sInstance = null;
 	private CircleControllerManager mCircleManager = new CircleControllerManager();
 	private int mWidth = 100;
 	private int mTextSize = 16;
 	private int mMergine = 10;
 	private TextViewer mFocusingViewer = null;
 	private SimpleCircleControllerMenuPlus mCircleMenu = new SimpleCircleControllerMenuPlus();
-	private LineViewGroup mRoot = null;
+	private BufferGroup mRoot = null;
 	private KeyEventManager mKeyEventManager = new KeyEventManagerPlus();
 	private ModeLineBuffer mModeLine = null;
-	private LineViewList mList = new LineViewList();
-	public static LineViewManager getManager() {
+	private BufferList mList = new BufferList();
+	public static BufferManager getManager() {
 		return sInstance;
 	}
 
 
-	public LineViewList getBufferList() {
+	public BufferList getBufferList() {
 		return mList;
 	}
 
@@ -48,7 +48,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	// ���Singletone�ɂ���B
-	public LineViewManager(SimpleApplication application, TextViewBuilder builder, int baseTextSize, int textSize, int width, int height, int mergine, int menuWidth) {
+	public BufferManager(SimpleApplication application, AppDependentAction builder, int baseTextSize, int textSize, int width, int height, int mergine, int menuWidth) {
 		mApplication = application;
 		mBuilder = builder;
 		sInstance = this;
@@ -56,7 +56,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		mTextSize = textSize;
 		mMergine = mergine;
 		mFocusingViewer = newTextViewr();
-		LineViewGroup first = new LineViewGroup(mFocusingViewer);
+		BufferGroup first = new BufferGroup(mFocusingViewer);
 		addChild(first);
 		addChild(mCircleMenu);
 		mCircleManager.init();
@@ -66,7 +66,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 		///*
 		 // command
 //		android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
-		LineViewGroup g = first.divideAndNew(true, mModeLine = new ModeLineBuffer(baseTextSize, mWidth, mMergine, false));
+		BufferGroup g = first.divideAndNew(true, mModeLine = new ModeLineBuffer(baseTextSize, mWidth, mMergine, false));
 //		mModeLine.setCurrentFontSize(baseTextSize);
 		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
 		first.setSeparatorPoint(0.05f);
@@ -112,7 +112,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	private SimpleApplication mApplication = null;
-	private TextViewBuilder mBuilder = null;
+	private AppDependentAction mBuilder = null;
 	public SimpleApplication getApplication() {
 		return mApplication;
 	}
@@ -124,7 +124,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	//
 	//
 	public TextViewer newTextViewr() {
-		TextViewer viewer = new StartupCommandBuffer(mTextSize, mWidth, mMergine ,true);
+		TextViewer viewer = new StartupBuffer(mTextSize, mWidth, mMergine ,true);
 		viewer.getLineView().setKeyEventManager(mKeyEventManager);
 		mList.add(viewer);
 		//viewer.getLineView().fittableToView(true);
@@ -135,14 +135,14 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	@Override
 	public void insertChild(int index, SimpleDisplayObject child) {
 //		android.util.Log.v("kiyo", "---- c");
-		if (child instanceof LineViewGroup) {
-			mRoot = (LineViewGroup) child;
+		if (child instanceof BufferGroup) {
+			mRoot = (BufferGroup) child;
 //			android.util.Log.v("kiyo", "---- child");
 		}
 		super.insertChild(index, child);
 	}
 
-	public LineViewGroup getRoot() {
+	public BufferGroup getRoot() {
 		return mRoot;
 	}
 
@@ -181,7 +181,7 @@ public class LineViewManager extends SimpleDisplayObjectContainer {
 	}
 
 	public void changeFocus(TextViewer textViewer) {
-		TextViewer p = LineViewManager.getManager().getFocusingTextViewer();
+		TextViewer p = BufferManager.getManager().getFocusingTextViewer();
 		if(textViewer != p){
 			p.getLineView().isFocus(false);
 		}

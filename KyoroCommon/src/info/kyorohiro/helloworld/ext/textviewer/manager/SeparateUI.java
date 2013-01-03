@@ -5,8 +5,8 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewGroup;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferGroup;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 
 public class SeparateUI extends SimpleDisplayObject {
 	public static int COLOR_UNLOCK = SimpleGraphicUtil.GREEN;
@@ -20,12 +20,12 @@ public class SeparateUI extends SimpleDisplayObject {
 	private int mModeSeparate = MODE_SEPARATE_ORIENTATION;
 	private boolean mIsInside = false;
 	private boolean mIsReached = false;
-	private LineViewGroup mManager = null;
+	private BufferGroup mManager = null;
 
 	private double mPersentY = 0.5;
 
-	public SeparateUI(LineViewGroup manager) {
-		int w = LineViewManager.getManager().getCircleMenu().getMinRadius() / 2;
+	public SeparateUI(BufferGroup manager) {
+		int w = BufferManager.getManager().getCircleMenu().getMinRadius() / 2;
 		setRect(w, w);
 		mManager = manager;
 		// super.

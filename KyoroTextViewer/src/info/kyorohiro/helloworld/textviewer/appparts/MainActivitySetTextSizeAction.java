@@ -3,7 +3,7 @@ package info.kyorohiro.helloworld.textviewer.appparts;
 import info.kyorohiro.helloworld.pfdep.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.app.Dialog;
@@ -21,9 +21,9 @@ import android.widget.TextView;
 public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
 
 	public static String TITLE = "font size";
-	private LineViewManager mDisplayedTextViewer = null;
+	private BufferManager mDisplayedTextViewer = null;
 
-	public MainActivitySetTextSizeAction(LineViewManager viewer) {
+	public MainActivitySetTextSizeAction(BufferManager viewer) {
 		mDisplayedTextViewer = viewer;
 	}
 
@@ -38,7 +38,7 @@ public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
 				 public void run(Activity c){
 						showDialog(c);
 				 }
-			 }, LineViewManager.getManager().getFocusingTextViewer().isEdit());
+			 }, BufferManager.getManager().getFocusingTextViewer().isEdit());
 			 return true;
 		}
 		return false;

@@ -10,7 +10,7 @@ import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 //
 //
 //
-public class LineViewList {
+public class BufferList {
 	private LinkedList<TextViewer> mList = new LinkedList<TextViewer>();
 
 	public void add(TextViewer viewer) {

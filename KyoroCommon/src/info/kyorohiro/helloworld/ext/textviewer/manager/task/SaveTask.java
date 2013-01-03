@@ -12,8 +12,8 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewList;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferList;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
 //
@@ -46,15 +46,15 @@ public class SaveTask implements Runnable {
 	@Override
 	public void run() {
 		try {
-			LineViewManager.getManager().getApplication().showMessage("start save");
+			BufferManager.getManager().getApplication().showMessage("start save");
 			action();
-			LineViewManager.getManager().getApplication().showMessage("end save");
+			BufferManager.getManager().getApplication().showMessage("end save");
 		} catch (IOException e) {
 			e.printStackTrace();
-			LineViewManager.getManager().getApplication().showMessage("failed save "+e);
+			BufferManager.getManager().getApplication().showMessage("failed save "+e);
 		} catch (Throwable t) {
 			t.printStackTrace();
-			LineViewManager.getManager().getApplication().showMessage("failed save "+t);
+			BufferManager.getManager().getApplication().showMessage("failed save "+t);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class SaveTask implements Runnable {
 			mBakFilePath.delete();
 			//
 			//
-			LineViewList bufferList = LineViewManager.getManager().getBufferList();
+			BufferList bufferList = BufferManager.getManager().getBufferList();
 			bufferList.lockAll();
 			bufferList.updateFileName(mSaveFilePath, mBakFilePath);
 			mSaveFilePath.renameTo(mBakFilePath.getAbsoluteFile());

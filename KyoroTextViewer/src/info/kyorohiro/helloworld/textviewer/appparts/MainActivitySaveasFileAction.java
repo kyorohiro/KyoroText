@@ -11,7 +11,7 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.task.SaveTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
@@ -29,9 +29,9 @@ import android.view.MenuItem;
 public class MainActivitySaveasFileAction implements MainActivityMenuAction {
 
 	public static String TITLE = "saveas";
-	private LineViewManager mViewer = null;
+	private BufferManager mViewer = null;
 
-	public MainActivitySaveasFileAction(LineViewManager viewer) {
+	public MainActivitySaveasFileAction(BufferManager viewer) {
 		mViewer = viewer;
 	}
 

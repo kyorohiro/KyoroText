@@ -11,7 +11,7 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.SaveBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
@@ -29,9 +29,9 @@ import android.view.MenuItem;
 public class MainActivitySaveFileAction implements MainActivityMenuAction {
 
 	public static String TITLE = "save";
-	private LineViewManager mViewer = null;
+	private BufferManager mViewer = null;
 
-	public MainActivitySaveFileAction(LineViewManager viewer) {
+	public MainActivitySaveFileAction(BufferManager viewer) {
 		mViewer = viewer;
 	}
 
@@ -49,7 +49,7 @@ public class MainActivitySaveFileAction implements MainActivityMenuAction {
 		return false;
 	}
 	private void save() {
-		TextViewer target = LineViewManager.getManager().getFocusingTextViewer();
+		TextViewer target = BufferManager.getManager().getFocusingTextViewer();
 		SaveBuffer buffer = new SaveBuffer();
 		buffer.act(target.getLineView(), (EditableLineViewBuffer)target.getLineView().getLineViewBuffer());
 	}

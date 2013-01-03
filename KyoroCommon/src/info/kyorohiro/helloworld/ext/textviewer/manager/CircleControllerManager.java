@@ -9,7 +9,7 @@ import info.kyorohiro.helloworld.display.widget.editview.task.SearchTask;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.CircleControllerEvent;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward;
 
 public class CircleControllerManager {
@@ -18,7 +18,7 @@ public class CircleControllerManager {
 //	public static String MENU_GUARD_OFF = "GUARD_OFF";
 
 	public void init() {
-		SimpleCircleControllerMenuPlus circleMenu = LineViewManager.getManager().getCircleMenu();
+		SimpleCircleControllerMenuPlus circleMenu = BufferManager.getManager().getCircleMenu();
 		circleMenu.setCircleMenuItem(new CircleMenuItem() {
 			@Override
 			public boolean selected(int id, String title) {
@@ -31,7 +31,7 @@ public class CircleControllerManager {
 	}
 
 	private void clear() {
-		SimpleCircleControllerMenuPlus circleMenu = LineViewManager.getManager().getCircleMenu();
+		SimpleCircleControllerMenuPlus circleMenu = BufferManager.getManager().getCircleMenu();
 		circleMenu.clearCircleMenu();
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
@@ -42,8 +42,8 @@ public class CircleControllerManager {
 //		circleMenu.addCircleMenu(0, MENU_GUARD_OFF);
 	}
 	public boolean _circleSelected(CharSequence title) {
-		SimpleCircleControllerMenuPlus circleMenu = LineViewManager.getManager().getCircleMenu();
-		TextViewer textviewer = LineViewManager.getManager().getFocusingTextViewer();
+		SimpleCircleControllerMenuPlus circleMenu = BufferManager.getManager().getCircleMenu();
+		TextViewer textviewer = BufferManager.getManager().getFocusingTextViewer();
 		CursorableLineView mLineView = textviewer.getLineView();
 		if (title.equals(CursorableLineView.MODE_VIEW)
 				|| title.equals(CursorableLineView.MODE_EDIT)) {
@@ -65,19 +65,19 @@ public class CircleControllerManager {
 		} else if (title.equals("Copy")) {
 			clear();
 //			CopyTask.copyStart();
-			LineViewManager.getManager().copyStart();
+			BufferManager.getManager().copyStart();
 			return true;
 		} else if(title.equals("Paste")){
 			circleMenu.clearCircleMenu();
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
-			LineViewManager.getManager().pastStart();
+			BufferManager.getManager().pastStart();
 			return true;
 		} else if(title.equals(MENU_SEARCH)){
 			clear();
 			ISearchForward is = new ISearchForward();
-			EditableLineView e = LineViewManager.getManager().getFocusingTextViewer().getLineView();
+			EditableLineView e = BufferManager.getManager().getFocusingTextViewer().getLineView();
 			is.act(e, (EditableLineViewBuffer)e.getLineViewBuffer());
 			return true;
 		}

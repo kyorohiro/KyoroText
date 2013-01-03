@@ -6,7 +6,7 @@ import java.util.SortedMap;
 import info.kyorohiro.helloworld.pfdep.android.base.MainActivityMenuAction;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.app.Dialog;
@@ -21,9 +21,9 @@ import android.widget.ListView;
 public class MainActivitySetCharsetAction implements MainActivityMenuAction {
 
 	public static String TITLE = "charset all";
-	private LineViewManager mDisplayedTextViewer = null;
+	private BufferManager mDisplayedTextViewer = null;
 
-	public MainActivitySetCharsetAction(LineViewManager viewer) {
+	public MainActivitySetCharsetAction(BufferManager viewer) {
 		mDisplayedTextViewer = viewer;
 	}
 
@@ -38,7 +38,7 @@ public class MainActivitySetCharsetAction implements MainActivityMenuAction {
 				 public void run(Activity c){
 						showDialog(c);
 				 }
-			 }, LineViewManager.getManager().getFocusingTextViewer().isEdit());
+			 }, BufferManager.getManager().getFocusingTextViewer().isEdit());
 
 			return true;
 		}

@@ -11,7 +11,7 @@ import info.kyorohiro.helloworld.textviewer.KyoroApplication;
 import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -23,9 +23,9 @@ import android.view.MenuItem;
 public class MainActivityOpenFileAction implements MainActivityMenuAction {
 
 	public static String TITLE = "open";
-	private LineViewManager mViewer = null;
+	private BufferManager mViewer = null;
 
-	public MainActivityOpenFileAction(LineViewManager viewer) {
+	public MainActivityOpenFileAction(BufferManager viewer) {
 		mViewer = viewer;
 	}
 
@@ -41,7 +41,7 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 				 public void run(Activity c){
 					showExplorer(c);
 				 }
-			 }, LineViewManager.getManager().getFocusingTextViewer().isEdit());
+			 }, BufferManager.getManager().getFocusingTextViewer().isEdit());
 
 			return true;
 		}

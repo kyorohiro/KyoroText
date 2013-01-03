@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.textviewer.task;
 
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.textviewer.KyoroApplication;
-import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.content.Context;
 import android.text.ClipboardManager;
@@ -21,7 +21,7 @@ public class PastTask implements Runnable {
 							.getKyoroApplication().getSystemService(Context.CLIPBOARD_SERVICE);
 					CharSequence clipdata = cm.getText();
 
-					TextViewer textViewer = LineViewManager.getManager().getFocusingTextViewer();
+					TextViewer textViewer = BufferManager.getManager().getFocusingTextViewer();
 					EditableLineView lineView = textViewer.getLineView();
 					lineView.inputText(clipdata);
 //					LineViewManager.getManager().getCircleMenu().addCircleMenu(0, "Paste");
@@ -37,7 +37,7 @@ public class PastTask implements Runnable {
 	class A implements Runnable{
 		@Override
 		public void run() {
-			LineViewManager.getManager().getCircleMenu().addCircleMenu(0, "Paste");			
+			BufferManager.getManager().getCircleMenu().addCircleMenu(0, "Paste");			
 		}
 	}
 }

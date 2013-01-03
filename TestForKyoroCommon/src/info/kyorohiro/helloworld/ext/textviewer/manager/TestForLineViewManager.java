@@ -17,7 +17,7 @@ public class TestForLineViewManager extends TestCase {
 
 	public void testOtherWindow() {
 		SimpleApplication application = new MyApplication();
-		TextViewBuilder builder = new MyBuilder();
+		AppDependentAction builder = new MyBuilder();
 		int baseTextSize = 12;
 		int textSize = 12;
 		int width = 200;
@@ -28,7 +28,7 @@ public class TestForLineViewManager extends TestCase {
 			//
 			// initial state
 			//
-			LineViewManager manager = new LineViewManager(application, builder,
+			BufferManager manager = new BufferManager(application, builder,
 					baseTextSize, textSize, width, height, mergine, menuWidth);
 			TextViewer v = manager.getFocusingTextViewer();
 			manager.otherWindow();
@@ -38,7 +38,7 @@ public class TestForLineViewManager extends TestCase {
 			//
 			// modeline and lineviewmanager
 			//
-			LineViewManager manager = new LineViewManager(application, builder,
+			BufferManager manager = new BufferManager(application, builder,
 					baseTextSize, textSize, width, height, mergine, menuWidth);
 			TextViewer v = manager.getFocusingTextViewer();
 
@@ -63,7 +63,7 @@ public class TestForLineViewManager extends TestCase {
 			//
 			// dividewindow
 			//
-			LineViewManager manager = new LineViewManager(application, builder,
+			BufferManager manager = new BufferManager(application, builder,
 					baseTextSize, textSize, width, height, mergine, menuWidth);
 			TextViewer v = manager.getFocusingTextViewer();
 			manager.otherWindow();
@@ -95,7 +95,7 @@ public class TestForLineViewManager extends TestCase {
 		}
 	}
 
-	public static class MyBuilder extends TextViewBuilder {
+	public static class MyBuilder extends AppDependentAction {
 		@Override
 		public SimpleFont newSimpleFont() {
 			return new EmptySimpleFont();
