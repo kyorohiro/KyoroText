@@ -5,7 +5,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
-import info.kyorohiro.helloworld.display.widget.lineview.EmptyLineViewBufferSpecImpl;
+import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.pfdep.j2se.adapter.SimpleFontForJ2SE;
 import info.kyorohiro.helloworld.pfdep.j2se.adapter.SimpleGraphicsForJ2SE;

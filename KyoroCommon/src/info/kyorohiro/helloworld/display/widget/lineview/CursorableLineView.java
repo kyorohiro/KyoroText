@@ -1,7 +1,5 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
-import java.io.ObjectInputStream.GetField;
-
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
