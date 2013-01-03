@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.editview.task;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
+import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
@@ -17,6 +18,10 @@ public class SearchTask implements Runnable {
 	public SearchTask(EditableLineView targetView, String regex) {
 		mRegex = regex;
 		mTargetView = targetView;
+	}
+
+	public void log(String log) {
+		//android.util.Log.v("kiyo", "SearchTask="+log);
 	}
 
 	@Override
@@ -41,7 +46,7 @@ public class SearchTask implements Runnable {
 			if (0 == buffer.getNumberOfStockedElement()) {
 				return;
 			}
-			//android.util.Log.v("kiyo", "=end=" + end);
+			log("=end=" + end);
 			boolean lastoneline = false;
 			boolean find = false;
 			while (index != end || f || !lastoneline) {
@@ -49,8 +54,7 @@ public class SearchTask implements Runnable {
 				if (index == end && !f) {
 					lastoneline = true;
 				}
-				//android.util.Log.v("kiyo", "#=i==111===" + index + "," + end
-				//		+ ",bl=" + buffer.getNumberOfStockedElement());
+				log("#=check1===i=" + index + ",r="+row+",e=" + end + ",f="+f+",bl=" + buffer.getNumberOfStockedElement());
 				if (index >= buffer.getNumberOfStockedElement()) {
 					index = 0;
 				}
@@ -61,9 +65,8 @@ public class SearchTask implements Runnable {
 					end = indexa;
 				}
 				//
-				//android.util.Log.v("kiyo", "#=i=====" + index + "," + end
-				//		+ ",bl=" + buffer.getNumberOfStockedElement() + ","
-				//		+ str);
+				log("#=i=====" + index + "," + end + ",bl=" + buffer.getNumberOfStockedElement() + ","
+				+ str);
 				if (f) {
 					l.add(str, row, str.length());
 					f = false;
@@ -74,20 +77,20 @@ public class SearchTask implements Runnable {
 						|| index + 1 == buffer.getNumberOfStockedElement()
 						|| index + 1 == end) {
 					if (l.find()) {
-					//	android.util.Log.v("kiyo", "=0=i-" + index + "," + row);
-					//	android.util.Log.v("kiyo", "=0=-"
-					//			+ mTargetView.getLeft().getCursorCol() + ","
-					//			+ l.length());
+					log("=0=i-" + index + "," + row);
+					log("=0=-"
+								+ mTargetView.getLeft().getCursorCol() + ","
+								+ l.length());
 						mTargetView.getLeft().setCursorCol(
 								l.getY() + index - (l.length()) + 1);
 						mTargetView.getLeft().setCursorRow(
 								l.getX() + (l.getY() == 0 ? row : 0));
-					//	android.util.Log.v("kiyo", "=1=-"
-					//			+ mTargetView.getLeft().getCursorCol());
+					log("=1=-"
+								+ mTargetView.getLeft().getCursorCol());
 						mTargetView.recenter();
 						find = true;
-					//	android.util.Log.v("kiyo", "=2=-"
-					//			+ mTargetView.getLeft().getCursorCol());
+					log("=2=-"
+							+ mTargetView.getLeft().getCursorCol());
 						break;
 					} else {
 						mTargetView.getLeft().setCursorCol(
@@ -95,12 +98,16 @@ public class SearchTask implements Runnable {
 						mTargetView.getLeft().setCursorRow(
 								l.getX() + (l.getY() == 0 ? row : 0));
 						mTargetView.recenter();
-						SimpleDisplayObject.getStage(mTargetView).resetTimer();
+						SimpleStage stage = SimpleDisplayObject.getStage(mTargetView);
+						if(stage != null) {
+							stage.resetTimer();
+						}
 					}
 					l.clear();
 					row = 0;
 				}
 				index++;
+				log("rof=i:"+index +"!=e:"+ end +"||f:"+ f +"|| !l:"+lastoneline);
 			}
 			if(!find) {
 				mTargetView.getLeft().setCursorCol(baseIndex);

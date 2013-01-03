@@ -76,7 +76,7 @@ public class SimpleStageForAndroid extends EditableSurfaceView implements Simple
 	private static int mCountForLogicalSleep = 0;
 
 	protected void logicalSleepForCpuUage() throws InterruptedException {
-		android.util.Log.v("kiyo","sleep()="+mCountForLogicalSleep);
+//		android.util.Log.v("kiyo","sleep()="+mCountForLogicalSleep);
 		if (mCountForLogicalSleep < 30) {
 			Thread.sleep(mSleep);
 		} else if (mCountForLogicalSleep < 33){//..60) {

@@ -20,7 +20,7 @@ import info.kyorohiro.helloworld.text.KyoroString;
 // now creating 
 public class MiniBuffer extends TextViewer {
 
-	public static final String MODE_LINE_BUFFER = CursorableLineView.MODE_EDIT+"mode_line_buffer";
+	public static final String MODE_LINE_BUFFER = CursorableLineView.MODE_EDIT+" command";
 	private ModeLineTask mTask = null;
 
 	public MiniBuffer(int textSize, int width, int mergine, boolean message) {

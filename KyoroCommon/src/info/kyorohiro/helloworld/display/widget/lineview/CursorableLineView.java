@@ -9,7 +9,7 @@ public class CursorableLineView extends LineView {
 
 	public final static String MODE_SELECT = "MODE SELECT";
 	public final static String MODE_VIEW = "MODE VIEW";
-	public final static String MODE_EDIT = "MODE EDIT: NOW CREATING!!";
+	public final static String MODE_EDIT = "MODE EDIT";
 	public final static int __CURSOR__COLOR = SimpleGraphicUtil.parseColor("#88FFAA44");
 	public final static int __CURSOR__COLOR2 = SimpleGraphicUtil.parseColor("#FFBB8811");
 
