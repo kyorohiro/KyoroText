@@ -210,6 +210,73 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 		return ret;
 	}
 
+
+	public void deleteWindow() {
+		Object parent = getParent();
+		if(parent == null) {
+			return;
+		}
+		if(!(parent instanceof BufferGroup)){
+			return;
+		}
+		BufferGroup group = (BufferGroup)parent;
+		SimpleDisplayObject alive = null;
+		SimpleDisplayObject kill = this;
+		for(int i=0;i<group.numOfChild();i++) {
+			if(alive != group.getChild(i) && group.getChild(i) instanceof BufferGroup){
+				alive = group.getChild(i);
+				break;
+			}
+		}
+		if(alive == null) {
+			return;
+		}
+		if(deleteable(alive, kill)) {
+			group.combine(alive, kill);
+		}
+	}
+
+	//
+	//
+	public boolean deleteable(SimpleDisplayObject child, SimpleDisplayObject kill) {
+		if(isControlBuffer()) {
+			return false;
+		}
+		if(child instanceof BufferGroup){
+			if(((BufferGroup) child).isControlBuffer()){
+				return false;
+			}
+		}
+		if(kill instanceof BufferGroup){
+			if(((BufferGroup) kill).isControlBuffer()){
+				return false;
+			}
+		}
+		
+		if(!BufferManager.getManager().notifyEvent(child, kill)){
+			return false;
+		}
+		return true;
+	}
+	///
+	///
+	public boolean combine(SimpleDisplayObject child, SimpleDisplayObject kill) {
+		Object parent = getParent();
+		if(child != null){
+			// refactaring
+			int index = ((SimpleDisplayObjectContainer)parent).getIndex(this);
+			this.removeChild(child);
+			((SimpleDisplayObjectContainer)parent).insertChild(index, child);
+			((SimpleDisplayObjectContainer)parent).removeChild(this);
+			if(includeFocusingChild()) {
+				chFocus((SimpleDisplayObject)parent); 
+			}
+			dispose();
+			BufferManager.getManager().getBufferList().doGrabage();
+		} 
+		return true;
+	}
+
 	public boolean combine(SeparateUI separate) {
 		Object parent = getParent();
 		SimpleDisplayObject child = null;
@@ -228,6 +295,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			//todo mSeparate.resetPosition();
 			return false;
 		}
+
 		if(child != null){
 			// refactaring
 			int index = ((SimpleDisplayObjectContainer)parent).getIndex(this);

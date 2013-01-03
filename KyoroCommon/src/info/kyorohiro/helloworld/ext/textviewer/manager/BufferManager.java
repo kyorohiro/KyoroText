@@ -2,6 +2,8 @@ package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import java.io.File;
 
+import android.view.FocusFinder;
+
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
@@ -34,10 +36,11 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	private KeyEventManager mKeyEventManager = new KeyEventManagerPlus();
 	private MiniBuffer mModeLine = null;
 	private BufferList mList = new BufferList();
+	private InfoBuffer mInfo = null;
+
 	public static BufferManager getManager() {
 		return sInstance;
 	}
-
 
 	public BufferList getBufferList() {
 		return mList;
@@ -48,7 +51,9 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	}
 
 	// ���Singletone�ɂ���B
-	public BufferManager(SimpleApplication application, AppDependentAction builder, int baseTextSize, int textSize, int width, int height, int mergine, int menuWidth) {
+	public BufferManager(SimpleApplication application,
+			AppDependentAction builder, int baseTextSize, int textSize,
+			int width, int height, int mergine, int menuWidth) {
 		mApplication = application;
 		mBuilder = builder;
 		sInstance = this;
@@ -63,20 +68,38 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		setCircleMenuRadius(menuWidth);
 		//
 		first.getTextViewer().getLineView().fittableToView();
-		///*
-		 // command
-//		android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
-		BufferGroup g = first.divideAndNew(true, mModeLine = new MiniBuffer(baseTextSize, mWidth, mMergine, false));
-//		mModeLine.setCurrentFontSize(baseTextSize);
+		// /*
+		// command
+		// android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
+		BufferGroup g = first.divideAndNew(true, mModeLine = new MiniBuffer(
+				baseTextSize, mWidth, mMergine, false));
+		// mModeLine.setCurrentFontSize(baseTextSize);
 		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
 		first.setSeparatorPoint(0.05f);
 		g.getTextViewer().getLineView().fittableToView(true);
 		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
-		g.getTextViewer().isGuard(true);		
+		g.getTextViewer().isGuard(true);
 		g.isVisible(false);
 		g.getTextViewer().IsExtraUI(false);
-		g.isControlBuffer(true);		
-		//*/
+		g.isControlBuffer(true);
+		// */
+	}
+
+	public void deleteWindow() {
+		TextViewer viewer = getFocusingTextViewer();
+		if (viewer == null) {
+			return;
+		}
+		Object parent = viewer.getParent();
+		if (parent == null) {
+			return;
+		}
+
+		if (!(parent instanceof BufferGroup)) {
+			return;
+		}
+
+		((BufferGroup)parent).deleteWindow();
 	}
 
 	@Override
@@ -84,6 +107,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		super.start();
 		changeFocus(mFocusingViewer);
 	}
+
 	public void setCurrentFile(String path) {
 		mBuilder.setCurrentFile(path);
 	}
@@ -99,6 +123,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	public boolean currentBrIsLF() {
 		return mBuilder.currentBrIsLF();
 	}
+
 	public File getFilesDir() {
 		return mBuilder.getFilesDir();
 	}
@@ -113,6 +138,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 
 	private SimpleApplication mApplication = null;
 	private AppDependentAction mBuilder = null;
+
 	public SimpleApplication getApplication() {
 		return mApplication;
 	}
@@ -124,20 +150,19 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	//
 	//
 	public TextViewer newTextViewr() {
-		TextViewer viewer = new StartupBuffer(mTextSize, mWidth, mMergine ,true);
+		TextViewer viewer = new StartupBuffer(mTextSize, mWidth, mMergine, true);
 		viewer.getLineView().setKeyEventManager(mKeyEventManager);
 		mList.add(viewer);
-		//viewer.getLineView().fittableToView(true);
+		// viewer.getLineView().fittableToView(true);
 		return viewer;
 	}
 
-
 	@Override
 	public void insertChild(int index, SimpleDisplayObject child) {
-//		android.util.Log.v("kiyo", "---- c");
+		// android.util.Log.v("kiyo", "---- c");
 		if (child instanceof BufferGroup) {
 			mRoot = (BufferGroup) child;
-//			android.util.Log.v("kiyo", "---- child");
+			// android.util.Log.v("kiyo", "---- child");
 		}
 		super.insertChild(index, child);
 	}
@@ -150,10 +175,10 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	public void paint(SimpleGraphics graphics) {
 		setRect(graphics.getWidth(), graphics.getHeight());
 		_layout();
-		//int t = mCircleMenu.getMinRadius();
-		//mRoot.setPoint(0, t);
+		// int t = mCircleMenu.getMinRadius();
+		// mRoot.setPoint(0, t);
 		mRoot.setPoint(0, 0);
-//		mRoot.setRect(graphics.getWidth(), graphics.getHeight() - t);
+		// mRoot.setRect(graphics.getWidth(), graphics.getHeight() - t);
 		mRoot.setRect(graphics.getWidth(), graphics.getHeight());
 		super.paint(graphics);
 		int xy[] = new int[2];
@@ -182,64 +207,70 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 
 	public void changeFocus(TextViewer textViewer) {
 		TextViewer p = BufferManager.getManager().getFocusingTextViewer();
-		if(textViewer != p){
+		if (textViewer != p) {
 			p.getLineView().isFocus(false);
 		}
 		textViewer.getLineView().isFocus(true);
-		if(mFocusingViewer !=null && mFocusingViewer.getLineView() instanceof CursorableLineView) {
-			if( CursorableLineView.MODE_EDIT.equals(
-					((CursorableLineView)mFocusingViewer.getLineView()).getMergine())){
-				((CursorableLineView)mFocusingViewer.getLineView()).setMode(CursorableLineView.MODE_VIEW);
+		if (mFocusingViewer != null
+				&& mFocusingViewer.getLineView() instanceof CursorableLineView) {
+			if (CursorableLineView.MODE_EDIT
+					.equals(((CursorableLineView) mFocusingViewer.getLineView())
+							.getMergine())) {
+				((CursorableLineView) mFocusingViewer.getLineView())
+						.setMode(CursorableLineView.MODE_VIEW);
 			}
 		}
 		mFocusingViewer = textViewer;
 		if (mFocusingViewer.getLineView() instanceof CursorableLineView) {
-			mCircleManager._circleSelected(((CursorableLineView) (mFocusingViewer
-					.getLineView())).getMode());
+			mCircleManager
+					._circleSelected(((CursorableLineView) (mFocusingViewer
+							.getLineView())).getMode());
 		}
 	}
 
 	public TextViewer getFocusingTextViewer() {
 		return mFocusingViewer;
 	}
-	
 
 	//
 	// following code otherWindow must to be moving another class
-	//　
+	// 　
 	public synchronized void otherWindow() {
-	///*
-	  	OtherWindowTask task = new OtherWindowTask();
+		// /*
+		OtherWindowTask task = new OtherWindowTask();
 		AsyncronousTask atask = new AsyncronousTask(task);
 		getModeLineBuffer().startTask(atask);
 		atask.waitForTask();
 	}
 
 	//
-	//following logic dont use now. maybe delete 
-	// Event 
+	// following logic dont use now. maybe delete
+	// Event
 	//
 	private Event mEvent = new EmptyEvent();
-	public void setEvent(Event event){
-		if(event == null){
+
+	public void setEvent(Event event) {
+		if (event == null) {
 			mEvent = new EmptyEvent();
-		}
-		else {
+		} else {
 			mEvent = event;
 		}
 	}
 
-	public boolean notifyEvent(SimpleDisplayObject alive, SimpleDisplayObject killtarget){
+	public boolean notifyEvent(SimpleDisplayObject alive,
+			SimpleDisplayObject killtarget) {
 		return mEvent.startCombine(alive, killtarget);
 	}
 
 	public static interface Event {
-		boolean startCombine(SimpleDisplayObject alive, SimpleDisplayObject killtarget);
+		boolean startCombine(SimpleDisplayObject alive,
+				SimpleDisplayObject killtarget);
 	}
 
 	public static class EmptyEvent implements Event {
 		@Override
-		public boolean startCombine(SimpleDisplayObject alive, SimpleDisplayObject killtarget) {
+		public boolean startCombine(SimpleDisplayObject alive,
+				SimpleDisplayObject killtarget) {
 			return true;
 		}
 	}
