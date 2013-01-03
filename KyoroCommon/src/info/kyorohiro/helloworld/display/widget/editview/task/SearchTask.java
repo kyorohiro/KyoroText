@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.editview.task;
 
+import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
@@ -95,6 +96,7 @@ public class SearchTask implements Runnable {
 						mTargetView.getLeft().setCursorRow(
 								l.getX() + (l.getY() == 0 ? row : 0));
 						mTargetView.recenter();
+						SimpleDisplayObject.getStage(mTargetView).resetTimer();
 					}
 					l.clear();
 					row = 0;
