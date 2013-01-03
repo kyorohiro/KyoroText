@@ -13,7 +13,7 @@ public class NeiborhoodCashing {
 	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
 	private Thread mTaskRunnter = null;
 	public static final int LOOKAGEAD_lentgth = 2;
-	public static final int CHANK_SIZE = BigLineData.FILE_LIME;
+	public static final int CHANK_SIZE = BigLineData.FILE_LIME*2;
 	public static final int MOVE_FORWARD = 1;
 	public static final int CLEAR_AND_MOVE_FORWARD = 2;
 	public static final int MOVE_BACK = 3;
@@ -228,9 +228,11 @@ public class NeiborhoodCashing {
 					if (mStartWithoutOwn > (int) lineWP.getLinePosition()) {
 						builder[j++] = lineWP;
 					}
+					Thread.sleep(0);
 					Thread.yield();
 				}
 				for (int i = j - 1; 0 <= i; i--) {
+					Thread.sleep(0);
 					mTextViewer.head(builder[i]);
 				}
 			} catch (Exception e) {
@@ -278,13 +280,15 @@ public class NeiborhoodCashing {
 					if (lineWP.getLinePosition() > mStartWithoutOwn) {
 						mTextViewer.add(lineWP);
 					}
+					Thread.sleep(0);
 					Thread.yield();
 				}
 				if(MOVE_FORWARD == nextAction(mTextViewer)){
 					mStartWithoutOwn = mTextViewer.getCurrentBufferEndLinePosition();
-					Thread.sleep(100);
+					Thread.sleep(0);
 					Thread.yield();
 				} else {
+					Thread.sleep(0);
 					break;
 				}
 				}

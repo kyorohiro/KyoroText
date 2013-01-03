@@ -17,6 +17,10 @@ public class CyclingList<X> implements CyclingListInter<X> {
 		return mMaxOfStackedElement;
 	}
 
+	public synchronized void moveLast(X element, int i) {
+		mList.remove(i);
+		mList.add(element);
+	}
 	public synchronized void clear() {
 		mList.clear();
 		mNumOfAdd = 0;

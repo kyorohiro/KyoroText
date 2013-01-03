@@ -474,7 +474,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 		{// line number
 			int s = graphics.getTextSize();
-			graphics.setTextSize(s * 3);
+			graphics.setTextSize((int)(s*1.2));
 			graphics.setColor(sTestTextColor);
 			graphics.drawText("" + getShowingTextStartPosition() + ":"
 					+ getShowingTextEndPosition(), 30, s * 4);

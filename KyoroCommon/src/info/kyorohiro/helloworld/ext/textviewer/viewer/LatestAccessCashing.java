@@ -12,11 +12,13 @@ public class LatestAccessCashing {
 		mCash = new CyclingList<KyoroString>(num);
 	}
 
-	public synchronized void addLine(KyoroString line) {
+	public synchronized void addLine(KyoroString line, boolean check) {
 		int num = mCash.getNumberOfStockedElement();
-		for(int i=num-1;i>=0;i--) {
-			if(line.getLinePosition() == mCash.get(i).getLinePosition()) {
-				return;
+		if(check) {
+			for(int i=num-1;i>=0;i--) {
+				if(line.getLinePosition() == mCash.get(i).getLinePosition()) {
+					return;
+				}
 			}
 		}
 		mCash.add(line);
@@ -29,6 +31,7 @@ public class LatestAccessCashing {
 			if(index == mCash.get(i).getLinePosition()) {
 				KyoroString c =  mCash.get(i);
 				c.setColor(COlOR_RECASH2);
+				mCash.moveLast(c, i);
 				return c;
 			}
 		}

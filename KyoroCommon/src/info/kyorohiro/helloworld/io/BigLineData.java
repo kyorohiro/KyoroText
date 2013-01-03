@@ -50,7 +50,7 @@ public class BigLineData {
 		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
 	}
 
-	public synchronized BreakText getBreakText(){
+	public BreakText getBreakText(){
 		return mBreakText;
 	}
 
@@ -78,7 +78,7 @@ public class BigLineData {
 		}
 	}
 
-	public synchronized boolean wasEOF() {
+	public boolean wasEOF() {
 		try {
 			//android.util.Log.v("kiyo","reader="+mReader.length()+","+mLastFilePointer);
 			if (mReader.length() > mLastFilePointer) {
@@ -92,7 +92,7 @@ public class BigLineData {
 		return false;
 		
 	}
-	public synchronized boolean isEOF() {
+	public boolean isEOF() {
 		try {
 			if (mReader.length() <= mReader.getFilePointer()) {
 //			if (mReader.length() <= mLastFilePointer) {
@@ -170,12 +170,12 @@ public class BigLineData {
 	}
 
 
-	public synchronized long getNextLinePosition() {
+	public long getNextLinePosition() {
 		return mLinePosition;
 	}
 
 	//	@Deprecated
-	public synchronized long getLastLinePosition() {
+	public long getLastLinePosition() {
 		return mLastLinePosition;
 	}
 

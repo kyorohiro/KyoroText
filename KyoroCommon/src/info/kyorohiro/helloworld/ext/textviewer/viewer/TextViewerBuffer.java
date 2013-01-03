@@ -181,9 +181,11 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			} else {
 				ret = getAsync(i, true);
 			}
+		} else {
+			return ret;
 		}
 		if(!ret.isNowLoading()) {
-			mLatestCashing.addLine(ret);
+			mLatestCashing.addLine(ret, false);
 		}
 		return ret;
 	}

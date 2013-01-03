@@ -1,5 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import java.io.ObjectInputStream.GetField;
+
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
@@ -10,7 +12,7 @@ public class CursorableLineView extends LineView {
 	public final static String MODE_SELECT = "MODE SELECT";
 	public final static String MODE_VIEW = "MODE VIEW";
 	public final static String MODE_EDIT = "MODE EDIT: NOW CREATING!!";
-	public final static int __CURSOR__COLOR = SimpleGraphicUtil.parseColor("#44FFAA44");
+	public final static int __CURSOR__COLOR = SimpleGraphicUtil.parseColor("#88FFAA44");
 	public final static int __CURSOR__COLOR2 = SimpleGraphicUtil.parseColor("#FFBB8811");
 
 
@@ -200,7 +202,7 @@ public class CursorableLineView extends LineView {
 		mRight.updateCursor();
 		mLeft.updateCursor();
 		graphics.setColor(__CURSOR__COLOR);
-		graphics.setTextSize(30);
+		graphics.setTextSize((int)(getTextSize()*1.2));
 		graphics.drawText(mMode, 20, this.getHeight() - 50);
 		drawBGForSelect(graphics);
 		//todo refactaring
