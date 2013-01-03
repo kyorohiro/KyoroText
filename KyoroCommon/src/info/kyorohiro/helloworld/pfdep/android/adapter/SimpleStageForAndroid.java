@@ -62,10 +62,12 @@ public class SimpleStageForAndroid extends EditableSurfaceView implements Simple
 	}
 
 	public synchronized void stop() {
+		//android.util.Log.v("kiyo","stop()");
 		if (isAlive()) {
 			Thread tmp = mCurrentThread;
 			mCurrentThread = null;
 			if (tmp != null && tmp.isAlive()) {
+				//android.util.Log.v("kiyo","stop() on");
 				tmp.interrupt();
 			}
 		}
@@ -74,18 +76,19 @@ public class SimpleStageForAndroid extends EditableSurfaceView implements Simple
 	private static int mCountForLogicalSleep = 0;
 
 	protected void logicalSleepForCpuUage() throws InterruptedException {
+		android.util.Log.v("kiyo","sleep()="+mCountForLogicalSleep);
 		if (mCountForLogicalSleep < 30) {
 			Thread.sleep(mSleep);
-		} else if (mCountForLogicalSleep < 60) {
+		} else if (mCountForLogicalSleep < 33){//..60) {
 			// Thread.sleep(mSleep*4);
-			sleepPlus(8);
-		} else if (mCountForLogicalSleep < 120) {
+			sleepPlus(4);
+		} else if (mCountForLogicalSleep < 36){//120) {
 			// Thread.sleep(mSleep*8);
-			sleepPlus(16 * 2);
-		} else if (mCountForLogicalSleep < 240) {
+			sleepPlus(8);
+		} else if (mCountForLogicalSleep < 40){//240) {
 			// Thread.sleep(mSleep*16);
 			sleepPlus(32 * 2);
-		} else if (mCountForLogicalSleep < 480) {
+		} else {//if (mCountForLogicalSleep < 44){//480) {
 			// Thread.sleep(mSleep*20);//
 			sleepPlus(64 * 2);
 		}
@@ -95,7 +98,7 @@ public class SimpleStageForAndroid extends EditableSurfaceView implements Simple
 	}
 
 	private void sleepPlus(int num) throws InterruptedException {
-		for (int i = 0; i < num && mCountForLogicalSleep >= 50; i++) {
+		for (int i = 0; i < num|| mCountForLogicalSleep > 2; i++) {
 			Thread.sleep(mSleep);
 		}
 	}

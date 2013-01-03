@@ -13,7 +13,7 @@ public class NeiborhoodCashing {
 	private ReadForwardBuilder mForwardBuilder = new ReadForwardBuilder();
 	private Thread mTaskRunnter = null;
 	public static final int LOOKAGEAD_lentgth = 2;
-	public static final int CHANK_SIZE = BigLineData.FILE_LIME*2;
+	public static final int CHANK_SIZE = BigLineData.FILE_LIME;
 	public static final int MOVE_FORWARD = 1;
 	public static final int CLEAR_AND_MOVE_FORWARD = 2;
 	public static final int MOVE_BACK = 3;
@@ -91,10 +91,12 @@ public class NeiborhoodCashing {
 				return MOVE_BACK;
 			}
 			else {
+//				android.util.Log.v("kiyo","ED:::Kepp");
 				return MOVE_KEEP;				
 			}
 		} else {
 //			startReadForwardAndClear(cp);
+//			android.util.Log.v("kiyo","ED:::M FOWARD");
 			return CLEAR_AND_MOVE_FORWARD;
 		}
 	}
@@ -213,6 +215,7 @@ public class NeiborhoodCashing {
 		}
 
 		public void run() {
+//			android.util.Log.v("kiyo","start rbt");
 //			android.util.Log.v("kiyo","SD:::B"+mStartWithoutOwn);
 			try {
 				mBigLineData.moveLine(mStartWithoutOwn - BigLineData.FILE_LIME);
@@ -238,6 +241,7 @@ public class NeiborhoodCashing {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+//			android.util.Log.v("kiyo","end rbt");
 		}
 	}
 
@@ -264,11 +268,13 @@ public class NeiborhoodCashing {
 		}
 
 		public void run() {
+//			android.util.Log.v("kiyo","start rft");
 			try {
 				if (mClear) {
 					mTextViewer.clear();
 				}
 				mBigLineData.moveLine(mStartWithoutOwn);
+				int doAct = 0;
 				do{
 				for (int i = 0; mIsDispose == false&&
 						!Thread.interrupted() && 
@@ -276,6 +282,7 @@ public class NeiborhoodCashing {
 						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
 					KyoroString lineWP = (KyoroString) mBigLineData.readLine();
+///					android.util.Log.v("kiyo","start rft="+lineWP);
 					lineWP.setColor(SimpleGraphicUtil.WHITE);
 					if (lineWP.getLinePosition() > mStartWithoutOwn) {
 						mTextViewer.add(lineWP);
@@ -283,7 +290,10 @@ public class NeiborhoodCashing {
 					Thread.sleep(0);
 					Thread.yield();
 				}
-				if(MOVE_FORWARD == nextAction(mTextViewer)){
+				doAct++;
+				if(mBigLineData.isEOF()) {
+					break;
+				} else if(MOVE_FORWARD == nextAction(mTextViewer)){
 					mStartWithoutOwn = mTextViewer.getCurrentBufferEndLinePosition();
 					Thread.sleep(0);
 					Thread.yield();
@@ -291,12 +301,17 @@ public class NeiborhoodCashing {
 					Thread.sleep(0);
 					break;
 				}
+				if(doAct >5) {
+					break;
+				}
+//				android.util.Log.v("kiyo","dorft --"+doAct);
 				}
 				while(true);
 			} catch(InterruptedException e) {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+//			android.util.Log.v("kiyo","end rft");
 		}
 	}
 }

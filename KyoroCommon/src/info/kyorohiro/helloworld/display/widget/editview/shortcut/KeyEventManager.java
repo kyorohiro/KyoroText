@@ -108,12 +108,12 @@ public class KeyEventManager extends IMEController{
 		}
 
 		mTextBuffer.IsCrlfMode(mTextView.isCrlfMode());
-		mTextView.getStage(mTextView).start();
 	
 		boolean first = true;
 		while (true) {
 			CommitText text = c.popFirst();
 			if (text != null) {
+				mTextView.getStage(mTextView).resetTimer();
 				if(first == true) {
 					cursorIsInShowingView(mTextView);
 					first = false;
