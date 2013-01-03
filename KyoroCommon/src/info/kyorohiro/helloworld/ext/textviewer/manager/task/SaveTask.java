@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineView;
@@ -51,6 +52,9 @@ public class SaveTask implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 			LineViewManager.getManager().getApplication().showMessage("failed save "+e);
+		} catch (Throwable t) {
+			t.printStackTrace();
+			LineViewManager.getManager().getApplication().showMessage("failed save "+t);
 		}
 	}
 
@@ -88,6 +92,7 @@ public class SaveTask implements Runnable {
 				Thread.yield();
 				mViewer.getLineView().getLeft().setCursorCol(i);
 				mViewer.getLineView().recenter();
+				SimpleDisplayObject.getStage(mViewer).resetTimer();
 			}
 // version 3 now creating
 			// �����̃t�@�C������ʖ��ŋL�^���Ă���
