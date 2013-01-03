@@ -13,7 +13,6 @@ import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.ext.textviewer.manager.LineViewManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.SaveBuffer;
-import info.kyorohiro.helloworld.textviewer.task.SaveTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.content.DialogInterface;

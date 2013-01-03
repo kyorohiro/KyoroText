@@ -227,11 +227,11 @@ public class KyoroTextViewerActivity extends MainActivity {
 		int screenHeight = mViewerHeight;
 
 		int circleSize = 18 / 2;
-		if (10 < Util.inchi2pixel(mViewerWidth)) {
+		if (60 < Util.inchi2mm(Util.pixel2inchi(mViewerWidth))) {
 			circleSize = 22 / 2;
 		} else {
-			circleSize = 16 / 2;
-		}
+			circleSize = 18/ 2;
+		} 
 		int baseTextSize = (int) Util.inchi2pixel(Util.mm2inchi(1.6));
 		return new LineViewManager(KyoroApplication.getKyoroApplication(),
 				new MyBuilder(), baseTextSize, textSize, screenWidth,
