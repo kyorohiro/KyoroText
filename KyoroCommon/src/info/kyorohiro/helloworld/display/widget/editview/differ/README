@@ -1,0 +1,8 @@
+テキスト編集した場合、変更した箇所だけ記録するようにした。
+DIFFデータ管理用のクラスぐんです。
+
+EditableLineView use BigData
+Android can not stock treated data in heap 
+so Kyoro Text stock diff data only. 
+save editing date short.
+
