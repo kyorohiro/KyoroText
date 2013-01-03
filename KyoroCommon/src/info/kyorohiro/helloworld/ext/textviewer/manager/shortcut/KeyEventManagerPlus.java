@@ -64,6 +64,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('g', true, false)}, new KeyboadQuit()),
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('s', true, false)}, new SaveBuffer()),
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('0', false, false)}, new DeleteWindow()),
+		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('2', false, false)}, new SplitWindowVertically()),
 
 		//*/
 		///*
@@ -99,6 +100,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('g', true, false)}, new KeyboadQuit()),
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('s', true, false)}, new SaveBuffer()),
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('0', false, false)}, new DeleteWindow()),
+		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('2', false, false)}, new SplitWindowVertically()),
 
 		//
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DPAD_DOWN, false, false)}, new NextLine()),

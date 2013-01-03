@@ -210,7 +210,18 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 		return ret;
 	}
 
+	
+	//
+	// now creating
+	//
+	public void splitWindowVertically() {
+		//split-window-vertically
+		divide(mSeparate);
+	}
 
+	//
+	// now creating
+	//
 	public void deleteWindow() {
 		Object parent = getParent();
 		if(parent == null) {
