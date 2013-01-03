@@ -20,7 +20,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.SingleByteSpac
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Yank;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command.CommandPart;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
-import info.kyorohiro.helloworld.ext.textviewer.manager.ModeLineBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 
 public class KeyEventManagerPlus extends KeyEventManager {
 
@@ -35,7 +35,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		if(CursorableLineView.MODE_EDIT.equals(mode)) {
 			getManager().updateCommnad(EMACS_SHORTCUT_EDIT);			
 		}
-		else if(ModeLineBuffer.MODE_LINE_BUFFER.equals(mode)) {
+		else if(MiniBuffer.MODE_LINE_BUFFER.equals(mode)) {
 			getManager().updateCommnad(EMACS_SHORTCUT_MODELINE);			
 		}
 		else {

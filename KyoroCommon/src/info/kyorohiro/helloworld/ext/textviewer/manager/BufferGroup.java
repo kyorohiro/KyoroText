@@ -84,7 +84,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 		// todo refactring target
 		//for(int i=0;i<numOfChild();i++) {
 		//	if(getChild(i)
-		ModeLineBuffer compare = BufferManager.getManager().getModeLineBuffer();
+		MiniBuffer compare = BufferManager.getManager().getModeLineBuffer();
 		Object p = compare.getParent();
 		Object pp = (compare.getParent()!=null?((SimpleDisplayObject)p).getParent():null);
 		if(this == p || mTextViewer == compare || this == pp){

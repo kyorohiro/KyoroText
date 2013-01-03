@@ -9,7 +9,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManage
 import info.kyorohiro.helloworld.display.widget.editview.task.SearchTask;
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
-import info.kyorohiro.helloworld.ext.textviewer.manager.ModeLineBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.text.KyoroString;
 
@@ -49,14 +49,14 @@ public class ISearchForward implements Task {
 				return;
 			}
 //			android.util.Log.v("kiyo","#-#ISearchForward-enter"+line);
-			ModeLineBuffer modeBuffer = BufferManager.getManager().getModeLineBuffer();
+			MiniBuffer modeBuffer = BufferManager.getManager().getModeLineBuffer();
 			modeBuffer.startTask(new SearchTask(mTargetView, line));
 		}
 
 		@Override
 		public void begin() {
 			BufferManager.getManager().changeFocus(BufferManager.getManager().getModeLineBuffer());
-			ModeLineBuffer modeBuffer = BufferManager.getManager().getModeLineBuffer();
+			MiniBuffer modeBuffer = BufferManager.getManager().getModeLineBuffer();
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
 			buffer.clear();
 			buffer.pushCommit(PREV_LINE, 1);

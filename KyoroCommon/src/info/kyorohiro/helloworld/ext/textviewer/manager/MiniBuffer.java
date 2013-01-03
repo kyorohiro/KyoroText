@@ -18,12 +18,12 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ModeLineTask;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 // now creating 
-public class ModeLineBuffer extends TextViewer {
+public class MiniBuffer extends TextViewer {
 
 	public static final String MODE_LINE_BUFFER = CursorableLineView.MODE_EDIT+"mode_line_buffer";
 	private ModeLineTask mTask = null;
 
-	public ModeLineBuffer(int textSize, int width, int mergine, boolean message) {
+	public MiniBuffer(int textSize, int width, int mergine, boolean message) {
 		super(new EmptyLineViewBufferSpecImpl(400, BufferManager.getManager().getFont()),textSize, width, mergine,
 				BufferManager.getManager().getFont(),//new SimpleFontForAndroid(),
 				BufferManager.getManager().getCurrentCharset());

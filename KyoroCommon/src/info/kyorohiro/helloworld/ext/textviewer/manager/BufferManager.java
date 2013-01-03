@@ -32,7 +32,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	private SimpleCircleControllerMenuPlus mCircleMenu = new SimpleCircleControllerMenuPlus();
 	private BufferGroup mRoot = null;
 	private KeyEventManager mKeyEventManager = new KeyEventManagerPlus();
-	private ModeLineBuffer mModeLine = null;
+	private MiniBuffer mModeLine = null;
 	private BufferList mList = new BufferList();
 	public static BufferManager getManager() {
 		return sInstance;
@@ -43,7 +43,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return mList;
 	}
 
-	public ModeLineBuffer getModeLineBuffer() {
+	public MiniBuffer getModeLineBuffer() {
 		return mModeLine;
 	}
 
@@ -66,7 +66,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		///*
 		 // command
 //		android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
-		BufferGroup g = first.divideAndNew(true, mModeLine = new ModeLineBuffer(baseTextSize, mWidth, mMergine, false));
+		BufferGroup g = first.divideAndNew(true, mModeLine = new MiniBuffer(baseTextSize, mWidth, mMergine, false));
 //		mModeLine.setCurrentFontSize(baseTextSize);
 		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
 		first.setSeparatorPoint(0.05f);

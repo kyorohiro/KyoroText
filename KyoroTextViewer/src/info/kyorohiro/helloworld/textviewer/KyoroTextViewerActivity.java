@@ -19,7 +19,7 @@ import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetec
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferGroup;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
-import info.kyorohiro.helloworld.ext.textviewer.manager.ModeLineBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.AppDependentAction;
 import info.kyorohiro.helloworld.textviewer.task.CopyTask;
 import info.kyorohiro.helloworld.textviewer.task.PastTask;
@@ -249,7 +249,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 					Uri uri = intentFromExteralApplication.getData();
 					if (uri != null) {
 						TextViewer fo = mViewerManager.getFocusingTextViewer();
-						if (fo instanceof ModeLineBuffer) {
+						if (fo instanceof MiniBuffer) {
 							mViewerManager.otherWindow();
 							fo = mViewerManager.getFocusingTextViewer();
 						}
