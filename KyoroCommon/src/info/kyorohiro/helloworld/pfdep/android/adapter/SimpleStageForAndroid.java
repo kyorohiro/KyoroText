@@ -53,7 +53,9 @@ public class SimpleStageForAndroid extends EditableSurfaceView implements Simple
 	}
 
 	@Deprecated
+	@Override
 	public synchronized void resetTimer() {
+		super.resetTimer();
 		mCountForLogicalSleep = 0;
 	}
 
@@ -98,7 +100,7 @@ public class SimpleStageForAndroid extends EditableSurfaceView implements Simple
 	}
 
 	private void sleepPlus(int num) throws InterruptedException {
-		for (int i = 0; i < num|| mCountForLogicalSleep > 2; i++) {
+		for (int i = 0; i < num|| mCountForLogicalSleep > 3; i++) {
 			Thread.sleep(mSleep);
 		}
 	}

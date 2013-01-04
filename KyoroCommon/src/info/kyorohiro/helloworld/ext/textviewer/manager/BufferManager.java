@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import java.io.File;
 
-import android.view.FocusFinder;
+//import android.view.FocusFinder;
 
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;

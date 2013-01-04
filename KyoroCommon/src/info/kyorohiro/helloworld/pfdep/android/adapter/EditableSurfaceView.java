@@ -3,7 +3,9 @@ package info.kyorohiro.helloworld.pfdep.android.adapter;
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.IMEController;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
+import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
+import info.kyorohiro.helloworld.display.simple.SimpleStage;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -186,6 +188,9 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		// mPushingCtl = ctl;
 	}
 
+	public synchronized void resetTimer() {
+
+	}
 	private static CharSequence mComposingText = null;
 	private static int mNewCursorPosition = 0;
 	private static CharSequence mCommitText = null;
@@ -350,6 +355,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public void addCommitText(CommitText text) {
 			log("# addlast---" + text);
+			resetTimer();
 			mCommitTextList.addLast(text);
 		}
 
