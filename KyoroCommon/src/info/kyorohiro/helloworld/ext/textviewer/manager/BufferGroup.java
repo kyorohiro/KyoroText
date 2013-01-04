@@ -216,7 +216,9 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 	//
 	public void splitWindowVertically() {
 		//split-window-vertically
+		//android.util.Log.v("kiyo","begin splitWindowVertically()");
 		divide(mSeparate);
+		//android.util.Log.v("kiyo","end splitWindowVertically()");
 	}
 
 	//

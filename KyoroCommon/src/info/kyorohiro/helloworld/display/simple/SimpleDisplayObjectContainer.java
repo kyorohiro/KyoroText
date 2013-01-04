@@ -13,8 +13,11 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 	 * 
 	 */
 	public void paintGroup(SimpleGraphics graphics) {
-		for(SimpleDisplayObject child: mMyChildren){
-			if(child != null && child.isVisible()) {
+//		for(SimpleDisplayObject child: mMyChildren){
+		int len = mMyChildren.size();
+		for(int i = len-1;i>=0;i--){
+			SimpleDisplayObject child = mMyChildren.get(i);
+			if(child != null && child.isVisible() && !child.isDispose()) {
 				if (mCashGraphics == null) {
 					//SimpleGraphics childGraphics 
 					mCashGraphics = graphics.getChildGraphics(

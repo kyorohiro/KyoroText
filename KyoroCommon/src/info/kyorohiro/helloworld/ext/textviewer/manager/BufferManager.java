@@ -190,6 +190,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
+//		android.util.Log.v("kiyo","BufferManager.paint()");
 		setRect(graphics.getWidth(), graphics.getHeight());
 		_layout();
 		// int t = mCircleMenu.getMinRadius();

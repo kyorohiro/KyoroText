@@ -100,7 +100,7 @@ public class SimpleStageForAndroid extends EditableSurfaceView implements Simple
 	}
 
 	private void sleepPlus(int num) throws InterruptedException {
-		for (int i = 0; i < num|| mCountForLogicalSleep > 3; i++) {
+		for (int i = 0; i < num&&mCountForLogicalSleep > 3; i++) {
 			Thread.sleep(mSleep);
 		}
 	}
@@ -126,7 +126,12 @@ public class SimpleStageForAndroid extends EditableSurfaceView implements Simple
 					try {
 						canvas = holder.lockCanvas();
 						doDraw(canvas);
-					} finally {
+					}
+					catch(Throwable t) {
+						// todo
+						t.printStackTrace();
+					}
+					finally {
 						if (canvas != null) {
 							holder.unlockCanvasAndPost(canvas);
 						}

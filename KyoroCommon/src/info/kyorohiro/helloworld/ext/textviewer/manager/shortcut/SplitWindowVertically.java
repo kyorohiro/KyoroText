@@ -15,8 +15,11 @@ public class SplitWindowVertically implements Task {
 
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
+//		android.util.Log.v("kiyo","begin splitWindowVertically act");
 		BufferManager.getManager().splitWindowVertically();	
+//		android.util.Log.v("kiyo","begin splitWindowVertically --");
 		buffer.clearYank();
+//		android.util.Log.v("kiyo","begin splitWindowVertically act");
 	}
 
 }
