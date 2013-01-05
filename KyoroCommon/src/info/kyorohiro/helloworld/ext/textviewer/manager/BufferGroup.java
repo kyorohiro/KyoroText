@@ -132,6 +132,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			}
 		}
 		if(mSeparate.isVertical()){
+//			android.util.Log.v("kiyo","-- vertical true");
 			int z = (int)(getWidth(false)*mSeparate.getPersentY());
 			if(j>=2){
 				obj[0].setPoint(0, 0);
@@ -144,6 +145,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			}
 			mSeparate.setPoint(z, mSeparate.getY());
 		} else {
+//			android.util.Log.v("kiyo","-- vertical false");
 			int z = (int)(getHeight(false)*mSeparate.getPersentY());
 			if(j>=2){
 				obj[0].setPoint(0, 0);
@@ -216,10 +218,27 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 	//
 	public void splitWindowVertically() {
 		//split-window-vertically
-		//android.util.Log.v("kiyo","begin splitWindowVertically()");
+//		android.util.Log.v("kiyo","begin splitWindowVertically()");
 		divide(mSeparate);
-		//android.util.Log.v("kiyo","end splitWindowVertically()");
+		mSeparate.isVertical(false);
+//		android.util.Log.v("kiyo","begin splitWindowVertically()"+mSeparate.isVertical());
+		mSeparate.resetPosition();
+//		android.util.Log.v("kiyo","end splitWindowVertically()");
 	}
+
+	//
+	// now creating
+	//
+	public void splitWindowHorizontally() {
+		//split-window-vertically
+	//	android.util.Log.v("kiyo","begin splitWindowHorizontally()");
+		divide(mSeparate);
+		mSeparate.isVertical(true);
+	//	android.util.Log.v("kiyo","begin splitWindowHorizontally()"+mSeparate.isVertical());
+		mSeparate.resetPosition();
+	//	android.util.Log.v("kiyo","end splitWindowHorizontally()");
+	}
+
 
 	//
 	// now creating

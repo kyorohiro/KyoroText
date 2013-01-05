@@ -102,6 +102,24 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		((BufferGroup)parent).splitWindowVertically();		
 	}
 
+	public void splitWindowHorizontally() {
+		TextViewer viewer = getFocusingTextViewer();
+		if (viewer == null) {
+			return;
+		}
+		Object parent = viewer.getParent();
+		if (parent == null) {
+			return;
+		}
+
+		if (!(parent instanceof BufferGroup)) {
+			return;
+		}
+
+		((BufferGroup)parent).splitWindowHorizontally();		
+	}
+
+	
 	public void deleteWindow() {
 		TextViewer viewer = getFocusingTextViewer();
 		if (viewer == null) {

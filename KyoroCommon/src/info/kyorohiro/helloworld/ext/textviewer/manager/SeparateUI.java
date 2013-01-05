@@ -47,6 +47,13 @@ public class SeparateUI extends SimpleDisplayObject {
 		return mPersentY;
 	}
 
+	public void isVertical(boolean on) {
+		if (!on) {
+			mModeSeparate = MODE_SEPARATE_ORIENTATION;
+		} else {
+			mModeSeparate = MODE_SEPARATE_VERTICAL;
+		}		
+	}
 	public boolean isVertical() {
 		if (mModeSeparate == MODE_SEPARATE_ORIENTATION) {
 			return false;
