@@ -30,6 +30,7 @@ public class FindFile implements Task {
 
 	public class FindFileTask implements MiniBufferTask {
 		private TextViewer mViewer = null;
+		private File mCurrentPath  = new File("");
 		public FindFileTask(TextViewer viewer) {
 			mViewer = viewer;
 		}
@@ -57,11 +58,32 @@ public class FindFile implements Task {
 			
 		@Override
 		public void tab(String line) {
-			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
-			//EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
-			//buffer.clear();
-			modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line)));
+			File lf = new File(line);
+			if(!mCurrentPath.getAbsoluteFile().equals(lf.getAbsoluteFile())) {
+				//android.util.Log.v("kiyo","##--------1------------");
+				MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
+				//EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
+				//buffer.clear();
+				mCurrentPath = lf.getAbsoluteFile();
+				modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line)));
+			} else {
+				//android.util.Log.v("kiyo","##--------2------------");
+				TextViewer mInfo = BufferManager.getManager().getInfoBuffer();
+				if(mInfo == null || mInfo.isDispose()) {
+					return;
+				}
+				int num = mInfo.getLineView().getShowingTextStartPosition();
+				int p = mInfo.getLineView().getPositionY();
+				int v = mInfo.getLineView().getShowingTextSize();
+				//android.util.Log.v("kiyo","##p="+p+",num="+num+",v="+v);
+				if(0<num) {
+					mInfo.getLineView().setPositionY(mInfo.getLineView().getPositionY()+3);
+				} else {
+					mInfo.getLineView().setPositionY(0);					
+				}
+			}
 		}
+
 		@Override
 		public void begin() {
 			//
@@ -77,7 +99,7 @@ public class FindFile implements Task {
 			modeBuffer.getLineView().getLeft().setCursorRow(0);
 			buffer.pushCommit(""+base.getAbsolutePath(), 1);
 			modeBuffer.getLineView().recenter();
-			modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(),base.getAbsoluteFile()));
+			modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile()));
 		}
 		@Override
 		public void end() {
