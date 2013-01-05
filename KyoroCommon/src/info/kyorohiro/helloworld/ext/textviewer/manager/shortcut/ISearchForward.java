@@ -14,6 +14,7 @@ import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class ISearchForward implements Task {
+	public static String PREV_LINE = "";
 
 	@Override
 	public String getCommandName() {
@@ -26,16 +27,6 @@ public class ISearchForward implements Task {
 		buffer.clearYank();
 	}
 
-	public static String PREV_LINE = "";
-//	public static Thread th = null;
-//	public void startTask(Runnable task) {
-//		if(th !=null && th.isAlive()) {
-//			th.interrupt();
-//			th = null;
-//		}
-//		th = new Thread(task);
-//		th.start();
-//	}
 	public class ISearchForwardTask implements ModeLineTask{
 		private EditableLineView mTargetView = null;
 		public ISearchForwardTask(EditableLineView targetView) {

@@ -85,87 +85,6 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		// */
 	}
 
-	public void deleteOtherWindows() {
-		TextViewer viewer = getFocusingTextViewer();
-		TextViewer work = getFocusingTextViewer();
-		if (viewer == null) {
-			return;
-		}
-		Object parent = viewer.getParent();
-		if (parent == null) {
-			return;
-		}
-
-		if (!(parent instanceof BufferGroup)) {
-			return;
-		}
-
-		int i = 0;
-		do {
-			otherWindow();
-			work = getFocusingTextViewer();
-			if (work == null || work == viewer) {
-				break;
-			}
-			i++;
-			if (i > 20) {
-				break;
-			}
-			deleteWindow();
-		} while (true);
-	}
-
-	public void splitWindowVertically() {
-		TextViewer viewer = getFocusingTextViewer();
-		if (viewer == null) {
-			return;
-		}
-		Object parent = viewer.getParent();
-		if (parent == null) {
-			return;
-		}
-
-		if (!(parent instanceof BufferGroup)) {
-			return;
-		}
-
-		((BufferGroup) parent).splitWindowVertically();
-	}
-
-	public void splitWindowHorizontally() {
-		TextViewer viewer = getFocusingTextViewer();
-		if (viewer == null) {
-			return;
-		}
-		Object parent = viewer.getParent();
-		if (parent == null) {
-			return;
-		}
-
-		if (!(parent instanceof BufferGroup)) {
-			return;
-		}
-
-		((BufferGroup) parent).splitWindowHorizontally();
-	}
-
-	public void deleteWindow() {
-		TextViewer viewer = getFocusingTextViewer();
-		if (viewer == null) {
-			return;
-		}
-		Object parent = viewer.getParent();
-		if (parent == null) {
-			return;
-		}
-
-		if (!(parent instanceof BufferGroup)) {
-			return;
-		}
-
-		((BufferGroup) parent).deleteWindow();
-	}
-
 	@Override
 	public void start() {
 		super.start();
@@ -297,16 +216,6 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return mFocusingViewer;
 	}
 
-	//
-	// following code otherWindow must to be moving another class
-	// 　
-	public synchronized void otherWindow() {
-		// /*
-		OtherWindowTask task = new OtherWindowTask();
-		AsyncronousTask atask = new AsyncronousTask(task);
-		getModeLineBuffer().startTask(atask);
-		atask.waitForTask();
-	}
 
 	//
 	// following logic dont use now. maybe delete
@@ -339,4 +248,104 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			return true;
 		}
 	}
+	
+	//
+	// 
+	//
+	//
+	//
+	//
+	
+	private BufferGroup getParentAsBufferGroup() {
+		TextViewer viewer = getFocusingTextViewer();
+		if (viewer == null) {
+			return null;
+		}
+		Object parent = viewer.getParent();
+		if (parent == null) {
+			return null;
+		}
+
+		if (!(parent instanceof BufferGroup)) {
+			return null;
+		}
+		return (BufferGroup)parent;
+	}
+
+	public void findFile() {
+		splitWindowHorizontally();
+	}
+
+	//
+	// following code otherWindow must to be moving another class
+	// 　
+	public synchronized void otherWindow() {
+		// /*
+		OtherWindowTask task = new OtherWindowTask();
+		AsyncronousTask atask = new AsyncronousTask(task);
+		getModeLineBuffer().startTask(atask);
+		atask.waitForTask();
+	}
+
+
+	public void deleteOtherWindows() {
+		TextViewer viewer = getFocusingTextViewer();
+		TextViewer work = getFocusingTextViewer();
+		if(null == getParentAsBufferGroup()) {
+			return;
+		}
+
+		int i = 0;
+		do {
+			otherWindow();
+			work = getFocusingTextViewer();
+			if (work == null || work == viewer) {
+				break;
+			}
+			i++;
+			if (i > 20) {
+				break;
+			}
+			deleteWindow();
+		} while (true);
+	}
+
+	public void splitWindowVertically() {
+		TextViewer viewer = getFocusingTextViewer();
+		BufferGroup parent = null;
+		parent = getParentAsBufferGroup();
+		if(null == parent) {
+			return;
+		}
+		parent.splitWindowVertically();
+	}
+
+	public void splitWindowHorizontally() {
+		BufferGroup parent = null;
+		parent = getParentAsBufferGroup();
+		if(null == parent) {
+			return;
+		}
+		((BufferGroup) parent).splitWindowHorizontally();
+	}
+
+	public void deleteWindow() {
+		TextViewer viewer = getFocusingTextViewer();
+		if (viewer == null) {
+			return;
+		}
+		Object parent = viewer.getParent();
+		if (parent == null) {
+			return;
+		}
+
+		if (!(parent instanceof BufferGroup)) {
+			return;
+		}
+
+		((BufferGroup) parent).deleteWindow();
+	}
+	
+	
+	
 }
