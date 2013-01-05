@@ -12,5 +12,6 @@ public class SimpleKeyEvent {
 	public static final int KEYCODE_DEL = 0x00000043;
 	public static final int KEYCODE_ENTER = 0x00000042;
 	public static final int KEYCODE_SPACE = 0x0000003e;
+	public static final int KEYCODE_TAB = 0x0000003d;
 
 }

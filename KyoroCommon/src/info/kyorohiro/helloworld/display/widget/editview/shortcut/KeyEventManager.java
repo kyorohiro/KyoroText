@@ -42,11 +42,11 @@ public class KeyEventManager extends IMEController{
 	}
 
 	@Override
-	public boolean tryUseBinaryKey(boolean shift, boolean ctl, boolean alt) {
+	public boolean tryUseBinaryKey(int keycode, boolean shift, boolean ctl, boolean alt) {
 		if(mManager.useHardKey()) {
 			return true;
 		} else {
-			return super.tryUseBinaryKey(shift, ctl, alt);
+			return super.tryUseBinaryKey(keycode, shift, ctl, alt);
 		}
 	}
 

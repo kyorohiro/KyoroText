@@ -169,7 +169,8 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		// if(!mIMEIsShow) {
 		// return super.dispatchKeyEventPreIme(event);
 		// } else
-		if (mController.tryUseBinaryKey(event.isShiftPressed(),
+		if (mController.tryUseBinaryKey(
+				event.getKeyCode(),event.isShiftPressed(),
 				pushingCtl(event), event.isAltPressed())) {
 			if (event.getAction() == KeyEvent.ACTION_DOWN) {
 				mController.binaryKey(mCurrentInputConnection,
@@ -408,6 +409,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	}
 
 	public static void log(String log) {
-		// android.util.Log.v("kiyo", ""+log);
+		android.util.Log.v("kiyo", ""+log);
 	}
 }

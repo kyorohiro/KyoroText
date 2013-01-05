@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.display.simple;
 import java.util.HashMap;
 
 
+
 //
 //todo don't fix
 public class IMEController {
@@ -13,8 +14,8 @@ public class IMEController {
 	public void log(String str) {
 	//	android.util.Log.v("kiyo","#=IMEC="+str);
 	}
-	public boolean tryUseBinaryKey(boolean shift, boolean ctl, boolean alt) {
-		if(alt==true||ctl == true||mIsUseBinaryKey) {
+	public boolean tryUseBinaryKey(int keycode, boolean shift, boolean ctl, boolean alt) {
+		if(alt==true||ctl == true||mIsUseBinaryKey||keycode == SimpleKeyEvent.KEYCODE_TAB) {
 			return true;
 		} else {
 			return false;			
@@ -105,6 +106,7 @@ public class IMEController {
 		static {
 			sMMap.put(KEYCODE_ESCAPE, (char)0x1b);
 			sRMap.put(KEYCODE_ESCAPE, (char)0x1b);
+			sMMap.put(SimpleKeyEvent.KEYCODE_TAB, (char)0x09);
 			sMMap.put(7, '0');
 			sMMap.put(8, '1');
 			sMMap.put(9, '2');
