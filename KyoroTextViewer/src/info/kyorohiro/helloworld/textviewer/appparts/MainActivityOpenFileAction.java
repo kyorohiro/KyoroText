@@ -12,6 +12,9 @@ import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile.FindFileTask;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -39,7 +42,25 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 		if (item.getTitle().equals(TITLE)) {
 			 MenuActionWarningMessagePlus.showDialog(activity, new  MyTask() {
 				 public void run(Activity c){
-					showExplorer(c);
+					//showExplorer(c);
+					 TextViewer viewer = BufferManager.getManager().getFocusingTextViewer();
+					 if(viewer != null) {
+							File directory = new File(KyoroSetting.getCurrentFile());
+							File firstCandidateDirectory = directory.getParentFile();
+							File secondCandidateDirectory = Environment.getExternalStorageDirectory();
+							File thirdCandidateDirectory = Environment.getRootDirectory();
+
+							File showedDirectry = firstCandidateDirectory;
+							if (showedDirectry == null || !showedDirectry.exists() || !showedDirectry.canRead()) {
+								showedDirectry = secondCandidateDirectory;
+							} 
+
+							if (showedDirectry == null || !showedDirectry.exists()||!showedDirectry.canRead()) {
+								showedDirectry = thirdCandidateDirectory;
+							} 
+							FindFileTask t = new FindFileTask(viewer, showedDirectry);
+							BufferManager.getManager().getMiniBuffer().startMiniBufferTask(t);
+					 }
 				 }
 			 }, BufferManager.getManager().getFocusingTextViewer().isEdit());
 
