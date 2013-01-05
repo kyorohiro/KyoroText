@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 //import android.view.FocusFinder;
 
@@ -36,7 +38,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	private KeyEventManager mKeyEventManager = new KeyEventManagerPlus();
 	private MiniBuffer mModeLine = null;
 	private BufferList mList = new BufferList();
-	private InfoBuffer mInfo = null;
+	private TextViewer mInfo = null;
 
 	public static BufferManager getManager() {
 		return sInstance;
@@ -48,6 +50,10 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 
 	public MiniBuffer getMiniBuffer() {
 		return mModeLine;
+	}
+
+	public TextViewer getInfoBuffer() {
+		return mInfo;
 	}
 
 	// ���Singletone�ɂ���B
@@ -272,8 +278,34 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return (BufferGroup)parent;
 	}
 
-	public void findFile() {
-		splitWindowHorizontally();
+	public void beginInfoBuffer() {
+		if(mInfo == null || mInfo.isDispose()) {
+			mInfo = splitWindowHorizontally().getTextViewer();
+			if(mInfo == null) {
+				return;
+			}
+		}
+		File infoFile = new File(getApplication().getApplicationDirectory(),"info.txt");
+		File baseDir = infoFile.getParentFile();
+		if(!baseDir.exists()) {
+			baseDir.mkdirs();
+		}
+
+		if(!infoFile.exists()) {
+			try {
+				infoFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			mInfo.readFile(infoFile, false);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 	}
 
 	//
@@ -310,23 +342,23 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		} while (true);
 	}
 
-	public void splitWindowVertically() {
+	public BufferGroup splitWindowVertically() {
 		TextViewer viewer = getFocusingTextViewer();
 		BufferGroup parent = null;
 		parent = getParentAsBufferGroup();
 		if(null == parent) {
-			return;
+			return null;
 		}
-		parent.splitWindowVertically();
+		return parent.splitWindowVertically();
 	}
 
-	public void splitWindowHorizontally() {
+	public BufferGroup splitWindowHorizontally() {
 		BufferGroup parent = null;
 		parent = getParentAsBufferGroup();
 		if(null == parent) {
-			return;
+			return null;
 		}
-		((BufferGroup) parent).splitWindowHorizontally();
+		return ((BufferGroup) parent).splitWindowHorizontally();
 	}
 
 	public void deleteWindow() {
