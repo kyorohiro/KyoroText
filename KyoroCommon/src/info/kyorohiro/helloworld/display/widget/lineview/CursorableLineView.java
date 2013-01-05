@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import info.kyorohiro.helloworld.display.simple.MessageDispatcher;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
@@ -136,6 +137,8 @@ public class CursorableLineView extends LineView {
 							lock();
 							mLeft.setCursorCol(getYToPosY(y));
 							mLeft.setCursorRow(getXToPosX(mLeft.getCursorCol(), x, mLeft.getCursorRow()));
+							KyoroString s = this.getKyoroString(mLeft.getCursorCol());
+							MessageDispatcher.getInstance().send(s);
 //							android.util.Log.v("xxx","--A2--");
 						}finally{
 							releaseLock();

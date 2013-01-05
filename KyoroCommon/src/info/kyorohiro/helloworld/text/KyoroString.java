@@ -21,6 +21,16 @@ public class KyoroString  implements CharSequence {
 	private int mPargedLF_CRLF = 0;
 	private int mPargedEND = 0;
 	private boolean mIsNowLoading = false;
+	private String mType = "";
+
+	public void setType(String type) {
+		mType = type;
+	}
+
+	public String getType() {
+		return mType;
+	}
+
 	public void isNowLoading(boolean v) {
 		mIsNowLoading = v;
 	}	
