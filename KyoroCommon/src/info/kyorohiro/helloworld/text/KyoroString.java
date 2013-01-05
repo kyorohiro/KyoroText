@@ -22,6 +22,7 @@ public class KyoroString  implements CharSequence {
 	private int mPargedEND = 0;
 	private boolean mIsNowLoading = false;
 	private String mType = "";
+	private String mEXtra = "";
 
 	public void setType(String type) {
 		mType = type;
@@ -29,6 +30,14 @@ public class KyoroString  implements CharSequence {
 
 	public String getType() {
 		return mType;
+	}
+
+	public void setExtra(String extra) {
+		mEXtra = extra;
+	}
+
+	public String getExtra() { 
+		return mEXtra;
 	}
 
 	public void isNowLoading(boolean v) {
