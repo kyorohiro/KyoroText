@@ -1,7 +1,9 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
@@ -59,15 +61,12 @@ public class FindFile implements Task {
 		@Override
 		public void tab(String line) {
 			File lf = new File(line);
-			if(!mCurrentPath.getAbsoluteFile().equals(lf.getAbsoluteFile())) {
-				//android.util.Log.v("kiyo","##--------1------------");
-				MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
-				//EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
-				//buffer.clear();
-				mCurrentPath = lf.getAbsoluteFile();
-				modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line)));
-			} else {
+			File pf = lf.getParentFile();
+			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
+			if(mCurrentPath.getAbsoluteFile().equals(lf.getAbsoluteFile())) {
+				//android.util.Log.v("kiyo","##--------3------------"+mCurrentPath+","+pf.getAbsolutePath());
 				//android.util.Log.v("kiyo","##--------2------------");
+				mCurrentPath = lf.getAbsoluteFile();
 				TextViewer mInfo = BufferManager.getManager().getInfoBuffer();
 				if(mInfo == null || mInfo.isDispose()) {
 					return;
@@ -80,6 +79,15 @@ public class FindFile implements Task {
 					mInfo.getLineView().setPositionY(mInfo.getLineView().getPositionY()+3);
 				} else {
 					mInfo.getLineView().setPositionY(0);					
+				}
+			} else {
+			//	android.util.Log.v("kiyo","##--------4------------"+mCurrentPath+","+lf.getAbsolutePath());
+				if(lf.exists() && lf.isDirectory()) {
+					mCurrentPath = lf.getAbsoluteFile();
+					modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line), ""));
+				} else if(pf.exists()){
+					mCurrentPath = lf.getAbsoluteFile();
+					modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), pf, lf.getName()));	
 				}
 			}
 		}
@@ -99,7 +107,7 @@ public class FindFile implements Task {
 			modeBuffer.getLineView().getLeft().setCursorRow(0);
 			buffer.pushCommit(""+base.getAbsolutePath(), 1);
 			modeBuffer.getLineView().recenter();
-			modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile()));
+			modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile(),""));
 		}
 		@Override
 		public void end() {
@@ -110,14 +118,17 @@ public class FindFile implements Task {
 	public static class UpdateInfo implements Runnable {
 		private TextViewer mInfo = null;
 		private File mPath = null;
-		public UpdateInfo(TextViewer info, File path) {
+		private String mFilter = "";
+		public UpdateInfo(TextViewer info, File path, String filter) {
 			mInfo = info;
 			mPath = path;
+			mFilter = filter;
 		}
 
 		@Override
 		public void run() {
 			try {
+				MyFilter filter = new MyFilter(mFilter);
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
 				buffer.clear();
 				if(mPath == null) {
@@ -128,8 +139,8 @@ public class FindFile implements Task {
 					buffer.crlf();
 				}
 				if(mPath.isDirectory()) {
-					for(File f : mPath.listFiles()) {
-						buffer.pushCommit(""+f.getName(), 1);
+					for(File f : mPath.listFiles(filter)) {
+						buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
 						buffer.crlf();
 					}
 				}
@@ -138,4 +149,20 @@ public class FindFile implements Task {
 			}
 		}
 	}
+	public static class MyFilter implements FilenameFilter {
+		String mFilter = "";
+		public MyFilter(String filter) {
+			mFilter = filter;
+		}
+
+		@Override
+		public boolean accept(File dir, String filename) {
+			if(filename.startsWith(mFilter)) {
+				//android.util.Log.v("kiyo","aa="+filename+","+mFilter);
+				return true;
+			}
+			return false;
+		}
+	}
+
 }
