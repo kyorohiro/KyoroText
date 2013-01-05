@@ -17,6 +17,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.NextLine;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.PreviousLine;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Recenter;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.SingleByteSpaceTask;
+import info.kyorohiro.helloworld.display.widget.editview.shortcut.SingleByteTabTask;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Yank;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.Command.CommandPart;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
@@ -121,6 +122,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_ENTER, false, false)}, new CrlfTask()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),	
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_BACK, false, false)}, new DeleteChar()),
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_TAB, false, false)}, new SingleByteTabTask()),	
 
 		new Command(new CommandPart[]{new CommandPart('s', true, false)}, new ISearchForward()),
 
@@ -153,6 +155,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_BACK, false, false)}, new DeleteChar()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),		
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_ENTER, false, false)}, new MiniBufferTaskDone()),	
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_TAB, false, false)}, new MiniBufferTaskNext()),	
 	};
 
 

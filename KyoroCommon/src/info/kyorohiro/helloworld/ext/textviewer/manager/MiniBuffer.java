@@ -51,6 +51,15 @@ public class MiniBuffer extends TextViewer {
 		return false;
 	}
 
+	public void next() {
+		MiniBufferTask task = mTask;
+		if(task !=null) {
+			KyoroString text = this.getLineView().getKyoroString(0);
+			if(text != null) {
+				task.tab(text.toString());
+			}
+		}
+	}
 	public void done() {
 		MiniBufferTask task = mTask;
 		if(task !=null) {

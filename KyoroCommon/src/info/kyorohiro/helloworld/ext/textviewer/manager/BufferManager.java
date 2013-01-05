@@ -291,14 +291,15 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			baseDir.mkdirs();
 		}
 
+		if(infoFile.exists()) {
+			infoFile.delete();
+		}
 		if(!infoFile.exists()) {
 			try {
 				infoFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else {
-			infoFile.delete();
 		}
 
 		try {

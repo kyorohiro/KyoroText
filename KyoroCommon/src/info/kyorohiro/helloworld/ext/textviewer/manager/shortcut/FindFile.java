@@ -57,6 +57,10 @@ public class FindFile implements Task {
 			
 		@Override
 		public void tab(String line) {
+			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
+			//EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
+			//buffer.clear();
+			modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line)));
 		}
 		@Override
 		public void begin() {
@@ -92,6 +96,7 @@ public class FindFile implements Task {
 		@Override
 		public void run() {
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
+			buffer.clear();
 			for(File f : mPath.listFiles()) {
 				buffer.pushCommit(""+f.getName(), 1);
 				buffer.crlf();

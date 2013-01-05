@@ -77,6 +77,8 @@ public class KeyEventManager extends IMEController{
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_DEL, false, false)}, new DeleteChar()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_ENTER, false, false)}, new CrlfTask()),
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),	
+		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_TAB, false, false)}, new SingleByteTabTask()),	
+
 	};
 
 	private static Command[] EMACS_SHORTCUT_EXTRA = {

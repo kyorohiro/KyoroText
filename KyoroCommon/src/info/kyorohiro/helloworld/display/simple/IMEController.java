@@ -47,6 +47,9 @@ public class IMEController {
 			else if(KeyMap.KEYCODE_DPAD_UP== keycode) {
 				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_DPAD_UP));
 			}
+			else if(SimpleKeyEvent.KEYCODE_TAB == keycode) {
+				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_TAB));
+			}
 		}
 
 	}
@@ -106,7 +109,6 @@ public class IMEController {
 		static {
 			sMMap.put(KEYCODE_ESCAPE, (char)0x1b);
 			sRMap.put(KEYCODE_ESCAPE, (char)0x1b);
-			sMMap.put(SimpleKeyEvent.KEYCODE_TAB, (char)0x09);
 			sMMap.put(7, '0');
 			sMMap.put(8, '1');
 			sMMap.put(9, '2');
