@@ -32,15 +32,12 @@ public class FindFile implements Task {
 		public FindFileTask(TextViewer viewer) {
 			mViewer = viewer;
 		}
-
 		@Override
 		public void enter(String line) {
 		}
-
 		@Override
 		public void tab(String line) {
 		}
-
 		@Override
 		public void begin() {
 			//
@@ -52,17 +49,33 @@ public class FindFile implements Task {
 			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
 			buffer.clear();
-			buffer.pushCommit(""+base.getAbsolutePath(), 1);
 			modeBuffer.getLineView().getLeft().setCursorCol(0);
 			modeBuffer.getLineView().getLeft().setCursorRow(0);
+			buffer.pushCommit(""+base.getAbsolutePath(), 1);
 			modeBuffer.getLineView().recenter();
+			modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(),base.getAbsoluteFile()));
 		}
-
 		@Override
 		public void end() {
 			BufferManager.getManager().endInfoBuffer();			
 		}
-
 	}
 
+	public static class UpdateInfo implements Runnable {
+		private TextViewer mInfo = null;
+		private File mPath = null;
+		public UpdateInfo(TextViewer info, File path) {
+			mInfo = info;
+			mPath = path;
+		}
+
+		@Override
+		public void run() {
+			EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
+			for(File f : mPath.listFiles()) {
+				buffer.pushCommit(""+f.getName(), 1);
+				buffer.crlf();
+			}
+		}
+	}
 }

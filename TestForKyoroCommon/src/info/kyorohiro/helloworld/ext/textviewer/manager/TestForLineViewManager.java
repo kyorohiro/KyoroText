@@ -81,6 +81,9 @@ public class TestForLineViewManager extends TestCase {
 		}
 		@Override
 		public void end() {
+		}
+		@Override
+		public void tab(String line) {
 		}		
 	}
 	public static class MyApplication implements SimpleApplication {
