@@ -85,6 +85,36 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		// */
 	}
 
+	public void deleteOtherWindows() {
+		TextViewer viewer = getFocusingTextViewer();
+		TextViewer work = getFocusingTextViewer();
+		if (viewer == null) {
+			return;
+		}
+		Object parent = viewer.getParent();
+		if (parent == null) {
+			return;
+		}
+
+		if (!(parent instanceof BufferGroup)) {
+			return;
+		}
+
+		int i = 0;
+		do {
+			otherWindow();
+			work = getFocusingTextViewer();
+			if (work == null || work == viewer) {
+				break;
+			}
+			i++;
+			if (i > 20) {
+				break;
+			}
+			deleteWindow();
+		} while (true);
+	}
+
 	public void splitWindowVertically() {
 		TextViewer viewer = getFocusingTextViewer();
 		if (viewer == null) {
@@ -99,7 +129,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			return;
 		}
 
-		((BufferGroup)parent).splitWindowVertically();		
+		((BufferGroup) parent).splitWindowVertically();
 	}
 
 	public void splitWindowHorizontally() {
@@ -116,10 +146,9 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			return;
 		}
 
-		((BufferGroup)parent).splitWindowHorizontally();		
+		((BufferGroup) parent).splitWindowHorizontally();
 	}
 
-	
 	public void deleteWindow() {
 		TextViewer viewer = getFocusingTextViewer();
 		if (viewer == null) {
@@ -134,7 +163,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			return;
 		}
 
-		((BufferGroup)parent).deleteWindow();
+		((BufferGroup) parent).deleteWindow();
 	}
 
 	@Override
@@ -208,7 +237,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-//		android.util.Log.v("kiyo","BufferManager.paint()");
+		// android.util.Log.v("kiyo","BufferManager.paint()");
 		setRect(graphics.getWidth(), graphics.getHeight());
 		_layout();
 		// int t = mCircleMenu.getMinRadius();

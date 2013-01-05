@@ -1,5 +1,7 @@
-C-x o : other-window
 C-s : isearch-forward
 C-x C-s : save-buffer
+C-x o : other-window
+C-x C-0 : delete-window
+C-x C-1 : delete-other-windows
 C-x C-2 : split-window-vertically
 C-x C-3 : split-window-horizontally
