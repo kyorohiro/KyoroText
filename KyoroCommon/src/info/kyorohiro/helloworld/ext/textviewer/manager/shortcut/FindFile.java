@@ -12,6 +12,7 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward.ISearchForwardTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.util.AutocandidateList;
 
 public class FindFile implements Task {
 
@@ -33,6 +34,8 @@ public class FindFile implements Task {
 	public class FindFileTask implements MiniBufferTask {
 		private TextViewer mViewer = null;
 		private File mCurrentPath  = new File("");
+		private UpdateInfo mUpdate = null;
+
 		public FindFileTask(TextViewer viewer) {
 			mViewer = viewer;
 		}
@@ -81,13 +84,34 @@ public class FindFile implements Task {
 					mInfo.getLineView().setPositionY(0);					
 				}
 			} else {
-			//	android.util.Log.v("kiyo","##--------4------------"+mCurrentPath+","+lf.getAbsolutePath());
+				File cp = mCurrentPath.getParentFile();
+			//	if(!cp.exists()) {
+			//		cp = mCurrentPath;
+			//	}
+				if(cp != null&&cp.equals(pf)) {
+					if(mUpdate != null) {
+						String candidate = mUpdate.getCandidate(lf.getName());
+						//android.util.Log.v("kiyo","##---4--"+candidate+","+lf.getName());
+						if(lf.getName().length()<candidate.length()) {
+							//					MiniBuffer buffer = BufferManager.getManager().getMiniBuffer();
+							EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
+							buffer.clear();
+							modeBuffer.getLineView().getLeft().setCursorCol(0);
+							modeBuffer.getLineView().getLeft().setCursorRow(0);
+							//
+							File t = new File(pf,candidate);
+							buffer.pushCommit(t.getAbsolutePath(), 1);
+							modeBuffer.getLineView().recenter();
+						}
+					}
+				}
+//				android.util.Log.v("kiyo","##--------4------------"+mCurrentPath+","+lf.getAbsolutePath());
 				if(lf.exists() && lf.isDirectory()) {
 					mCurrentPath = lf.getAbsoluteFile();
-					modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line), ""));
+					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line), ""));
 				} else if(pf.exists()){
 					mCurrentPath = lf.getAbsoluteFile();
-					modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), pf, lf.getName()));	
+					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), pf, lf.getName()));	
 				}
 			}
 		}
@@ -107,7 +131,7 @@ public class FindFile implements Task {
 			modeBuffer.getLineView().getLeft().setCursorRow(0);
 			buffer.pushCommit(""+base.getAbsolutePath(), 1);
 			modeBuffer.getLineView().recenter();
-			modeBuffer.startTask(new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile(),""));
+			modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile(),""));
 		}
 		@Override
 		public void end() {
@@ -119,27 +143,39 @@ public class FindFile implements Task {
 		private TextViewer mInfo = null;
 		private File mPath = null;
 		private String mFilter = "";
+		private AutocandidateList mCandidate = new AutocandidateList(); 
 		public UpdateInfo(TextViewer info, File path, String filter) {
 			mInfo = info;
 			mPath = path;
 			mFilter = filter;
 		}
 
+		public String getCandidate(String c) {
+			return mCandidate.candidateText(c);
+		}
+
 		@Override
 		public void run() {
 			try {
+				int c=0;
+				mCandidate.clear();
 				MyFilter filter = new MyFilter(mFilter);
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
 				buffer.clear();
 				if(mPath == null) {
 					return;
 				}
+
 				if(!mPath.isDirectory()&&mPath.isFile()) {
 					buffer.pushCommit(""+mPath.getName(), 1);
 					buffer.crlf();
 				}
 				if(mPath.isDirectory()) {
 					for(File f : mPath.listFiles(filter)) {
+						if(c<100){
+							c++;
+							mCandidate.add(f.getName());
+						}
 						buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
 						buffer.crlf();
 					}
