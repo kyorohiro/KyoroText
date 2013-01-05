@@ -95,11 +95,24 @@ public class FindFile implements Task {
 
 		@Override
 		public void run() {
-			EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
-			buffer.clear();
-			for(File f : mPath.listFiles()) {
-				buffer.pushCommit(""+f.getName(), 1);
-				buffer.crlf();
+			try {
+				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
+				buffer.clear();
+				if(mPath == null) {
+					return;
+				}
+				if(!mPath.isDirectory()&&mPath.isFile()) {
+					buffer.pushCommit(""+mPath.getName(), 1);
+					buffer.crlf();
+				}
+				if(mPath.isDirectory()) {
+					for(File f : mPath.listFiles()) {
+						buffer.pushCommit(""+f.getName(), 1);
+						buffer.crlf();
+					}
+				}
+			} catch(Throwable t) {
+				t.printStackTrace();
 			}
 		}
 	}

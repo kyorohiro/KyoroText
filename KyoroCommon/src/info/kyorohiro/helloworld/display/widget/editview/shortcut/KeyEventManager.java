@@ -103,6 +103,9 @@ public class KeyEventManager extends IMEController{
 			return;
 		}
 		setMode(mTextView.getMode());
+		if(mTextView.getMyInputConnection() == null) {
+			return;
+		}
 		mTextView.getMyInputConnection().setIMEController(KeyEventManager.this);
 		MyInputConnection c = mTextView.getMyInputConnection();
 		if (c == null) {

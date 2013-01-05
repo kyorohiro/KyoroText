@@ -29,7 +29,12 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		return mDiffer;
 	}
 
-	public void clear() {
+	public synchronized void clear() {
+		mCursorRow = 0;
+		mCursorLine = 0;
+		mIsCrlfMode = false;
+		mIsNormalized = false;
+		mIsCrlfMode = false;
 		mDiffer.clear();
 	}
 	public synchronized boolean isEdit() {
