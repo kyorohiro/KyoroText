@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 
 import java.io.File;
+import java.io.IOException;
 
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
@@ -34,7 +35,26 @@ public class FindFile implements Task {
 		}
 		@Override
 		public void enter(String line) {
+			File newFile = new File(line);
+			File parent = newFile.getParentFile();
+			if(!parent.exists()) {
+				parent.mkdirs();
+			}
+			if(!newFile.exists()) {
+				try {
+					newFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+					return;
+				}
+			}
+			try {
+				mViewer.readFile(newFile, false);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
+			
 		@Override
 		public void tab(String line) {
 		}
