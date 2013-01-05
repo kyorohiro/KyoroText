@@ -45,6 +45,10 @@ public class ISearchForward implements Task {
 		}
 
 		@Override
+		public void tab(String line) {
+		}
+
+		@Override
 		public void begin() {
 			BufferManager.getManager().changeFocus(BufferManager.getManager().getMiniBuffer());
 			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();

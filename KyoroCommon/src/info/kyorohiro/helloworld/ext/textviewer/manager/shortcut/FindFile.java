@@ -18,4 +18,23 @@ public class FindFile implements Task {
 		buffer.clearYank();
 	}
 
+	public class FindFileTask implements MiniBufferTask {
+		@Override
+		public void enter(String line) {
+		}
+
+		@Override
+		public void tab(String line) {
+		}
+
+		@Override
+		public void begin() {
+		}
+
+		@Override
+		public void end() {
+		}
+
+	}
+
 }
