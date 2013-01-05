@@ -297,6 +297,8 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		} else {
+			infoFile.delete();
 		}
 
 		try {
@@ -305,6 +307,16 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void endInfoBuffer() {
+		TextViewer info = getInfoBuffer();
+		if(info != null && !info.isDispose()) {
+			changeFocus(info);
+			if(getFocusingTextViewer() == info) {
+				deleteWindow();
+			}
 		}
 	}
 
