@@ -14,7 +14,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
-import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ModeLineTask;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.MiniBufferTask;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 // now creating 

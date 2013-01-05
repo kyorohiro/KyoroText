@@ -46,7 +46,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return mList;
 	}
 
-	public MiniBuffer getModeLineBuffer() {
+	public MiniBuffer getMiniBuffer() {
 		return mModeLine;
 	}
 
@@ -283,7 +283,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		// /*
 		OtherWindowTask task = new OtherWindowTask();
 		AsyncronousTask atask = new AsyncronousTask(task);
-		getModeLineBuffer().startTask(atask);
+		getMiniBuffer().startTask(atask);
 		atask.waitForTask();
 	}
 

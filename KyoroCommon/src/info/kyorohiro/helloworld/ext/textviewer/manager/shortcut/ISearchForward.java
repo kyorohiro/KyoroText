@@ -23,11 +23,11 @@ public class ISearchForward implements Task {
 
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
-		BufferManager.getManager().getModeLineBuffer().startModeLineTask(new ISearchForwardTask(view));
+		BufferManager.getManager().getMiniBuffer().startMiniBufferTask(new ISearchForwardTask(view));
 		buffer.clearYank();
 	}
 
-	public class ISearchForwardTask implements ModeLineTask{
+	public class ISearchForwardTask implements MiniBufferTask{
 		private EditableLineView mTargetView = null;
 		public ISearchForwardTask(EditableLineView targetView) {
 			mTargetView = targetView;
@@ -40,14 +40,14 @@ public class ISearchForward implements Task {
 				return;
 			}
 //			android.util.Log.v("kiyo","#-#ISearchForward-enter"+line);
-			MiniBuffer modeBuffer = BufferManager.getManager().getModeLineBuffer();
+			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
 			modeBuffer.startTask(new SearchTask(mTargetView, line));
 		}
 
 		@Override
 		public void begin() {
-			BufferManager.getManager().changeFocus(BufferManager.getManager().getModeLineBuffer());
-			MiniBuffer modeBuffer = BufferManager.getManager().getModeLineBuffer();
+			BufferManager.getManager().changeFocus(BufferManager.getManager().getMiniBuffer());
+			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
 			buffer.clear();
 			buffer.pushCommit(PREV_LINE, 1);

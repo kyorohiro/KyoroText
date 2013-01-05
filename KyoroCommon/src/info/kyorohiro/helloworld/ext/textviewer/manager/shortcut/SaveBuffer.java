@@ -24,7 +24,7 @@ public class SaveBuffer implements Task {
 			BufferManager.getManager().getApplication().showMessage("failed to save: unset file path");			
 		}
 		else if(target.getLineView() == view) {
-			BufferManager.getManager().getModeLineBuffer().startTask(new SaveTask(target, new File(target.getCurrentPath())));
+			BufferManager.getManager().getMiniBuffer().startTask(new SaveTask(target, new File(target.getCurrentPath())));
 		} else {
 			BufferManager.getManager().getApplication().showMessage("failed to save");			
 		}

@@ -14,14 +14,14 @@ import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
-import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ModeLineTask;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.MiniBufferTask;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 // now creating 
 public class MiniBuffer extends TextViewer {
 
 	public static final String MODE_LINE_BUFFER = CursorableLineView.MODE_EDIT+" command";
-	private ModeLineTask mTask = null;
+	private MiniBufferTask mTask = null;
 
 	public MiniBuffer(int textSize, int width, int mergine, boolean message) {
 		super(new EmptyLineViewBufferSpecImpl(400, BufferManager.getManager().getFont()),textSize, width, mergine,
@@ -52,7 +52,7 @@ public class MiniBuffer extends TextViewer {
 	}
 
 	public void done() {
-		ModeLineTask task = mTask;
+		MiniBufferTask task = mTask;
 		if(task !=null) {
 			KyoroString text = this.getLineView().getKyoroString(0);
 			if(text != null) {
@@ -81,7 +81,7 @@ public class MiniBuffer extends TextViewer {
 //		android.util.Log.v("kiyo","-----C");
 	}
 
-	public void startModeLineTask(ModeLineTask task) {
+	public void startMiniBufferTask(MiniBufferTask task) {
 		mTask = task;
 		mTask.begin();
 	}

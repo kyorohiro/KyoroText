@@ -6,7 +6,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManage
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 
-public class ModeLineTaskDone implements Task {
+public class MiniBufferTaskDone implements Task {
 
 	@Override
 	public String getCommandName() {
@@ -15,7 +15,7 @@ public class ModeLineTaskDone implements Task {
 
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
-		MiniBuffer mBuffer = BufferManager.getManager().getModeLineBuffer();
+		MiniBuffer mBuffer = BufferManager.getManager().getMiniBuffer();
 		mBuffer.done();
 	}
 	
