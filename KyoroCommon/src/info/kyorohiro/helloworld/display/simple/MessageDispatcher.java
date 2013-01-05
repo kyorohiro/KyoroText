@@ -23,10 +23,10 @@ public class MessageDispatcher {
 //	private LinkedList<Receiver> mReceivers = new LinkedList<Receiver>();
 	private WeakHashMap<String, Receiver> mReveivers = new WeakHashMap<String, Receiver>();
 	public synchronized void send(KyoroString message) {
-		android.util.Log.v("kiyo","#send:"+message);
 		if(message == null) {
 			return;
 		}
+//		android.util.Log.v("kiyo","#send:"+message+","+message.getType()+","+message.getExtra());
 		Receiver r = mReveivers.get(message.getType());
 		if(r != null) {
 			r.onReceived(message, message.getType());

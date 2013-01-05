@@ -33,6 +33,7 @@ public class KyoroString  implements CharSequence {
 	}
 
 	public void setExtra(String extra) {
+//		android.util.Log.v("kiyo","extra="+extra);
 		mEXtra = extra;
 	}
 

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 
-import android.webkit.ConsoleMessage.MessageLevel;
+//import android.webkit.ConsoleMessage.MessageLevel;
 
 import info.kyorohiro.helloworld.display.simple.MessageDispatcher;
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
@@ -83,17 +83,18 @@ public class FindFile implements Task {
 			File path = null;
 			File parent = mCurrentPath.getParentFile();
 			mini = mini.replaceAll("\r\n|\n|", "");
-			if(mini.equals("..")) {
-				path = parent;
-			}else 
-			if(mCurrentPath.isDirectory()) {
-				path = new File(mCurrentPath, mini);
-			} else {
-				if(parent == null) {
-					return;
-				}
-				path = new File(parent, mini);
-			}
+//			if(mini.equals("..")) {
+//				path = parent;
+//			}else 
+//			if(mCurrentPath.isDirectory()) {
+//				path = new File(mCurrentPath, mini);
+//			} else {
+//				if(parent == null) {
+//					return;
+//				}
+//				path = new File(parent, mini);
+//			}
+			path = new File(mini);
 //			android.util.Log.v("kiyo","##--A-"+path.isFile());
 //			android.util.Log.v("kiyo","##--A-"+path.isDirectory());
 //			android.util.Log.v("kiyo","##--A->"+path.exists()+"<");
@@ -188,6 +189,9 @@ public class FindFile implements Task {
 			//
 			File target = mCurrentPath;
 			File base = target.getParentFile();
+			if(base == null||target.isDirectory()){
+				base = target;
+			}
 			// todo 
 			BufferManager.getManager().beginInfoBuffer();
 			BufferManager.getManager().changeFocus(BufferManager.getManager().getMiniBuffer());
@@ -239,12 +243,16 @@ public class FindFile implements Task {
 				{
 					File p = mPath.getParentFile();
 					if(p!=null&&p.isDirectory()) {
+						buffer.getDiffer().asisSetType("find");
+						buffer.getDiffer().asisSetExtra(p.getAbsolutePath());
 						buffer.pushCommit("..", 1);
-						buffer.crlf();						
+						buffer.crlf(false, false);	
+						buffer.crlf();	
 					}
 				}
 				if(!mPath.isDirectory()&&mPath.isFile()) {
 					buffer.pushCommit(""+mPath.getName(), 1);
+					buffer.crlf(false, false);
 					buffer.crlf();
 				}
 				if(mPath.isDirectory()) {
@@ -253,8 +261,11 @@ public class FindFile implements Task {
 						if(c<100){
 							mCandidate.add(f.getName());
 						}
+						buffer.getDiffer().asisSetType("find");
+						buffer.getDiffer().asisSetExtra(f.getAbsolutePath());
 						buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
-						buffer.crlf();
+						buffer.crlf(false, false);	
+						buffer.crlf();	
 						if(c>1000) {
 							break;
 						}
@@ -289,14 +300,15 @@ public class FindFile implements Task {
 
 		@Override
 		public String getType() {
-			return "";//"find";
+			return "find";
 		}
 		@Override
 		public void onReceived(KyoroString message, String type) {
 //			android.util.Log.v("kiyo","rev="+message);
 			FindFileTask task = mTask.get();
 			if(task != null) {
-				task.input(message.toString());
+				//task.input(message.toString());
+				task.input(message.getExtra());
 				//task.tab(message.getExtra());
 			}
 		}

@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.editview.differ;
 
+import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.editview.differ.DeleteLine;
 import info.kyorohiro.helloworld.display.widget.editview.differ.DifferAddAction;
@@ -18,6 +19,16 @@ public class Differ {
 	private LinkedList<Line> mLine = new LinkedList<Line>();
 	private int mLength = 0;
 
+	private String mType = "";
+	private String mExtra = "";
+	public void asisSetType(String type) {
+		mType = type;
+	}
+
+	public void asisSetExtra(String extra) {
+		mExtra = extra;
+	}
+
 	public synchronized void clear() {
 		mLength = 0;
 		mLine.clear();
@@ -34,7 +45,16 @@ public class Differ {
 	}
 
 	public synchronized void addLine(int i, CharSequence line) {
-		debugPrint("begin addLine["+i+"]"+mLength+","+line);		
+		debugPrint("begin addLine["+i+"]"+mLength+","+line);
+		if(line instanceof KyoroString) {
+			((KyoroString) line).setExtra(mExtra);
+			((KyoroString) line).setType(mType);			
+		} else {
+//			android.util.Log.v("kiyo","---NG--");
+			line = new KyoroString(line);
+			((KyoroString) line).setExtra(mExtra);
+			((KyoroString) line).setType(mType);						
+		}
 		mAddAction.add(this, i, line);
 		mLength++;
 		debugPrint();	

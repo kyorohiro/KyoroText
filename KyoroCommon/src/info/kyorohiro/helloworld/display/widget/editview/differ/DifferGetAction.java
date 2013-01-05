@@ -27,7 +27,14 @@ public class DifferGetAction extends CheckAction {
 		try {
 			if (isDiffer()) {
 				//android.util.Log.v("kiyo","---A="+mRe);
-				return new KyoroString(mRe, SimpleGraphicUtil.BLACK);
+				if(mRe instanceof KyoroString) {
+//					android.util.Log.v("kiyo","---A="+mRe);
+//					android.util.Log.v("kiyo","---A="+((KyoroString)mRe).getType());
+					return (KyoroString)mRe;	
+				} else {
+//					android.util.Log.v("kiyo","---B="+mRe);
+					return new KyoroString(mRe, SimpleGraphicUtil.BLACK);
+				}
 			} else {
 				// android.util.Log.i("text","lll="+mIndexFromBase+","+mPrevEnd+","+mIndex+","+mDiffLength+","+
 				// mDeleteLength);
