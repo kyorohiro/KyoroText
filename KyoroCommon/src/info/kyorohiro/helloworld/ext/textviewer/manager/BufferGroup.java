@@ -279,8 +279,15 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 		if(isControlBuffer()) {
 			return false;
 		}
+		TextViewer info =BufferManager.getManager().getInfoBuffer();
+		if(child == info) {
+			return false;
+		}
 		if(child instanceof BufferGroup){
 			if(((BufferGroup) child).isControlBuffer()){
+				return false;
+			}
+			if(((BufferGroup) child).getTextViewer() == info){
 				return false;
 			}
 		}
@@ -289,7 +296,6 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 				return false;
 			}
 		}
-		
 		if(!BufferManager.getManager().notifyEvent(child, kill)){
 			return false;
 		}
@@ -299,6 +305,9 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 	///
 	public boolean combine(SimpleDisplayObject child, SimpleDisplayObject kill) {
 		Object parent = getParent();
+		if(!deleteable(child, kill)) {
+			return false;
+		}
 		if(child != null){
 			// refactaring
 			int index = ((SimpleDisplayObjectContainer)parent).getIndex(this);
@@ -328,11 +337,13 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			child = getChild(1);
 			kill = getChild(0);
 		}
+
 		if(!BufferManager.getManager().notifyEvent(child, kill)){
 			//todo mSeparate.resetPosition();
 			return false;
 		}
-
+		return combine(child, kill);
+/*
 		if(child != null){
 			// refactaring
 			int index = ((SimpleDisplayObjectContainer)parent).getIndex(this);
@@ -345,7 +356,8 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			dispose();
 			BufferManager.getManager().getBufferList().doGrabage();
 		} 
-		return true;
+		*/
+		//return true;
 	}
 
 	private boolean includeFocusingChild() {
