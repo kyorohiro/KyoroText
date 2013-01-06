@@ -39,23 +39,41 @@ public class FindFile implements Task {
 	}
 
 	public static class FindFileTask implements MiniBufferTask {
-		private TextViewer mViewer = null;
+//		private TextViewer mViewer = null;
+		private WeakReference<TextViewer> mViewer = null;
+
 		private File mCurrentPath  = new File("");
 		private UpdateInfo mUpdate = null;
 
 		public FindFileTask(TextViewer viewer, File path) {
-			mViewer = viewer;
+			mViewer = new WeakReference<TextViewer>(viewer);
 			mCurrentPath = path;
 		}
 
 		public FindFileTask(TextViewer viewer) {
-			mViewer = viewer;
-			mCurrentPath = new File(mViewer.getCurrentPath());
+			mViewer = new WeakReference<TextViewer>(viewer);
+			mCurrentPath = new File(viewer.getCurrentPath());
+		}
+
+		public boolean isAlive() {
+			TextViewer viewer = mViewer.get();
+			if(viewer == null) {
+				return false;
+			}
+			if(viewer.isDispose()) {
+				return false;
+			}
+			return true;
 		}
 		@Override
 		public void enter(String line) {
 			File newFile = new File(line);
 			File parent = newFile.getParentFile();
+			TextViewer viewer = mViewer.get();
+			if(viewer == null||!isAlive()) {
+				return;
+			}
+			
 			if(!parent.exists()) {
 				parent.mkdirs();
 			}
@@ -70,9 +88,9 @@ public class FindFile implements Task {
 			try {
 				SimpleApplication app = BufferManager.getManager().getApplication();
 				if(newFile.getParentFile().equals(app.getApplicationDirectory())) {
-					mViewer.readFile(newFile, false);
+					viewer.readFile(newFile, false);
 				} else {
-					mViewer.readFile(newFile, true);
+					viewer.readFile(newFile, true);
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -80,6 +98,11 @@ public class FindFile implements Task {
 		}
 
 		public void input(String mini) {
+			TextViewer viewer = mViewer.get();
+			if(viewer == null||!isAlive()) {
+				return;
+			}
+			
 			File path = null;
 			File parent = mCurrentPath.getParentFile();
 			mini = mini.replaceAll("\r\n|\n|", "");
@@ -128,6 +151,10 @@ public class FindFile implements Task {
 
 		@Override
 		public void tab(String line) {
+			TextViewer viewer = mViewer.get();
+			if(viewer == null||!isAlive()) {
+				return;
+			}
 			File lf = new File(line);
 			File pf = lf.getParentFile();
 			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
@@ -298,8 +325,10 @@ public class FindFile implements Task {
 	}
 
 	public static class MyReceiver implements Receiver {
+		public static FindFileTask sTask = null;
 		private WeakReference<FindFileTask> mTask = null;
 		public MyReceiver(FindFileTask task) {
+			sTask = task;
 			mTask = new WeakReference<FindFileTask>(task);
 		}
 
@@ -307,10 +336,14 @@ public class FindFile implements Task {
 		public String getType() {
 			return "find";
 		}
+
 		@Override
 		public void onReceived(KyoroString message, String type) {
 //			android.util.Log.v("kiyo","rev="+message);
 			FindFileTask task = mTask.get();
+			if(!task.isAlive()){
+				return;
+			}
 			if(task != null) {
 				//task.input(message.toString());
 				task.input(message.getExtra());
