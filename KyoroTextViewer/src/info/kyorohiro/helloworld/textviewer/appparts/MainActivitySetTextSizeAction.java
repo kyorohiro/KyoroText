@@ -26,13 +26,28 @@ public class MainActivitySetTextSizeAction implements MainActivityMenuAction {
 	public MainActivitySetTextSizeAction(BufferManager viewer) {
 		mDisplayedTextViewer = viewer;
 	}
-
+	private boolean isOn() {
+		TextViewer viewer = BufferManager.getManager().getFocusingTextViewer();
+		TextViewer mini = BufferManager.getManager().getMiniBuffer();
+		TextViewer info = BufferManager.getManager().getInfoBuffer();
+		if(viewer == null||viewer == mini|| viewer == info) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	public boolean onPrepareOptionsMenu(Activity activity, Menu menu) {
+		if(!isOn()) {
+			return false;
+		}
 		menu.add(TITLE);
 		return false;
 	}
 
 	public boolean onMenuItemSelected(Activity activity, int featureId, MenuItem item) {
+		if(!isOn()) {
+			return false;
+		}
 		if(item.getTitle().equals(TITLE)) {
 			 MenuActionWarningMessagePlus.showDialog(activity, new  MyTask() {
 				 public void run(Activity c){

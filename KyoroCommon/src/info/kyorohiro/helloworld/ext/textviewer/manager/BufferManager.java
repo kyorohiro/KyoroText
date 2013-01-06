@@ -56,10 +56,15 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return mInfo;
 	}
 
+	private int mBaseTextSize = 12;
+	public int getBaseTextSize() {
+		return mBaseTextSize;
+	}
 	// ���Singletone�ɂ���B
 	public BufferManager(SimpleApplication application,
 			AppDependentAction builder, int baseTextSize, int textSize,
 			int width, int height, int mergine, int menuWidth) {
+		mBaseTextSize = baseTextSize;
 		mApplication = application;
 		mBuilder = builder;
 		sInstance = this;
@@ -281,6 +286,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	public void beginInfoBuffer() {
 		if(mInfo == null || mInfo.isDispose()) {
 			mInfo = splitWindowHorizontally().getTextViewer();
+			mInfo.setCurrentFontSize((int)(getBaseTextSize()*1.2));
 			if(mInfo == null) {
 				return;
 			}

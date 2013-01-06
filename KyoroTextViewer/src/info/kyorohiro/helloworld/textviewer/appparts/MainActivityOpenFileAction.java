@@ -32,13 +32,32 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 		mViewer = viewer;
 	}
 
+	private boolean isOn() {
+		TextViewer viewer = BufferManager.getManager().getFocusingTextViewer();
+		TextViewer mini = BufferManager.getManager().getMiniBuffer();
+		TextViewer info = BufferManager.getManager().getInfoBuffer();
+		if(viewer == null||viewer == mini|| viewer == info) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	public boolean onPrepareOptionsMenu(Activity activity, Menu menu) {
+		if(!isOn()) {
+			menu.add("dummy");
+			return false;
+		}
+
 		menu.add(TITLE);
 		return false;
 	}
 
 	public boolean onMenuItemSelected(Activity activity, int featureId,
 			MenuItem item) {
+		if(!isOn()) {
+			return false;
+		}
 		if (item.getTitle().equals(TITLE)) {
 			 MenuActionWarningMessagePlus.showDialog(activity, new  MyTask() {
 				 public void run(Activity c){
@@ -67,72 +86,5 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 			return true;
 		}
 		return false;
-	}
-	
-	private WeakReference<Activity> mRefActivity = null;
-	private void showExplorer(Activity activity) {
-		mRefActivity = new WeakReference<Activity>(activity);
-		File directory = new File(KyoroSetting.getCurrentFile());
-		File firstCandidateDirectory = directory.getParentFile();
-		File secondCandidateDirectory = Environment.getExternalStorageDirectory();
-		File thirdCandidateDirectory = Environment.getRootDirectory();
-
-		File showedDirectry = firstCandidateDirectory;
-		if (showedDirectry == null || !showedDirectry.exists() || !showedDirectry.canRead()) {
-			showedDirectry = secondCandidateDirectory;
-		} 
-
-		if (showedDirectry == null || !showedDirectry.exists()||!showedDirectry.canRead()) {
-			showedDirectry = thirdCandidateDirectory;
-		} 
-
-		SimpleFileExplorer dialog = SimpleFileExplorer.createDialog(activity, showedDirectry);
-		((KyoroTextViewerActivity)activity).stopStage();
-		dialog.show();
-		dialog.setOnSelectedFileAction(new SelectedFileAction() {
-			@Override
-			public boolean onSelectedFile(File file, String action) {
-				if (file.exists() && file.isFile()) {
-					try {
-						if(mViewer.getFocusingTextViewer().readFile(file, true)&& mRefActivity!=null){
-							Activity a = mRefActivity.get();
-							if(a!=null){
-								// todo refactraing 
-								// reset Intent. for open current showing file 
-								// when restart this application.
-								a.setIntent(null);
-							}
-						}
-					} catch (FileNotFoundException e) {
-						KyoroApplication.showMessage("file can not read null file");
-						e.printStackTrace();
-					} catch (NullPointerException e) {
-						KyoroApplication.showMessage("file can not read " + file.toString());
-						e.printStackTrace();
-					}
-
-					return true;
-				}
-				return false;
-			}
-		});
-		dialog.setOnCancelListener(new OnCancelListener() {			
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				if(mRefActivity!=null){
-					Activity a = mRefActivity.get();
-					((KyoroTextViewerActivity)a).startStage();
-				}
-			}
-		});
-		dialog.setOnDismissListener(new OnDismissListener() {
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				if(mRefActivity!=null){
-					Activity a = mRefActivity.get();
-					((KyoroTextViewerActivity)a).startStage();
-				}
-			}
-		});
 	}
 }

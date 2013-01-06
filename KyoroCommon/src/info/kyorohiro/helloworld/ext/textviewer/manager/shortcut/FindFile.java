@@ -234,7 +234,9 @@ public class FindFile implements Task {
 				int c=0;
 				mCandidate.clear();
 				MyFilter filter = new MyFilter(mFilter);
+				EditableLineView viewer = mInfo.getLineView();
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
+				viewer.setTextSize(BufferManager.getManager().getBaseTextSize());
 				buffer.clear();
 				if(mPath == null) {
 					return;
@@ -247,12 +249,14 @@ public class FindFile implements Task {
 						buffer.getDiffer().asisSetExtra(p.getAbsolutePath());
 						buffer.pushCommit("..", 1);
 						buffer.crlf(false, false);	
+						buffer.crlf(false, false);	
 						buffer.crlf();	
 					}
 				}
 				if(!mPath.isDirectory()&&mPath.isFile()) {
 					buffer.pushCommit(""+mPath.getName(), 1);
 					buffer.crlf(false, false);
+					buffer.crlf(false, false);	
 					buffer.crlf();
 				}
 				if(mPath.isDirectory()) {
@@ -264,6 +268,7 @@ public class FindFile implements Task {
 						buffer.getDiffer().asisSetType("find");
 						buffer.getDiffer().asisSetExtra(f.getAbsolutePath());
 						buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
+						buffer.crlf(false, false);
 						buffer.crlf(false, false);	
 						buffer.crlf();	
 						if(c>1000) {
