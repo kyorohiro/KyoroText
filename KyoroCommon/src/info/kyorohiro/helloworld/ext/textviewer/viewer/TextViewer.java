@@ -16,6 +16,8 @@ import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.extraparts.ScrollBar;
 import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndMoveActionForLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndZoomForLineView;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferList;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.text.KyoroString;
 //import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 
@@ -179,9 +181,29 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return true;
 	}
 
+	public void recovery() {
+		try {
+			readFile(new File(mCurrentPath), false);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void dispose() {
-		super.dispose();
+		android.util.Log.v("kiyo","dispose 1");
+		// todo 動作確認のため、一時的にIF文を追加
+		//
+		//if(this == BufferManager.getManager().getInfoBuffer()) {
+			super.dispose();
+		//}
+		//
+		//
+		android.util.Log.v("kiyo","dispose 2");
 		LineViewBufferSpec prevBuffer = getLineView().getLineViewBuffer();
 		prevBuffer.dispose();
 	}

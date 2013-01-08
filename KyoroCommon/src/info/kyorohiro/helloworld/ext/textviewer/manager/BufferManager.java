@@ -199,7 +199,16 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		int ph = getHeight(false);
 		mCircleMenu.setPoint(pw - cr, ph - cr);
 	}
-
+//
+//	public void convertTextViewer(TextViewer textViewer) {
+//		TextViewer prev = getFocusingTextViewer();
+//		BufferGroup group = null;
+//		if(prev.getParent() instanceof BufferGroup) {
+//			group = (BufferGroup)prev.getParent();
+//			group.setTextViewer(textViewer);
+//		}
+// 	}
+//
 	public void changeFocus(TextViewer textViewer) {
 		TextViewer p = BufferManager.getManager().getFocusingTextViewer();
 		if (textViewer != p) {

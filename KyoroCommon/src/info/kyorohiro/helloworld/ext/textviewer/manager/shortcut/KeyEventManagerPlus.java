@@ -68,6 +68,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('1', false, false)}, new DeleteOtherWindows()),
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('2', false, false)}, new SplitWindowVertically()),
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('3', false, false)}, new SplitWindowHorizontally()),
+		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('b', true, false)}, new ListBuffers()),
 
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('f', true, false)}, new FindFile()),
@@ -110,6 +111,7 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('1', false, false)}, new DeleteOtherWindows()),
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('2', false, false)}, new SplitWindowVertically()),
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('3', false, false)}, new SplitWindowHorizontally()),
+		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('b', true, false)}, new ListBuffers()),
 
 		//
 		new Command(new CommandPart[]{new CommandPart('x', true, false), new CommandPart('f', true, false)}, new FindFile()),

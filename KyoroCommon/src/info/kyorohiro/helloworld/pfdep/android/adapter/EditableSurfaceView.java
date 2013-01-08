@@ -123,6 +123,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		log("dispatchKeyEvent" + event.getKeyCode() + "," + event.toString());
+		log("dispatchKeyEvent" + event.getDisplayLabel());
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 		// if(!mIMEIsShow) {
 		// return super.dispatchKeyEvent(event);
@@ -135,7 +136,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		}
 		if (event.getAction() == KeyEvent.ACTION_DOWN) {
 			mController.binaryKey(mCurrentInputConnection, event.getKeyCode(),
-					event.isShiftPressed(), pushingCtl(event),
+					event.getScanCode(),event.getDisplayLabel(), event.isShiftPressed(), pushingCtl(event),
 					event.isAltPressed());
 		}
 		return true;// super.dispatchKeyEvent(event);
@@ -163,6 +164,7 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
 		log("dispatchKeyEventPreIme" + event.getKeyCode() + ","
 				+ event.toString());
+		log("dispatchKeyEventPreIme" + event.getDisplayLabel());
 		// android.util.Log.v("kiyo","dispatchKeyEventPreIme");
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 
@@ -174,7 +176,8 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 				pushingCtl(event), event.isAltPressed())) {
 			if (event.getAction() == KeyEvent.ACTION_DOWN) {
 				mController.binaryKey(mCurrentInputConnection,
-						event.getKeyCode(), event.isShiftPressed(),
+						event.getKeyCode(),
+						event.getScanCode(),event.getDisplayLabel(), event.isShiftPressed(),
 						pushingCtl(event), event.isAltPressed());
 			}
 			return true;
@@ -409,6 +412,6 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	}
 
 	public static void log(String log) {
-	//	android.util.Log.v("kiyo", ""+log);
+		android.util.Log.v("kiyo", ""+log);
 	}
 }

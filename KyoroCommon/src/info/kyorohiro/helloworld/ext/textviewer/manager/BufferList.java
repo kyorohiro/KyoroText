@@ -14,9 +14,17 @@ public class BufferList {
 	private LinkedList<TextViewer> mList = new LinkedList<TextViewer>();
 
 	public void add(TextViewer viewer) {
+		android.util.Log.v("kiyo","--add--"+viewer.getCurrentPath());
 		mList.add(viewer);
 	}
 
+	public int size () {
+		return mList.size();
+	}
+
+	public TextViewer getTextViewer(int i) {
+		return mList.get(i);
+	}
 	public synchronized void lockAll() {
 		for(int i=0;i<mList.size();i++) {
 			TextViewer c = mList.get(i);
@@ -40,7 +48,7 @@ public class BufferList {
 		if(backupPath != null) {
 			for(int i=0;i<mList.size();i++) {
 				TextViewer c = mList.get(i);
-				if(backupPath.equals(""+c.asisGetBufferPath().getAbsolutePath())){
+				if(!c.isDispose()&&backupPath.equals(""+c.asisGetBufferPath().getAbsolutePath())){
 					try {
 						c.asisChangeBufferPath(backupPath);
 					} catch (FileNotFoundException e) {

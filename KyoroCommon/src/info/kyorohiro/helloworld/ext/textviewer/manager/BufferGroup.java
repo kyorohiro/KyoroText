@@ -18,7 +18,13 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 	public TextViewer getTextViewer() {
 		return mTextViewer;
 	}
-
+//
+//	public synchronized void setTextViewer(TextViewer viewer) {
+//		removeChild(mTextViewer);
+//		viewer.recovery();
+//		addChild(viewer);
+//	}
+//
 	public BufferGroup(TextViewer textViewer) {
 		doAddSeparator();
 		addChild(textViewer);
@@ -118,7 +124,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 	}
 
 	@Override
-	public void paint(SimpleGraphics graphics) {
+	public synchronized void paint(SimpleGraphics graphics) {
 		SimpleDisplayObject[] obj = new SimpleDisplayObject[2];
 
 		int j=0;
@@ -185,6 +191,9 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 	}
 
 	public BufferGroup divide(SeparateUI separate) {
+		if(getTextViewer() == null) {
+			return null;
+		}
 		if(separate.getPersentY()>0.5){
 			return divideAndNew(true,BufferManager.getManager().newTextViewr());
 		} else{
@@ -192,7 +201,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 		}		
 	}
 
-	public BufferGroup divideAndNew(boolean leftOrTop, TextViewer viewer) {
+	public synchronized BufferGroup divideAndNew(boolean leftOrTop, TextViewer viewer) {
 		mSeparate.setmIsReached();
 		BufferGroup ret = null;
 		// todo following yaxtuke sigoto
@@ -394,7 +403,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 	}
 
 	@Override
-	public boolean onTouchTest(int x, int y, int action) {
+	public  synchronized boolean onTouchTest(int x, int y, int action) {
 		if(mSeparate.isVisible()) {
 			if(SimpleMotionEvent.ACTION_DOWN == action){
 				focusTest(x, y);

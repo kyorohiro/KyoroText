@@ -1,6 +1,9 @@
 package info.kyorohiro.helloworld.display.simple;
 
+import java.security.KeyRep;
 import java.util.HashMap;
+
+import android.view.KeyEvent;
 
 
 
@@ -12,7 +15,7 @@ public class IMEController {
 	private KeyMap mKeyMap = new KeyMap();
 
 	public void log(String str) {
-	//	android.util.Log.v("kiyo","#=IMEC="+str);
+		android.util.Log.v("kiyo","#=IMEC="+str);
 	}
 	public boolean tryUseBinaryKey(int keycode, boolean shift, boolean ctl, boolean alt) {
 		if(alt==true||ctl == true||mIsUseBinaryKey||keycode == SimpleKeyEvent.KEYCODE_TAB) {
@@ -22,7 +25,7 @@ public class IMEController {
 		}
 	}
 
-	public void binaryKey(MyInputConnection conn, int keycode, boolean shift, boolean ctl, boolean alt) 
+	public void binaryKey(MyInputConnection conn, int keycode, int scancode, char label, boolean shift, boolean ctl, boolean alt) 
 	{
 		log(""+keycode+",c/a"+ctl+"/"+alt);
 		if(mKeyMap.containKey(keycode, shift)){
@@ -49,7 +52,10 @@ public class IMEController {
 			}
 			else if(SimpleKeyEvent.KEYCODE_TAB == keycode) {
 				conn.addCommitText(new CommitText(SimpleKeyEvent.KEYCODE_TAB));
-			}
+			} 
+			//else {
+			//	decorateKey(conn, label, shift, ctl, alt);
+			//}
 		}
 
 	}
@@ -111,25 +117,25 @@ public class IMEController {
 			sRMap.put(KEYCODE_ESCAPE, (char)0x1b);
 			sMMap.put(7, '0');
 			sMMap.put(8, '1');
-			sMMap.put(9, '2');
-			sMMap.put(10, '3');
-			sMMap.put(11, '4');
-			sMMap.put(12, '5');
-			sMMap.put(13, '6');
-			sMMap.put(14, '7');
-			sMMap.put(15, '8');
-			sMMap.put(16, '9');
-
 			sRMap.put(8, '!');
-			sRMap.put(9, (char)('!'+1));
-			sRMap.put(10, (char)('!'+2));
-			sRMap.put(11, (char)('!'+3));
-			sRMap.put(12, (char)('!'+4));
-			sRMap.put(13, (char)('!'+5));
-			sRMap.put(14, (char)('!'+6));
-			sRMap.put(15, (char)('!'+7));
-			sRMap.put(16, (char)('!'+8));
-
+			sMMap.put(9, '2');
+			sRMap.put(9, (char)('\"'));
+			sMMap.put(10, '3');
+			sRMap.put(10, (char)('#'));
+			sMMap.put(11, '4');
+			sRMap.put(11, (char)('$'));
+			sMMap.put(12, '5');
+			sRMap.put(12, (char)('%'));
+			sMMap.put(13, '6');
+			sRMap.put(13, (char)('&'));
+			sMMap.put(14, '7');
+			sRMap.put(14, (char)('\''));
+			sMMap.put(15, '8');
+			sRMap.put(15, (char)('('));
+			sMMap.put(16, '9');
+			sRMap.put(16, (char)(')'));
+			sMMap.put(17, '*');
+			sMMap.put(18, '#');
 
 			sMMap.put(29, 'a');
 			sMMap.put(30, 'b');
@@ -185,37 +191,38 @@ public class IMEController {
 			sRMap.put(53, 'Y');
 			sRMap.put(54, 'Z');
 
-			
-			sMMap.put(77, '@');
-			sRMap.put(77, '`');
-			sMMap.put(74, ';');
-			sRMap.put(74, '+');
-			sMMap.put(75, ':');
-			sRMap.put(75, '*');
-			sMMap.put(72, ']');
-			sRMap.put(72, '}');
-			sMMap.put(71, '[');
-			sRMap.put(71, '{');
-			sMMap.put(76, '/');
-			sRMap.put(76, '?');
-			sMMap.put(73, '\\');
-			sRMap.put(73, '_');
-			sMMap.put(73, '\\');
 			sMMap.put(55, ',');
 			sRMap.put(55, '<');
 			sMMap.put(56, '.');
 			sRMap.put(56, '>');
-			sMMap.put(216, '\\');
-			sRMap.put(216, '|');
-			sMMap.put(70, '^');
-			sRMap.put(70, '~');
+			sMMap.put(62, ' ');
 			sMMap.put(69, '-');
 			sRMap.put(69, '=');
-			sMMap.put(62, ' ');
-			sMMap.put(18, '#');
+			sMMap.put(70, '^');
+			sRMap.put(70, '~');
+			sMMap.put(71, '[');
+			sRMap.put(71, '{');
+			sMMap.put(72, ']');
+			sRMap.put(72, '}');//_\_\
+			sMMap.put(73, '\\');//73
+			sRMap.put(73, '_');//73 |\|
+//			sRMap.put(73, '|');//73
+			sMMap.put(74, ';');
+			sRMap.put(74, '+');
+			sMMap.put(75, ':');
+			sRMap.put(75, '*');
+			sMMap.put(76, '/');
+			sRMap.put(76, '?');			
+			sMMap.put(77, '@');
+			sRMap.put(77, '`');
 			sMMap.put(81, '+');
-			sMMap.put(7, '0');
-			sMMap.put(17, '*');
+			sMMap.put(0x9a, '/');//154
+			sMMap.put(0x9b, '*');//155	
+			sMMap.put(0x9c, '-');//156
+			sMMap.put(0x9d, '+');//157
+			sMMap.put(0xd8, '\\');
+//			sRMap.put(0xd8, '_');
+			sRMap.put(0xd8, '|');
 		}
 	}
 }
