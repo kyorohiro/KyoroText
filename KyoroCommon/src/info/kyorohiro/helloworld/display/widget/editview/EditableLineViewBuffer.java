@@ -786,6 +786,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	@Override
 	public synchronized void dispose() {
+		mDiffer.clear();
 		mOwner.dispose();
 	}
 
