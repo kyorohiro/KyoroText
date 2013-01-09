@@ -110,7 +110,7 @@ public class ListBuffers implements Task {
 						if(tmp != null && !tmp.isDispose()) {
 							infoBufferEBuffer.getDiffer().asisSetType("list-buffers");
 							infoBufferEBuffer.getDiffer().asisSetExtra(""+i+":"+tmp.getCurrentPath());
-							infoBufferEBuffer.pushCommit(""+i+":"+tmp.getCurrentPath(), 1);
+							infoBufferEBuffer.pushCommit(""+i+":   sorry now creating: "+tmp.getCurrentPath(), 1);
 							infoBufferEBuffer.crlf(false, false);	
 							infoBufferEBuffer.crlf(false, false);	
 							infoBufferEBuffer.crlf();
@@ -141,7 +141,7 @@ public class ListBuffers implements Task {
 
 		@Override
 		public void onReceived(KyoroString message, String type) {
-			android.util.Log.v("kiyo","rev="+message);
+//			android.util.Log.v("kiyo","rev="+message);
 			ListBuffersTask task = mTask.get();
 
 			if(task != null) {
@@ -151,9 +151,9 @@ public class ListBuffers implements Task {
 				String[] sp = message.getExtra().split(":");
 				
 				if(sp != null && sp.length >= 1) {
-					android.util.Log.v("kiyo","rev--1--"+sp[0]);
+//					android.util.Log.v("kiyo","rev--1--"+sp[0]);
 					int pos = Integer.parseInt(sp[0]);
-					android.util.Log.v("kiyo","rev--2--"+sp[0]);
+//					android.util.Log.v("kiyo","rev--2--"+sp[0]);
 //					BufferManager.getManager().otherWindow();
 					TextViewer target = BufferManager.getManager().getBufferList().getTextViewer(pos);
 //					target.dispose();
@@ -166,7 +166,7 @@ public class ListBuffers implements Task {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					android.util.Log.v("kiyo","rev--3--");
+//					android.util.Log.v("kiyo","rev--3--");
 				}
 			}
 		}

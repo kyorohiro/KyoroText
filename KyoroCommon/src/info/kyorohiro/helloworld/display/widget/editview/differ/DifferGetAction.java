@@ -21,6 +21,8 @@ public class DifferGetAction extends CheckAction {
 		return mIsDiffer;
 	}
 
+
+
 	public KyoroString get(Differ differ, LineViewBufferSpec spec, int index) {
 		mIndex = index;
 		differ.checkAllSortedLine(this);
@@ -58,8 +60,7 @@ public class DifferGetAction extends CheckAction {
 	private int mDeleteLength = 0;
 
 	@Override
-	public boolean check(LinkedList<Line> ll, int x, int start, int end,
-			int indexFromBase) {
+	public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
 		Line l = ll.get(x);
 		if (l instanceof DeleteLine) {
 			if (mIndex < start) {
@@ -76,6 +77,12 @@ public class DifferGetAction extends CheckAction {
 			try {
 				if (start <= mIndex && mIndex < end) {
 					mRe = l.get(mIndex - start);
+					if(!(mRe instanceof KyoroString)) {
+						mRe = new KyoroString(mRe);
+						l.set(mIndex - start, mRe);
+						((KyoroString)mRe).setColor(SimpleGraphicUtil.BLACK);
+					}
+					
 					mIsDiffer = true;
 					// android.util.Log.v("text","la[1]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
 					return false;

@@ -202,9 +202,9 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 				removeChild(this);
 			}
 		}
-		android.util.Log.v("kiyo","dispose--1--");
+//		android.util.Log.v("kiyo","dispose--1--");
 		super.dispose();
-		android.util.Log.v("kiyo","dispose--2--");
+//		android.util.Log.v("kiyo","dispose--2--");
 	}
 
 	@Override

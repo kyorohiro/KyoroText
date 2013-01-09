@@ -21,6 +21,16 @@ public class Differ {
 
 	private String mType = "";
 	private String mExtra = "";
+	private int mColor = SimpleGraphicUtil.BLACK;
+
+	public void asisSetColor(int color) {
+		mColor = color;
+	}
+
+	public int getColor() {
+		return mColor;
+	}
+
 	public void asisSetType(String type) {
 		mType = type;
 	}

@@ -3,7 +3,6 @@ package info.kyorohiro.helloworld.display.simple;
 import java.security.KeyRep;
 import java.util.HashMap;
 
-import android.view.KeyEvent;
 
 
 
@@ -15,7 +14,7 @@ public class IMEController {
 	private KeyMap mKeyMap = new KeyMap();
 
 	public void log(String str) {
-		android.util.Log.v("kiyo","#=IMEC="+str);
+	//	android.util.Log.v("kiyo","#=IMEC="+str);
 	}
 	public boolean tryUseBinaryKey(int keycode, boolean shift, boolean ctl, boolean alt) {
 		if(alt==true||ctl == true||mIsUseBinaryKey||keycode == SimpleKeyEvent.KEYCODE_TAB) {

@@ -47,7 +47,7 @@ public abstract class SimpleDisplayObject implements SimpleDisplayObjectSpec {
 	}
 
 	public void dispose() {
-		android.util.Log.v("kiyo","disposed");
+//		android.util.Log.v("kiyo","disposed");
 		mIsDisposed = true;
 	};
 

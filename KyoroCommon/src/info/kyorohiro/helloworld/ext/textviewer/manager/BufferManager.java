@@ -295,9 +295,15 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	public void beginInfoBuffer() {
 		if(mInfo == null || mInfo.isDispose()) {
 			mInfo = splitWindowHorizontally().getTextViewer();
-			mInfo.setCurrentFontSize((int)(getBaseTextSize()*1.2));
+			mInfo.setCurrentFontSize((int)(getBaseTextSize()*1.4));
+			mInfo.setMininumScale(0.80f);
+			mInfo.asisSetBufferWidth(mWidth*3/6);
 			if(mInfo == null) {
 				return;
+			}
+			if(mInfo.getParent() instanceof BufferGroup) {
+				BufferGroup group = (BufferGroup)mInfo.getParent();
+				group.isVisible(false);
 			}
 		}
 		File infoFile = new File(getApplication().getApplicationDirectory(),"info.txt");

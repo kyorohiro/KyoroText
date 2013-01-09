@@ -35,6 +35,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private String mCurrentPath = "";
 	private int mMergine = 0;
 	private MyBreakText mBreakText = null;
+	private float mMininumScale = 0.75f;//3/4;
 
 	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine, SimpleFont font, String charset) {
 		mBreakText = new MyBreakText(font);
@@ -105,6 +106,15 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public void setRect(int w, int h) {
 		super.setRect(w, h);
 		mLineView.setRect(w, h);
+	}
+
+	public void asisSetBufferWidth(int bufferWidth) {
+		mBreakText.setBufferWidth(bufferWidth);
+		mBufferWidth = bufferWidth;
+	}
+
+	public void setMininumScale(float scale) {
+		mMininumScale = scale;
 	}
 
 	public void setCurrentFontSize(int fontSize) {
@@ -195,7 +205,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void dispose() {
-		android.util.Log.v("kiyo","dispose 1");
+//		android.util.Log.v("kiyo","dispose 1");
 		// todo 動作確認のため、一時的にIF文を追加
 		//
 		//if(this == BufferManager.getManager().getInfoBuffer()) {
@@ -203,7 +213,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		//}
 		//
 		//
-		android.util.Log.v("kiyo","dispose 2");
+//		android.util.Log.v("kiyo","dispose 2");
 		LineViewBufferSpec prevBuffer = getLineView().getLineViewBuffer();
 		prevBuffer.dispose();
 	}
@@ -221,8 +231,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			int width = TextViewer.this.mLineView.getWidth();// SimpleDisplayObject.getStage(TextViewer.this).getWidth();//graphics.getWidth();
 			int w = TextViewer.this.mBufferWidth + mMergine * 2;
 			int viewerTextSize = (textSize * width / w);
-			if(viewerTextSize<textSize*3/4) {
-				viewerTextSize = textSize*3/4;
+			if(viewerTextSize<(int)(textSize*mMininumScale)) {
+				viewerTextSize = (int)(textSize*mMininumScale);
 			}
 			TextViewer.this.mLineView.setTextSize(viewerTextSize);
 			TextViewer.this.mLineView.setMergine(mMergine);

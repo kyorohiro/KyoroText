@@ -14,7 +14,7 @@ public class BufferList {
 	private LinkedList<TextViewer> mList = new LinkedList<TextViewer>();
 
 	public void add(TextViewer viewer) {
-		android.util.Log.v("kiyo","--add--"+viewer.getCurrentPath());
+//		android.util.Log.v("kiyo","--add--"+viewer.getCurrentPath());
 		mList.add(viewer);
 	}
 

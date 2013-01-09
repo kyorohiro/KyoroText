@@ -287,6 +287,7 @@ public class FindFile implements Task {
 					buffer.crlf();
 				}
 				if(mPath.isDirectory()) {
+					int size = buffer.getDiffer().length();
 					for(File f : mPath.listFiles(filter)) {
 						c++;
 						if(c<100){
@@ -297,7 +298,9 @@ public class FindFile implements Task {
 						buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
 						buffer.crlf(false, false);
 						buffer.crlf(false, false);	
-						buffer.crlf();	
+						buffer.crlf();
+						viewer.setPositionY(viewer.getPositionY()+(buffer.getDiffer().length()-size));
+						size = buffer.getDiffer().length();
 						if(c>1000) {
 							break;
 						}
@@ -305,7 +308,7 @@ public class FindFile implements Task {
 				}
 			} catch(Throwable t) {
 				t.printStackTrace();
-			}
+			} 
 		}
 	}
 	public static class MyFilter implements FilenameFilter {
