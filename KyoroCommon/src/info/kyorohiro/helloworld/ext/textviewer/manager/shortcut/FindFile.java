@@ -102,7 +102,9 @@ public class FindFile implements Task {
 			if(viewer == null||!isAlive()) {
 				return;
 			}
-			
+
+			MiniBuffer minibuffer = BufferManager.getManager().getMiniBuffer();
+			minibuffer.startMiniBufferTask(this);
 			File path = null;
 			File parent = mCurrentPath.getParentFile();
 			mini = mini.replaceAll("\r\n|\n|", "");
@@ -211,6 +213,7 @@ public class FindFile implements Task {
 			}
 		}
 
+		private boolean mFirst = true;
 		@Override
 		public void begin() {
 			//
@@ -221,7 +224,10 @@ public class FindFile implements Task {
 			}
 			// todo 
 			BufferManager.getManager().beginInfoBuffer();
-			BufferManager.getManager().changeFocus(BufferManager.getManager().getMiniBuffer());
+			if(mFirst) {
+				mFirst = false;
+				BufferManager.getManager().changeFocus(BufferManager.getManager().getMiniBuffer());
+			}
 			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
 			buffer.clear();
