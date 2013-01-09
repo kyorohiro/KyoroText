@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 
 //import android.webkit.ConsoleMessage.MessageLevel;
@@ -295,6 +297,9 @@ public class FindFile implements Task {
 				if(mPath.isDirectory()) {
 					int size = buffer.getDiffer().length();
 					for(File f : mPath.listFiles(filter)) {
+						if(f == null) {
+							continue;
+						}
 						c++;
 						if(c<100){
 							mCandidate.add(f.getName());
@@ -303,7 +308,10 @@ public class FindFile implements Task {
 						buffer.getDiffer().asisSetExtra(f.getAbsolutePath());
 						buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
 						buffer.crlf(false, false);
-						buffer.crlf(false, false);	
+						String date = DateFormat.getDateTimeInstance().format(new Date(f.lastModified()));
+						buffer.pushCommit(""+date, 1);
+						buffer.crlf(false, false);
+						buffer.pushCommit(""+f.length()+"byte", 1);
 						buffer.crlf();
 						viewer.setPositionY(viewer.getPositionY()+(buffer.getDiffer().length()-size));
 						size = buffer.getDiffer().length();
