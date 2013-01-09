@@ -273,6 +273,7 @@ public class FindFile implements Task {
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
 				viewer.setTextSize(BufferManager.getManager().getBaseTextSize());
 				buffer.clear();
+				buffer.setCursor(0, 0);
 				if(mPath == null) {
 					return;
 				}
@@ -282,6 +283,7 @@ public class FindFile implements Task {
 					if(p!=null&&p.isDirectory()) {
 						buffer.getDiffer().asisSetType("find");
 						buffer.getDiffer().asisSetExtra(p.getAbsolutePath());
+						buffer.crlf(false, false);	
 						buffer.pushCommit("..", 1);
 						buffer.crlf(false, false);	
 						buffer.crlf(false, false);	
@@ -297,6 +299,7 @@ public class FindFile implements Task {
 				if(mPath.isDirectory()) {
 					int size = buffer.getDiffer().length();
 					for(File f : mPath.listFiles(filter)) {
+						Thread.sleep(0);
 						if(f == null) {
 							continue;
 						}
@@ -309,9 +312,10 @@ public class FindFile implements Task {
 						buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
 						buffer.crlf(false, false);
 						String date = DateFormat.getDateTimeInstance().format(new Date(f.lastModified()));
-						buffer.pushCommit(""+date, 1);
+						buffer.pushCommit("  "+date, 1);
 						buffer.crlf(false, false);
-						buffer.pushCommit(""+f.length()+"byte", 1);
+						buffer.pushCommit("  "+f.length()+"byte", 1);
+						buffer.crlf(false, false);
 						buffer.crlf();
 						viewer.setPositionY(viewer.getPositionY()+(buffer.getDiffer().length()-size));
 						size = buffer.getDiffer().length();
