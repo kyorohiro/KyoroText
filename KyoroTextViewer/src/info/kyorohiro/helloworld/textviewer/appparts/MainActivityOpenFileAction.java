@@ -77,7 +77,7 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 							if (showedDirectry == null || !showedDirectry.exists()||!showedDirectry.canRead()) {
 								showedDirectry = thirdCandidateDirectory;
 							} 
-							FindFileTask t = new FindFileTask(viewer, showedDirectry);
+							FindFileTask t = new FindFileTask(viewer, showedDirectry, true);
 							BufferManager.getManager().getMiniBuffer().startMiniBufferTask(t);
 					 }
 				 }

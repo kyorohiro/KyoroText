@@ -47,6 +47,13 @@ public class FindFile implements Task {
 		private File mCurrentPath  = new File("");
 		private File mCurrentDir  = new File("");
 		private UpdateInfo mUpdate = null;
+		private boolean mFirstFocosIsInfo = false;
+
+		public FindFileTask(TextViewer viewer, File path, boolean firstFocosIsInfo) {
+			mViewer = new WeakReference<TextViewer>(viewer);
+			mCurrentPath = path;
+			mFirstFocosIsInfo = firstFocosIsInfo;
+		}
 
 		public FindFileTask(TextViewer viewer, File path) {
 			mViewer = new WeakReference<TextViewer>(viewer);
@@ -235,7 +242,11 @@ public class FindFile implements Task {
 			BufferManager.getManager().beginInfoBuffer();
 			if(mFirst) {
 				mFirst = false;
-				BufferManager.getManager().changeFocus(BufferManager.getManager().getMiniBuffer());
+				if(mFirstFocosIsInfo) {
+					BufferManager.getManager().changeFocus(BufferManager.getManager().getInfoBuffer());					
+				} else{
+					BufferManager.getManager().changeFocus(BufferManager.getManager().getMiniBuffer());
+				}
 			}
 			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
