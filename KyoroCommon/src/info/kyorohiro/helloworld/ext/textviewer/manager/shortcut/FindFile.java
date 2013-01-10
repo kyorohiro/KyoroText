@@ -45,6 +45,7 @@ public class FindFile implements Task {
 		private WeakReference<TextViewer> mViewer = null;
 
 		private File mCurrentPath  = new File("");
+		private File mCurrentDir  = new File("");
 		private UpdateInfo mUpdate = null;
 
 		public FindFileTask(TextViewer viewer, File path) {
@@ -69,6 +70,7 @@ public class FindFile implements Task {
 		}
 		@Override
 		public void enter(String line) {
+//			android.util.Log.v("kiyo","enter " + line);
 			File newFile = new File(line);
 			File parent = newFile.getParentFile();
 			TextViewer viewer = mViewer.get();
@@ -100,6 +102,7 @@ public class FindFile implements Task {
 		}
 
 		public void input(String mini) {
+//			android.util.Log.v("kiyo","input " + mini);
 			TextViewer viewer = mViewer.get();
 			if(viewer == null||!isAlive()) {
 				return;
@@ -155,6 +158,7 @@ public class FindFile implements Task {
 
 		@Override
 		public void tab(String line) {
+//			android.util.Log.v("kiyo","tab " + line);
 			TextViewer viewer = mViewer.get();
 			if(viewer == null||!isAlive()) {
 				return;
@@ -206,10 +210,12 @@ public class FindFile implements Task {
 				if(lf.exists() && lf.isDirectory()) {
 //					android.util.Log.v("kiyo","##--------4-1-----------");
 					mCurrentPath = lf.getAbsoluteFile();
+					mCurrentDir = lf.getAbsoluteFile();
 					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line), ""));
 				} else if(pf.exists()){
 //					android.util.Log.v("kiyo","##--------4-2-----------");
 					mCurrentPath = lf.getAbsoluteFile();
+					mCurrentDir = pf;
 					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), pf, lf.getName()));	
 				}
 			}
@@ -218,6 +224,7 @@ public class FindFile implements Task {
 		private boolean mFirst = true;
 		@Override
 		public void begin() {
+//.util.Log.v("kiyo","begin");
 			//
 			File target = mCurrentPath;
 			File base = target.getParentFile();
@@ -244,6 +251,7 @@ public class FindFile implements Task {
 		}
 		@Override
 		public void end() {
+//			android.util.Log.v("kiyo","end ");
 			BufferManager.getManager().endInfoBuffer();			
 		}
 	}
@@ -254,6 +262,7 @@ public class FindFile implements Task {
 		private String mFilter = "";
 		private AutocandidateList mCandidate = new AutocandidateList(); 
 		public UpdateInfo(TextViewer info, File path, String filter) {
+//			android.util.Log.v("kiyo","---UpdateInfo"+path+","+filter);
 			mInfo = info;
 			mPath = path;
 			mFilter = filter;
@@ -283,8 +292,9 @@ public class FindFile implements Task {
 					if(p!=null&&p.isDirectory()) {
 						buffer.getDiffer().asisSetType("find");
 						buffer.getDiffer().asisSetExtra(p.getAbsolutePath());
-						buffer.crlf(false, false);	
 						buffer.pushCommit("..", 1);
+						buffer.crlf(false, false);
+						buffer.crlf(false, false);
 						buffer.crlf(false, false);	
 						buffer.crlf(false, false);	
 						buffer.crlf();	

@@ -141,6 +141,12 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return mBuilder.newSimpleFont();
 	}
 
+	public SimpleFont getFont(int fontSize) {
+		SimpleFont font = mBuilder.newSimpleFont();
+		font.setFontSize(fontSize);
+		return font;
+	}
+
 	//
 	//
 	public TextViewer newTextViewr() {

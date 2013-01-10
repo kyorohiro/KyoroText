@@ -70,6 +70,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		//ytodo
 		mBreakText.getSimpleFont().setAntiAlias(true);
 		mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);
+		mBreakText.setBufferWidth(mBufferWidth);
+		mLineView.setLineViewBufferSpec(mBuffer);
 	}
 
 	// following code is refactring target

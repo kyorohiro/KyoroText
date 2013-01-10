@@ -24,8 +24,8 @@ public class MiniBuffer extends TextViewer {
 	private MiniBufferTask mTask = null;
 
 	public MiniBuffer(int textSize, int width, int mergine, boolean message) {
-		super(new EmptyLineViewBufferSpecImpl(400, BufferManager.getManager().getFont()),textSize, width, mergine,
-				BufferManager.getManager().getFont(),//new SimpleFontForAndroid(),
+		super(new EmptyLineViewBufferSpecImpl(400, BufferManager.getManager().getFont(textSize)),textSize, width, mergine,
+				BufferManager.getManager().getFont(textSize),//new SimpleFontForAndroid(),
 				BufferManager.getManager().getCurrentCharset());
 		//android.util.Log.v("kiyo","new");
 		if(BufferManager.getManager().currentBrIsLF()){
@@ -34,6 +34,20 @@ public class MiniBuffer extends TextViewer {
 			getLineView().isCrlfMode(true);
 		}
 		getLineView().setConstantMode(MODE_LINE_BUFFER);
+
+		File a = new File(BufferManager.getManager().getApplication().getApplicationDirectory(),"minibuffer");
+		try {
+			if(!a.exists()){
+				a.createNewFile();
+			} else {
+				a.delete();
+				a.createNewFile();
+			}
+			super.readFile(a, false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean isEmptyTask() {
@@ -54,18 +68,31 @@ public class MiniBuffer extends TextViewer {
 	public void next() {
 		MiniBufferTask task = mTask;
 		if(task !=null) {
-			KyoroString text = this.getLineView().getKyoroString(0);
+			String text = getString();
 			if(text != null) {
-				task.tab(text.toString());
+				task.tab(text);
 			}
 		}
+	}
+
+	private String getString() {
+		StringBuilder b = new StringBuilder();
+		for(int i=0;i<this.getLineView().numOfChild();i++) {
+			KyoroString text = this.getLineView().getKyoroString(i);
+			if(text != null) {
+				String tmp = text.toString();
+				tmp = tmp.replaceAll("\r\n|\n", "");
+				b.append(tmp);
+			}
+		}
+		return b.toString();
 	}
 	public void done() {
 		MiniBufferTask task = mTask;
 		if(task !=null) {
-			KyoroString text = this.getLineView().getKyoroString(0);
+			String text = getString();
 			if(text != null) {
-				task.enter(text.toString());
+				task.enter(text);
 			}
 			task.end();
 			//todo
@@ -91,8 +118,10 @@ public class MiniBuffer extends TextViewer {
 	}
 
 	public void startMiniBufferTask(MiniBufferTask task) {
-		mTask = task;
-		mTask.begin();
+		if(task != mTask && task != null) {
+			mTask = task;
+			mTask.begin();
+		}
 	}
 
 	public Thread mCurrentTask = null;
