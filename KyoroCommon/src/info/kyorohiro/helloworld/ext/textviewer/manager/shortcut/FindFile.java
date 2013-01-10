@@ -5,8 +5,12 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 //import android.webkit.ConsoleMessage.MessageLevel;
 
@@ -305,7 +309,6 @@ public class FindFile implements Task {
 						buffer.getDiffer().asisSetExtra(p.getAbsolutePath());
 						buffer.pushCommit("..", 1);
 						buffer.crlf(false, false);
-						buffer.crlf(false, false);
 						buffer.crlf(false, false);	
 						buffer.crlf(false, false);	
 						buffer.crlf();	
@@ -318,51 +321,95 @@ public class FindFile implements Task {
 					buffer.crlf();
 				}
 				if(mPath.isDirectory()) {
-					int size = buffer.getDiffer().length();
-					for(File f : mPath.listFiles(filter)) {
-						Thread.sleep(0);
-						if(f == null) {
-							continue;
-						}
-						c++;
-						if(c<100){
-							mCandidate.add(f.getName());
-						}
-						buffer.getDiffer().asisSetType("find");
-						buffer.getDiffer().asisSetExtra(f.getAbsolutePath());
-						buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
-						buffer.crlf(false, false);
-						String date = DateFormat.getDateTimeInstance().format(new Date(f.lastModified()));
-						buffer.pushCommit("  "+date, 1);
-						buffer.crlf(false, false);
-						buffer.pushCommit("  "+f.length()+"byte", 1);
-						buffer.crlf(false, false);
-						buffer.crlf();
-						viewer.setPositionY(viewer.getPositionY()+(buffer.getDiffer().length()-size));
-						size = buffer.getDiffer().length();
-						if(c>1000) {
-							break;
-						}
-					}
+					mPath.listFiles(filter);
+					Collection<File> dir = filter.getDirs();
+					Collection<File> files = filter.getFiles();
+					a(viewer, buffer, dir);
+					a(viewer, buffer, files);
+					dir.clear();
+					files.clear();
+					filter.clear();
 				}
 			} catch(Throwable t) {
 				t.printStackTrace();
 			} 
 		}
+		private void a(EditableLineView viewer,	EditableLineViewBuffer buffer, Collection<File> fileList) throws InterruptedException {
+			int size = buffer.getDiffer().length();
+			int c=0;
+			for(File f : fileList) {
+				Thread.sleep(0);
+				if(f == null) {
+					continue;
+				}
+				c++;
+				if(c<100){
+					mCandidate.add(f.getName());
+				}
+				buffer.getDiffer().asisSetType("find");
+				buffer.getDiffer().asisSetExtra(f.getAbsolutePath());
+				buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
+				buffer.crlf(false, false);
+				String date = DateFormat.getDateTimeInstance().format(new Date(f.lastModified()));
+				buffer.pushCommit("  "+date, 1);
+				buffer.crlf(false, false);
+				buffer.pushCommit("  "+f.length()+"byte", 1);
+				buffer.crlf(false, false);
+				buffer.crlf();
+				viewer.setPositionY(viewer.getPositionY()+(buffer.getDiffer().length()-size));
+				size = buffer.getDiffer().length();
+				if(c>1000) {
+					break;
+				}
+				if(c%100==0){
+					Thread.sleep(10);
+				}
+			}
+		}
+
 	}
 	public static class MyFilter implements FilenameFilter {
-		String mFilter = "";
+		private String mFilter = "";
+		private TreeMap<String,File> mFile = new TreeMap<String,File>();
+		private TreeMap<String,File> mDir = new TreeMap<String,File>();
+//		private LinkedList<File> mFile = new LinkedList<File>();
+//		private LinkedList<File> mDir = new LinkedList<File>();
+		
 		public MyFilter(String filter) {
 			mFilter = filter;
+		}
+
+		public Collection<File> getFiles() {
+			Collection<File> ret = mFile.values();
+			return mFile.values();
+		}
+		public Collection<File> getDirs() {
+			Collection<File> ret = mDir.values();
+			return mDir.values();
 		}
 
 		@Override
 		public boolean accept(File dir, String filename) {
 			if(filename.startsWith(mFilter)) {
+				File tmp = new File(dir,filename);
+				if(tmp.isDirectory()) {
+					mDir.put(tmp.getName().toLowerCase()+tmp.getName(), tmp);
+				} else {
+					mFile.put(tmp.getName().toLowerCase()+tmp.getName(), tmp);
+				}
 				//android.util.Log.v("kiyo","aa="+filename+","+mFilter);
-				return true;
+				//return true;
+				return false;
 			}
 			return false;
+		}
+		public void clear() {
+			if(mFile != null) {
+				mFile.clear();
+			}
+			if(mDir != null) {
+				mDir.clear();
+			}
 		}
 	}
 
