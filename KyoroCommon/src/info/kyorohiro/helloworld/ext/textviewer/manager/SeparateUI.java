@@ -35,6 +35,7 @@ public class SeparateUI extends SimpleDisplayObject {
 	private boolean mIsVisible = true;
 
 	public void isVisible(boolean on) {
+		super.isVisible(on);
 		mIsVisible = on;
 	}
 

@@ -40,7 +40,7 @@ public class DrawingPositionForLineView {
 			// �p�E���X����悤�ȃA�j���[�V��������B
 //			System.out.println("===============do"+position+","+height+","+textSize+","+scale);
 			mPosition = position;
-			if(Math.abs(view.getPositionY()-mPosition)>mNumOfLine/4) {
+			if(Math.abs(view.getPositionY()-mPosition)>mNumOfLine) {
 				if(view.getPositionY()>mPosition) {
 					mPosition = view.getPositionY()-mNumOfLine/4;
 				} else {

@@ -304,6 +304,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			mInfo.setCurrentFontSize((int)(getBaseTextSize()*1.4));
 			mInfo.setMininumScale(0.80f);
 			mInfo.asisSetBufferWidth(mWidth*3/6);
+			mInfo.getLineView().fittableToView(true);
 			if(mInfo == null) {
 				return;
 			}
