@@ -393,9 +393,9 @@ public class FindFile implements Task {
 			if(filename.startsWith(mFilter)) {
 				File tmp = new File(dir,filename);
 				if(tmp.isDirectory()) {
-					mDir.put(tmp.getName().toLowerCase()+tmp.getName(), tmp);
+					mDir.put(tmp.getName().toLowerCase()+":"+tmp.getName(), tmp);
 				} else {
-					mFile.put(tmp.getName().toLowerCase()+tmp.getName(), tmp);
+					mFile.put(tmp.getName().toLowerCase()+":"+tmp.getName(), tmp);
 				}
 				//android.util.Log.v("kiyo","aa="+filename+","+mFilter);
 				//return true;

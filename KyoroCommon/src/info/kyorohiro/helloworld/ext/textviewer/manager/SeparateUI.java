@@ -35,7 +35,7 @@ public class SeparateUI extends SimpleDisplayObject {
 	private boolean mIsVisible = true;
 
 	public void isVisible(boolean on) {
-		super.isVisible(on);
+		//super.isVisible(on);
 		mIsVisible = on;
 	}
 
@@ -117,6 +117,9 @@ public class SeparateUI extends SimpleDisplayObject {
 
 	@Override
 	public boolean onTouchTest(int x, int y, int action) {
+		if(!mIsVisible) {
+			return false;
+		}
 		if (mIsInside && !mIsReachedAtOnce) {
 			if (isVertical(x, y)) {
 				mModeSeparate = MODE_SEPARATE_VERTICAL;
