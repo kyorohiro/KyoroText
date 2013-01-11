@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.ext.textviewer.viewer;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
@@ -34,11 +35,12 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private int mCurrentFontSize = 12;//KyoroSetting.CURRENT_FONT_SIZE_DEFAULT;
 	private String mCurrentPath = "";
 	private int mMergine = 0;
-	private MyBreakText mBreakText = null;
+	private BreakText mBreakText = null;
 	private float mMininumScale = 0.75f;//3/4;
 
-	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine, SimpleFont font, String charset) {
-		mBreakText = new MyBreakText(font);
+	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine, String charset) {
+		mBreakText = buffer.getBreakText();
+		buffer.getBreakText().getSimpleFont();
 		init(buffer, textSize, width, mergine, charset);
 	}
 
@@ -52,10 +54,10 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine, String charset) {
 		mCurrentFontSize = textSize;
-		mCurrentCharset = charset;//KyoroSetting.getCurrentCharset();
+		mCurrentCharset = charset;
+		mMergine = mergine;
 		mBuffer = new ManagedLineViewBuffer(buffer);
 		mBufferWidth = width - mergine * 2;
-		mMergine = mergine;
 
 		mLineView = new EditableLineView(mBuffer.getBase(), textSize, 200);
 		mLineView.isTail(false);
@@ -67,11 +69,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		addChild(mLineView);
 		addChild(new LayoutManager());
 		addChild(mScrollBar);
-		//ytodo
-		mBreakText.getSimpleFont().setAntiAlias(true);
-		mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);
-		mBreakText.setBufferWidth(mBufferWidth);
-		mLineView.setLineViewBufferSpec(mBuffer);
 	}
 
 	// following code is refactring target
@@ -111,7 +108,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	public void asisSetBufferWidth(int bufferWidth) {
-		mBreakText.setBufferWidth(bufferWidth);
+		mBreakText.setWidth(bufferWidth);
 		mBufferWidth = bufferWidth;
 	}
 
@@ -144,40 +141,39 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return mBuffer;
 	}
 
-	public void restart() {
-		if (mCurrentPath != null && !mCurrentPath.equals("")) {
-			try {
-				readFile(new File(mCurrentPath), true);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			}
+	public boolean restart() {
+		try {		
+			if(getCurrentPath() != null) {
+				return readFile(new File(getCurrentPath()));
+			} 
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return false;
 	}
-
 	private TextViewerBuffer mAsisTextBuffer = null;
-	public boolean readFile(File file, boolean updataCurrentPath) throws FileNotFoundException, NullPointerException {
+	public boolean readFile(File file) throws FileNotFoundException, NullPointerException {
 
-		if (file == null) {
-			throw new NullPointerException("kyoro text --1--");
-		}
-		if (!file.canRead() || !file.exists() || !file.isFile()) {
-			throw new FileNotFoundException("kyoro text --2--");
-		}
+		BufferBuilder builder = new BufferBuilder(file.getAbsoluteFile());
 		mCurrentPath = file.getAbsolutePath();
-		
+		builder.setCharset(mCurrentCharset);
+	
 		try {
-			mBreakText.getSimpleFont().setFontSize(mCurrentFontSize);
-			mBreakText.getSimpleFont().setAntiAlias(true);
-			mBreakText.setBufferWidth(mBufferWidth);
-			int cash2 = (int)(mBreakText.getWidth()*2/6);
-			mBuffer = new ManagedLineViewBuffer(mAsisTextBuffer = new TextViewerBufferWithColorFilter(2000, cash2, mBreakText, file, mCurrentCharset));
+			LineViewBufferSpec buffer = builder.readFile(mBreakText.getSimpleFont(), mCurrentFontSize, mBufferWidth);
+			return updateBuffer(new ManagedLineViewBuffer(buffer));
 		} catch (FileNotFoundException e) {
 			FileNotFoundException fnfe = new FileNotFoundException("--3--");
 			fnfe.setStackTrace(e.getStackTrace());
 			throw fnfe;
 		}
+	}
+
+	public boolean updateBuffer(ManagedLineViewBuffer buffer) {
+		mBuffer = buffer;
 		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView.getLineViewBuffer();
 		mLineView.setLineViewBufferSpec(mBuffer);
 		if (prevBuffer instanceof TextViewerBuffer) {
@@ -193,29 +189,10 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return true;
 	}
 
-	public void recovery() {
-		try {
-			readFile(new File(mCurrentPath), false);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public void dispose() {
-//		android.util.Log.v("kiyo","dispose 1");
-		// todo 動作確認のため、一時的にIF文を追加
-		//
-		//if(this == BufferManager.getManager().getInfoBuffer()) {
-			super.dispose();
-		//}
-		//
-		//
-//		android.util.Log.v("kiyo","dispose 2");
+		super.dispose();
 		LineViewBufferSpec prevBuffer = getLineView().getLineViewBuffer();
 		prevBuffer.dispose();
 	}
@@ -249,23 +226,6 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			mScrollBar.setColor(COLOR_FONT1);
 		}
 	}
-
-	private static class TextViewerBufferWithColorFilter extends TextViewerBuffer {
-		public TextViewerBufferWithColorFilter(int listSize, int cash2, BreakText breakText,
-				File path, String charset) throws FileNotFoundException {
-			super(listSize, cash2,breakText, path, charset);
-		}
-
-		@Override
-		public synchronized void head(KyoroString element) {
-			super.head(element);
-			element.setColor(COLOR_FONT2);
-		}
-
-		@Override
-		public synchronized void add(KyoroString element) {
-			super.add(element);
-			element.setColor(COLOR_FONT1);
-		}
-	}
+	
+	
 }

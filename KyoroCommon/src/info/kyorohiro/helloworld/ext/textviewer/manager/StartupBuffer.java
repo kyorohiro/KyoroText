@@ -10,7 +10,9 @@ import java.io.OutputStreamWriter;
 //import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.BufferBuilder;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 
@@ -21,10 +23,24 @@ public class StartupBuffer extends TextViewer {
 	private SimpleSwitchButton mFitButton = null;
 	private SimpleSwitchButton mGuardButton = null;
 
-	public StartupBuffer(int textSize, int width, int mergine, boolean message) {
-		super(new EmptyLineViewBufferSpecImpl(400),textSize, width, mergine,
-				BufferManager.getManager().getFont(),//new SimpleFontForAndroid(),
-				BufferManager.getManager().getCurrentCharset());
+	public static StartupBuffer newStartupBuffer(BufferManager manager, int textSize, int width, int mergine, boolean message) {
+		StartupBuffer ret = null;
+		File file = new File(BufferManager.getManager().getApplication().getApplicationDirectory(),"minibuffer");
+		BufferBuilder builder = new BufferBuilder(file);
+		LineViewBufferSpec buffer;
+		try {
+			buffer = builder.readFile(manager.getFont(), textSize, width);
+			ret = new StartupBuffer(manager, buffer, textSize, width, mergine, message);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
+	private StartupBuffer(BufferManager manager,LineViewBufferSpec buffer, int textSize, int width, int mergine, boolean message) {
+		super(buffer, textSize, width, mergine, manager.getCurrentCharset());
 		if(BufferManager.getManager().currentBrIsLF()){
 			getLineView().isCrlfMode(false);
 		} else {
@@ -94,18 +110,18 @@ public class StartupBuffer extends TextViewer {
 			File dir = BufferManager.getManager().getFilesDir();
 			File filePathOfStartMessage = new File(dir, "startup_message.txt");
 			createStartupMessageIfNonExist(filePathOfStartMessage);
-			readFile(filePathOfStartMessage, false);
+			readFile(filePathOfStartMessage);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public boolean readFile(File file, boolean updataCurrentPath)
+	public boolean readFile(File file)
 			throws FileNotFoundException, NullPointerException {
 		// todo following code dependent application layer.
 		// refactring target
-		if(updataCurrentPath){
+		//if(updataCurrentPath){
 			File datadata = BufferManager.getManager().getFilesDir();
 			File parent = file.getParentFile();
 			File grandpa = parent.getParentFile();
@@ -113,8 +129,8 @@ public class StartupBuffer extends TextViewer {
 					&&!(grandpa!=null&&grandpa.equals(datadata))){
 				BufferManager.getManager().setCurrentFile(file.getAbsolutePath());
 			}
-		}
-		return super.readFile(file, updataCurrentPath);
+		//}
+		return super.readFile(file);
 	}
 
 	public void createStartupMessageIfNonExist(File f) throws IOException {

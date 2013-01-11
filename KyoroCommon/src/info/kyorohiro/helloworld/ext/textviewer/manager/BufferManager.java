@@ -82,7 +82,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		// /*
 		// command
 		// android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
-		BufferGroup g = first.divideAndNew(true, mModeLine = new MiniBuffer(
+		BufferGroup g = first.divideAndNew(true, mModeLine = MiniBuffer.newMiniBuffer(this,
 				baseTextSize, mWidth, mMergine, false));
 		// mModeLine.setCurrentFontSize(baseTextSize);
 		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
@@ -150,7 +150,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	//
 	//
 	public TextViewer newTextViewr() {
-		TextViewer viewer = new StartupBuffer(mTextSize, mWidth, mMergine, true);
+		TextViewer viewer = StartupBuffer.newStartupBuffer(this, mTextSize, mWidth, mMergine, true);
 		viewer.getLineView().setKeyEventManager(mKeyEventManager);
 		mList.add(viewer);
 		// viewer.getLineView().fittableToView(true);
@@ -331,7 +331,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		}
 
 		try {
-			mInfo.readFile(infoFile, false);
+			mInfo.readFile(infoFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {

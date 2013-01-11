@@ -174,12 +174,10 @@ public class ListBuffers implements Task {
 		public void change(String path) {
 			if(mTarget != null && !mTarget.isDispose()){
 				try {
-					mTarget.readFile(new File(path), false);
+					mTarget.readFile(new File(path));
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NullPointerException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -254,7 +254,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 							fo = mViewerManager.getFocusingTextViewer();
 						}
 						mViewerManager.getFocusingTextViewer().readFile(
-								new File(uri.getPath()), true);
+								new File(uri.getPath()));
 					}
 				}
 			}

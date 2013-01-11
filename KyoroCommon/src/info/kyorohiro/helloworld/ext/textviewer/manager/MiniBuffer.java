@@ -7,11 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import info.kyorohiro.helloworld.display.simple.SimpleFont;
 //import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleSwitchButton;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.BufferBuilder;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.MiniBufferTask;
@@ -23,10 +26,24 @@ public class MiniBuffer extends TextViewer {
 	public static final String MODE_LINE_BUFFER = CursorableLineView.MODE_EDIT+" command";
 	private MiniBufferTask mTask = null;
 
-	public MiniBuffer(int textSize, int width, int mergine, boolean message) {
-		super(new EmptyLineViewBufferSpecImpl(400, BufferManager.getManager().getFont(textSize)),textSize, width, mergine,
-				BufferManager.getManager().getFont(textSize),//new SimpleFontForAndroid(),
-				BufferManager.getManager().getCurrentCharset());
+	public static MiniBuffer newMiniBuffer(BufferManager manager, int textSize, int width, int mergine, boolean message) {
+		MiniBuffer ret = null;
+		File file = new File(BufferManager.getManager().getApplication().getApplicationDirectory(),"minibuffer");
+		BufferBuilder builder = new BufferBuilder(file);
+		LineViewBufferSpec buffer;
+		try {
+			buffer = builder.readFile(manager.getFont(), textSize, width);
+			ret = new MiniBuffer(manager, buffer, textSize, width, mergine);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	private MiniBuffer(BufferManager manager,LineViewBufferSpec buffer, int textSize, int width, int mergine) {
+		super(buffer, textSize, width, mergine, manager.getCurrentCharset());
 		//android.util.Log.v("kiyo","new");
 		if(BufferManager.getManager().currentBrIsLF()){
 			getLineView().isCrlfMode(false);
@@ -43,7 +60,7 @@ public class MiniBuffer extends TextViewer {
 				a.delete();
 				a.createNewFile();
 			}
-			super.readFile(a, false);
+		//	super.readFile(a, false);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,8 +76,9 @@ public class MiniBuffer extends TextViewer {
 			return false;
 		}
 	}
+
 	@Override
-	public boolean readFile(File file, boolean updataCurrentPath)
+	public boolean readFile(File file)
 			throws FileNotFoundException, NullPointerException {
 		return false;
 	}

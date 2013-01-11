@@ -119,7 +119,7 @@ public class SaveTask implements Runnable {
 //		if(mSaveFilePath.getAbsolutePath().equals(mCurrentFilePath.getAbsolutePath())) {
 //			mViewer.readFile(mCurrentFilePath);
 //		}
-		mViewer.readFile(mSaveFilePath, true);
+		mViewer.readFile(mSaveFilePath);
 	}
 
 	private OutputStream mStream = null;

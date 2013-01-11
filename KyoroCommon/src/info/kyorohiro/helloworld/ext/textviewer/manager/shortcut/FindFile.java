@@ -103,9 +103,9 @@ public class FindFile implements Task {
 			try {
 				SimpleApplication app = BufferManager.getManager().getApplication();
 				if(newFile.getParentFile().equals(app.getApplicationDirectory())) {
-					viewer.readFile(newFile, false);
+					viewer.readFile(newFile);
 				} else {
-					viewer.readFile(newFile, true);
+					viewer.readFile(newFile);
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
