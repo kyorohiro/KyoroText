@@ -2,6 +2,8 @@ package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 import java.io.File;
 
+import android.os.Environment;
+
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.sample.EmptySimpleFont;
@@ -89,7 +91,7 @@ public class TestForLineViewManager extends TestCase {
 	public static class MyApplication implements SimpleApplication {
 		@Override
 		public File getApplicationDirectory() {
-			return null;
+			return Environment.getExternalStorageDirectory();
 		}
 
 		@Override
@@ -114,7 +116,7 @@ public class TestForLineViewManager extends TestCase {
 
 		@Override
 		public File getFilesDir() {
-			return null;
+			return Environment.getExternalStorageDirectory();
 		}
 
 		@Override
@@ -124,7 +126,7 @@ public class TestForLineViewManager extends TestCase {
 
 		@Override
 		public String getCurrentCharset() {
-			return null;
+			return "utf8";
 		}
 
 		@Override

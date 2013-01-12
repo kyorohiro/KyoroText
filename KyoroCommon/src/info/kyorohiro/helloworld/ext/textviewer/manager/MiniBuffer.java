@@ -32,11 +32,16 @@ public class MiniBuffer extends TextViewer {
 		BufferBuilder builder = new BufferBuilder(file);
 		LineViewBufferSpec buffer;
 		try {
+			if(!file.exists()) {
+				file.createNewFile();
+			}
 			buffer = builder.readFile(manager.getFont(), textSize, width);
 			ret = new MiniBuffer(manager, buffer, textSize, width, mergine);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return ret;

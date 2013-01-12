@@ -41,7 +41,7 @@ public class BufferBuilder {
 			throw new NullPointerException("kyoro text --1--");
 		}
 		if (!file.canRead() || !file.exists() || !file.isFile()) {
-			throw new FileNotFoundException("kyoro text --2--");
+			throw new FileNotFoundException("kyoro text --2--"+file.getAbsolutePath());
 		}
 		
 		try {

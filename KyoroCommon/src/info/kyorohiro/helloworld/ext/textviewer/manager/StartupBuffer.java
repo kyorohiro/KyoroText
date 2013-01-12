@@ -25,16 +25,21 @@ public class StartupBuffer extends TextViewer {
 
 	public static StartupBuffer newStartupBuffer(BufferManager manager, int textSize, int width, int mergine, boolean message) {
 		StartupBuffer ret = null;
-		File file = new File(BufferManager.getManager().getApplication().getApplicationDirectory(),"minibuffer");
+		File file = new File(BufferManager.getManager().getApplication().getApplicationDirectory(),"dummy");
 		BufferBuilder builder = new BufferBuilder(file);
 		LineViewBufferSpec buffer;
 		try {
+			if(!file.exists()) {
+				file.createNewFile();
+			}
 			buffer = builder.readFile(manager.getFont(), textSize, width);
 			ret = new StartupBuffer(manager, buffer, textSize, width, mergine, message);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();			
 		}
 		return ret;
 	}

@@ -8,7 +8,8 @@ import java.util.LinkedList;
 
 public class MarkableFileReader implements MarkableReader {
 	private int mBufferLength = 1024;
-	private RandomAccessFile mFile = null;
+//	private RandomAccessFile mFile = null;
+	private KyoroFile mFile = null;
 	private long mFilePointer = 0;
 	private CyclingByteArray mBuffer = null;
 	byte[] b= null;
@@ -19,7 +20,7 @@ public class MarkableFileReader implements MarkableReader {
 			mMark.addLast(getFilePointer());
 		} catch (IOException e) {
 			e.printStackTrace();
-			// ‚±‚±‚É‚Í‚±‚È‚¢
+			// ï¿½ï¿½ï¿½ï¿½ï¿½É‚Í‚ï¿½ï¿½È‚ï¿½
 		}
 	}
 
@@ -28,7 +29,7 @@ public class MarkableFileReader implements MarkableReader {
 			seek(mMark.getLast());
 		} catch (IOException e) {
 			e.printStackTrace();
-			// ‚±‚±‚É‚Í‚±‚È‚¢
+			// ï¿½ï¿½ï¿½ï¿½ï¿½É‚Í‚ï¿½ï¿½È‚ï¿½
 		}
 	}
 
@@ -37,7 +38,7 @@ public class MarkableFileReader implements MarkableReader {
 	}
 
 	public MarkableFileReader(File base, int cashSize) throws FileNotFoundException {
-		mFile = new RandomAccessFile(base, "r");
+		mFile = new VirtualFile(new RandomAccessFile(base, "r"), 0);
 		mBufferLength = cashSize;
 		b = new byte[mBufferLength/4]; 
 		mBuffer = new CyclingByteArray(mBufferLength);
