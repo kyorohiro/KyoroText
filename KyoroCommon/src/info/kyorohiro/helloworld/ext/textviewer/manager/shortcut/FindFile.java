@@ -294,12 +294,16 @@ public class FindFile implements Task {
 			try {
 				int c=0;
 				mCandidate.clear();
+				BufferManager.getManager().beginInfoBuffer();
 				MyFilter filter = new MyFilter(mFilter);
 				EditableLineView viewer = mInfo.getLineView();
+				mInfo.getTextViewerBuffer().getBigLineData().ffformatterOn();
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
 				viewer.setTextSize(BufferManager.getManager().getBaseTextSize());
+				viewer.clear();
 				buffer.clear();
 				buffer.setCursor(0, 0);
+				//mInfo.setReadMode(xxxx);
 				if(mPath == null) {
 					return;
 				}
@@ -333,39 +337,6 @@ public class FindFile implements Task {
 					files.clear();
 					filter.clear();
 				}
-				//Thread.sleep(10000);
-				//mInfo 
-				//*/
-/*
-				{
-					File p = mPath.getParentFile();
-					if(p!=null&&p.isDirectory()) {
-						buffer.getDiffer().asisSetType("find");
-						buffer.getDiffer().asisSetExtra(p.getAbsolutePath());
-						buffer.pushCommit("..", 1);
-						buffer.crlf(false, false);
-						buffer.crlf(false, false);	
-						buffer.crlf(false, false);	
-						buffer.crlf();	
-					}
-				}
-				if(!mPath.isDirectory()&&mPath.isFile()) {
-					buffer.pushCommit(""+mPath.getName(), 1);
-					buffer.crlf(false, false);
-					buffer.crlf(false, false);	
-					buffer.crlf();
-				}
-				if(mPath.isDirectory()) {
-					mPath.listFiles(filter);
-					Collection<File> dir = filter.getDirs();
-					Collection<File> files = filter.getFiles();
-					a(viewer, buffer, dir);
-					a(viewer, buffer, files);
-					dir.clear();
-					files.clear();
-					filter.clear();
-				}
-				//*/
 			} catch(Throwable t) {
 				t.printStackTrace();
 			} 

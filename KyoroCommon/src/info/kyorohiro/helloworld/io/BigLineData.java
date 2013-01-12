@@ -27,7 +27,10 @@ public class BigLineData {
 	private BreakText mBreakText = null;
 	private KyoroString mLastString = null;
 
-
+	private FindFileFormatter msFormater = null;
+	public void ffformatterOn() {
+		msFormater = new FindFileFormatter();
+	}
 	public BigLineData(VirtualFile path) throws FileNotFoundException {
 		init(path, mCharset);
 	}
@@ -125,7 +128,11 @@ public class BigLineData {
 		long end = 0;
 		try {
 			begin = mReader.getFilePointer();
-			tmp = (KyoroString)mDecoder.decodeLine();
+			if(msFormater == null) {
+				tmp = (KyoroString)mDecoder.decodeLine();
+			} else {
+				tmp = msFormater.read(mDecoder);
+			}
 			end = mCurrentPosition = mReader.getFilePointer();
 
 			mLinePosition += 1;
