@@ -122,11 +122,16 @@ public class TestForVirtualFile extends TestCase {
 				String result = new String(buffer, 0 , ret);
 				assertEquals(testdata, result);
 				assertEquals(ret-ret%VirtualFile.CHUNK_SIZE, vf.getStartChunk());
+
 				// second read
-				for(int i=0;i<buffer.length;i++) {
-					buffer[0]=0;
+				{
+					for(int i=0;i<buffer.length;i++) {
+						buffer[0]=0;
+					}
+					ret = vf.read(buffer);
+					assertEquals(-1, ret);					
+					assertEquals(buff.length, vf.getStartChunk()+vf.getChunkSize());
 				}
-				
 			}
 			{
 				// sync

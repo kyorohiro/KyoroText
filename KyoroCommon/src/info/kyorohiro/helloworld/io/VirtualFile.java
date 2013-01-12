@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Calendar;
 public class VirtualFile implements KyoroFile {
 //	private File mBase = null;
 	private RandomAccessFile mRAFile = null;
@@ -11,6 +12,7 @@ public class VirtualFile implements KyoroFile {
 	private long mCashStartPointPerFile = 0;
 	private int mCashLength = 0;
 	public final static int CHUNK_SIZE = 100;
+	private long mSeek = 0;
 
 	public VirtualFile(File base, int writeCashSize) throws FileNotFoundException {
 		int numOfchunk = writeCashSize/CHUNK_SIZE;
@@ -28,11 +30,22 @@ public class VirtualFile implements KyoroFile {
 		if(mRAFile == null) {
 			throw new IOException();
 		}
-		mRAFile.seek(point);
+		mSeek = point;
+		if(mSeek <0) {
+			mSeek = 0;
+		}
+		if(mSeek<mRAFile.length()&&point!=mRAFile.getFilePointer()) {
+			mRAFile.seek(point);
+		}
+	}
+
+	public long getFilePointer() {
+		return mSeek;
 	}
 
 	@Override
 	public synchronized long length() throws IOException {
+		seek(mSeek);
 		if(mRAFile == null) {
 			throw new IOException();
 		}
@@ -47,17 +60,22 @@ public class VirtualFile implements KyoroFile {
 	
 	@Override
 	public synchronized int read(byte[] buffer) throws IOException {
+		seek(mSeek);
 		if(mRAFile == null) {
 			throw new IOException();
 		}
-		long current = mRAFile.getFilePointer();
+		long current = getFilePointer();
 		long raLen = mRAFile.length();
 		long caLen = mCashStartPointPerFile+mCashLength;
 
+		android.util.Log.v("kiyo","cu="+current+"ra="+raLen+",ca="+caLen);
+		if(current >= raLen&& current >= caLen) {
+			return -1;
+		}
+		int ret = 0;
 		if(mCashStartPointPerFile <= current && current< (mCashStartPointPerFile+mCashLength)) {
 			int srcPos = (int)(current-mCashStartPointPerFile);
 			System.arraycopy(mWriteCash, srcPos, buffer, 0, mCashLength-srcPos);
-			int ret = 0;
 			if((mCashLength-srcPos)<buffer.length&&raLen>caLen) {
 				mRAFile.seek(current + mCashLength-srcPos);
 				ret = mRAFile.read(buffer, mCashLength-srcPos, buffer.length-(mCashLength-srcPos));
@@ -65,9 +83,9 @@ public class VirtualFile implements KyoroFile {
 			if(ret == -1) {
 				ret = 0;
 			}
-			return mCashLength-srcPos + ret;
+			ret = mCashLength-srcPos + ret;
 		} else {
-			int ret = mRAFile.read(buffer);
+			ret = mRAFile.read(buffer);
 			if(ret!=-1&&raLen<caLen) {
 				int srcPos = (int)(current-mCashStartPointPerFile+ret);
 				int len = buffer.length-ret;
@@ -75,11 +93,13 @@ public class VirtualFile implements KyoroFile {
 					len = mCashLength-srcPos;
 				}
 				System.arraycopy(mWriteCash, srcPos, buffer, ret, len);
-				return ret+len;
-			} else {
-				return ret;
+				ret += len;
 			}
+			
 		}
+		
+		seek(current+ret);
+		return ret;
 	}
 
 	@Override
@@ -94,6 +114,9 @@ public class VirtualFile implements KyoroFile {
 
 	public long getStartChunk() {
 		return mCashStartPointPerFile;
+	}
+	public long getChunkSize() {
+		return mCashLength;
 	}
 
 	public long getChunkCash(int i) {
@@ -139,6 +162,7 @@ public class VirtualFile implements KyoroFile {
 
 	@Override
 	public synchronized void syncWrite() throws IOException {
+		seek(mSeek);
 		if(mRAFile == null) {
 			throw new IOException();
 		}
@@ -150,6 +174,6 @@ public class VirtualFile implements KyoroFile {
 		mRAFile.write(mWriteCash, 0, mCashLength);
 		mCashStartPointPerFile += mCashLength;
 		mCashLength = 0;
-		mRAFile.seek(cp);
+		seek(cp);
 	}
 }
