@@ -294,16 +294,13 @@ public class FindFile implements Task {
 			try {
 				int c=0;
 				mCandidate.clear();
-				BufferManager.getManager().beginInfoBuffer();
 				MyFilter filter = new MyFilter(mFilter);
+				BufferManager.getManager().beginInfoBuffer();
 				EditableLineView viewer = mInfo.getLineView();
 				mInfo.getTextViewerBuffer().getBigLineData().ffformatterOn();
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
 				viewer.setTextSize(BufferManager.getManager().getBaseTextSize());
-				viewer.clear();
-				buffer.clear();
 				buffer.setCursor(0, 0);
-				//mInfo.setReadMode(xxxx);
 				if(mPath == null) {
 					return;
 				}
@@ -313,19 +310,11 @@ public class FindFile implements Task {
 				{
 					File p = mPath.getParentFile();
 					if(p!=null&&p.isDirectory()) {
-						//buffer.getDiffer().asisSetType("find");
-						//buffer.getDiffer().asisSetExtra(p.getAbsolutePath());
-						vfile.addChunk("..\r\n".getBytes("utf8"));
-						vfile.addChunk("\r\n".getBytes("utf8"));
-						vfile.addChunk("\r\n".getBytes("utf8"));
-						vfile.addChunk("\r\n".getBytes("utf8"));
+						addFile(vfile, p, "..");
 					}
 				}
 				if(!mPath.isDirectory()&&mPath.isFile()) {
-					vfile.addChunk((""+mPath.getName()+"\r\n").getBytes("utf8"));
-					vfile.addChunk("\r\n".getBytes("utf8"));
-					vfile.addChunk("\r\n".getBytes("utf8"));
-					vfile.addChunk("\r\n".getBytes("utf8"));
+					addFile(vfile, mPath, null);
 				}
 				if(mPath.isDirectory()) {
 					mPath.listFiles(filter);
@@ -333,9 +322,22 @@ public class FindFile implements Task {
 					Collection<File> files = filter.getFiles();
 					b(vfile, viewer, buffer, dir);
 					b(vfile, viewer, buffer, files);
+					{
+						File p = mPath.getParentFile();
+						if(p!=null&&p.isDirectory()) {
+							addFile(vfile, p, "..");
+						}
+					}
 					dir.clear();
 					files.clear();
 					filter.clear();
+				} else {
+					{
+						File p = mPath.getParentFile();
+						if(p!=null&&p.isDirectory()) {
+							addFile(vfile, p, "..");
+						}
+					}
 				}
 			} catch(Throwable t) {
 				t.printStackTrace();
@@ -356,54 +358,25 @@ public class FindFile implements Task {
 				if(c<100){
 					mCandidate.add(f.getName());
 				}
-				addFile(v, f);
+				addFile(v, f, null);
 				if(c%100==0){
 					Thread.sleep(10);
 				}
 			}
 		}
 
-		private void addFile(VirtualFile vFile, File file) throws UnsupportedEncodingException, IOException {
+		private void addFile(VirtualFile vFile, File file, String label) throws UnsupportedEncodingException, IOException {
 			String INFO = ":::"+file.getAbsolutePath();
-			vFile.addChunk(("●"+file.getName()+(file.isDirectory()?"/":"")+INFO).getBytes("utf8"));
+			if(label == null) {
+				label = file.getName();
+			}
+			vFile.addChunk(("●"+label+(file.isDirectory()?"/":"")+INFO).getBytes("utf8"));
 			String date = DateFormat.getDateTimeInstance().format(new Date(file.lastModified()));
 			vFile.addChunk(("\r\n  "+date+""+INFO).getBytes("utf8"));
-			vFile.addChunk(("\r\n  "+file.length()+"byte"+INFO).getBytes("utf8"));			
+			vFile.addChunk(("\r\n  "+file.length()+"byte"+INFO+":::HR").getBytes("utf8"));			
 			vFile.addChunk(("\r\n").getBytes("utf8"));			
 		}
 
-		private void a(EditableLineView viewer,	EditableLineViewBuffer buffer, Collection<File> fileList) throws InterruptedException {
-			int size = buffer.getDiffer().length();
-			int c=0;
-			for(File f : fileList) {
-				Thread.sleep(0);
-				if(f == null) {
-					continue;
-				}
-				c++;
-				if(c<100){
-					mCandidate.add(f.getName());
-				}
-				buffer.getDiffer().asisSetType("find");
-				buffer.getDiffer().asisSetExtra(f.getAbsolutePath());
-				buffer.pushCommit(""+f.getName()+(f.isDirectory()?"/":""), 1);
-				buffer.crlf(false, false);
-				String date = DateFormat.getDateTimeInstance().format(new Date(f.lastModified()));
-				buffer.pushCommit("  "+date, 1);
-				buffer.crlf(false, false);
-				buffer.pushCommit("  "+f.length()+"byte", 1);
-				buffer.crlf(false, false);
-				buffer.crlf();
-				viewer.setPositionY(viewer.getPositionY()+(buffer.getDiffer().length()-size));
-				size = buffer.getDiffer().length();
-				if(c>1000) {
-					break;
-				}
-				if(c%100==0){
-					Thread.sleep(10);
-				}
-			}
-		}
 
 	}
 	public static class MyFilter implements FilenameFilter {

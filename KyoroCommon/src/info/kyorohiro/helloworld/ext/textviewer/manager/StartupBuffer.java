@@ -51,17 +51,17 @@ public class StartupBuffer extends TextViewer {
 
 	private StartupBuffer(BufferManager manager,TextViewerBuffer buffer, int textSize, int width, int mergine, boolean message) {
 		super(buffer, textSize, width, mergine, manager.getCurrentCharset());
-		android.util.Log.v("kiyo", "-------------StartupService --A");
+		//android.util.Log.v("kiyo", "-------------StartupService --A");
 		if(BufferManager.getManager().currentBrIsLF()){
 			getLineView().isCrlfMode(false);
 		} else {
 			getLineView().isCrlfMode(true);
 		}
-		android.util.Log.v("kiyo", "-------------StartupService --B");
+		//android.util.Log.v("kiyo", "-------------StartupService --B");
 		if(message) {
 			readStartupMessage();
 		}
-		android.util.Log.v("kiyo", "-------------StartupService --C");
+		//android.util.Log.v("kiyo", "-------------StartupService --C");
 
 		addChild(mFitButton = new SimpleSwitchButton("fit", 1, new FitAction(this)));
 		addChild(mGuardButton = new SimpleSwitchButton("guard", 3, new GuardAction(this)));
@@ -163,37 +163,10 @@ public class StartupBuffer extends TextViewer {
 		output.close();
 	}
 
-	String[] message = {""};
-
-	public class A extends Thread  {
-		public void run() {
-			android.util.Log.v("kiyo", "-------------StartupService --A");
-			try {
-				VirtualFile vf = getTextViewerBuffer().getBigLineData().getVFile();
-				android.util.Log.v("kiyo", "-------------StartupService --D");
-				while(true) {
-					android.util.Log.v("kiyo", "-------------StartupService --a");
-					vf.addChunk("あいうえお\r\nかきくけこ\r\nさしすせそ\r\n".getBytes("utf8"));
-					android.util.Log.v("kiyo", "-------------StartupService --b"+vf.length());
-					Thread.sleep(100);
-				}
-				//vf.syncWrite();
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			android.util.Log.v("kiyo", "-------------StartupService --E");
-		}
-	}
-	/*
- 	String[] message = {
+	String[] message = {
 			"Sorry, this application is pre-alpha version\n",
 			"Testing and Developing.. now\n",
 			"Please mail kyorohiro.android@gmail.com, \n",
 			"If you have particular questions or comments, \n",
 			"please don't hesitate to contact me. Thank you. \n" };
- 	*/
 }

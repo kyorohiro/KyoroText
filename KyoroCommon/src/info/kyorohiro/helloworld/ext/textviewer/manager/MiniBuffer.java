@@ -141,7 +141,7 @@ public class MiniBuffer extends TextViewer {
 //		android.util.Log.v("kiyo","-----C");
 	}
 
-	public void startMiniBufferTask(MiniBufferTask task) {
+	public synchronized void startMiniBufferTask(MiniBufferTask task) {
 		if(task != mTask && task != null) {
 			mTask = task;
 			mTask.begin();
@@ -149,7 +149,7 @@ public class MiniBuffer extends TextViewer {
 	}
 
 	public Thread mCurrentTask = null;
-	public void endTask() {
+	public synchronized void endTask() {
 		//android.util.Log.v("kiyo","endTask");
 		if(mCurrentTask !=null && mCurrentTask.isAlive()) {
 			mCurrentTask.interrupt();
@@ -161,7 +161,7 @@ public class MiniBuffer extends TextViewer {
 			getLineView().clear();
 		}
 	}
-	public void startTask(Runnable task) {
+	public synchronized void startTask(Runnable task) {
 		//android.util.Log.v("kiyo","startTask");
 		if(task == null) {
 			endTask();
@@ -169,8 +169,17 @@ public class MiniBuffer extends TextViewer {
 		}
 		if(mCurrentTask !=null && mCurrentTask.isAlive()) {
 			mCurrentTask.interrupt();
-			mCurrentTask = null;
+			try {
+				Thread tmp = mCurrentTask;
+				mCurrentTask = null;
+				if(tmp != null) {
+					tmp.join();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+		
 		mCurrentTask = new Thread(task);
 		mCurrentTask.start();
 	}

@@ -87,14 +87,18 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 
 	@Override
 	public synchronized void head(KyoroString element) {
+		int add = this.getNumOfAdd();
 		super.head(element);
+		this.setNumOfAdd(add);
 	}
 
 
 	@Override
 	public synchronized void add(KyoroString element) {	
+		int add = this.getNumOfAdd();
 		super.add(element);
-		update();		
+		this.setNumOfAdd(add);
+		update();
 	}
 
 	public void update() {
@@ -112,10 +116,10 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			mLast = element;
 		}
 		int curr = (int)mLast.getLinePosition();
-		if(prev<curr&&curr>getMaxOfStackedElement()) {
+		if(prev<curr){//&&curr>getMaxOfStackedElement()) {
 			if(!mP) {
 				mP = true;
-				setNumOfAdd(num+(curr-prev)-getMaxOfStackedElement());				
+				setNumOfAdd(num+(curr-prev));//-getMaxOfStackedElement());				
 			} else {
 				setNumOfAdd(num+-(curr-prev));
 			}

@@ -131,8 +131,8 @@ public class MarkableFileReader implements MarkableReader {
 						if(i<buffer.length&&fp<mBuffer.length){
 							mBuffer[fp] = buffer[i];
 						} else {
-							android.util.Log.v("kiyo","b["+i+"]:len"+buffer.length
-									+", mb["+fp+"]:len"+mBuffer.length+",e="+e+",s="+s);
+							//android.util.Log.v("kiyo","b["+i+"]:len"+buffer.length
+							//		+", mb["+fp+"]:len"+mBuffer.length+",e="+e+",s="+s);
 							mBuffer[fp] = buffer[i];							
 						}
 					}

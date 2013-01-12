@@ -54,7 +54,7 @@ public class DrawingPositionForLineView {
 		mStart = start(showingText);
 		mEnd = end(showingText);
 		mBlank = blank(showingText);
-//		System.out.println("===============do"+mStart+","+mEnd);
+		System.out.println("===============do"+mStart+","+mEnd);
 	}
 
 	private void resetInfo(LineView view) {

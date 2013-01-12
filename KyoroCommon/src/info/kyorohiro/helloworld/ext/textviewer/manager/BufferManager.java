@@ -301,7 +301,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 
 	public VirtualFile beginInfoBuffer() {
 		if(mInfo == null || mInfo.isDispose()) {
-			android.util.Log.v("kiyo","00 new");
+			//android.util.Log.v("kiyo","00 new");
 			mInfo = splitWindowHorizontally().getTextViewer();
 			mInfo.setCurrentFontSize((int)(getBaseTextSize()*1.4));
 			mInfo.setMininumScale(0.80f);
@@ -334,7 +334,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		}
 
 		try {
-			VirtualFile ret = new VirtualFile(infoFile, 256);
+			VirtualFile ret = new VirtualFile(infoFile, 100);
 			mInfo.readFile(ret);
 			return ret;
 		} catch (FileNotFoundException e) {

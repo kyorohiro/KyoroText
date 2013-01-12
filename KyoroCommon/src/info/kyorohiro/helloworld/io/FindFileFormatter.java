@@ -15,7 +15,7 @@ public class FindFileFormatter {
 			CharSequence _tmp = decoder.decodeLine();
 			if(_tmp == null) {return new KyoroString("");};
 			list.add((KyoroString)_tmp);
-			android.util.Log.v("kiyo","::"+_tmp);
+			//android.util.Log.v("kiyo","::"+_tmp);
 			if(_tmp.charAt(_tmp.length()-1) == '\n') {
 				String str = "";
 				for(int i=0;i<list.size();i++) {
@@ -24,7 +24,12 @@ public class FindFileFormatter {
 				String[] li = str.split(":::");
 				//li[0];
 				//li[1];
-				KyoroString ret = new KyoroString(li[0]);
+				KyoroString ret = null;
+				if(li.length == 3){
+					ret = new KyoroString(li[0]+"\r\n");
+				} else {
+					ret = new KyoroString(li[0]);	
+				}
 				ret.setType("find");
 				ret.setExtra(li[1]);
 				return ret;

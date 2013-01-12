@@ -168,7 +168,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	public boolean readFile(File file) throws FileNotFoundException, NullPointerException {
-		return readFile(new VirtualFile(file,500));
+		return readFile(new VirtualFile(file,0));
 	}
 
 	public boolean readFile(VirtualFile file) throws FileNotFoundException, NullPointerException {	
