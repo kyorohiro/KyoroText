@@ -13,12 +13,12 @@ public class VirtualFile implements KyoroFile {
 	public final static int CHUNK_SIZE = 100;
 
 	public VirtualFile(File base, int writeCashSize) throws FileNotFoundException {
-		int numOfchunk = writeCashSize%CHUNK_SIZE;
+		int numOfchunk = writeCashSize/CHUNK_SIZE;
 		mWriteCash = new byte[CHUNK_SIZE*numOfchunk];
 		mRAFile = new RandomAccessFile(base, "rw");
 	}
 	public VirtualFile(RandomAccessFile base, int writeCashSize) {
-		int numOfchunk = writeCashSize%CHUNK_SIZE;
+		int numOfchunk = writeCashSize/CHUNK_SIZE;
 		mWriteCash = new byte[CHUNK_SIZE*numOfchunk];
 		mRAFile = base;
 	}
@@ -51,13 +51,22 @@ public class VirtualFile implements KyoroFile {
 			throw new IOException();
 		}
 		long current = mRAFile.getFilePointer();
-		if(mCashStartPointPerFile <= current && current < (mCashStartPointPerFile+mCashLength)) {
+		long raLen = mRAFile.length();
+		long caLen = mCashStartPointPerFile+mCashLength;
+
+		if(mCashStartPointPerFile <= current && current< (mCashStartPointPerFile+mCashLength)) {
 			int srcPos = (int)(current-mCashStartPointPerFile);
-			System.arraycopy(mWriteCash, srcPos, buffer, 0, buffer.length);
-			return buffer.length;
+			System.arraycopy(mWriteCash, srcPos, buffer, 0, mCashLength-srcPos);
+			int ret = 0;
+			if((mCashLength-srcPos)<buffer.length&&raLen>caLen) {
+				mRAFile.seek(current + mCashLength-srcPos);
+				ret = mRAFile.read(buffer, mCashLength-srcPos, buffer.length-(mCashLength-srcPos));
+			}
+			if(ret == -1) {
+				ret = 0;
+			}
+			return mCashLength-srcPos + ret;
 		} else {
-			long raLen = mRAFile.length();
-			long caLen = mCashStartPointPerFile+mCashLength;
 			int ret = mRAFile.read(buffer);
 			if(ret!=-1&&raLen<caLen) {
 				int srcPos = (int)(current-mCashStartPointPerFile+ret);
@@ -83,6 +92,14 @@ public class VirtualFile implements KyoroFile {
 		mWriteCash = null;
 	}
 
+	public long getStartChunk() {
+		return mCashStartPointPerFile;
+	}
+
+	public long getChunkCash(int i) {
+		return mWriteCash[i];
+	}
+
 	@Override
 	public synchronized void addChunk(byte[] buffer, int begin, int end) throws IOException{
 		if(mRAFile == null) {
@@ -99,7 +116,7 @@ public class VirtualFile implements KyoroFile {
 			syncWrite();
 		}
 
-		System.arraycopy(buffer, begin, mWriteCash, mCashLength,len);
+		System.arraycopy(buffer, begin, mWriteCash, mCashLength, len);
 		mCashLength +=len;
 	}
 
@@ -111,9 +128,11 @@ public class VirtualFile implements KyoroFile {
 		if(mWriteCash.length == 0) {
 			throw new IOException();
 		}
+		long cp = mRAFile.getFilePointer();
 		mRAFile.seek(mCashStartPointPerFile);
 		mRAFile.write(mWriteCash, 0, mCashLength);
 		mCashStartPointPerFile += mCashLength;
 		mCashLength = 0;
+		mRAFile.seek(cp);
 	}
 }
