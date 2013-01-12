@@ -20,7 +20,6 @@ public class MarkableFileReader implements MarkableReader {
 			mMark.addLast(getFilePointer());
 		} catch (IOException e) {
 			e.printStackTrace();
-			// �����ɂ͂��Ȃ�
 		}
 	}
 
@@ -29,7 +28,6 @@ public class MarkableFileReader implements MarkableReader {
 			seek(mMark.getLast());
 		} catch (IOException e) {
 			e.printStackTrace();
-			// �����ɂ͂��Ȃ�
 		}
 	}
 
@@ -37,8 +35,8 @@ public class MarkableFileReader implements MarkableReader {
 		return mMark.removeLast();
 	}
 
-	public MarkableFileReader(File base, int cashSize) throws FileNotFoundException {
-		mFile = new VirtualFile(new RandomAccessFile(base, "r"), 0);
+	public MarkableFileReader(VirtualFile base, int cashSize) throws FileNotFoundException {
+		mFile = base;
 		mBufferLength = cashSize;
 		b = new byte[mBufferLength/4]; 
 		mBuffer = new CyclingByteArray(mBufferLength);
@@ -128,7 +126,15 @@ public class MarkableFileReader implements MarkableReader {
 					}
 					
 					for(int i=s;i<e;i++,fp++){
-						mBuffer[fp] = buffer[i];
+						//
+						// tofo
+						if(i<buffer.length&&fp<mBuffer.length){
+							mBuffer[fp] = buffer[i];
+						} else {
+							android.util.Log.v("kiyo","b["+i+"]:len"+buffer.length
+									+", mb["+fp+"]:len"+mBuffer.length+",e="+e+",s="+s);
+							mBuffer[fp] = buffer[i];							
+						}
 					}
 					mBufferedLength = fp;
 				}

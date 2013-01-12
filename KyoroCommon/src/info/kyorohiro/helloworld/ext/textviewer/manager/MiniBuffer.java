@@ -16,6 +16,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.BufferBuilder;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewerBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.MiniBufferTask;
 import info.kyorohiro.helloworld.text.KyoroString;
@@ -30,7 +31,7 @@ public class MiniBuffer extends TextViewer {
 		MiniBuffer ret = null;
 		File file = new File(BufferManager.getManager().getApplication().getApplicationDirectory(),"minibuffer");
 		BufferBuilder builder = new BufferBuilder(file);
-		LineViewBufferSpec buffer;
+		TextViewerBuffer buffer;
 		try {
 			if(!file.exists()) {
 				file.createNewFile();
@@ -47,7 +48,7 @@ public class MiniBuffer extends TextViewer {
 		return ret;
 	}
 	
-	private MiniBuffer(BufferManager manager,LineViewBufferSpec buffer, int textSize, int width, int mergine) {
+	private MiniBuffer(BufferManager manager, TextViewerBuffer buffer, int textSize, int width, int mergine) {
 		super(buffer, textSize, width, mergine, manager.getCurrentCharset());
 		//android.util.Log.v("kiyo","new");
 		if(BufferManager.getManager().currentBrIsLF()){

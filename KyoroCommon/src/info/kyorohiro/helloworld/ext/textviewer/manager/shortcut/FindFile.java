@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.util.Collection;
@@ -24,6 +25,7 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward.ISearchForwardTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.AutocandidateList;
 
@@ -301,7 +303,40 @@ public class FindFile implements Task {
 				if(mPath == null) {
 					return;
 				}
+///*
+				VirtualFile vfile = mInfo.getTextViewerBuffer().getBigLineData().getVFile();
 
+				{
+					File p = mPath.getParentFile();
+					if(p!=null&&p.isDirectory()) {
+						//buffer.getDiffer().asisSetType("find");
+						//buffer.getDiffer().asisSetExtra(p.getAbsolutePath());
+						vfile.addChunk("..\r\n".getBytes("utf8"));
+						vfile.addChunk("\r\n".getBytes("utf8"));
+						vfile.addChunk("\r\n".getBytes("utf8"));
+						vfile.addChunk("\r\n".getBytes("utf8"));
+					}
+				}
+				if(!mPath.isDirectory()&&mPath.isFile()) {
+					vfile.addChunk((""+mPath.getName()+"\r\n").getBytes("utf8"));
+					vfile.addChunk("\r\n".getBytes("utf8"));
+					vfile.addChunk("\r\n".getBytes("utf8"));
+					vfile.addChunk("\r\n".getBytes("utf8"));
+				}
+				if(mPath.isDirectory()) {
+					mPath.listFiles(filter);
+					Collection<File> dir = filter.getDirs();
+					Collection<File> files = filter.getFiles();
+					b(vfile, viewer, buffer, dir);
+					b(vfile, viewer, buffer, files);
+					dir.clear();
+					files.clear();
+					filter.clear();
+				}
+				//Thread.sleep(10000);
+				//mInfo 
+				//*/
+/*
 				{
 					File p = mPath.getParentFile();
 					if(p!=null&&p.isDirectory()) {
@@ -330,10 +365,42 @@ public class FindFile implements Task {
 					files.clear();
 					filter.clear();
 				}
+				//*/
 			} catch(Throwable t) {
 				t.printStackTrace();
 			} 
 		}
+
+
+		private void b(VirtualFile v, EditableLineView viewer,	
+				EditableLineViewBuffer buffer, Collection<File> fileList) throws InterruptedException, UnsupportedEncodingException, IOException {
+			int size = buffer.getDiffer().length();
+			int c=0;
+			for(File f : fileList) {
+				Thread.sleep(0);
+				if(f == null) {
+					continue;
+				}
+				c++;
+				if(c<100){
+					mCandidate.add(f.getName());
+				}
+				addFile(v, f);
+				if(c%100==0){
+					Thread.sleep(10);
+				}
+			}
+		}
+
+		private void addFile(VirtualFile vFile, File file) throws UnsupportedEncodingException, IOException {
+			String INFO = ":::"+file.getAbsolutePath();
+			vFile.addChunk(("●"+file.getName()+(file.isDirectory()?"/":"")+INFO).getBytes("utf8"));
+			String date = DateFormat.getDateTimeInstance().format(new Date(file.lastModified()));
+			vFile.addChunk(("\r\n  "+date+""+INFO).getBytes("utf8"));
+			vFile.addChunk(("\r\n  "+file.length()+"byte"+INFO).getBytes("utf8"));			
+			vFile.addChunk(("\r\n").getBytes("utf8"));			
+		}
+
 		private void a(EditableLineView viewer,	EditableLineViewBuffer buffer, Collection<File> fileList) throws InterruptedException {
 			int size = buffer.getDiffer().length();
 			int c=0;

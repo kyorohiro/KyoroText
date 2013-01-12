@@ -24,6 +24,7 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.StartupBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.AppDependentAction;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.KeyEventManagerPlus;
 import info.kyorohiro.helloworld.ext.textviewer.manager.task.OtherWindowTask;
+import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.util.AsyncronousTask;
 
 public class BufferManager extends SimpleDisplayObjectContainer {
@@ -298,15 +299,17 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return (BufferGroup)parent;
 	}
 
-	public void beginInfoBuffer() {
+	public VirtualFile beginInfoBuffer() {
 		if(mInfo == null || mInfo.isDispose()) {
+			android.util.Log.v("kiyo","00 new");
 			mInfo = splitWindowHorizontally().getTextViewer();
 			mInfo.setCurrentFontSize((int)(getBaseTextSize()*1.4));
 			mInfo.setMininumScale(0.80f);
 			mInfo.asisSetBufferWidth(mWidth*3/6);
 			mInfo.getLineView().fittableToView(true);
+			mInfo.setCharset("utf8");
 			if(mInfo == null) {
-				return;
+				return null;
 			}
 			if(mInfo.getParent() instanceof BufferGroup) {
 				BufferGroup group = (BufferGroup)mInfo.getParent();
@@ -331,12 +334,15 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		}
 
 		try {
-			mInfo.readFile(infoFile);
+			VirtualFile ret = new VirtualFile(infoFile, 256);
+			mInfo.readFile(ret);
+			return ret;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	public void endInfoBuffer() {

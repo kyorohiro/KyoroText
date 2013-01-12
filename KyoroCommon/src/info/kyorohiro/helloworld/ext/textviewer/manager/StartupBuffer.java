@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
 //import info.kyorohiro.helloworld.pfdep.android.adapter.SimpleFontForAndroid;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -14,7 +15,9 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.sample.EmptyLineViewBufferSpecImpl;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.BufferBuilder;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewerBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
+import info.kyorohiro.helloworld.io.VirtualFile;
 
 public class StartupBuffer extends TextViewer {
 
@@ -26,14 +29,15 @@ public class StartupBuffer extends TextViewer {
 	public static StartupBuffer newStartupBuffer(BufferManager manager, int textSize, int width, int mergine, boolean message) {
 		StartupBuffer ret = null;
 		File file = new File(BufferManager.getManager().getApplication().getApplicationDirectory(),"dummy");
-		BufferBuilder builder = new BufferBuilder(file);
-		LineViewBufferSpec buffer;
+		BufferBuilder builder = new BufferBuilder(new VirtualFile(file, 1024));
+		TextViewerBuffer buffer;
 		try {
 			if(!file.exists()) {
 				file.createNewFile();
 			}
 			buffer = builder.readFile(manager.getFont(), textSize, width);
 			ret = new StartupBuffer(manager, buffer, textSize, width, mergine, message);
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
@@ -41,21 +45,28 @@ public class StartupBuffer extends TextViewer {
 		} catch (IOException e) {
 			e.printStackTrace();			
 		}
+
 		return ret;
 	}
 
-	private StartupBuffer(BufferManager manager,LineViewBufferSpec buffer, int textSize, int width, int mergine, boolean message) {
+	private StartupBuffer(BufferManager manager,TextViewerBuffer buffer, int textSize, int width, int mergine, boolean message) {
 		super(buffer, textSize, width, mergine, manager.getCurrentCharset());
+		android.util.Log.v("kiyo", "-------------StartupService --A");
 		if(BufferManager.getManager().currentBrIsLF()){
 			getLineView().isCrlfMode(false);
 		} else {
 			getLineView().isCrlfMode(true);
 		}
+		android.util.Log.v("kiyo", "-------------StartupService --B");
 		if(message) {
 			readStartupMessage();
 		}
+		android.util.Log.v("kiyo", "-------------StartupService --C");
+
 		addChild(mFitButton = new SimpleSwitchButton("fit", 1, new FitAction(this)));
 		addChild(mGuardButton = new SimpleSwitchButton("guard", 3, new GuardAction(this)));
+	//	A a= new A();
+	//	a.start();
 	}
 
 
@@ -152,12 +163,37 @@ public class StartupBuffer extends TextViewer {
 		output.close();
 	}
 
+	String[] message = {""};
 
+	public class A extends Thread  {
+		public void run() {
+			android.util.Log.v("kiyo", "-------------StartupService --A");
+			try {
+				VirtualFile vf = getTextViewerBuffer().getBigLineData().getVFile();
+				android.util.Log.v("kiyo", "-------------StartupService --D");
+				while(true) {
+					android.util.Log.v("kiyo", "-------------StartupService --a");
+					vf.addChunk("あいうえお\r\nかきくけこ\r\nさしすせそ\r\n".getBytes("utf8"));
+					android.util.Log.v("kiyo", "-------------StartupService --b"+vf.length());
+					Thread.sleep(100);
+				}
+				//vf.syncWrite();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			android.util.Log.v("kiyo", "-------------StartupService --E");
+		}
+	}
+	/*
  	String[] message = {
 			"Sorry, this application is pre-alpha version\n",
 			"Testing and Developing.. now\n",
 			"Please mail kyorohiro.android@gmail.com, \n",
 			"If you have particular questions or comments, \n",
 			"please don't hesitate to contact me. Thank you. \n" };
- 	
+ 	*/
 }

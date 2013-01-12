@@ -19,6 +19,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndMove
 import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferList;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
+import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 //import info.kyorohiro.helloworld.textviewer.KyoroSetting;
 
@@ -38,7 +39,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private BreakText mBreakText = null;
 	private float mMininumScale = 0.75f;//3/4;
 
-	public TextViewer(LineViewBufferSpec buffer, int textSize, int width, int mergine, String charset) {
+	public TextViewer(TextViewerBuffer buffer, int textSize, int width, int mergine, String charset) {
 		mBreakText = buffer.getBreakText();
 		buffer.getBreakText().getSimpleFont();
 		init(buffer, textSize, width, mergine, charset);
@@ -52,7 +53,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		mIsExtraUI = on;
 	}
 
-	public void init(LineViewBufferSpec buffer, int textSize, int width, int mergine, String charset) {
+	public void init(TextViewerBuffer buffer, int textSize, int width, int mergine, String charset) {
 		mCurrentFontSize = textSize;
 		mCurrentCharset = charset;
 		mMergine = mergine;
@@ -85,16 +86,26 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return mGuard;
 	}
 
+	public TextViewerBuffer getTextViewerBuffer() {
+		if(mBuffer != null && mBuffer.getBase() != null){
+			TextViewerBuffer buffer = (TextViewerBuffer)mBuffer.getBase();
+			return buffer;
+		} else {
+			return null;
+		}		
+	}
 	public File asisGetBufferPath() {
-		if(mAsisTextBuffer != null) {
-			return mAsisTextBuffer.getBigLineData().getPath();
+		if(mBuffer != null && mBuffer.getBase() != null){
+			TextViewerBuffer buffer = (TextViewerBuffer)mBuffer.getBase();
+			return buffer.getBigLineData().getPath();
 		} else {
 			return new File("");
 		}
 	}
 	public void asisChangeBufferPath(File bufferPath) throws FileNotFoundException {
-		if(mAsisTextBuffer != null) {
-			mAsisTextBuffer.getBigLineData().asisChangePath(bufferPath);
+		if(mBuffer != null && mBuffer.getBase() != null){
+			TextViewerBuffer buffer = (TextViewerBuffer)mBuffer.getBase();
+			buffer.getBigLineData().asisChangePath(new VirtualFile(bufferPath,0));
 		}
 	}
 	public String getCurrentPath() {
@@ -155,11 +166,14 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		}
 		return false;
 	}
-	private TextViewerBuffer mAsisTextBuffer = null;
-	public boolean readFile(File file) throws FileNotFoundException, NullPointerException {
 
-		BufferBuilder builder = new BufferBuilder(file.getAbsoluteFile());
-		mCurrentPath = file.getAbsolutePath();
+	public boolean readFile(File file) throws FileNotFoundException, NullPointerException {
+		return readFile(new VirtualFile(file,500));
+	}
+
+	public boolean readFile(VirtualFile file) throws FileNotFoundException, NullPointerException {	
+		mCurrentPath = file.getBase().getAbsolutePath();
+		BufferBuilder builder = new BufferBuilder(file);
 		builder.setCharset(mCurrentCharset);
 	
 		try {

@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.display.simple.sample.MyBreakText;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 import java.io.File;
@@ -15,14 +16,18 @@ public class BufferBuilder {
 	public static int COLOR_FONT1 = SimpleGraphicUtil.parseColor("#dd0044ff");
 	public static int COLOR_FONT2 = SimpleGraphicUtil.parseColor("#ddff0044");
 	private SimpleApplication mApplication = null;
-	private File mFile = new File("dummy");
+	private VirtualFile mFile = null;
 	private String mCharset = "utf8";
 
 	public BufferBuilder(File file) {
+		mFile = new VirtualFile(file, 0);
+	}
+
+	public BufferBuilder(VirtualFile file) {
 		mFile = file;
 	}
 
-	public BufferBuilder setFile(File file) {
+	public BufferBuilder setFile(VirtualFile file) {
 		mFile = file;
 		return this;
 	}
@@ -33,15 +38,15 @@ public class BufferBuilder {
 		return this;
 	}
 
-	public LineViewBufferSpec readFile(SimpleFont font, int fontSize, int width) throws FileNotFoundException, NullPointerException {
-		LineViewBufferSpec mBuffer = null;
-		File file = mFile;
+	public TextViewerBuffer readFile(SimpleFont font, int fontSize, int width) throws FileNotFoundException, NullPointerException {
+		TextViewerBuffer mBuffer = null;
+		VirtualFile file = mFile;
 		String charset = mCharset;
 		if (file == null) {
 			throw new NullPointerException("kyoro text --1--");
 		}
-		if (!file.canRead() || !file.exists() || !file.isFile()) {
-			throw new FileNotFoundException("kyoro text --2--"+file.getAbsolutePath());
+		if (!file.getBase().canRead() || !file.getBase().exists() || !file.getBase().isFile()) {
+			throw new FileNotFoundException("kyoro text --2--"+file.getBase().getAbsolutePath());
 		}
 		
 		try {
@@ -61,7 +66,7 @@ public class BufferBuilder {
 	}
 	private static class TextViewerBufferWithColorFilter extends TextViewerBuffer {
 		public TextViewerBufferWithColorFilter(int listSize, int cash2, BreakText breakText,
-				File path, String charset) throws FileNotFoundException {
+				VirtualFile path, String charset) throws FileNotFoundException {
 			super(listSize, cash2,breakText, path, charset);
 		}
 

@@ -5,6 +5,7 @@ import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.io.BigLineData;
+import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.LockableCyclingList;
 
@@ -18,17 +19,18 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	private int mCurrentBufferStartLinePosition = 0;
 	private int mCurrentBufferEndLinePosition = 0;
 	private int mCurrentPosition = 0;
+	private VirtualFile mVFile = null;
 	private KyoroString mErrorLineMessage = new KyoroString("error..\n", SimpleGraphicUtil.parseColor("#FFFF0000"));
 	private KyoroString mLoadingLineMessage = new KyoroString("loading..\n", SimpleGraphicUtil.parseColor("#33FFFF00"));
 
 	public static final int SYNC_GET_LINE_COLOR = SimpleGraphicUtil.parseColor("#FF2222FF"); 
 	private NeiborhoodCashing mNeiborCashing = null;
 	private LatestAccessCashing mLatestCashing = new LatestAccessCashing(100);
-	private long mNumberOfStockedElement = 0;
 	private boolean mIsSync = false;
 
-	public TextViewerBuffer(int listSize, int cash2, BreakText breakText, File path, String charset) throws FileNotFoundException {
+	public TextViewerBuffer(int listSize, int cash2, BreakText breakText, VirtualFile path, String charset) throws FileNotFoundException {
 		super(listSize);
+		mVFile = path;
 		//android.util.Log.v("kiyo","cash2="+cash2);
 		mLatestCashing = new LatestAccessCashing(cash2);
 		mErrorLineMessage.isNowLoading(true);
@@ -36,14 +38,12 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		mLineManagerFromFile = new BigLineData(path, charset, breakText);
 		mNeiborCashing = new NeiborhoodCashing(this);
 	}
-
 	public BigLineData getBigLineData() {
 		return mLineManagerFromFile;
 	}
 
-	public synchronized int getNumberOfStockedElement() {
-		//todo
-		return (int)mNumberOfStockedElement;
+	public VirtualFile getVirtualFile() {
+		return mVFile;
 	}
 
 	public synchronized int getCurrentBufferStartLinePosition() {
@@ -87,30 +87,58 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 
 	@Override
 	public synchronized void head(KyoroString element) {
-		int num = getNumOfAdd();
 		super.head(element);
-		if (element instanceof KyoroString) {
-			setNumOfAdd(num);
-		}
 	}
 
+
 	@Override
-	public synchronized void add(KyoroString element) {
-		int num = getNumOfAdd();
+	public synchronized void add(KyoroString element) {	
 		super.add(element);
-		if (element instanceof KyoroString) {
-			KyoroString b = (KyoroString)element;
-			//
-			// change to folllowing code . need to test
-//			setNumberOfStockedElement(b);
-			long pos = b.getLinePosition();
-			if(mNumberOfStockedElement<(pos+1)) {
-				mNumberOfStockedElement = pos+1;
-				setNumOfAdd(num+1);
+		update();		
+	}
+
+	public void update() {
+		KyoroString element = getBigLineData().getLastString();
+		if(element == null) {
+			return;
+		}
+
+		if(mLast == null) {
+			mLast = element;
+		}
+		int num = getNumOfAdd();
+		int prev = (int)mLast.getLinePosition();
+		if(mLast.getEndPointer() < element.getEndPointer()) {
+			mLast = element;
+		}
+		int curr = (int)mLast.getLinePosition();
+		if(prev<curr&&curr>getMaxOfStackedElement()) {
+			if(!mP) {
+				mP = true;
+				setNumOfAdd(num+(curr-prev)-getMaxOfStackedElement());				
+			} else {
+				setNumOfAdd(num+-(curr-prev));
 			}
-			else {
-				setNumOfAdd(num);				
+		}
+	}
+	private boolean mP = false;
+
+	public KyoroString mLast = null;
+	public synchronized int getNumberOfStockedElement() {
+		update();
+		if(mLast == null) {
+			if(mLineManagerFromFile.wasEOF()) {
+				return 0;
+			} else {
+				return 1;
 			}
+		}
+		if(mLineManagerFromFile.wasEOF()) {
+///			android.util.Log.v("kiyo","number  wE= "+((int)mLast.getLinePosition()+1));
+			return (int)mLast.getLinePosition()+1;
+		} else {
+//			android.util.Log.v("kiyo","number !wE= "+((int)mLast.getLinePosition()+2));
+			return (int)mLast.getLinePosition()+2;
 		}
 	}
 
@@ -129,7 +157,6 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			KyoroString ret = mLineManagerFromFile.readLine();
 			ret.setColor(SYNC_GET_LINE_COLOR);
 //			android.util.Log.v("kiyo","#sync=mNumberOfStockedElement-1--"+mNumberOfStockedElement+","+ret.getLinePosition());
-			setNumberOfStockedElement(ret);
 			return ret;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -137,13 +164,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 	}
 
-	public void setNumberOfStockedElement(KyoroString ret) {
-		if(!mLineManagerFromFile.wasEOF()&&mNumberOfStockedElement<=ret.getLinePosition()+2){
-			mNumberOfStockedElement = ret.getLinePosition()+2;
-			setNumOfAdd(getNumOfAdd()+2);
-//			android.util.Log.v("kiyo","-mNumberOfStockedElement-2--"+mNumberOfStockedElement);
-		}
-	}
+
 	private KyoroString getAsync(int i, boolean alookhead) {
 		if (i < 0) {
 			return mErrorLineMessage;
@@ -156,7 +177,6 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 
 			KyoroString bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
 			// todo
-			setNumberOfStockedElement(bufferedDataForReturn);
 			if (bufferedDataForReturn == null) {
 			//	android.util.Log.v("kiyo","ERROR --2--");
 				return mErrorLineMessage;
@@ -181,13 +201,11 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 			} else {
 				ret = getAsync(i, true);
 			}
-		} else {
-			return ret;
+			if(!ret.isNowLoading()) {
+				mLatestCashing.addLine(ret, false);
+			}
 		}
-		if(!ret.isNowLoading()) {
-			mLatestCashing.addLine(ret, false);
-		}
-		return ret;
+		return ret;//new KyoroString(""+ret.getLinePosition()+":"+ret);
 	}
 
 	private int lineNumberToBufferedNumber(int lineNumber) {

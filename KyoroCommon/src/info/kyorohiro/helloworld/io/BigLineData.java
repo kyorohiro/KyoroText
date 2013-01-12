@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class BigLineData {
 	public static int FILE_LIME = 50;
 
-	private File mPath;
+	private VirtualFile mPath;
 	private String mCharset = "utf8";
 	private MarkableReader mReader = null;
 	private SimpleTextDecoder mDecoder = null;
@@ -25,27 +25,35 @@ public class BigLineData {
 	private long mLastLinePosition = 0;
 	private ArrayList<Long> mPositionPer100Line = new ArrayList<Long>();
 	private BreakText mBreakText = null;
+	private KyoroString mLastString = null;
 
-	public BigLineData(File path) throws FileNotFoundException {
+
+	public BigLineData(VirtualFile path) throws FileNotFoundException {
 		init(path, mCharset);
 	}
 
-	public BigLineData(File path, String charset, BreakText breakText) throws FileNotFoundException {
+
+	public BigLineData(VirtualFile path, String charset, BreakText breakText) throws FileNotFoundException {
 		mBreakText = breakText;
 		init(path, charset);
 	}
 
-	public synchronized void asisChangePath(File path) throws FileNotFoundException {
+	public VirtualFile getVFile() {
+		return mPath;
+	}
+
+	public synchronized void asisChangePath(VirtualFile path) throws FileNotFoundException {
 		mReader = new MarkableFileReader(mPath=path, (int)(512*1.5));
 	}
 
 	public File getPath() {
-		return mPath;
+		return mPath.getBase();
 	}
-	private void init(File path, String charset) throws FileNotFoundException {
+
+	private void init(VirtualFile path, String charset) throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
-		mReader = new MarkableFileReader(mPath, (int)(512*1.5));
+		mReader = new MarkableFileReader(path, (int)(512));
 		mPositionPer100Line.add(0l);
 		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
 	}
@@ -54,6 +62,9 @@ public class BigLineData {
 		return mBreakText;
 	}
 
+	public MarkableReader  getMarkableReader() {
+		return mReader;
+	}
 	public synchronized void moveLine(long lineNumber) throws IOException {
 		//
 		if(mLinePosition == lineNumber) {
@@ -80,7 +91,7 @@ public class BigLineData {
 
 	public boolean wasEOF() {
 		try {
-			//android.util.Log.v("kiyo","reader="+mReader.length()+","+mLastFilePointer);
+//			android.util.Log.v("kiyo","wasEOF="+mReader.length()+","+mLastFilePointer);
 			if (mReader.length() > mLastFilePointer) {
 				return false;
 			} else {
@@ -123,6 +134,7 @@ public class BigLineData {
 			}
 			if (mLastFilePointer < end) {
 				mLastFilePointer = end;
+				mLastString = tmp;
 			}			
 			updateIndex();
 		} catch (IOException e) {
@@ -179,4 +191,7 @@ public class BigLineData {
 		return mLastLinePosition;
 	}
 
+	public KyoroString getLastString() {
+		return mLastString;
+	}
 }
