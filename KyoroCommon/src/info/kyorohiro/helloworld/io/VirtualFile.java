@@ -75,7 +75,7 @@ public class VirtualFile implements KyoroFile {
 					len = mCashLength-srcPos;
 				}
 				System.arraycopy(mWriteCash, srcPos, buffer, ret, len);
-				return len;
+				return ret+len;
 			} else {
 				return ret;
 			}
@@ -97,11 +97,28 @@ public class VirtualFile implements KyoroFile {
 	}
 
 	public long getChunkCash(int i) {
-		return mWriteCash[i];
+		if(i<mCashLength) {
+			return mWriteCash[i];
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
 	public synchronized void addChunk(byte[] buffer, int begin, int end) throws IOException{
+		int s = 0;
+		int e = 0;
+		for(int i=begin;i<end;i+=CHUNK_SIZE) {
+			s = i;
+			e = s+CHUNK_SIZE; 
+			if(e>end) {
+				e = end;
+			}
+			_addChunk(buffer, s, e);
+		}
+	}
+	
+	public synchronized void _addChunk(byte[] buffer, int begin, int end) throws IOException{
 		if(mRAFile == null) {
 			throw new IOException();
 		}
