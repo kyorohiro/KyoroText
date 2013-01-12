@@ -98,7 +98,7 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		int add = this.getNumOfAdd();
 		super.add(element);
 		this.setNumOfAdd(add);
-		update();
+		//update();
 	}
 
 	public void update() {
@@ -117,12 +117,12 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 		}
 		int curr = (int)mLast.getLinePosition();
 		if(prev<curr){//&&curr>getMaxOfStackedElement()) {
-			if(!mP) {
-				mP = true;
-				setNumOfAdd(num+(curr-prev));//-getMaxOfStackedElement());				
-			} else {
-				setNumOfAdd(num+-(curr-prev));
-			}
+			//if(!mP) {
+			//	mP = true;
+			//	setNumOfAdd(num+(curr-prev));//-getMaxOfStackedElement());				
+			//} else {
+				setNumOfAdd(num+(curr-prev));
+			//}
 		}
 	}
 	private boolean mP = false;
