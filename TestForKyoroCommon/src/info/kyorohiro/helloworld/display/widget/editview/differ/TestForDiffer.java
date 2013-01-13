@@ -15,7 +15,7 @@ public class TestForDiffer extends TestCase {
 		System.out.println("hello");
 	}
 
-	public void testAddLine() {
+	public void testRandomSenario() {
 		String[] message = {
 				"abcdefg",
 				"ABCDEFG",
@@ -215,9 +215,7 @@ public class TestForDiffer extends TestCase {
 			assertEquals("check get", message[3], differ.get(buffer, 4).toString());
 			assertEquals("check get", "---b---",  differ.get(buffer, 5).toString());
 			assertEquals("check get", 2, differ.length());
-
 		}
-
 
 	}
 

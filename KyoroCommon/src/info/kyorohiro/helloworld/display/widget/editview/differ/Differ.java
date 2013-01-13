@@ -6,6 +6,7 @@ import info.kyorohiro.helloworld.display.widget.editview.differ.DeleteLine;
 import info.kyorohiro.helloworld.display.widget.editview.differ.DifferAddAction;
 import info.kyorohiro.helloworld.display.widget.editview.differ.DifferDeleteAction;
 import info.kyorohiro.helloworld.display.widget.editview.differ.DifferGetAction;
+import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 import java.util.LinkedList;
@@ -22,6 +23,17 @@ public class Differ {
 	private String mType = "";
 	private String mExtra = "";
 	private int mColor = SimpleGraphicUtil.BLACK;
+
+	//
+	// no test
+	public Line getLine(int location) {
+		return mLine.get(location);
+	}
+
+	//
+	public int numOfLine() {
+		return mLine.size();
+	}
 
 	public void asisSetColor(int color) {
 		mColor = color;
@@ -43,11 +55,17 @@ public class Differ {
 		mLength = 0;
 		mLine.clear();
 	}
+
 	public int lengthOfLine() {
 		return mLine.size();
 	}
+
 	public int length() {
 		return mLength;
+	}
+
+	public synchronized void save(VirtualFile file) {
+		
 	}
 
 	public synchronized KyoroString get(LineViewBufferSpec spec, int _index) {
