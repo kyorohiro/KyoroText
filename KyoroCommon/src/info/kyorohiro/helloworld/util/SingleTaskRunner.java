@@ -1,6 +1,11 @@
 package info.kyorohiro.helloworld.util;
 
 
+/**
+ * 
+ * Management Task. Current running thread is end. and nextTask is run.
+ *
+ */
 public class SingleTaskRunner {
 
 	private Thread mTaskRunner = null;
@@ -8,7 +13,7 @@ public class SingleTaskRunner {
 	private Thread mTaskUpdater = null;
 
 	private void log(String message) {
-		System.out.println("#SingleTaskRunner#"+message);
+		//System.out.println("#SingleTaskRunner#"+message);
 	}
 
 	//

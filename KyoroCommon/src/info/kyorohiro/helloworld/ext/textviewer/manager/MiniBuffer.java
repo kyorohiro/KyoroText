@@ -150,6 +150,9 @@ public class MiniBuffer extends TextViewer {
 	}
 
 
+	//
+	// MiniBuffer Task Runner
+	//
 	private SingleTaskRunner mSingleTaskRunner = new SingleTaskRunner();
 	public synchronized void startTask(Runnable nextTask) {
 		mSingleTaskRunner.startTask(nextTask);
