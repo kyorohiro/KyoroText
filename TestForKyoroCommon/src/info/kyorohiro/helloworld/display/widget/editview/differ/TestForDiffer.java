@@ -26,8 +26,21 @@ public class TestForDiffer extends TestCase {
 			Differ differ = new Differ();
 			MyBuffer buffer = new MyBuffer(message);
 			KyoroString ret = differ.get(buffer, 0);
-			assertEquals(message[0], ret.toString());
+			assertEquals("check get", message[0], ret.toString());
+			assertEquals("check get", message[1], differ.get(buffer, 1).toString());
+			assertEquals("check get", message[2], differ.get(buffer, 2).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 3).toString());
+			assertEquals("check get", 0, differ.length());
 		}
+
+		{
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message);
+			differ.addLine(0, "---0---");
+			assertEquals("check get", "---0---", differ.get(buffer, 0).toString());
+		}
+
+
 	}
 
 	public static class MyBuffer implements LineViewBufferSpec {
