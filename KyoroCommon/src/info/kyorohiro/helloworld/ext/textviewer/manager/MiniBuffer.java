@@ -161,27 +161,79 @@ public class MiniBuffer extends TextViewer {
 			getLineView().clear();
 		}
 	}
+
+	//todo
+	public class UPThread extends Thread {
+		private Runnable mTask = null;
+		public UPThread(Runnable task) {
+			mTask = task;
+		}
+		@Override
+		public void run() {
+			Runnable task = mTask;
+			//android.util.Log.v("kiyo","startTask");
+//			android.util.Log.v("kiyo","start task--------------------------------");
+			if(task == null) {
+				endTask();
+//				android.util.Log.v("kiyo","end start task--------------------------------");
+				return;
+			}
+			if(mCurrentTask !=null && mCurrentTask.isAlive()) {
+				mCurrentTask.interrupt();
+				try {
+					Thread tmp = mCurrentTask;
+					if(tmp != null&&tmp.isAlive()) {
+						tmp.join();
+						//Thread.sleep(10);
+						/*
+						for(int i=0;i<10;i++) {
+							if(tmp.isAlive()) {
+								// join dead lock todo
+								tmp.sleep(100);
+							} else {
+								break;
+							}
+						}*/
+					}
+					mCurrentTask = null;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			mCurrentTask = new Thread(task);
+			mCurrentTask.start();
+		}
+	}
 	public synchronized void startTask(Runnable task) {
-		//android.util.Log.v("kiyo","startTask");
+		UPThread t = new UPThread(task);
+		t.start();
+	}
+/*		//android.util.Log.v("kiyo","startTask");
+		android.util.Log.v("kiyo","start task--------------------------------");
 		if(task == null) {
 			endTask();
+			android.util.Log.v("kiyo","end start task--------------------------------");
 			return;
 		}
 		if(mCurrentTask !=null && mCurrentTask.isAlive()) {
 			mCurrentTask.interrupt();
 			try {
 				Thread tmp = mCurrentTask;
-				mCurrentTask = null;
-				if(tmp != null) {
+				if(tmp != null&&tmp.isAlive()) {
 					tmp.join();
+					//Thread.sleep(10);
 				}
+				mCurrentTask = null;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 		
+		android.util.Log.v("kiyo","end start 003--------------------------------");
 		mCurrentTask = new Thread(task);
 		mCurrentTask.start();
-	}
+		android.util.Log.v("kiyo","end start task--------------------------------");
+
+	}*/
 	
 }

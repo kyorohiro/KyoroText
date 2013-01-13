@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 public class VirtualFile implements KyoroFile {
 //	private File mBase = null;
@@ -47,7 +48,7 @@ public class VirtualFile implements KyoroFile {
 			mSeek = 0;
 		}
 		if(mSeek<mRAFile.length()&&point!=mRAFile.getFilePointer()) {
-			mRAFile.seek(point);
+			mRAFile.seek(mSeek);
 		}
 	}
 
@@ -71,11 +72,36 @@ public class VirtualFile implements KyoroFile {
 		}
 	}
 	
+	public synchronized void debugLightInfo() {
+//		String str;
+//		try {
+//			str = new String(mWriteCash, 0, mWriteCash.length,"utf8");
+//			String[] list = str.split("\n");
+//			android.util.Log.v("kiyo","### ----------------------"+mWriteCash.length);
+//			if(list == null){
+//				return;
+//			}
+//			for(String s: list) {
+//				android.util.Log.v("kiyo","### "+s.substring(0, 3));
+//			}
+//			android.util.Log.v("kiyo","### ----------------------"+str);
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+	}
 	@Override
 	public synchronized int read(byte[] buffer) throws IOException {
 //		android.util.Log.v("kiyo", "---------read---------"+buffer.length);
+		//
+		//
+
+
 		init();
 		seek(mSeek);
+
+
 		long current = getFilePointer();
 		long raLen = mRAFile.length();
 		long caLen = mCashStartPointPerFile+mCashLength;
@@ -99,7 +125,7 @@ public class VirtualFile implements KyoroFile {
 			if(ret == -1) {
 				ret = 0;
 			}
-			ret = mCashLength-srcPos + ret;
+			ret = len + ret;
 		} else {
 			ret = mRAFile.read(buffer);
 			if(ret!=-1&&raLen<caLen) {
@@ -146,6 +172,9 @@ public class VirtualFile implements KyoroFile {
 
 	public synchronized void addChunk(byte[] buffer) throws IOException{
 		addChunk(buffer, 0, buffer.length);
+	//	if(mWriteCash.length != 0) {
+	//		debugLightInfo();
+	//	}
 	}
 	@Override
 	public synchronized void addChunk(byte[] buffer, int begin, int end) throws IOException{
@@ -183,6 +212,10 @@ public class VirtualFile implements KyoroFile {
 
 		System.arraycopy(buffer, begin, mWriteCash, mCashLength, len);
 		mCashLength +=len;
+	//	if(len+mCashLength>=mWriteCash.length) {
+	//		syncWrite();
+	//	}
+
 	}
 
 	@Override

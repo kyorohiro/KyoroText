@@ -26,6 +26,7 @@ public class SearchTask implements Runnable {
 
 	@Override
 	public void run() {
+//		android.util.Log.v("kiyo","ST: start start");
 		MyCursor cursor = mTargetView.getLeft();
 		int index = cursor.getCursorCol();
 		int row = cursor.getCursorRow();
@@ -120,11 +121,13 @@ public class SearchTask implements Runnable {
 			// todo 面倒なので...
 			e.printStackTrace();
 		} finally {
+//			android.util.Log.v("kiyo","ST: start end--------------------------------");
 			if(mTargetView !=null && !mTargetView.isDispose()) {
 				buffer.isSync(false);
 				mTargetView.isLockScreen(false);
 				mTargetView.recenter();
 			}
+//			android.util.Log.v("kiyo","ST: end end--------------------------------");
 		}
 	}
 

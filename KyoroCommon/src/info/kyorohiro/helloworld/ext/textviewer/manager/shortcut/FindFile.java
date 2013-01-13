@@ -111,6 +111,8 @@ public class FindFile implements Task {
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
+			} finally {
+//			android.util.Log.v("kiyo","/enter " + line);
 			}
 		}
 
@@ -224,11 +226,13 @@ public class FindFile implements Task {
 //					android.util.Log.v("kiyo","##--------4-1-----------");
 					mCurrentPath = lf.getAbsoluteFile();
 					mCurrentDir = lf.getAbsoluteFile();
+//					android.util.Log.v("kiyo","FT: start 00");
 					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line), ""));
 				} else if(pf.exists()){
 //					android.util.Log.v("kiyo","##--------4-2-----------");
 					mCurrentPath = lf.getAbsoluteFile();
 					mCurrentDir = pf;
+//					android.util.Log.v("kiyo","FT: start 01");
 					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), pf, lf.getName()));	
 				}
 			}
@@ -261,6 +265,7 @@ public class FindFile implements Task {
 			modeBuffer.getLineView().getLeft().setCursorRow(0);
 			buffer.pushCommit(""+base.getAbsolutePath(), 1);
 			modeBuffer.getLineView().recenter();
+//			android.util.Log.v("kiyo","FT: start 03");
 			modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile(),""));
 			
 			//
@@ -292,30 +297,42 @@ public class FindFile implements Task {
 		@Override
 		public void run() {
 			try {
+//				android.util.Log.v("kiyo","FT: start ");
 				int c=0;
 				mCandidate.clear();
+//				android.util.Log.v("kiyo","FT: start 00001-1-");
+
 				MyFilter filter = new MyFilter(mFilter);
+//				android.util.Log.v("kiyo","FT: start 00001-2-");
 				BufferManager.getManager().beginInfoBuffer();
+//				android.util.Log.v("kiyo","FT: start 00001-3-");
 				EditableLineView viewer = mInfo.getLineView();
+//				android.util.Log.v("kiyo","FT: start 00001-4-");
 				mInfo.getTextViewerBuffer().getBigLineData().ffformatterOn();
+//				android.util.Log.v("kiyo","FT: start 00001-5-");
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
 				viewer.setTextSize(BufferManager.getManager().getBaseTextSize());
+//				android.util.Log.v("kiyo","FT: start 00001-6-");
 				buffer.setCursor(0, 0);
+//				android.util.Log.v("kiyo","FT: start 00001-7-");
 				if(mPath == null) {
 					return;
 				}
+//				android.util.Log.v("kiyo","FT: start 00001-6-");
 ///*
+//				android.util.Log.v("kiyo","FT: start 00001");
 				VirtualFile vfile = mInfo.getTextViewerBuffer().getBigLineData().getVFile();
 
 				{
 					File p = mPath.getParentFile();
 					if(p!=null&&p.isDirectory()) {
-						addFile(vfile, p, "..");
+						addFile(vfile, p, "..1");
 					}
 				}
 				if(!mPath.isDirectory()&&mPath.isFile()) {
 					addFile(vfile, mPath, null);
 				}
+//				android.util.Log.v("kiyo","FT: start 00002");
 				if(mPath.isDirectory()) {
 					mPath.listFiles(filter);
 					Collection<File> dir = filter.getDirs();
@@ -325,7 +342,7 @@ public class FindFile implements Task {
 					{
 						File p = mPath.getParentFile();
 						if(p!=null&&p.isDirectory()) {
-							addFile(vfile, p, "..");
+							addFile(vfile, p, "..2");
 						}
 					}
 					dir.clear();
@@ -339,9 +356,12 @@ public class FindFile implements Task {
 						}
 					}
 				}
+//				android.util.Log.v("kiyo","FT: start 00003");
 			} catch(Throwable t) {
 				t.printStackTrace();
-			} 
+			} finally {
+//				android.util.Log.v("kiyo","FT: end ");
+			}
 		}
 
 
@@ -365,7 +385,8 @@ public class FindFile implements Task {
 			}
 		}
 
-		private void addFile(VirtualFile vFile, File file, String label) throws UnsupportedEncodingException, IOException {
+		private void addFile(VirtualFile vFile, File file, String label) throws UnsupportedEncodingException, IOException, InterruptedException {
+			Thread.sleep(0);
 			String INFO = ":::"+file.getAbsolutePath();
 			if(label == null) {
 				label = file.getName();

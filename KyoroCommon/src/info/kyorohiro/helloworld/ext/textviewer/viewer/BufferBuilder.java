@@ -42,24 +42,30 @@ public class BufferBuilder {
 		TextViewerBuffer mBuffer = null;
 		VirtualFile file = mFile;
 		String charset = mCharset;
+//		android.util.Log.v("kiyo","BRFrf: start 00001-1-");
 		if (file == null) {
 			throw new NullPointerException("kyoro text --1--");
 		}
 		if (!file.getBase().canRead() || !file.getBase().exists() || !file.getBase().isFile()) {
 			throw new FileNotFoundException("kyoro text --2--"+file.getBase().getAbsolutePath());
 		}
-		
+//		android.util.Log.v("kiyo","BRFrf: start 00001-2-");		
 		try {
 			MyBreakText mBreakText = new MyBreakText(font);
+//			android.util.Log.v("kiyo","BRFrf: start 00001-3-");
 			mBreakText.getSimpleFont().setFontSize(fontSize);
 			mBreakText.getSimpleFont().setAntiAlias(true);
 			mBreakText.setBufferWidth(width);
+//			android.util.Log.v("kiyo","BRFrf: start 00001-4-");
 			int cash2 = (int)(mBreakText.getWidth()*2/6);
 			mBuffer = new TextViewerBufferWithColorFilter(2000, cash2, mBreakText, file, charset);
+//			android.util.Log.v("kiyo","BRFrf: start 00001-5-");
 		} catch (FileNotFoundException e) {
 			FileNotFoundException fnfe = new FileNotFoundException("--3--");
 			fnfe.setStackTrace(e.getStackTrace());
 			throw fnfe;
+		} finally {
+//			android.util.Log.v("kiyo","BRFrf: start 00001-6-");
 		}
 
 		return mBuffer;

@@ -299,7 +299,8 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return (BufferGroup)parent;
 	}
 
-	public VirtualFile beginInfoBuffer() {
+	public synchronized VirtualFile beginInfoBuffer() {
+		
 		if(mInfo == null || mInfo.isDispose()) {
 			//android.util.Log.v("kiyo","00 new");
 			mInfo = splitWindowHorizontally().getTextViewer();
@@ -315,16 +316,20 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 				BufferGroup group = (BufferGroup)mInfo.getParent();
 				group.isVisible(false);
 			}
-		}
+		} 
+//		android.util.Log.v("kiyo","BG: start 00001-1-");
 		File infoFile = new File(getApplication().getApplicationDirectory(),"info.txt");
 		File baseDir = infoFile.getParentFile();
+//		android.util.Log.v("kiyo","BG: start 00001-2-");
 		if(!baseDir.exists()) {
 			baseDir.mkdirs();
 		}
-
+//		android.util.Log.v("kiyo","BG: start 00001-3-");
 		if(infoFile.exists()) {
 			infoFile.delete();
 		}
+//		android.util.Log.v("kiyo","BG: start 00001-4-");
+
 		if(!infoFile.exists()) {
 			try {
 				infoFile.createNewFile();
@@ -332,16 +337,23 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 				e.printStackTrace();
 			}
 		}
+//		android.util.Log.v("kiyo","BG: start 00001-5-");
 
 		try {
-			VirtualFile ret = new VirtualFile(infoFile, 100);
+			VirtualFile ret = new VirtualFile(infoFile, 501);
+			
+//			android.util.Log.v("kiyo","BG: start 00001-6-");
+			mInfo.getLineView().isLockScreen(true);
 			mInfo.readFile(ret);
+			mInfo.getLineView().isLockScreen(false);
+//			android.util.Log.v("kiyo","BG: start 00001-7-");
 			return ret;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
+//		android.util.Log.v("kiyo","BG: start 00001-8-");
 		return null;
 	}
 

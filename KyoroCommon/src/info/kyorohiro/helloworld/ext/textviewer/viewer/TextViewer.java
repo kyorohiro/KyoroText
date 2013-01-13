@@ -172,34 +172,45 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	public boolean readFile(VirtualFile file) throws FileNotFoundException, NullPointerException {	
+//		android.util.Log.v("kiyo","RFrf: start 00001-1-");
 		mCurrentPath = file.getBase().getAbsolutePath();
 		BufferBuilder builder = new BufferBuilder(file);
 		builder.setCharset(mCurrentCharset);
-	
+//		android.util.Log.v("kiyo","RFrf: start 00001-2-");	
 		try {
+//			android.util.Log.v("kiyo","RFrf: start 00001-3-");
 			LineViewBufferSpec buffer = builder.readFile(mBreakText.getSimpleFont(), mCurrentFontSize, mBufferWidth);
+//			android.util.Log.v("kiyo","RFrf: start 00001-4-");
 			return updateBuffer(new ManagedLineViewBuffer(buffer));
 		} catch (FileNotFoundException e) {
 			FileNotFoundException fnfe = new FileNotFoundException("--3--");
 			fnfe.setStackTrace(e.getStackTrace());
 			throw fnfe;
+		} finally {
+//			android.util.Log.v("kiyo","RFrf: start 00001-5-");
 		}
 	}
 
 	public boolean updateBuffer(ManagedLineViewBuffer buffer) {
 		mBuffer = buffer;
+//		android.util.Log.v("kiyo","uprf: start 00001-1-");
 		LineViewBufferSpec prevBuffer = TextViewer.this.mLineView.getLineViewBuffer();
+//		android.util.Log.v("kiyo","uprf: start 00001-2-");
 		mLineView.setLineViewBufferSpec(mBuffer);
+//		android.util.Log.v("kiyo","uprf: start 00001-3-");
+
 		if (prevBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) prevBuffer).clear();
-
 		}
+//		android.util.Log.v("kiyo","uprf: start 00001-4-");
 		if (mBuffer.getBase() instanceof TextViewerBuffer) {
 			((TextViewerBuffer) mBuffer.getBase()).startReadFile();
 		}
+//		android.util.Log.v("kiyo","uprf: start 00001-5-");
 		if (prevBuffer instanceof TextViewerBuffer) {
 			((TextViewerBuffer) prevBuffer).dispose();
 		}
+//		android.util.Log.v("kiyo","uprf: start 00001-6-");
 		return true;
 	}
 

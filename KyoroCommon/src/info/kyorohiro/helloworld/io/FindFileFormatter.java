@@ -8,6 +8,8 @@ import java.util.LinkedList;
 public class FindFileFormatter {
 
 	public KyoroString read(SimpleTextDecoder decoder) throws IOException {
+		//return (KyoroString)decoder.decodeLine();
+		///*
 		LinkedList<KyoroString> list = new LinkedList<KyoroString>();
 
 		while(!decoder.isEOF()) {
@@ -15,7 +17,7 @@ public class FindFileFormatter {
 			CharSequence _tmp = decoder.decodeLine();
 			if(_tmp == null) {return new KyoroString("");};
 			list.add((KyoroString)_tmp);
-			//android.util.Log.v("kiyo","::"+_tmp);
+//			android.util.Log.v("kiyo","::"+_tmp);
 			if(_tmp.charAt(_tmp.length()-1) == '\n') {
 				String str = "";
 				for(int i=0;i<list.size();i++) {
@@ -36,5 +38,6 @@ public class FindFileFormatter {
 			}
 		}
 		return new KyoroString("");
+		//*/
 	}
 }
