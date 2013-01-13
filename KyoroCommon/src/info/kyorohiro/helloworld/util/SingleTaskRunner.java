@@ -5,6 +5,7 @@ public class SingleTaskRunner {
 
 	private Thread mTaskRunner = null;
 	private Runnable mNextTask = null;
+	private Thread mTaskUpdater = null;
 
 	private void log(String message) {
 		System.out.println("#SingleTaskRunner#"+message);
@@ -20,8 +21,10 @@ public class SingleTaskRunner {
 		// if you call updateTask. depend on this method caller.
 		// 
 		mNextTask = nextTask;
-		UpdateTaskThread t = new UpdateTaskThread();
-		t.start();
+		if(mTaskUpdater == null || !mTaskUpdater.isAlive()) {
+			mTaskUpdater = new UpdateTaskThread();
+			mTaskUpdater.start();
+		}
 	}
 
 	public synchronized void endTask() {
