@@ -43,6 +43,76 @@ public class TestForDiffer extends TestCase {
 			assertEquals("check get", message[2], differ.get(buffer, 3).toString());
 			assertEquals("check get", message[3], differ.get(buffer, 4).toString());
 			assertEquals("check get", 1, differ.length());
+			
+			differ.addLine(0, "---1---");
+			assertEquals("check get", "---1---",  differ.get(buffer, 0).toString());
+			assertEquals("check get", "---0---",  differ.get(buffer, 1).toString());
+			assertEquals("check get", message[0], differ.get(buffer, 2).toString());
+			assertEquals("check get", message[1], differ.get(buffer, 3).toString());
+			assertEquals("check get", message[2], differ.get(buffer, 4).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 5).toString());
+			assertEquals("check get", 2, differ.length());
+
+			differ.addLine(1, "---2---");
+			assertEquals("check get", "---1---",  differ.get(buffer, 0).toString());
+			assertEquals("check get", "---2---",  differ.get(buffer, 1).toString());
+			assertEquals("check get", "---0---",  differ.get(buffer, 2).toString());
+			assertEquals("check get", message[0], differ.get(buffer, 3).toString());
+			assertEquals("check get", message[1], differ.get(buffer, 4).toString());
+			assertEquals("check get", message[2], differ.get(buffer, 5).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 6).toString());
+			assertEquals("check get", 3, differ.length());
+
+			differ.addLine(3, "---3---");
+			assertEquals("check get", "---1---",  differ.get(buffer, 0).toString());
+			assertEquals("check get", "---2---",  differ.get(buffer, 1).toString());
+			assertEquals("check get", "---0---",  differ.get(buffer, 2).toString());
+			assertEquals("check get", "---3---",  differ.get(buffer, 3).toString());
+			assertEquals("check get", message[0], differ.get(buffer, 4).toString());
+			assertEquals("check get", message[1], differ.get(buffer, 5).toString());
+			assertEquals("check get", message[2], differ.get(buffer, 6).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 7).toString());
+			assertEquals("check get", 4, differ.length());
+
+			differ.addLine(5, "---4---");
+			assertEquals("check get", "---1---",  differ.get(buffer, 0).toString());
+			assertEquals("check get", "---2---",  differ.get(buffer, 1).toString());
+			assertEquals("check get", "---0---",  differ.get(buffer, 2).toString());
+			assertEquals("check get", "---3---",  differ.get(buffer, 3).toString());
+			assertEquals("check get", message[0], differ.get(buffer, 4).toString());
+			assertEquals("check get", "---4---",  differ.get(buffer, 5).toString());
+			assertEquals("check get", message[1], differ.get(buffer, 6).toString());
+			assertEquals("check get", message[2], differ.get(buffer, 7).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 8).toString());
+			assertEquals("check get", 5, differ.length());
+
+			differ.addLine(8, "---5---");
+			assertEquals("check get", "---1---",  differ.get(buffer, 0).toString());
+			assertEquals("check get", "---2---",  differ.get(buffer, 1).toString());
+			assertEquals("check get", "---0---",  differ.get(buffer, 2).toString());
+			assertEquals("check get", "---3---",  differ.get(buffer, 3).toString());
+			assertEquals("check get", message[0], differ.get(buffer, 4).toString());
+			assertEquals("check get", "---4---",  differ.get(buffer, 5).toString());
+			assertEquals("check get", message[1], differ.get(buffer, 6).toString());
+			assertEquals("check get", message[2], differ.get(buffer, 7).toString());
+			assertEquals("check get", "---5---",  differ.get(buffer, 8).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 9).toString());
+			assertEquals("check get", 6, differ.length());
+
+			differ.addLine(10, "---6---");
+			assertEquals("check get", "---1---",  differ.get(buffer, 0).toString());
+			assertEquals("check get", "---2---",  differ.get(buffer, 1).toString());
+			assertEquals("check get", "---0---",  differ.get(buffer, 2).toString());
+			assertEquals("check get", "---3---",  differ.get(buffer, 3).toString());
+			assertEquals("check get", message[0], differ.get(buffer, 4).toString());
+			assertEquals("check get", "---4---",  differ.get(buffer, 5).toString());
+			assertEquals("check get", message[1], differ.get(buffer, 6).toString());
+			assertEquals("check get", message[2], differ.get(buffer, 7).toString());
+			assertEquals("check get", "---5---",  differ.get(buffer, 8).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 9).toString());
+			assertEquals("check get", "---6---",  differ.get(buffer, 10).toString());
+			assertEquals("check get", 7, differ.length());
+
 		}
 
 
