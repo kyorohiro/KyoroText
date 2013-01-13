@@ -56,13 +56,13 @@ public class SingleTaskRunner {
 			return;
 		}
 		if(mTaskRunner !=null && mTaskRunner.isAlive()) {
-			mTaskRunner.interrupt();
+			Thread tmp = mTaskRunner;
+			mTaskRunner = null;
 			try {
-				Thread tmp = mTaskRunner;
+				tmp.interrupt();
 				if(tmp != null&&tmp.isAlive()) {
 					tmp.join();
 				}
-				mTaskRunner = null;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

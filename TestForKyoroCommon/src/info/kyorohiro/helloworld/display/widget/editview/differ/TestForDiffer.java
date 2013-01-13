@@ -22,10 +22,12 @@ public class TestForDiffer extends TestCase {
 				"NONONON",
 				"0123456",
 		};
-		Differ differ = new Differ();
-		MyBuffer buffer = new MyBuffer(message);
-		differ.addLine(0, "[1]");
-		differ.get(null, 0);
+		{
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message);
+			KyoroString ret = differ.get(buffer, 0);
+			assertEquals(message[0], ret.toString());
+		}
 	}
 
 	public static class MyBuffer implements LineViewBufferSpec {
