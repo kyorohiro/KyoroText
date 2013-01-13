@@ -16,7 +16,7 @@ public class MiniBufferTaskNext implements Task {
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
 		MiniBuffer mBuffer = BufferManager.getManager().getMiniBuffer();
-		mBuffer.next();
+		mBuffer.nextJob();
 	}
 	
 }
