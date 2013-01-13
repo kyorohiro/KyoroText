@@ -59,8 +59,8 @@ public class SingleTaskRunner {
 			Thread tmp = mTaskRunner;
 			mTaskRunner = null;
 			try {
-				tmp.interrupt();
 				if(tmp != null&&tmp.isAlive()) {
+					tmp.interrupt();
 					tmp.join();
 				}
 			} catch (InterruptedException e) {
