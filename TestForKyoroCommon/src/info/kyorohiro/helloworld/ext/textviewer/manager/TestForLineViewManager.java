@@ -7,7 +7,7 @@ import android.os.Environment;
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.sample.EmptySimpleFont;
-import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.MiniBufferTask;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.MiniBufferJob;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import junit.framework.TestCase;
 
@@ -45,7 +45,7 @@ public class TestForLineViewManager extends TestCase {
 			TextViewer v = manager.getFocusingTextViewer();
 
 			// set task
-			manager.getMiniBuffer().startMiniBufferTask(new MyTask());
+			manager.getMiniBuffer().startMiniBufferJob(new MyTask());
 			manager.otherWindow();
 			assertEquals(manager.getMiniBuffer(), manager.getFocusingTextViewer());
 
@@ -74,7 +74,7 @@ public class TestForLineViewManager extends TestCase {
 
 	}
 
-	public class MyTask implements MiniBufferTask {
+	public class MyTask implements MiniBufferJob {
 		@Override
 		public void enter(String line) {
 		}

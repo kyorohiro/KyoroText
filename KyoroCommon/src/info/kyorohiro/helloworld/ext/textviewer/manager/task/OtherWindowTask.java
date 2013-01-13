@@ -23,7 +23,7 @@ public class OtherWindowTask implements Runnable {
 				BufferManager.getManager().changeFocus(f);
 			}
 		}
-		if(BufferManager.getManager().getFocusingTextViewer() == BufferManager.getManager().getMiniBuffer()&& BufferManager.getManager().getMiniBuffer().isEmptyTask()) {
+		if(BufferManager.getManager().getFocusingTextViewer() == BufferManager.getManager().getMiniBuffer()&& BufferManager.getManager().getMiniBuffer().miniBufferBobisEmpty()) {
 			otherWindow();
 		}
 		//android.util.Log.v("kiyo","----/otherWindow");

@@ -18,7 +18,7 @@ import info.kyorohiro.helloworld.ext.textviewer.viewer.BufferBuilder;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewerBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
-import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.MiniBufferTask;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.MiniBufferJob;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.SingleTaskRunner;
 
@@ -26,7 +26,7 @@ import info.kyorohiro.helloworld.util.SingleTaskRunner;
 public class MiniBuffer extends TextViewer {
 
 	public static final String MODE_LINE_BUFFER = CursorableLineView.MODE_EDIT+" command";
-	private MiniBufferTask mTask = null;
+	private MiniBufferJob mMiniBufferJob = null;
 
 	public static MiniBuffer newMiniBuffer(BufferManager manager, int textSize, int width, int mergine, boolean message) {
 		MiniBuffer ret = null;
@@ -74,8 +74,8 @@ public class MiniBuffer extends TextViewer {
 		}
 	}
 
-	public boolean isEmptyTask() {
-		if(mTask == null) {
+	public boolean miniBufferBobisEmpty() {
+		if(mMiniBufferJob == null) {
 		//	android.util.Log.v("kiyo","true");
 			return true;
 		} else {
@@ -84,14 +84,9 @@ public class MiniBuffer extends TextViewer {
 		}
 	}
 
-	@Override
-	public boolean readFile(File file)
-			throws FileNotFoundException, NullPointerException {
-		return false;
-	}
 
 	public void next() {
-		MiniBufferTask task = mTask;
+		MiniBufferJob task = mMiniBufferJob;
 		if(task !=null) {
 			String text = getString();
 			if(text != null) {
@@ -100,20 +95,9 @@ public class MiniBuffer extends TextViewer {
 		}
 	}
 
-	private String getString() {
-		StringBuilder b = new StringBuilder();
-		for(int i=0;i<this.getLineView().numOfChild();i++) {
-			KyoroString text = this.getLineView().getKyoroString(i);
-			if(text != null) {
-				String tmp = text.toString();
-				tmp = tmp.replaceAll("\r\n|\n", "");
-				b.append(tmp);
-			}
-		}
-		return b.toString();
-	}
+
 	public void done() {
-		MiniBufferTask task = mTask;
+		MiniBufferJob task = mMiniBufferJob;
 		if(task !=null) {
 			String text = getString();
 			if(text != null) {
@@ -121,7 +105,7 @@ public class MiniBuffer extends TextViewer {
 			}
 			task.end();
 			//todo
-			mTask = null;
+			mMiniBufferJob = null;
 			if(getLineView() != null) {
 				getLineView().clear();
 			}
@@ -134,18 +118,15 @@ public class MiniBuffer extends TextViewer {
 
 	public void hideModeLine() {
 		Object o = getParent();
-//		android.util.Log.v("kiyo","-----A");
 		if(o instanceof BufferGroup){
-//			android.util.Log.v("kiyo","-----B");
 			((BufferGroup)o).setSeparatorPoint(0.2f);
 		}
-//		android.util.Log.v("kiyo","-----C");
 	}
 
-	public synchronized void startMiniBufferTask(MiniBufferTask task) {
-		if(task != mTask && task != null) {
-			mTask = task;
-			mTask.begin();
+	public synchronized void startMiniBufferJob(MiniBufferJob task) {
+		if(task != mMiniBufferJob && task != null) {
+			mMiniBufferJob = task;
+			mMiniBufferJob.begin();
 		}
 	}
 
@@ -160,11 +141,37 @@ public class MiniBuffer extends TextViewer {
 
 	public synchronized void endTask() {
 		mSingleTaskRunner.endTask();
-		mTask = null;
+		mMiniBufferJob = null;
 		if(getLineView() != null) {
 			getLineView().clear();
 		}
 	}
 
 	
+	//
+	// utility
+	//
+	private String getString() {
+		StringBuilder b = new StringBuilder();
+		for(int i=0;i<this.getLineView().numOfChild();i++) {
+			KyoroString text = this.getLineView().getKyoroString(i);
+			if(text != null) {
+				String tmp = text.toString();
+				tmp = tmp.replaceAll("\r\n|\n", "");
+				b.append(tmp);
+			}
+		}
+		return b.toString();
+	}
+
+	
+	//
+	// TextViewr Func is restrict
+	//
+	@Override
+	public boolean readFile(File file)
+			throws FileNotFoundException, NullPointerException {
+		return false;
+	}
+
 }

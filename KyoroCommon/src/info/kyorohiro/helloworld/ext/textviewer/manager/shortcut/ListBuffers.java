@@ -33,11 +33,11 @@ public class ListBuffers implements Task {
 		if(target == null || view != target.getLineView()) {
 			return;
 		}
-		BufferManager.getManager().getMiniBuffer().startMiniBufferTask(new ListBuffersTask(target));
+		BufferManager.getManager().getMiniBuffer().startMiniBufferJob(new ListBuffersTask(target));
 		buffer.clearYank();
 	}
 
-	public static class ListBuffersTask implements MiniBufferTask {
+	public static class ListBuffersTask implements MiniBufferJob {
 		private UpdateInfo mUpdate = null;
 		private WeakReference<TextViewer> mViewer = null;
 

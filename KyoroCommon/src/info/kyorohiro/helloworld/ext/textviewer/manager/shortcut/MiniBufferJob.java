@@ -1,6 +1,6 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 
-public interface MiniBufferTask {
+public interface MiniBufferJob {
 	void enter(String line);
 	void tab(String line);
 	void begin();

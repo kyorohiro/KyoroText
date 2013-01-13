@@ -23,11 +23,11 @@ public class ISearchForward implements Task {
 
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
-		BufferManager.getManager().getMiniBuffer().startMiniBufferTask(new ISearchForwardTask(view));
+		BufferManager.getManager().getMiniBuffer().startMiniBufferJob(new ISearchForwardTask(view));
 		buffer.clearYank();
 	}
 
-	public class ISearchForwardTask implements MiniBufferTask{
+	public class ISearchForwardTask implements MiniBufferJob{
 		private EditableLineView mTargetView = null;
 		public ISearchForwardTask(EditableLineView targetView) {
 			mTargetView = targetView;

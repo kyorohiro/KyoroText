@@ -42,11 +42,11 @@ public class FindFile implements Task {
 		if(target == null || view != target.getLineView()) {
 			return;
 		}
-		BufferManager.getManager().getMiniBuffer().startMiniBufferTask(new FindFileTask(target));
+		BufferManager.getManager().getMiniBuffer().startMiniBufferJob(new FindFileTask(target));
 		buffer.clearYank();
 	}
 
-	public static class FindFileTask implements MiniBufferTask {
+	public static class FindFileTask implements MiniBufferJob {
 //		private TextViewer mViewer = null;
 		private WeakReference<TextViewer> mViewer = null;
 
@@ -124,7 +124,7 @@ public class FindFile implements Task {
 			}
 
 			MiniBuffer minibuffer = BufferManager.getManager().getMiniBuffer();
-			minibuffer.startMiniBufferTask(this);
+			minibuffer.startMiniBufferJob(this);
 			File path = null;
 			File parent = mCurrentPath.getParentFile();
 			mini = mini.replaceAll("\r\n|\n|", "");
