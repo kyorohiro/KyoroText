@@ -404,8 +404,6 @@ public class FindFile implements Task {
 		private String mFilter = "";
 		private TreeMap<String,File> mFile = new TreeMap<String,File>();
 		private TreeMap<String,File> mDir = new TreeMap<String,File>();
-//		private LinkedList<File> mFile = new LinkedList<File>();
-//		private LinkedList<File> mDir = new LinkedList<File>();
 		
 		public MyFilter(String filter) {
 			mFilter = filter;
