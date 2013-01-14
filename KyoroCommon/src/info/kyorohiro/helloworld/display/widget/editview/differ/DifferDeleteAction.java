@@ -44,10 +44,13 @@ public class DifferDeleteAction extends CheckAction {
 			if(mPrevPatchedPosition <= mTargetPatchedPosition && mTargetPatchedPosition < patchedPosition) {
 				android.util.Log.v("kiyo","#D#0#"+mTargetPatchedPosition+"-"+mPrevPatchedPosition);
 				if(mTargetPatchedPosition < mPrevPatchedPosition+targetLine.begin()) {
+					android.util.Log.v("kiyo","#D#0#----1----"+mTargetPatchedPosition +"<"+ mPrevPatchedPosition+"+"+targetLine.begin());
 					owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
+					targetLine.setStart(targetLine.begin()-1);
 					//
 					//
 				} else {
+					android.util.Log.v("kiyo","#D#0#----2----");
 					targetLine.rm(mTargetPatchedPosition-mPrevPatchedPosition-targetLine.begin());
 					if(targetLine.length()==0){
 						owner.removeLine(lineLocation);
@@ -57,8 +60,11 @@ public class DifferDeleteAction extends CheckAction {
 			}
 			// out before
 			else if(mTargetPatchedPosition<mPrevPatchedPosition){
+				android.util.Log.v("kiyo","#D#0#----3----");
 				owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
 				ret = false;
+			} else {
+				android.util.Log.v("kiyo","#D#0#----4----");
 			}
 		} finally {
 			mPrevPatchedPosition = patchedPosition;
