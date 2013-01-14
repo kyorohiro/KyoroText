@@ -149,8 +149,7 @@ public class Differ {
 		};
 
 		// if return false, when check action is end.
-		public abstract boolean check(Differ owner, int lineLocation, int start,
-				int end, int indexFromBase);
+		public abstract boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index);
 
 		public void end(LinkedList<Line> ll) {
 		};

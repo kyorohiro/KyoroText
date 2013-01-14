@@ -69,9 +69,9 @@ public class DifferGetAction extends CheckAction {
 	public boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index) {
 		Line targetLine = owner.getLine(lineLocation);
 		
-		android.util.Log.v("kiyo","#A#"+lineLocation+","+ patchedPosition+","+ unpatchedPosition);
-		android.util.Log.v("kiyo","#B#"+mTargetPatchedPosition+","+ mTargetUnpatchedPosition);
-		android.util.Log.v("kiyo","#C#"+mPrevPatchedPosition+","+ mPrevUnpatchedPosition);
+		//android.util.Log.v("kiyo","#A#"+lineLocation+","+ patchedPosition+","+ unpatchedPosition);
+		//android.util.Log.v("kiyo","#B#"+mTargetPatchedPosition+","+ mTargetUnpatchedPosition);
+		//android.util.Log.v("kiyo","#C#"+mPrevPatchedPosition+","+ mPrevUnpatchedPosition);
 		boolean ret = true;
 		try {
 			//
@@ -90,13 +90,16 @@ public class DifferGetAction extends CheckAction {
 				}
 				ret = false;
 			} 
+			//
+			// out before
+			//
 			else if(mTargetPatchedPosition < mPrevPatchedPosition) {
 				mTargetUnpatchedPosition = mPrevUnpatchedPosition +  mPrevPatchedPosition- mTargetPatchedPosition;
 //				android.util.Log.v("kiyo","#2#"+mTargetUnpatchedPosition);
 				ret = false;;
 			}
 			//
-			// out
+			// out after
 			//
 			else {
 				mTargetUnpatchedPosition = unpatchedPosition + mTargetPatchedPosition - patchedPosition;
@@ -108,5 +111,6 @@ public class DifferGetAction extends CheckAction {
 			mPrevUnpatchedPosition = unpatchedPosition;
 		}
 		return ret;
+
 	}
 }

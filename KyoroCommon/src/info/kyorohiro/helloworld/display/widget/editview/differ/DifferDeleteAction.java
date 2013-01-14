@@ -33,11 +33,9 @@ public class DifferDeleteAction extends CheckAction {
 	}
 
 	@Override
-	public boolean check(Differ owner, int x, int __not_use__start, int __not_use__end,
-			int index) {
-
+	public boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index) {
 		//android.util.Log.v("kiyo","#=ZZZ1=="+x+","+start+","+end+","+_indexFromBase+","+mIndex);
-		Line l = owner.getLine(x);
+		Line l = owner.getLine(lineLocation);
 		int start  = 0;
 		int end = 0;
 		try{
@@ -60,7 +58,7 @@ public class DifferDeleteAction extends CheckAction {
 					l.set(l.length(), "");
 				} else {
 					//android.util.Log.v("kiyo","#=ZZZ4==");
-					owner.addLine(x, new DeleteLine(mIndex - mPrevEnd));
+					owner.addLine(lineLocation, new DeleteLine(mIndex - mPrevEnd));
 					l.setStart(l.begin()-(mIndex - mPrevEnd+1));
 				}
 				mIsDeleted = true;
@@ -72,13 +70,13 @@ public class DifferDeleteAction extends CheckAction {
 				l.rm(mIndex - start);
 				if (l.length() == 0) {
 					int tmp = l.begin();
-					if(x+1<owner.numOfLine()){
-						owner.getLine(x+1).setStart(owner.getLine(x+1).begin()+tmp);
+					if(lineLocation+1<owner.numOfLine()){
+						owner.getLine(lineLocation+1).setStart(owner.getLine(lineLocation+1).begin()+tmp);
 					//	android.util.Log.v("kiyo","#=ZZZ6=="+tmp+","+ll.get(x+1).begin());
 					} else {
 						//android.util.Log.v("kiyo","#=ZZZ6=="+tmp);
 					}
-					owner.removeLine(x);
+					owner.removeLine(lineLocation);
 				}
 				mIsDeleted = true;
 				return false;
