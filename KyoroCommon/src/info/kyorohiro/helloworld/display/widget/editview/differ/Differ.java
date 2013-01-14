@@ -111,38 +111,38 @@ public class Differ {
 	}
 
 
-	public void checkAllSortedLine(CheckAction action) {
+	public void checkAllSortedLine(CheckAction targetJob) {
 		int len = mLineList.size();
 		int index = 0;
 		int start = 0;
 		int end = 0;
 		int indexFromBase = 0;
 		try {
-			action.init();
+			targetJob.init();
 			for (int lineLocation = 0; lineLocation < len; lineLocation++) {
 				Line targetLine = mLineList.get(lineLocation);
 				if (targetLine instanceof DeleteLine) {
 					//indexFromBase += l.length();
 					start = index + targetLine.begin();
 					end = start;// + l.length();
-					index += targetLine.begin();// - l.length();
 					//for(int i=0;i<l.length();i++){
-						if (!action.check(this, lineLocation, start, end, indexFromBase)) {
+						if (!targetJob.check(this, lineLocation, start, end, index)) {
 							return;
 						}
+						index += targetLine.begin();// - l.length();
 					//}
 				} else {
 					start = index + targetLine.begin();
 					end = start + targetLine.length();
-					index += targetLine.begin() + targetLine.length();
 					//indexFromBase += end - start;
-					if (!action.check(this, lineLocation, start, end, indexFromBase)) {
+					if (!targetJob.check(this, lineLocation, start, end, index)) {
 						return;
 					}
+					index += targetLine.begin() + targetLine.length();
 				}
 			}
 		} finally {
-			action.end(mLineList);
+			targetJob.end(mLineList);
 		}
 	}
 

@@ -60,14 +60,14 @@ public class DifferGetAction extends CheckAction {
 	private int mDeleteLength = 0;
 
 	@Override
-	public boolean check(Differ owner, int x, int start, int end, int indexFromBase) {
-		Line l = owner.getLine(x);
-		if (l instanceof DeleteLine) {
+	public boolean check(Differ owner, int lineLocation, int start, int end, int indexFromBase) {
+		Line targetLine = owner.getLine(lineLocation);
+		if (targetLine instanceof DeleteLine) {
 			if (mIndex < start) {
 				mIndexFromBase = mIndex - mDiffLength + mDeleteLength;
 				return false;
 			} else {
-				mDeleteLength += l.length();
+				mDeleteLength += targetLine.length();
 				mIndexFromBase = mIndex - mDiffLength + mDeleteLength;
 				// android.util.Log.v("text","la[1]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
 				return true;
@@ -76,10 +76,10 @@ public class DifferGetAction extends CheckAction {
 			int diffLength = mDiffLength + end - start;
 			try {
 				if (start <= mIndex && mIndex < end) {
-					mRe = l.get(mIndex - start);
+					mRe = targetLine.get(mIndex - start);
 					if(!(mRe instanceof KyoroString)) {
 						mRe = new KyoroString(mRe);
-						l.set(mIndex - start, mRe);
+						targetLine.set(mIndex - start, mRe);
 						((KyoroString)mRe).setColor(SimpleGraphicUtil.BLACK);
 					}
 					
