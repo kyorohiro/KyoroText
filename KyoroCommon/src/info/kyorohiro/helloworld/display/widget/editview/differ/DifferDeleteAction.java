@@ -51,6 +51,7 @@ public class DifferDeleteAction extends CheckAction {
 					//
 					//
 				} else {
+					//todo not test
 					android.util.Log.v("kiyo","#D#0#----2----");
 					targetLine.rm(mTargetPatchedPosition-mPrevPatchedPosition-targetLine.begin());
 					if(targetLine.length()==0){
@@ -61,6 +62,7 @@ public class DifferDeleteAction extends CheckAction {
 			}
 			// out before
 			else if(mTargetPatchedPosition<mPrevPatchedPosition){
+				//todo not test
 				android.util.Log.v("kiyo","#D#0#----3----");
 				owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
 				ret = false;
@@ -78,7 +80,7 @@ public class DifferDeleteAction extends CheckAction {
 
 	@Override
 	public void end(LinkedList<Line> ll) {
-		//todo
+		//todo not test
 		if(mIsDelete){
 		ll.add(new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
 		}
