@@ -62,18 +62,6 @@ public class DifferDeleteAction extends CheckAction {
 				}
 				ret = false;
 			}
-			// out before
-			else if(mTargetPatchedPosition<mPrevPatchedPosition){
-				//todo not test
-				android.util.Log.v("kiyo","#D#0#----3----");
-				owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
-				
-				// todo following code is bug maybe
-				targetLine.setStart(targetLine.begin()-1);
-				ret = false;
-			} else {
-				android.util.Log.v("kiyo","#D#0#----4----");
-			}
 		} finally {
 			mPrevPatchedPosition = patchedPosition;
 			mPrevUnpatchedPosition = unpatchedPosition;
