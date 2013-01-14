@@ -1,7 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.editview.differ;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+
 
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;

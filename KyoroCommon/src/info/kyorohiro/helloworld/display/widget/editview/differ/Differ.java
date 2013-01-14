@@ -17,7 +17,7 @@ public class Differ {
 	private final DifferAddAction mAddAction = new DifferAddAction();
 	private final DifferDeleteAction mDeleteAction = new DifferDeleteAction();
 
-	private LinkedList<Line> mLine = new LinkedList<Line>();
+	private LinkedList<Line> mLineList = new LinkedList<Line>();
 	private int mLength = 0;
 
 	private String mType = "";
@@ -27,12 +27,12 @@ public class Differ {
 	//
 	// no test
 	public Line getLine(int location) {
-		return mLine.get(location);
+		return mLineList.get(location);
 	}
 
 	//
 	public int numOfLine() {
-		return mLine.size();
+		return mLineList.size();
 	}
 
 	public void asisSetColor(int color) {
@@ -53,11 +53,11 @@ public class Differ {
 
 	public synchronized void clear() {
 		mLength = 0;
-		mLine.clear();
+		mLineList.clear();
 	}
 
 	public int lengthOfLine() {
-		return mLine.size();
+		return mLineList.size();
 	}
 
 	public int length() {
@@ -105,37 +105,37 @@ public class Differ {
 
 
 	public void checkAllSortedLine(CheckAction action) {
-		int len = mLine.size();
+		int len = mLineList.size();
 		int index = 0;
 		int start = 0;
 		int end = 0;
 		int indexFromBase = 0;
 		try {
 			action.init();
-			for (int x = 0; x < len; x++) {
-				Line l = mLine.get(x);
-				if (l instanceof DeleteLine) {
+			for (int lineLocation = 0; lineLocation < len; lineLocation++) {
+				Line targetLine = mLineList.get(lineLocation);
+				if (targetLine instanceof DeleteLine) {
 					//indexFromBase += l.length();
-					start = index + l.begin();
+					start = index + targetLine.begin();
 					end = start;// + l.length();
-					index += l.begin();// - l.length();
+					index += targetLine.begin();// - l.length();
 					//for(int i=0;i<l.length();i++){
-						if (!action.check(mLine, x, start, end, indexFromBase)) {
+						if (!action.check(mLineList, lineLocation, start, end, indexFromBase)) {
 							return;
 						}
 					//}
 				} else {
-					start = index + l.begin();
-					end = start + l.length();
-					index += l.begin() + l.length();
+					start = index + targetLine.begin();
+					end = start + targetLine.length();
+					index += targetLine.begin() + targetLine.length();
 					//indexFromBase += end - start;
-					if (!action.check(mLine, x, start, end, indexFromBase)) {
+					if (!action.check(mLineList, lineLocation, start, end, indexFromBase)) {
 						return;
 					}
 				}
 			}
 		} finally {
-			action.end(mLine);
+			action.end(mLineList);
 		}
 	}
 
