@@ -11,8 +11,8 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class DifferGetAction extends CheckAction {
-	private int mIndex = 0;
-	private int mIndexFromBase = 0;
+	private int mTargetPatchedPosition = 0;
+	private int mTargetUnpatchedPosition = 0;
 	private int mPrevEnd = 0;
 	private CharSequence mRe = "";
 	private boolean mIsDiffer = false;
@@ -24,7 +24,7 @@ public class DifferGetAction extends CheckAction {
 
 
 	public KyoroString get(Differ differ, LineViewBufferSpec spec, int index) {
-		mIndex = index;
+		mTargetPatchedPosition = index;
 		differ.checkAllSortedLine(this);
 		try {
 			if (isDiffer()) {
@@ -41,7 +41,7 @@ public class DifferGetAction extends CheckAction {
 				// android.util.Log.i("text","lll="+mIndexFromBase+","+mPrevEnd+","+mIndex+","+mDiffLength+","+
 				// mDeleteLength);
 				//android.util.Log.v("kiyo","---B=");
-				return spec.get(mIndexFromBase);
+				return spec.get(mTargetUnpatchedPosition);
 			}
 		} finally {
 			//differ.debugPrint();
@@ -50,7 +50,10 @@ public class DifferGetAction extends CheckAction {
 
 	@Override
 	public void init() {
-		mIndexFromBase = mIndex;
+		mTargetUnpatchedPosition = mTargetPatchedPosition;
+		//mTargetUnpatchedPosition = 0;
+		mPrevPatchedPosition = 0;
+		mPrevUnpatchedPosition = 0;
 		mIsDiffer = false;
 		mDiffLength = 0;
 		mDeleteLength = 0;
@@ -59,58 +62,51 @@ public class DifferGetAction extends CheckAction {
 	private int mDiffLength = 0;
 	private int mDeleteLength = 0;
 
-	private int prevPatchedPosition = 0;
-	private int prevUnpatchedPosition = 0;
+	private int mPrevPatchedPosition = 0;
+	private int mPrevUnpatchedPosition = 0;
 
 	@Override
 	public boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index) {
-/*		Line targetLine = owner.getLine(lineLocation);
-		boolean ret = false;
-		return ret;*/
-//		/*
 		Line targetLine = owner.getLine(lineLocation);
-		if (targetLine instanceof DeleteLine) {
-			int start = index + targetLine.begin();
-			int end = start;// + l.length();
-			if (mIndex < start) {
-				mIndexFromBase = mIndex - mDiffLength + mDeleteLength;
-				return false;
-			} else {
-				mDeleteLength += targetLine.length();
-				mIndexFromBase = mIndex - mDiffLength + mDeleteLength;
-				// android.util.Log.v("text","la[1]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
-				return true;
-			}
-		} else {
-			int start = index + targetLine.begin();
-			int end = start + targetLine.length();
-			int diffLength = mDiffLength + end - start;
-			try {
-				if (start <= mIndex && mIndex < end) {
-					mRe = targetLine.get(mIndex - start);
-					if(!(mRe instanceof KyoroString)) {
-						mRe = new KyoroString(mRe);
-						targetLine.set(mIndex - start, mRe);
-						((KyoroString)mRe).setColor(SimpleGraphicUtil.BLACK);
-					}
-					
-					mIsDiffer = true;
-					// android.util.Log.v("text","la[1]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
-					return false;
-				} else if (mIndex < start) {
-					mIsDiffer = false;
-					mIndexFromBase = mIndex - mDiffLength + mDeleteLength;
-					// android.util.Log.v("text","la[2]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
-					return false;
+		
+		android.util.Log.v("kiyo","#A#"+lineLocation+","+ patchedPosition+","+ unpatchedPosition);
+		android.util.Log.v("kiyo","#B#"+mTargetPatchedPosition+","+ mTargetUnpatchedPosition);
+		android.util.Log.v("kiyo","#C#"+mPrevPatchedPosition+","+ mPrevUnpatchedPosition);
+		boolean ret = true;
+		try {
+			//
+			// in 
+			// 
+			if(mPrevPatchedPosition <= mTargetPatchedPosition&& mTargetPatchedPosition < patchedPosition) {
+				//mTargetPatchedPosition = mPrevPatchedPosition+mTargetPatchedPosition-mPrevPatchedPosition; 
+				if((mPrevPatchedPosition+targetLine.begin())<=mTargetPatchedPosition){
+					android.util.Log.v("kiyo","#00#"+"("+mTargetPatchedPosition+"-"+mPrevPatchedPosition+")"+"-"+targetLine.begin());
+					mRe = targetLine.get((mTargetPatchedPosition-mPrevPatchedPosition)-targetLine.begin());
+					mIsDiffer =true;
+					//android.util.Log.v("kiyo","#01#"+mRe);
 				} else {
-					mIndexFromBase = mIndex - diffLength + mDeleteLength;
-					// android.util.Log.v("text","la[3]="+mIndexFromBase+",s="+start+",e="+end+",i="+indexFromBase+",de="+mDeleteLength+",di="+mDiffLength);
-					return true;
+					mTargetUnpatchedPosition = mPrevUnpatchedPosition+mTargetPatchedPosition-mPrevPatchedPosition;					
+					//android.util.Log.v("kiyo","#1#"+mTargetUnpatchedPosition);
 				}
-			} finally {
-				mDiffLength = diffLength;
+				ret = false;
+			} 
+			else if(mTargetPatchedPosition < mPrevPatchedPosition) {
+				mTargetUnpatchedPosition = mPrevUnpatchedPosition +  mPrevPatchedPosition- mTargetPatchedPosition;
+//				android.util.Log.v("kiyo","#2#"+mTargetUnpatchedPosition);
+				ret = false;;
 			}
-			//*/
+			//
+			// out
+			//
+			else {
+				mTargetUnpatchedPosition = unpatchedPosition + mTargetPatchedPosition - patchedPosition;
+//				android.util.Log.v("kiyo","#3#"+mTargetUnpatchedPosition);
+				ret = true;
+			}
+		} finally {
+			mPrevPatchedPosition = patchedPosition;
+			mPrevUnpatchedPosition = unpatchedPosition;
 		}
+		return ret;
 	}
 }
