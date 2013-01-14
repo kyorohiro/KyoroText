@@ -8,10 +8,11 @@ import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 import java.util.LinkedList;
 
 public class DifferDeleteAction extends CheckAction {
-	private int mPrevEnd = 0;
-	private boolean mIsDeleted = false;
+	//private int mPrevEnd = 0;
+	//private boolean mIsDeleted = false;
 
 	public void delete(Differ differ, int index) {
+		android.util.Log.v("kiyo","#D#0#----000----");
 		mTargetPatchedPosition = index;
 		differ.checkAllSortedLine(this);
 		differ.debugPrint();
@@ -19,8 +20,9 @@ public class DifferDeleteAction extends CheckAction {
 
 	@Override
 	public void init() {
-		mPrevEnd = 0;
-		mIsDeleted = false;
+		android.util.Log.v("kiyo","#D#0#----001----");
+		//mPrevEnd = 0;
+		mIsDelete = true;//if non exist line object
 		mTargetUnpatchedPosition = mTargetPatchedPosition;
 		mPrevPatchedPosition = 0;
 		mPrevUnpatchedPosition = 0;
@@ -85,6 +87,8 @@ public class DifferDeleteAction extends CheckAction {
 		if(mIsDelete){
 			android.util.Log.v("kiyo","#D#0#----5----");
 			ll.add(new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
+		} else {
+			android.util.Log.v("kiyo","#D#0#----6----");
 		}
 	}
 
