@@ -114,28 +114,26 @@ public class Differ {
 	public void checkAllSortedLine(CheckAction targetJob) {
 		int len = mLineList.size();
 		int index = 0;
-		int start = 0;
-		int end = 0;
-		int indexFromBase = 0;
+		int dummy = 0;
+		int patchedPosition = 0;
+		int unpatchedPosition = 0;
 		try {
 			targetJob.init();
 			for (int lineLocation = 0; lineLocation < len; lineLocation++) {
 				Line targetLine = mLineList.get(lineLocation);
+				patchedPosition += targetLine.begin();
+				unpatchedPosition += targetLine.begin();
 				if (targetLine instanceof DeleteLine) {
-					//indexFromBase += l.length();
-					start = index + targetLine.begin();
-					end = start;// + l.length();
-					//for(int i=0;i<l.length();i++){
-						if (!targetJob.check(this, lineLocation, start, end, index)) {
-							return;
-						}
-						index += targetLine.begin();// - l.length();
-					//}
+					patchedPosition += 0;
+					unpatchedPosition += targetLine.length();
+					if (!targetJob.check(this, lineLocation, patchedPosition, unpatchedPosition, index)) {
+						return;
+					}
+					index += targetLine.begin();// - l.length();
 				} else {
-					start = index + targetLine.begin();
-					end = start + targetLine.length();
-					//indexFromBase += end - start;
-					if (!targetJob.check(this, lineLocation, start, end, index)) {
+					patchedPosition += targetLine.length();
+					unpatchedPosition += 0;
+					if (!targetJob.check(this, lineLocation, patchedPosition, unpatchedPosition, index)) {
 						return;
 					}
 					index += targetLine.begin() + targetLine.length();
