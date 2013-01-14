@@ -49,7 +49,7 @@ public class DifferDeleteAction extends CheckAction {
 				if(mTargetPatchedPosition < mPrevPatchedPosition+targetLine.begin()) {
 					android.util.Log.v("kiyo","#D#0#----1----"+mTargetPatchedPosition +"<"+ mPrevPatchedPosition+"+"+targetLine.begin());
 					owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
-					targetLine.setStart(targetLine.begin()-1);
+					targetLine.setStart(targetLine.begin()-(mTargetPatchedPosition-mPrevPatchedPosition+1));
 					//
 					//
 				} else {
@@ -67,6 +67,8 @@ public class DifferDeleteAction extends CheckAction {
 				//todo not test
 				android.util.Log.v("kiyo","#D#0#----3----");
 				owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
+				
+				// todo following code is bug maybe
 				targetLine.setStart(targetLine.begin()-1);
 				ret = false;
 			} else {
