@@ -60,7 +60,7 @@ public class DifferGetAction extends CheckAction {
 	private int mDeleteLength = 0;
 
 	@Override
-	public boolean check(Differ owner, int lineLocation, int __start, int __end, int index) {
+	public boolean check(Differ owner, int lineLocation, int __not_use__start, int __not_use__end, int index) {
 		Line targetLine = owner.getLine(lineLocation);
 		if (targetLine instanceof DeleteLine) {
 			int start = index + targetLine.begin();

@@ -33,11 +33,25 @@ public class DifferDeleteAction extends CheckAction {
 	}
 
 	@Override
-	public boolean check(Differ owner, int x, int start, int end,
-			int _indexFromBase) {
+	public boolean check(Differ owner, int x, int __not_use__start, int __not_use__end,
+			int index) {
+
 		//android.util.Log.v("kiyo","#=ZZZ1=="+x+","+start+","+end+","+_indexFromBase+","+mIndex);
+		Line l = owner.getLine(x);
+		int start  = 0;
+		int end = 0;
 		try{
-			Line l = owner.getLine(x);
+			if (l instanceof DeleteLine) {
+				//indexFromBase += l.length();
+				start = index + l.begin();
+				end = start;// + l.length();
+			} else {
+				start = index + l.begin();
+				end = start + l.length();
+			}
+		//	start = index + l.begin();
+		//	end = start;// + l.length();
+
 			if (mIndex < start) {
 			//	android.util.Log.v("kiyo","#=ZZZ2==");
 				if(0==l.begin()-(mIndex - mPrevEnd+1)&& l instanceof DeleteLine) {

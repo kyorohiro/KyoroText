@@ -44,9 +44,18 @@ public class DifferAddAction extends CheckAction {
 	}
 
 	@Override
-	public boolean check(Differ owner, int x, int start, int end, int indexFromBase) {
+	public boolean check(Differ owner, int x, int __not_use__start, int __not_use__end, int index) {
 		Line l = owner.getLine(x);
-		try {
+		int start  = 0;
+		int end = 0;
+		try{
+			if (l instanceof DeleteLine) {
+				start = index + l.begin();
+				end = start;// + l.length();
+			} else {
+				start = index + l.begin();
+				end = start + l.length();
+			}
 			 if (mIndex < start) {
 //					mLineList.add(x, new AddLine(mIndex - mPrevEnd, mLine));
 					l.setStart(l.begin()-(mIndex - mPrevEnd));
