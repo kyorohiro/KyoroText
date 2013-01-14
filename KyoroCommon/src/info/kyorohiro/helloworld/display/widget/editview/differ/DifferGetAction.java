@@ -60,8 +60,8 @@ public class DifferGetAction extends CheckAction {
 	private int mDeleteLength = 0;
 
 	@Override
-	public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
-		Line l = ll.get(x);
+	public boolean check(Differ owner, int x, int start, int end, int indexFromBase) {
+		Line l = owner.getLine(x);
 		if (l instanceof DeleteLine) {
 			if (mIndex < start) {
 				mIndexFromBase = mIndex - mDiffLength + mDeleteLength;

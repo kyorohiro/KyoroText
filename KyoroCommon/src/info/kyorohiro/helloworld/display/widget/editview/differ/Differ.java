@@ -30,6 +30,13 @@ public class Differ {
 		return mLineList.get(location);
 	}
 
+	public void addLine(int location, Line line) {
+		mLineList.add(location, line);
+	}
+
+	public void removeLine(int location) {
+		mLineList.remove(location);
+	}
 	//
 	public int numOfLine() {
 		return mLineList.size();
@@ -120,7 +127,7 @@ public class Differ {
 					end = start;// + l.length();
 					index += targetLine.begin();// - l.length();
 					//for(int i=0;i<l.length();i++){
-						if (!action.check(mLineList, lineLocation, start, end, indexFromBase)) {
+						if (!action.check(this, lineLocation, start, end, indexFromBase)) {
 							return;
 						}
 					//}
@@ -129,7 +136,7 @@ public class Differ {
 					end = start + targetLine.length();
 					index += targetLine.begin() + targetLine.length();
 					//indexFromBase += end - start;
-					if (!action.check(mLineList, lineLocation, start, end, indexFromBase)) {
+					if (!action.check(this, lineLocation, start, end, indexFromBase)) {
 						return;
 					}
 				}
@@ -144,7 +151,7 @@ public class Differ {
 		};
 
 		// if return false, when check action is end.
-		public abstract boolean check(LinkedList<Line> l, int x, int start,
+		public abstract boolean check(Differ owner, int lineLocation, int start,
 				int end, int indexFromBase);
 
 		public void end(LinkedList<Line> ll) {

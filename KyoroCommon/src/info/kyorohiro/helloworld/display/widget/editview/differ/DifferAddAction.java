@@ -44,13 +44,13 @@ public class DifferAddAction extends CheckAction {
 	}
 
 	@Override
-	public boolean check(LinkedList<Line> ll, int x, int start, int end, int indexFromBase) {
-		Line l = ll.get(x);
+	public boolean check(Differ owner, int x, int start, int end, int indexFromBase) {
+		Line l = owner.getLine(x);
 		try {
 			 if (mIndex < start) {
 //					mLineList.add(x, new AddLine(mIndex - mPrevEnd, mLine));
 					l.setStart(l.begin()-(mIndex - mPrevEnd));
-					ll.add(x, new AddLine(mIndex - mPrevEnd, mLine));
+					owner.addLine(x, new AddLine(mIndex - mPrevEnd, mLine));
 					mFind = true;
 					return false;
 			} else 
