@@ -8,12 +8,11 @@ import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 import java.util.LinkedList;
 
 public class DifferDeleteAction extends CheckAction {
-	private int mIndex = 0;
 	private int mPrevEnd = 0;
 	private boolean mIsDeleted = false;
 
 	public void delete(Differ differ, int index) {
-		mIndex = index;
+		mTargetPatchedPosition = index;
 		differ.checkAllSortedLine(this);
 		differ.debugPrint();
 	}
@@ -22,54 +21,87 @@ public class DifferDeleteAction extends CheckAction {
 	public void init() {
 		mPrevEnd = 0;
 		mIsDeleted = false;
+		mTargetUnpatchedPosition = mTargetPatchedPosition;
+		mPrevPatchedPosition = 0;
+		mPrevUnpatchedPosition = 0;
 	}
 
+	private int mTargetPatchedPosition = 0;
+	private int mTargetUnpatchedPosition = 0;
+	private int mPrevPatchedPosition = 0;
+	private int mPrevUnpatchedPosition = 0;
+
+	@Override
+	public boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index) {
+		boolean ret = true;
+		try {
+			// in
+			if(mPrevPatchedPosition <= mTargetPatchedPosition && mTargetPatchedPosition < patchedPosition) {
+				owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
+				ret = false;
+			}
+			// out before
+			else if(mTargetPatchedPosition<mPrevPatchedPosition){
+				ret = false;
+			}
+		} finally {
+			mPrevPatchedPosition = patchedPosition;
+			mPrevUnpatchedPosition = unpatchedPosition;
+		}
+		return ret;
+	}
+
+
+
+	/*	
 	@Override
 	public void end(LinkedList<Line> ll) {
 		if(!mIsDeleted) {
 			ll.add( new DeleteLine(mIndex - mPrevEnd));
 		}
-		
 	}
 
 	@Override
 	public boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index) {
-		//android.util.Log.v("kiyo","#=ZZZ1=="+x+","+start+","+end+","+_indexFromBase+","+mIndex);
-		Line l = owner.getLine(lineLocation);
+		Line targetLine = owner.getLine(lineLocation);
 		int start  = 0;
 		int end = 0;
 		try{
-			if (l instanceof DeleteLine) {
+			if (targetLine instanceof DeleteLine) {
 				//indexFromBase += l.length();
-				start = index + l.begin();
+				start = index + targetLine.begin();
 				end = start;// + l.length();
 			} else {
-				start = index + l.begin();
-				end = start + l.length();
+				start = index + targetLine.begin();
+				end = start + targetLine.length();
 			}
-		//	start = index + l.begin();
-		//	end = start;// + l.length();
 
+			// 
+			// out before
+			//
 			if (mIndex < start) {
 			//	android.util.Log.v("kiyo","#=ZZZ2==");
-				if(0==l.begin()-(mIndex - mPrevEnd+1)&& l instanceof DeleteLine) {
+				if(0==targetLine.begin()-(mIndex - mPrevEnd+1)&& targetLine instanceof DeleteLine) {
 				//	android.util.Log.v("kiyo","#=ZZZ3==");
-					l.setStart(mIndex - mPrevEnd);
-					l.set(l.length(), "");
+					targetLine.setStart(mIndex - mPrevEnd);
+					targetLine.set(targetLine.length(), "");
 				} else {
 					//android.util.Log.v("kiyo","#=ZZZ4==");
 					owner.addLine(lineLocation, new DeleteLine(mIndex - mPrevEnd));
-					l.setStart(l.begin()-(mIndex - mPrevEnd+1));
+					targetLine.setStart(targetLine.begin()-(mIndex - mPrevEnd+1));
 				}
 				mIsDeleted = true;
 				return false;
 			}
+			//
+			// in
+			//
 			else if (start <= mIndex && mIndex < end) {
 				//android.util.Log.v("kiyo","#=ZZZ5==");
 
-				l.rm(mIndex - start);
-				if (l.length() == 0) {
-					int tmp = l.begin();
+				targetLine.rm(mIndex - start);
+				if (targetLine.length() == 0) {
+					int tmp = targetLine.begin();
 					if(lineLocation+1<owner.numOfLine()){
 						owner.getLine(lineLocation+1).setStart(owner.getLine(lineLocation+1).begin()+tmp);
 					//	android.util.Log.v("kiyo","#=ZZZ6=="+tmp+","+ll.get(x+1).begin());
@@ -80,13 +112,17 @@ public class DifferDeleteAction extends CheckAction {
 				}
 				mIsDeleted = true;
 				return false;
-			} else {
+			}
+			//
+			// out
+			//
+			else {
 				//android.util.Log.v("kiyo","#=ZZZ7==");
 				return true;
 			}
 		}finally{
 			mPrevEnd = end;
-
 		}
 	}
+//*/
 }
