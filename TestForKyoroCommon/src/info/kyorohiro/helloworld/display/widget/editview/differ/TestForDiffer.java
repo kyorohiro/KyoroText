@@ -282,12 +282,42 @@ public class TestForDiffer extends TestCase {
 			assertEquals("check get", message[3], differ.get(buffer, 2).toString());
 			assertEquals("check get", -1, differ.length());
 
+			differ.deleteLine(0);
+			assertEquals("check get", message[2], differ.get(buffer, 0).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 1).toString());
+			assertEquals("check get", -2, differ.length());
 
+			differ.deleteLine(0);
+			assertEquals("check get", message[3], differ.get(buffer, 0).toString());
+			assertEquals("check get", -3, differ.length());
+
+			differ.deleteLine(0);
+			assertEquals("check get", -4, differ.length());
 		}
 
+		{
+			//senario 00
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message);
+			differ.deleteLine(2);
+			assertEquals("check get", message[0], differ.get(buffer, 0).toString());
+			assertEquals("check get", message[1], differ.get(buffer, 1).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 2).toString());
+			assertEquals("check get", -1, differ.length());
 
+			differ.deleteLine(1);
+			assertEquals("check get", message[0], differ.get(buffer, 0).toString());
+			assertEquals("check get", message[3], differ.get(buffer, 1).toString());
+			assertEquals("check get", -2, differ.length());
 
+			differ.deleteLine(0);
+			assertEquals("check get", message[3], differ.get(buffer, 0).toString());
+			assertEquals("check get", -3, differ.length());
 
+			differ.deleteLine(0);
+			assertEquals("check get", -4, differ.length());
+
+		}
 
 	}
 
