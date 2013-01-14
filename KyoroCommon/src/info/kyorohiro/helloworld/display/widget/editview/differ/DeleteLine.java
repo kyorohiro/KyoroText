@@ -31,7 +31,10 @@ public class DeleteLine  implements Line {
 
 	@Override
 	public void rm(int index) {
+		android.util.Log.v("kiyo","DL:don`t call");
+			mLength++;
 	}
+
 	@Override
 	public int begin() {
 		return mStart;

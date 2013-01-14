@@ -30,6 +30,7 @@ public class DifferDeleteAction extends CheckAction {
 	private int mTargetUnpatchedPosition = 0;
 	private int mPrevPatchedPosition = 0;
 	private int mPrevUnpatchedPosition = 0;
+	private boolean mIsDelete =false;
 
 	@Override
 	public boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index) {
@@ -70,10 +71,18 @@ public class DifferDeleteAction extends CheckAction {
 			mPrevPatchedPosition = patchedPosition;
 			mPrevUnpatchedPosition = unpatchedPosition;
 		}
+		mIsDelete = ret;
 		return ret;
 	}
 
 
+	@Override
+	public void end(LinkedList<Line> ll) {
+		//todo
+		if(mIsDelete){
+		ll.add(new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
+		}
+	}
 
 	/*	
 	@Override
