@@ -5,9 +5,12 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.nio.channels.FileChannel;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -27,6 +30,7 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward.
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.util.AsyncronousTask;
 import info.kyorohiro.helloworld.util.AutocandidateList;
 
 public class FindFile implements Task {
@@ -294,7 +298,7 @@ public class FindFile implements Task {
 				mCandidate.clear();
 //				android.util.Log.v("kiyo","FT: start 00001-1-");
 
-				MyFilter filter = new MyFilter(mFilter);
+//				MyFilter filter = new MyFilter(mFilter);
 //				android.util.Log.v("kiyo","FT: start 00001-2-");
 				BufferManager.getManager().beginInfoBuffer();
 //				android.util.Log.v("kiyo","FT: start 00001-3-");
@@ -317,6 +321,7 @@ public class FindFile implements Task {
 
 				{
 					File p = mPath.getParentFile();
+					Thread.sleep(0);
 					if(p!=null&&p.isDirectory()) {
 						addFile(vfile, p, "..1");
 					}
@@ -326,20 +331,20 @@ public class FindFile implements Task {
 				}
 //				android.util.Log.v("kiyo","FT: start 00002");
 				if(mPath.isDirectory()) {
-					mPath.listFiles(filter);
-					Collection<File> dir = filter.getDirs();
-					Collection<File> files = filter.getFiles();
-					b(vfile, viewer, buffer, dir);
-					b(vfile, viewer, buffer, files);
+					FileListGetter getter = new FileListGetter(mPath, Thread.currentThread());
+					AsyncronousTask sync = new AsyncronousTask(getter);
+					Thread t = new Thread(sync);
+					t.start();
+					sync.waitForTask();
+					File[] list = getter.getFileList();
+					Thread.sleep(0);
+					addFileList(vfile, viewer, buffer, list);
 					{
 						File p = mPath.getParentFile();
 						if(p!=null&&p.isDirectory()) {
 							addFile(vfile, p, "..2");
 						}
 					}
-					dir.clear();
-					files.clear();
-					filter.clear();
 				} else {
 					{
 						File p = mPath.getParentFile();
@@ -357,8 +362,77 @@ public class FindFile implements Task {
 		}
 
 
-		private void b(VirtualFile v, EditableLineView viewer,	
-				EditableLineViewBuffer buffer, Collection<File> fileList) throws InterruptedException, UnsupportedEncodingException, IOException {
+		public static class FileListGetter implements Runnable {
+			private File mTargetPath = null;
+			private Thread mParentThread = null;
+			private File[] mList = null;
+			//private boolean mIsEndTask = false;
+
+			public FileListGetter(File targetPath, Thread parentThread) {
+				mTargetPath = targetPath;
+				mParentThread = parentThread;
+			}
+
+			@Override
+			public synchronized void run() {
+				//try {
+					if(mParentThread != null && mParentThread.isInterrupted()) {
+						return;
+					}
+
+					File[] list = mTargetPath.listFiles();
+					if(mParentThread != null && mParentThread.isInterrupted()) {
+						return;
+					}
+
+					if(list == null) {
+						return;
+					}
+					Arrays.sort(list, new FileComparator());
+					mList = list;
+				//} finally {
+				//	mIsEndTask = true;
+				//	notifyAll();
+				//}
+			}
+
+			public synchronized File[] getFileList() {
+				//try {
+				//	if(!mIsEndTask) {
+				//		wait();
+				//	}
+				//} catch (InterruptedException e) {
+				//	e.printStackTrace();
+				//}
+				return mList;
+			}
+		}
+
+		static class FileComparator implements Comparator<File> {
+			@Override
+			public int compare(File l, File r) {
+				if(l.isDirectory() && !r.isDirectory()) {
+					return -1;
+				}
+				else if(!l.isDirectory() && r.isDirectory()) {
+					return 1;
+				}
+				else {
+					int ret = 0;
+					ret = l.getName().compareTo(r.getName());
+					if(ret == 0) {
+						return l.compareTo(r);
+					} else {
+						return ret;
+					}
+				}
+			}
+		}
+		private void addFileList(VirtualFile v, EditableLineView viewer,	
+				EditableLineViewBuffer buffer,
+				//Collection<File> fileList
+				File[] fileList
+				) throws InterruptedException, UnsupportedEncodingException, IOException {
 			int size = buffer.getDiffer().length();
 			int c=0;
 			for(File f : fileList) {
@@ -392,6 +466,7 @@ public class FindFile implements Task {
 
 
 	}
+	/*
 	public static class MyFilter implements FilenameFilter {
 		private String mFilter = "";
 		private TreeMap<String,File> mFile = new TreeMap<String,File>();
@@ -434,7 +509,7 @@ public class FindFile implements Task {
 			}
 		}
 	}
-
+*/
 	public static class MyReceiver implements Receiver {
 		public static FindFileTask sTask = null;
 		private WeakReference<FindFileTask> mTask = null;
