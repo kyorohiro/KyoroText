@@ -13,7 +13,6 @@ public class DifferAddAction extends CheckAction {
 	private int mIndex = 0;
 	private boolean mFind = false;
 	private CharSequence mLine = "";
-	private LinkedList<Line> mLineList = null;
 	
 	public void setIndex(int index) {
 		mIndex = index;

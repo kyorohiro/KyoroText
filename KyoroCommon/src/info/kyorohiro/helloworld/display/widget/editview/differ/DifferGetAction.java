@@ -60,7 +60,7 @@ public class DifferGetAction extends CheckAction {
 			if(mPrevPatchedPosition <= mTargetPatchedPosition&& mTargetPatchedPosition < patchedPosition) {
 				//mTargetPatchedPosition = mPrevPatchedPosition+mTargetPatchedPosition-mPrevPatchedPosition; 
 				if((mPrevPatchedPosition+targetLine.begin())<=mTargetPatchedPosition){
-					android.util.Log.v("kiyo","#00#"+"("+mTargetPatchedPosition+"-"+mPrevPatchedPosition+")"+"-"+targetLine.begin());
+//					android.util.Log.v("kiyo","#00#"+"("+mTargetPatchedPosition+"-"+mPrevPatchedPosition+")"+"-"+targetLine.begin());
 					mReturnString = targetLine.get((mTargetPatchedPosition-mPrevPatchedPosition)-targetLine.begin());
 					mIsDiffer =true;
 					//android.util.Log.v("kiyo","#01#"+mRe);

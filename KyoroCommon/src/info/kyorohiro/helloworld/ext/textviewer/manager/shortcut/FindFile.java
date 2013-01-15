@@ -128,22 +128,8 @@ public class FindFile implements Task {
 			File path = null;
 			File parent = mCurrentPath.getParentFile();
 			mini = mini.replaceAll("\r\n|\n|", "");
-//			if(mini.equals("..")) {
-//				path = parent;
-//			}else 
-//			if(mCurrentPath.isDirectory()) {
-//				path = new File(mCurrentPath, mini);
-//			} else {
-//				if(parent == null) {
-//					return;
-//				}
-//				path = new File(parent, mini);
-//			}
+
 			path = new File(mini);
-//			android.util.Log.v("kiyo","##--A-"+path.isFile());
-//			android.util.Log.v("kiyo","##--A-"+path.isDirectory());
-//			android.util.Log.v("kiyo","##--A->"+path.exists()+"<");
-//			android.util.Log.v("kiyo","##--A->"+path+"<");
 			if(!path.exists()) {
 //				android.util.Log.v("kiyo","##--AZ-");				
 				return;
@@ -241,6 +227,9 @@ public class FindFile implements Task {
 		private boolean mFirst = true;
 		@Override
 		public void begin() {
+			if(!mFirst) {
+				return;
+			}
 //.util.Log.v("kiyo","begin");
 			//
 			File target = mCurrentPath;
@@ -257,7 +246,7 @@ public class FindFile implements Task {
 				} else{
 					BufferManager.getManager().changeFocus(BufferManager.getManager().getMiniBuffer());
 				}
-			}
+			} 
 			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
 			buffer.clear();
@@ -266,10 +255,13 @@ public class FindFile implements Task {
 			buffer.pushCommit(""+base.getAbsolutePath(), 1);
 			modeBuffer.getLineView().recenter();
 //			android.util.Log.v("kiyo","FT: start 03");
-			modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile(),""));
-			
-			//
+			//if(mFirst) {
+				
+				modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile(),""));			
+			//}
+				//
 			MessageDispatcher.getInstance().addReceiver(new MyReceiver(this));
+
 		}
 		@Override
 		public void end() {
