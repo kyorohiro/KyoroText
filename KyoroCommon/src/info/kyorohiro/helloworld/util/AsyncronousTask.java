@@ -23,13 +23,21 @@ public class AsyncronousTask implements Runnable {
 		notifyAll();
 	}
 
-	public synchronized void waitForTask() {
+	public synchronized boolean waitForTask() {
 		if (mIsAlive) {
 			try {
+//				android.util.Log.v("kiyo","-------1------");
 				wait();
+//				android.util.Log.v("kiyo","-------2------");
+				return true;
 			} catch (InterruptedException e) {
+//				android.util.Log.v("kiyo","------------e------");
 				e.printStackTrace();
+				return false;
 			}
+//			android.util.Log.v("kiyo","-------3------");
+		} else {
+			return true;
 		}
 	}
 }

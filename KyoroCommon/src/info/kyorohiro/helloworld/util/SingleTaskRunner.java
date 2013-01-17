@@ -13,7 +13,8 @@ public class SingleTaskRunner {
 	private Thread mTaskUpdater = null;
 
 	private void log(String message) {
-		//System.out.println("#SingleTaskRunner#"+message);
+		System.out.println("#SingleTaskRunner#"+message);
+//		android.util.Log.v("kiyo","#SingleTaskRunner#"+message);
 	}
 
 	//
@@ -27,9 +28,11 @@ public class SingleTaskRunner {
 		// 
 		mNextTask = nextTask;
 		if(mTaskUpdater == null || !mTaskUpdater.isAlive()) {
+			log("--2--");
 			mTaskUpdater = new UpdateTaskThread();
 			mTaskUpdater.start();
 		}
+		log("--3--");
 	}
 
 	public synchronized void endTask() {
@@ -52,10 +55,12 @@ public class SingleTaskRunner {
 	public synchronized void updateTask(Runnable task) {
 		log("done 2");
 		if(task == null) {
+			log("done 2-1");
 			endTask();
 			return;
 		}
 		if(mTaskRunner !=null && mTaskRunner.isAlive()) {
+			log("done 2-2");
 			Thread tmp = mTaskRunner;
 			mTaskRunner = null;
 			try {
@@ -67,6 +72,7 @@ public class SingleTaskRunner {
 				e.printStackTrace();
 			}
 		}
+		log("done 2-3");
 		mTaskRunner = new Thread(task);
 		mTaskRunner.start();
 	}

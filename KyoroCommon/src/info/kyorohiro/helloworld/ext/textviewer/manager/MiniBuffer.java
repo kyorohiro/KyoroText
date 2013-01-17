@@ -123,7 +123,10 @@ public class MiniBuffer extends TextViewer {
 	//
 	private SingleTaskRunner mSingleTaskRunner = new SingleTaskRunner();
 	public synchronized void startTask(Runnable nextTask) {
+		//android.util.Log.v("kiyo","--startTask--");
 		mSingleTaskRunner.startTask(nextTask);
+		//android.util.Log.v("kiyo","--endTask--");
+
 	}
 
 	public synchronized void endTask() {

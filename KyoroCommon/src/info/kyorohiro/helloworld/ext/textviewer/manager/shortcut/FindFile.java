@@ -54,25 +54,32 @@ public class FindFile implements Task {
 //		private TextViewer mViewer = null;
 		private WeakReference<TextViewer> mViewer = null;
 
-		private File mCurrentPath  = new File("");
+		private File _mCurrentPath  = new File("");
 		private File mCurrentDir  = new File("");
 		private UpdateInfo mUpdate = null;
 		private boolean mFirstFocosIsInfo = false;
 
+		public void setCurrentPath(File path) {
+			_mCurrentPath = path;
+//			android.util.Log.v("kiyo","setCurrent="+path);
+		}
+		public File getCurrentFile() {
+			return _mCurrentPath;
+		}
 		public FindFileTask(TextViewer viewer, File path, boolean firstFocosIsInfo) {
 			mViewer = new WeakReference<TextViewer>(viewer);
-			mCurrentPath = path;
+			setCurrentPath(path);
 			mFirstFocosIsInfo = firstFocosIsInfo;
 		}
 
 		public FindFileTask(TextViewer viewer, File path) {
 			mViewer = new WeakReference<TextViewer>(viewer);
-			mCurrentPath = path;
+			setCurrentPath(path);
 		}
 
 		public FindFileTask(TextViewer viewer) {
 			mViewer = new WeakReference<TextViewer>(viewer);
-			mCurrentPath = new File(viewer.getCurrentPath());
+			setCurrentPath(new File(viewer.getCurrentPath()));
 		}
 
 		public boolean isAlive() {
@@ -124,17 +131,20 @@ public class FindFile implements Task {
 //			android.util.Log.v("kiyo","input " + mini);
 			TextViewer viewer = mViewer.get();
 			if(viewer == null||!isAlive()) {
+//				android.util.Log.v("kiyo","in--1--");
 				return;
 			}
 
 			MiniBuffer minibuffer = BufferManager.getManager().getMiniBuffer();
 			minibuffer.startMiniBufferJob(this);
 			File path = null;
-			File parent = mCurrentPath.getParentFile();
+			File parent = getCurrentFile();//mCurrentPath.getParentFile();
+
 			mini = mini.replaceAll("\r\n|\n|", "");
 
 			path = new File(mini);
 			if(!path.exists()) {
+//				android.util.Log.v("kiyo","in--2--");
 //				android.util.Log.v("kiyo","##--AZ-");				
 				return;
 			}
@@ -152,9 +162,11 @@ public class FindFile implements Task {
 			//
 //			android.util.Log.v("kiyo","#------"+path);
 			if(path.exists()&&!path.isDirectory()&&path.isFile()) {
+//				android.util.Log.v("kiyo","in--3--");
 //				android.util.Log.v("kiyo","##--------A-1-----------");
 				enter(path.toString());
 			} else {
+//				android.util.Log.v("kiyo","in--4--");
 //				android.util.Log.v("kiyo","##--------A-3-----------");
 				tab(path.toString());
 			}
@@ -163,20 +175,25 @@ public class FindFile implements Task {
 
 		@Override
 		public void tab(String line) {
+//			android.util.Log.v("kiyo","tab--1--");
 //			android.util.Log.v("kiyo","tab " + line);
 			TextViewer viewer = mViewer.get();
 			if(viewer == null||!isAlive()) {
+//				android.util.Log.v("kiyo","tab--2--");
 				return;
 			}
 			File lf = new File(line);
 			File pf = lf.getParentFile();
 			MiniBuffer modeBuffer = BufferManager.getManager().getMiniBuffer();
-			if(mCurrentPath.getAbsoluteFile().equals(lf.getAbsoluteFile())) {
+			if(getCurrentFile().getAbsoluteFile().equals(lf.getAbsoluteFile())) {
+//				android.util.Log.v("kiyo","tab--3--"+getCurrentFile().getAbsoluteFile());
+//				android.util.Log.v("kiyo","tab--3--"+lf.getAbsoluteFile());
 				//android.util.Log.v("kiyo","##--------3------------"+mCurrentPath+","+pf.getAbsolutePath());
 //				android.util.Log.v("kiyo","##--------1------------");
-				mCurrentPath = lf.getAbsoluteFile();
+				setCurrentPath(lf.getAbsoluteFile());
 				TextViewer mInfo = BufferManager.getManager().getInfoBuffer();
 				if(mInfo == null || mInfo.isDispose()) {
+//					android.util.Log.v("kiyo","tab--4--");
 					return;
 				}
 				int num = mInfo.getLineView().getShowingTextStartPosition();
@@ -189,16 +206,20 @@ public class FindFile implements Task {
 					mInfo.getLineView().setPositionY(0);					
 				}
 			} else {
+//				android.util.Log.v("kiyo","tab--5--");
 //				android.util.Log.v("kiyo","##--------2------------");
-				File cp = mCurrentPath.getParentFile();
+				File cp = getCurrentFile().getParentFile();
 			//	if(!cp.exists()) {
 			//		cp = mCurrentPath;
 			//	}
 				if(cp != null&&cp.equals(pf)) {
+//					android.util.Log.v("kiyo","tab--6--");
 					if(mUpdate != null) {
+//						android.util.Log.v("kiyo","tab--7--");
 						String candidate = mUpdate.getCandidate(lf.getName());
 						//android.util.Log.v("kiyo","##---4--"+candidate+","+lf.getName());
 						if(lf.getName().length()<candidate.length()) {
+//							android.util.Log.v("kiyo","tab--8--");
 							//					MiniBuffer buffer = BufferManager.getManager().getMiniBuffer();
 							EditableLineViewBuffer buffer = (EditableLineViewBuffer)modeBuffer.getLineView().getLineViewBuffer();
 							buffer.clear();
@@ -213,14 +234,16 @@ public class FindFile implements Task {
 				}
 //				android.util.Log.v("kiyo","##--------4------------"+mCurrentPath+","+lf.getAbsolutePath());
 				if(lf.exists() && lf.isDirectory()) {
+//					android.util.Log.v("kiyo","tab--9--");
 //					android.util.Log.v("kiyo","##--------4-1-----------");
-					mCurrentPath = lf.getAbsoluteFile();
+					setCurrentPath(lf.getAbsoluteFile());
 					mCurrentDir = lf.getAbsoluteFile();
 //					android.util.Log.v("kiyo","FT: start 00");
 					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line), ""));
 				} else if(pf.exists()){
+//					android.util.Log.v("kiyo","tab--10--");
 //					android.util.Log.v("kiyo","##--------4-2-----------");
-					mCurrentPath = lf.getAbsoluteFile();
+					setCurrentPath(lf.getAbsoluteFile());
 					mCurrentDir = pf;
 //					android.util.Log.v("kiyo","FT: start 01");
 					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), pf, lf.getName()));	
@@ -236,7 +259,8 @@ public class FindFile implements Task {
 			}
 //.util.Log.v("kiyo","begin");
 			//
-			File target = mCurrentPath;
+//			android.util.Log.v("kiyo","begin"+getCurrentFile());
+			File target = getCurrentFile();
 			File base = target.getParentFile();
 			if(base == null||target.isDirectory()){
 				base = target;
@@ -260,8 +284,8 @@ public class FindFile implements Task {
 			modeBuffer.getLineView().recenter();
 //			android.util.Log.v("kiyo","FT: start 03");
 			//if(mFirst) {
-				
-				modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), mCurrentPath = base.getAbsoluteFile(),""));			
+				setCurrentPath(base.getAbsoluteFile());
+				modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), getCurrentFile(),""));			
 			//}
 				//
 			MessageDispatcher.getInstance().addReceiver(new MyReceiver(this));
@@ -292,6 +316,8 @@ public class FindFile implements Task {
 
 		@Override
 		public void run() {
+//			android.util.Log.v("kiyo","-------D1------");
+
 			try {
 //				android.util.Log.v("kiyo","FT: start ");
 				int c=0;
@@ -321,8 +347,12 @@ public class FindFile implements Task {
 
 				{
 					File p = mPath.getParentFile();
+					//if(p!=null&&mPath.isFile()) {
+					//	p = p.getParentFile()
+					//}
 					Thread.sleep(0);
 					if(p!=null&&p.isDirectory()) {
+//						android.util.Log.v("kiyo",""+p.toString());
 						addFile(vfile, p, "..1");
 					}
 				}
@@ -331,13 +361,26 @@ public class FindFile implements Task {
 				}
 //				android.util.Log.v("kiyo","FT: start 00002");
 				if(mPath.isDirectory()) {
+//					android.util.Log.v("kiyo","QWW--0-");
 					FileListGetter getter = new FileListGetter(mPath, Thread.currentThread());
 					AsyncronousTask sync = new AsyncronousTask(getter);
 					Thread t = new Thread(sync);
 					t.start();
-					sync.waitForTask();
+//					android.util.Log.v("kiyo","QWW--1-");
+					if(!sync.waitForTask()) {
+						return;
+					}
+//					android.util.Log.v("kiyo","QWW--2-");
+//					android.util.Log.v("kiyo","-------D01------");
+					if(Thread.currentThread().isInterrupted()) {
+//						android.util.Log.v("kiyo","-------D01-1------");
+						return;
+					}
+//					android.util.Log.v("kiyo","-------D01-2-----");
 					File[] list = getter.getFileList();
+//					android.util.Log.v("kiyo","-------D02------");
 					Thread.sleep(0);
+//					android.util.Log.v("kiyo","QWW--3-");
 					addFileList(vfile, viewer, buffer, list);
 					{
 						File p = mPath.getParentFile();
@@ -355,8 +398,10 @@ public class FindFile implements Task {
 				}
 //				android.util.Log.v("kiyo","FT: start 00003");
 			} catch(Throwable t) {
+//				android.util.Log.v("kiyo","-------D1------");
 				t.printStackTrace();
 			} finally {
+//				android.util.Log.v("kiyo","-------D2------");
 //				android.util.Log.v("kiyo","FT: end ");
 			}
 		}
@@ -384,7 +429,6 @@ public class FindFile implements Task {
 					if(mParentThread != null && mParentThread.isInterrupted()) {
 						return;
 					}
-
 					if(list == null) {
 						return;
 					}
@@ -466,71 +510,33 @@ public class FindFile implements Task {
 
 
 	}
-	/*
-	public static class MyFilter implements FilenameFilter {
-		private String mFilter = "";
-		private TreeMap<String,File> mFile = new TreeMap<String,File>();
-		private TreeMap<String,File> mDir = new TreeMap<String,File>();
-		
-		public MyFilter(String filter) {
-			mFilter = filter;
-		}
 
-		public Collection<File> getFiles() {
-			Collection<File> ret = mFile.values();
-			return mFile.values();
-		}
-		public Collection<File> getDirs() {
-			Collection<File> ret = mDir.values();
-			return mDir.values();
-		}
-
-		@Override
-		public boolean accept(File dir, String filename) {
-			if(filename.startsWith(mFilter)) {
-				File tmp = new File(dir,filename);
-				if(tmp.isDirectory()) {
-					mDir.put(tmp.getName().toLowerCase()+":"+tmp.getName(), tmp);
-				} else {
-					mFile.put(tmp.getName().toLowerCase()+":"+tmp.getName(), tmp);
-				}
-				//android.util.Log.v("kiyo","aa="+filename+","+mFilter);
-				//return true;
-				return false;
-			}
-			return false;
-		}
-		public void clear() {
-			if(mFile != null) {
-				mFile.clear();
-			}
-			if(mDir != null) {
-				mDir.clear();
-			}
-		}
-	}
-*/
 	public static class MyReceiver implements Receiver {
 		public static FindFileTask sTask = null;
 		private WeakReference<FindFileTask> mTask = null;
 		public MyReceiver(FindFileTask task) {
+//			android.util.Log.v("kiyo","rev new");
 			sTask = task;
 			mTask = new WeakReference<FindFileTask>(task);
 		}
 
 		@Override
 		public String getType() {
+//			android.util.Log.v("kiyo","revtype");
 			return "find";
 		}
 
 		@Override
 		public void onReceived(KyoroString message, String type) {
 //			android.util.Log.v("kiyo","rev="+message);
+//			android.util.Log.v("kiyo","rev="+message.getExtra());
 			FindFileTask task = mTask.get();
 			if(!task.isAlive()){
+//				android.util.Log.v("kiyo","rev=--1--");
 				return;
 			}
 			if(task != null) {
+//				android.util.Log.v("kiyo","rev=--2--");
 				//task.input(message.toString());
 				task.input(message.getExtra());
 				//task.tab(message.getExtra());
