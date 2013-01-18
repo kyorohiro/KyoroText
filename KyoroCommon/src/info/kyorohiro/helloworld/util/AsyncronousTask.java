@@ -12,6 +12,10 @@ public class AsyncronousTask implements Runnable {
 		mTask = task;
 	}
 
+	public Runnable getTask() {
+		return mTask;
+	}
+
 	public void run() {
 		try {
 			log("start task");
