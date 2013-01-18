@@ -4,7 +4,9 @@ import junit.framework.TestCase;
 
 public class TestForByteArrayBuilder extends TestCase {
 
-	public static int LEVEL = 10;
+	//
+	// if modify test target code.  you must test at LEVEL = 0
+	public static int LEVEL = 30;
 
 	private void log(String log) {
 		android.util.Log.v("kiyo","#TestForByteArrayBuilder#"+log);

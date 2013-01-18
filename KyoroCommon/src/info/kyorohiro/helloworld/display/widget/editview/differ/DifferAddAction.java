@@ -25,6 +25,8 @@ public class DifferAddAction extends CheckAction {
 	@Override
 	public void init() {
 		mIsAdded = false;
+		mPrevPatchedPosition = 0;
+		mPrevUnpatchedPosition = 0;
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class DifferAddAction extends CheckAction {
 				if(mTargetPatchedPosition < start) {
 					// new AddLine
 					owner.addLine(lineLocation, new AddLine(mTargetPatchedPosition - mPrevPatchedPosition, mLine));	
-					targetLine.setStart(targetLine.begin()-1);
+					//targetLine.setStart(targetLine.begin()-1);
 					// loop end
 					mIsAdded = true;
 					return false;
@@ -83,35 +85,7 @@ public class DifferAddAction extends CheckAction {
 		}
 		// expect next roop
 		return true;
-//		*/
-		/*
-		Line l = owner.getLine(lineLocation);
-		int start  = 0;
-		int end = 0;
-		try{
-			if (l instanceof DeleteLine) {
-				start = index + l.begin();
-				end = start;// + l.length();
-			} else {
-				start = index + l.begin();
-				end = start + l.length();
-			}
-			 if (mTargetPatchedPosition < start) {
-					l.setStart(l.begin()-(mTargetPatchedPosition - mPrevEnd));
-					owner.addLine(lineLocation, new AddLine(mTargetPatchedPosition - mPrevEnd, mLine));
-					mFind = true;
-					return false;
-			} else 
-			if (!(l instanceof DeleteLine)&&start <= mTargetPatchedPosition && mTargetPatchedPosition <= end) {
-				mFind = true;
-				l.insert(mTargetPatchedPosition - start, mLine);
-				return false;
-			}
-			return true;
-		} finally {
-			mPrevEnd = end;
-		}
-	//	*/
+
 	}
 
 }

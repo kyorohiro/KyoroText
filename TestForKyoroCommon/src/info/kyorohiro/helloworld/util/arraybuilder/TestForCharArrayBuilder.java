@@ -4,8 +4,9 @@ import junit.framework.TestCase;
 
 public class TestForCharArrayBuilder extends TestCase {
 
-
-	private static final int LEVEL = 10;
+	//
+	// if modify test target code.  you must test at LEVEL = 0
+	private static final int LEVEL = 30;
 
 	private void log(String log) {
 		android.util.Log.v("kiyo","#TestForCharArrayBuilder#"+log);
