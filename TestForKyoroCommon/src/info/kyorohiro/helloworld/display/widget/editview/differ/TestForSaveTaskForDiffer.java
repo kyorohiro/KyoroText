@@ -36,7 +36,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 			
 			// senario
 			File path = new File(Environment.getExternalStorageDirectory(),"__kyoro_test__.txt");
-			VirtualFile vfile = new VirtualFile(path, 501);
+			VirtualFile vfile = new VirtualFile(path, 2056+1);
 			differ.deleteLine(0);
 			TaskTicket<String> ticket = differ.save(buffer, vfile);
 			
@@ -48,7 +48,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 				String tag = SaveTaskForDiffer.encodeDeleteLine(buffer.get(0).getBeginPointer(), 
 						buffer.get(0).getEndPointer());
 				assertTrue(""+len +">= 0",len >= 0);
-				assertEquals(tag, new String(b,0,len,"utf8"));
+				assertEquals(""+tag+","+new String(b, 0, len, "utf8"),tag, new String(b, 0, len, "utf8"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {

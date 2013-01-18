@@ -51,14 +51,32 @@ public class SaveTaskForDiffer implements CheckAction ,TaskTicket.Task<String>, 
 
 	@Override
 	public void init() {
+		mPrevPatchedPosition = 0;
+		mPrevUnpatchedPosition = 0;
 	}
+
+	private int mPrevPatchedPosition = 0;
+	private int mPrevUnpatchedPosition = 0;
 
 	@Override
 	public boolean check(Differ owner, int lineLocation, int patchedPosition,
 			int unpatchedPosition, int index) {
 		Line targetLine = owner.getLine(lineLocation);
 
-		return false;
+		try {
+		if(targetLine instanceof DeleteLine) {
+			try {
+				save(unpatchedPosition, patchedPosition, (DeleteLine)targetLine);
+			} catch (FaileSaveException e) {
+				//todo
+				e.printStackTrace();
+			}			
+		}
+		} finally {
+			mPrevPatchedPosition = patchedPosition;
+			mPrevUnpatchedPosition = unpatchedPosition;
+		}
+		return true;
 	}
 
 	@Override
@@ -95,10 +113,11 @@ public class SaveTaskForDiffer implements CheckAction ,TaskTicket.Task<String>, 
 	}
 
 	public void save(int unpatchedPosition, int patchedPositon, DeleteLine line) throws FaileSaveException {
-		int start = unpatchedPosition + line.begin();
+		int start = mPrevUnpatchedPosition + line.begin();
 		int end = start + line.length();
 		try {
 			for (int location = start; location < end; location++) {
+				android.util.Log.v("kiyo",""+location);
 				KyoroString deletedLine = mTarget.get(location);
 				long beginPointer = deletedLine.getBeginPointer();
 				long endPointer = deletedLine.getEndPointer();
