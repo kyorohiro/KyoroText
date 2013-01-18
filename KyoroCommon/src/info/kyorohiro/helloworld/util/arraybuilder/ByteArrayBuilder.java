@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.util;
+package info.kyorohiro.helloworld.util.arraybuilder;
 
 //
 //promitive 型なので テンプレートが使えない？

@@ -2,8 +2,8 @@ package info.kyorohiro.helloworld.display.simple;
 
 
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.util.CharArrayBuilder;
-import info.kyorohiro.helloworld.util.FloatArrayBuilder;
+import info.kyorohiro.helloworld.util.arraybuilder.CharArrayBuilder;
+import info.kyorohiro.helloworld.util.arraybuilder.FloatArrayBuilder;
 
 public class SimpleGraphicUtil {
 

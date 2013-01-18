@@ -2,9 +2,9 @@ package info.kyorohiro.helloworld.io;
 
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.util.ByteArrayBuilder;
-import info.kyorohiro.helloworld.util.CharArrayBuilder;
-import info.kyorohiro.helloworld.util.FloatArrayBuilder;
+import info.kyorohiro.helloworld.util.arraybuilder.ByteArrayBuilder;
+import info.kyorohiro.helloworld.util.arraybuilder.CharArrayBuilder;
+import info.kyorohiro.helloworld.util.arraybuilder.FloatArrayBuilder;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

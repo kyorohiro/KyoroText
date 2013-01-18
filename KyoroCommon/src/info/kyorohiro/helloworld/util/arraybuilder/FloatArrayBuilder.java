@@ -1,18 +1,11 @@
-package info.kyorohiro.helloworld.util;
+package info.kyorohiro.helloworld.util.arraybuilder;
 
 //
-// KyoroString�ɋz����B
-public class CharArrayBuilder {
+// promitive 型なので テンプレートが使えない？
+//
+public class FloatArrayBuilder {
 	private int mPointer = 0;
-	private char[] mBuffer = new char[256];
-
-	public void append(char moji){
-		if(mPointer >= mBuffer.length){
-			updateBuffer();
-		}
-		mBuffer[mPointer] = moji;
-		mPointer++;
-	}
+	private float[] mBuffer = new float[256];
 
 	public void setBufferLength(int length) {
 		if(mBuffer.length < length) {
@@ -25,17 +18,26 @@ public class CharArrayBuilder {
 	}
 
 	private void updateBuffer(int length) {
-		char[] tmp = new char[length];
+		float[] tmp = new float[length];
 		for(int i=0;i<mBuffer.length;i++) {
 			tmp[i] = mBuffer[i];
 		}
 		mBuffer = tmp;
 	}
+
+	public void append(float moji){
+		if(mPointer >= mBuffer.length){
+			updateBuffer();
+		}
+		mBuffer[mPointer] = moji;
+		mPointer++;
+	}
+
 	public void clear() {
 		mPointer = 0;
 	}
 
-	public char[] getBuffer(){
+	public float[] getBuffer(){
 		return mBuffer;
 	}
 

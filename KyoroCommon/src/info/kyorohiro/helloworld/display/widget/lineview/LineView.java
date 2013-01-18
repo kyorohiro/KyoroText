@@ -9,8 +9,8 @@ import info.kyorohiro.helloworld.display.simple.SimpleImage;
 import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.util.FloatArrayBuilder;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
+import info.kyorohiro.helloworld.util.arraybuilder.FloatArrayBuilder;
 
 //
 // 縺薙�繧ｯ繝ｩ繧ｹ縺ｯ縺ｧ縺九☆縺弱ｋ縺ｮ縺ｧ蟆上＆縺上☆繧�

@@ -2,8 +2,8 @@ package info.kyorohiro.helloworld.display.simple.sample;
 
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.util.CharArrayBuilder;
-import info.kyorohiro.helloworld.util.FloatArrayBuilder;
+import info.kyorohiro.helloworld.util.arraybuilder.CharArrayBuilder;
+import info.kyorohiro.helloworld.util.arraybuilder.FloatArrayBuilder;
 
 //todo android dependent now
 public abstract class BreakText {

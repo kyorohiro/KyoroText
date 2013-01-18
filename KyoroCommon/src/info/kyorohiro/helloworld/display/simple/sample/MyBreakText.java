@@ -2,7 +2,7 @@ package info.kyorohiro.helloworld.display.simple.sample;
 
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.util.CharArrayBuilder;
+import info.kyorohiro.helloworld.util.arraybuilder.CharArrayBuilder;
 
 //
 //�@���̃R�[�h����A����Ȃ��@�\���폜����K�v������B
