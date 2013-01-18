@@ -156,7 +156,7 @@ public class SimpleTextDecoder {
 		KyoroString ret =new KyoroString(mBuffer.getAllBufferedMoji(),
 				mBuffer.getCurrentBufferedMojiSize());
 		ret.setCash(mWidths.getBuffer(),mWidths.length(), (int)textSize);
-		ret.setCashContent(mSource.getAllBufferedMoji(),mSource.getCurrentBufferedMojiSize());
+		ret.setCashContent(mSource.getBuffer(),mSource.length());
 		//time2 = System.currentTimeMillis();
 		//android.util.Log.v("kiyo","time a="+(time2-time1));
 		return ret;

@@ -1,18 +1,24 @@
 package info.kyorohiro.helloworld.util;
 
 //
+// promitive 型なので テンプレートが使えない？
+//
 public class FloatArrayBuilder {
 	private int mPointer = 0;
 	private float[] mBuffer = new float[256];
 
 	public void setBufferLength(int length) {
 		if(mBuffer.length < length) {
-			updateBuffer();
+			updateBuffer(length>mBuffer.length*2?length:mBuffer.length*2);
 		}
 	}
 
 	private void updateBuffer() {
-		float[] tmp = new float[mBuffer.length*2];
+		updateBuffer(mBuffer.length*2);
+	}
+
+	private void updateBuffer(int length) {
+		float[] tmp = new float[length];
 		for(int i=0;i<mBuffer.length;i++) {
 			tmp[i] = mBuffer[i];
 		}
