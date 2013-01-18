@@ -321,6 +321,213 @@ public class TestForDiffer extends TestCase {
 
 	}
 
+	public void testRandomSenario3() {
+		String[] message = {};
+		String[] message1 = {"--1--"};
+		String[] message2 = {"--1--","--2--"};
+
+		{
+			//senario 00
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message);
+			differ.addLine(0, "--0--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+	
+			differ.addLine(1, "--1--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--1--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 2, differ.length());
+
+			differ.deleteLine(1);
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+
+			differ.deleteLine(0);
+			assertEquals("check get", 0, differ.length());
+
+			//
+			// extra
+			//
+			differ.addLine(0, "--0--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+	
+			differ.addLine(0, "--1--");
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--0--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 2, differ.length());
+
+		}
+
+		{
+			//senario 00
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message);
+			differ.addLine(0, "--0--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+	
+			differ.addLine(1, "--1--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--1--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 2, differ.length());
+
+			differ.deleteLine(0);
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+
+			differ.deleteLine(0);
+			assertEquals("check get", 0, differ.length());
+
+			//
+			// extra
+			//
+			differ.addLine(0, "--0--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+	
+			differ.addLine(0, "--1--");
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--0--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 2, differ.length());
+
+			
+		}
+
+		{
+			//senario 00
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message);
+			differ.addLine(0, "--0--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+	
+			differ.addLine(0, "--1--");
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--0--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 2, differ.length());
+
+			differ.deleteLine(0);
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+
+			differ.deleteLine(0);
+			assertEquals("check get", 0, differ.length());
+
+			//
+			// extra
+			//
+			differ.addLine(0, "--0--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+	
+			differ.addLine(0, "--1--");
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--0--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 2, differ.length());
+
+		}
+
+		{
+			//senario 00
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message);
+			differ.addLine(0, "--0--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+	
+			differ.addLine(0, "--1--");
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--0--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 2, differ.length());
+
+			differ.deleteLine(1);
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+
+			differ.deleteLine(0);
+			assertEquals("check get", 0, differ.length());
+			//
+			// extra
+			//
+			differ.addLine(0, "--0--");
+			assertEquals("check get", "--0--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 1, differ.length());
+	
+			differ.addLine(0, "--1--");
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--0--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 2, differ.length());
+		}
+
+		{
+			//senario ------------------------------
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message1);
+			differ.deleteLine(0);
+			assertEquals("check get", -1, differ.length());
+
+			differ.addLine(0,"--a--");
+			assertEquals("check get", "--a--", differ.get(buffer, 0).toString());
+			assertEquals("check get", 0, differ.length());
+		}
+		{
+			//senario ------------------------------
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message2);
+			differ.deleteLine(0);
+			assertEquals("check get", -1, differ.length());
+			assertEquals("check get", "--2--", differ.get(buffer, 0).toString());
+
+			differ.addLine(0,"--a--");
+			assertEquals("check get", "--a--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--2--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 0, differ.length());
+		}
+		{
+			//senario ------------------------------
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message2);
+			differ.deleteLine(0);
+			assertEquals("check get", -1, differ.length());
+			assertEquals("check get", "--2--", differ.get(buffer, 0).toString());
+
+			differ.addLine(1,"--a--");
+			assertEquals("check get", "--2--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--a--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 0, differ.length());
+		}
+
+		{
+			//senario ------------------------------
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message2);
+			differ.deleteLine(1);
+			assertEquals("check get", -1, differ.length());
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+
+			differ.addLine(0,"--a--");
+			assertEquals("check get", "--a--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--1--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 0, differ.length());
+		}
+		{
+			//senario ------------------------------
+			Differ differ = new Differ();
+			MyBuffer buffer = new MyBuffer(message2);
+			differ.deleteLine(1);
+			assertEquals("check get", -1, differ.length());
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+
+			differ.addLine(1,"--a--");
+			assertEquals("check get", "--1--", differ.get(buffer, 0).toString());
+			assertEquals("check get", "--a--", differ.get(buffer, 1).toString());
+			assertEquals("check get", 0, differ.length());
+		}
+
+	}
+
 	public static class MyBuffer implements LineViewBufferSpec {
 		private LinkedList<KyoroString> mBuffer = new LinkedList<KyoroString>();
 

@@ -351,9 +351,12 @@ public class FindFile implements Task {
 					//	p = p.getParentFile()
 					//}
 					Thread.sleep(0);
+					if(p!=null&&p.getParentFile() != null && p.getParentFile().isDirectory()) {
+						addFile(vfile, p.getParentFile(), "../..");						
+					}
 					if(p!=null&&p.isDirectory()) {
 //						android.util.Log.v("kiyo",""+p.toString());
-						addFile(vfile, p, "..1");
+						addFile(vfile, p, "..");
 					}
 				}
 				if(!mPath.isDirectory()&&mPath.isFile()) {
@@ -385,7 +388,7 @@ public class FindFile implements Task {
 					{
 						File p = mPath.getParentFile();
 						if(p!=null&&p.isDirectory()) {
-							addFile(vfile, p, "..2");
+							addFile(vfile, p, "..");
 						}
 					}
 				} else {
