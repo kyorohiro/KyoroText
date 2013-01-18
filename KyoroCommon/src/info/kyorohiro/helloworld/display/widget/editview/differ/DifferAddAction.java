@@ -2,6 +2,8 @@ package info.kyorohiro.helloworld.display.widget.editview.differ;
 
 import java.util.LinkedList;
 
+import android.util.Log;
+
 import info.kyorohiro.helloworld.display.widget.editview.differ.AddLine;
 import info.kyorohiro.helloworld.display.widget.editview.differ.DeleteLine;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ;
@@ -9,13 +11,11 @@ import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.CheckActi
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 
 public class DifferAddAction extends CheckAction {
-	private int mPrevEnd = 0;
-	private int mIndex = 0;
-	private boolean mFind = false;
+	private int mTargetPatchedPosition = 0;
 	private CharSequence mLine = "";
 	
 	public void setIndex(int index) {
-		mIndex = index;
+		mTargetPatchedPosition = index;
 	}
 
 	public void setLine(CharSequence line) {
@@ -24,14 +24,13 @@ public class DifferAddAction extends CheckAction {
 
 	@Override
 	public void init() {
-		mFind = false;
-		mPrevEnd = 0;
+		mIsAdded = false;
 	}
 
 	@Override
 	public void end(LinkedList<Line> ll) {
-		if (!mFind) {
-			ll.add(new AddLine(mIndex - mPrevEnd, mLine));
+		if (!mIsAdded) {
+			ll.add(new AddLine(mTargetPatchedPosition - mPrevPatchedPosition, mLine));
 		}
 	}
 
@@ -42,9 +41,51 @@ public class DifferAddAction extends CheckAction {
 		differ.debugPrint();
 	}
 
+	private int mPrevPatchedPosition = 0;
+	private int mPrevUnpatchedPosition = 0;
+	private boolean mIsAdded = false;
+
 	@Override
-	public boolean check(Differ owner, int x, int __not_use__start, int __not_use__end, int index) {
-		Line l = owner.getLine(x);
+	public boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index) {
+		//
+		//
+//		/*
+		Line targetLine = owner.getLine(lineLocation);
+		try {
+			// in
+			if(mPrevPatchedPosition <= mTargetPatchedPosition && mTargetPatchedPosition < patchedPosition) {
+				int start = mPrevPatchedPosition+targetLine.begin(); 
+				if(mTargetPatchedPosition < start) {
+					// new AddLine
+					owner.addLine(lineLocation, new AddLine(mTargetPatchedPosition - mPrevPatchedPosition, mLine));	
+					targetLine.setStart(targetLine.begin()-1);
+					// loop end
+					mIsAdded = true;
+					return false;
+				} else {
+					// add test in AddLine
+					if(targetLine instanceof AddLine) {
+						((AddLine)targetLine).insert(mTargetPatchedPosition-mPrevPatchedPosition-targetLine.begin(), mLine);
+						mIsAdded = true;
+						return false;
+					} else {
+						// 
+						// dont thrugh this state 
+						System.out.print("#Warnning# unexpected state.");
+					}
+				}
+			}
+			// out 
+			// done in endLine
+		} finally {
+			mPrevPatchedPosition = patchedPosition;
+			mPrevUnpatchedPosition = unpatchedPosition;
+		}
+		// expect next roop
+		return true;
+//		*/
+		/*
+		Line l = owner.getLine(lineLocation);
 		int start  = 0;
 		int end = 0;
 		try{
@@ -55,24 +96,22 @@ public class DifferAddAction extends CheckAction {
 				start = index + l.begin();
 				end = start + l.length();
 			}
-			 if (mIndex < start) {
-//					mLineList.add(x, new AddLine(mIndex - mPrevEnd, mLine));
-					l.setStart(l.begin()-(mIndex - mPrevEnd));
-					owner.addLine(x, new AddLine(mIndex - mPrevEnd, mLine));
+			 if (mTargetPatchedPosition < start) {
+					l.setStart(l.begin()-(mTargetPatchedPosition - mPrevEnd));
+					owner.addLine(lineLocation, new AddLine(mTargetPatchedPosition - mPrevEnd, mLine));
 					mFind = true;
 					return false;
 			} else 
-			// �͈͓����אڂ��Ă���ꍇ
-			if (!(l instanceof DeleteLine)&&start <= mIndex && mIndex <= end) {
+			if (!(l instanceof DeleteLine)&&start <= mTargetPatchedPosition && mTargetPatchedPosition <= end) {
 				mFind = true;
-				l.insert(mIndex - start, mLine);
+				l.insert(mTargetPatchedPosition - start, mLine);
 				return false;
 			}
-			// �O�ɑ��݂���ꍇ
 			return true;
 		} finally {
 			mPrevEnd = end;
 		}
+	//	*/
 	}
 
 }

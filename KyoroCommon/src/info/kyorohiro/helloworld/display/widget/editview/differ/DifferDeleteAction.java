@@ -36,23 +36,14 @@ public class DifferDeleteAction extends CheckAction {
 	public boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index) {
 		boolean ret = true;
 		Line targetLine = owner.getLine(lineLocation);
-//		android.util.Log.v("kiyo","#D#A#"+lineLocation+","+ patchedPosition+","+ unpatchedPosition);
-//		android.util.Log.v("kiyo","#D#B#"+mTargetPatchedPosition+","+ mTargetUnpatchedPosition);
-//		android.util.Log.v("kiyo","#D#C#"+mPrevPatchedPosition+","+ mPrevUnpatchedPosition);
 
 		try {
 			// in
 			if(mPrevPatchedPosition <= mTargetPatchedPosition && mTargetPatchedPosition < patchedPosition) {
-//				android.util.Log.v("kiyo","#D#0#"+mTargetPatchedPosition+"-"+mPrevPatchedPosition);
 				if(mTargetPatchedPosition < mPrevPatchedPosition+targetLine.begin()) {
-//					android.util.Log.v("kiyo","#D#0#----1----"+mTargetPatchedPosition +"<"+ mPrevPatchedPosition+"+"+targetLine.begin());
 					owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
 					targetLine.setStart(targetLine.begin()-(mTargetPatchedPosition-mPrevPatchedPosition+1));
-					//
-					//
 				} else {
-					//todo not test
-//					android.util.Log.v("kiyo","#D#0#----2----");
 					targetLine.rm(mTargetPatchedPosition-mPrevPatchedPosition-targetLine.begin());
 					if(targetLine.length()==0){
 						owner.removeLine(lineLocation);
