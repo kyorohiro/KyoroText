@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.display.widget.editview.differ;
 
 
+import java.util.LinkedList;
+
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.CheckAction;
@@ -8,7 +10,7 @@ import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.text.KyoroString;
 
-public class DifferGetAction extends CheckAction {
+public class DifferGetAction implements CheckAction {
 	private int mTargetPatchedPosition = 0;
 	private int mTargetUnpatchedPosition = 0;
 	private int mPrevPatchedPosition = 0;
@@ -45,6 +47,10 @@ public class DifferGetAction extends CheckAction {
 		mPrevPatchedPosition = 0;
 		mPrevUnpatchedPosition = 0;
 		mIsDiffer = false;
+	}
+
+	@Override
+	public void end(LinkedList<Line> ll) {
 	}
 
 	@Override
@@ -89,4 +95,5 @@ public class DifferGetAction extends CheckAction {
 		return ret;
 
 	}
+
 }

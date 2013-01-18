@@ -8,6 +8,7 @@ import info.kyorohiro.helloworld.display.widget.editview.differ.DifferDeleteActi
 import info.kyorohiro.helloworld.display.widget.editview.differ.DifferGetAction;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.util.TaskTicket;
 
 import java.util.LinkedList;
 
@@ -81,8 +82,8 @@ public class Differ {
 		return mLength;
 	}
 
-	public synchronized void save(VirtualFile file) {
-		
+	public synchronized TaskTicket<String> save(VirtualFile file) {
+		return null;
 	}
 
 	public synchronized KyoroString get(LineViewBufferSpec spec, int _index) {
@@ -155,15 +156,11 @@ public class Differ {
 		}
 	}
 
-	public static abstract class CheckAction {
-		public void init() {
-		};
-
+	public static interface CheckAction {
+		public void init();
 		// if return false, when check action is end.
 		public abstract boolean check(Differ owner, int lineLocation, int patchedPosition, int unpatchedPosition, int index);
-
-		public void end(LinkedList<Line> ll) {
-		};
+		public void end(LinkedList<Line> ll);
 	}
 
 	interface Line {

@@ -7,7 +7,7 @@ import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 
 import java.util.LinkedList;
 
-public class DifferDeleteAction extends CheckAction {
+public class DifferDeleteAction implements CheckAction {
 
 	public void delete(Differ differ, int index) {
 //		android.util.Log.v("kiyo","#D#0#----000----");

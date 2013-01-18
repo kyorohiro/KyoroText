@@ -2,12 +2,71 @@ package info.kyorohiro.helloworld.display.widget.editview.differ;
 
 
 
+import java.io.File;
+import java.util.LinkedList;
+
+import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.CheckAction;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.util.TaskTicket;
 
-public class SaveTaskForDiffer implements Runnable {
+public class SaveTaskForDiffer implements CheckAction ,TaskTicket.Task<String>, Runnable {
+	private TaskTicket<String> mTicket = null;
+	private Differ mDiffer = null;
+	private LineViewBufferSpec mBase = null;
+	private VirtualFile mVfile = null;
+
+	public SaveTaskForDiffer(Differ differ, LineViewBufferSpec spec, VirtualFile path) {
+		super();
+		mTicket = new TaskTicket<String>(this);
+		mDiffer = differ;
+		mBase = spec;
+		mVfile = path;
+	}
+
+
+	@Override
+	public String get() {
+		return "dummy";
+	}
+
+
+	@Override
+	public void run() {
+		mTicket.run();
+	}
+
+	//
+	// -------------------------------------------------------
+	//
+	@Override
+	public void doTask() {
+		mDiffer.checkAllSortedLine(this);
+	}
+
+	@Override
+	public void init() {
+	}
+
+	@Override
+	public boolean check(Differ owner, int lineLocation, int patchedPosition,
+			int unpatchedPosition, int index) {
+		
+		return false;
+	}
+
+	@Override
+	public void end(LinkedList<Line> ll) {
+	}
+
+
+}
+
+/*
+implements Runnable {
+
 
 	private LineViewBufferSpec mTarget;
 	private Differ mDiffer;
@@ -87,3 +146,4 @@ public class SaveTaskForDiffer implements Runnable {
 	public static class FaileSaveException extends Exception {
 	}
 }
+*/

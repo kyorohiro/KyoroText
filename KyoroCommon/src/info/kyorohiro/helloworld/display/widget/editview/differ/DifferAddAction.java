@@ -10,7 +10,7 @@ import info.kyorohiro.helloworld.display.widget.editview.differ.Differ;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.CheckAction;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 
-public class DifferAddAction extends CheckAction {
+public class DifferAddAction implements CheckAction {
 	private int mTargetPatchedPosition = 0;
 	private CharSequence mLine = "";
 	
