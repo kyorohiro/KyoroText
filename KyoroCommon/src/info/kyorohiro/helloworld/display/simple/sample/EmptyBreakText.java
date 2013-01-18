@@ -14,7 +14,7 @@ public class EmptyBreakText extends BreakText {
 
 	@Override
 	public int breakText(CharArrayBuilder mBuffer) {
-		return breakText(this, mBuffer.getAllBufferedMoji(), 0, mBuffer.getCurrentBufferedMojiSize(), getWidth());
+		return breakText(this, mBuffer.getBuffer(), 0, mBuffer.length(), getWidth());
 	}
 
 	@Override

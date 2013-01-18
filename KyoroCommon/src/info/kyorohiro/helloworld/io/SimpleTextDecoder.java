@@ -111,10 +111,10 @@ public class SimpleTextDecoder {
 												// crlf 12kb
 					if (mBreakText != null) {
 //						len = mBreakText.breakText(mBuffer);
-						int size = mBuffer.getCurrentBufferedMojiSize();
+						int size = mBuffer.length();
 						ws[0] = 0;
 						
-						mBreakText.getTextWidths(mBuffer.getAllBufferedMoji(), size-1, size, ws, textSize);
+						mBreakText.getTextWidths(mBuffer.getBuffer(), size-1, size, ws, textSize);
 						textLength += ws[0];
 						mWidths.append(ws[0]);
 						//if(c=='\t'){
@@ -129,7 +129,7 @@ public class SimpleTextDecoder {
 							len +=1;
 						}
 					}
-					if (len < mBuffer.getCurrentBufferedMojiSize()) {
+					if (len < mBuffer.length()) {
 						numOfRead = (int)(mReader.getFilePointer()-todoPrevPosition);
 						mBuffer.removeLast();
 						for(int i=0;i<numOfRead;i++) {
@@ -153,8 +153,8 @@ public class SimpleTextDecoder {
 			}
 			mCharBuffer.clear(); // cb���������ݏ�ԂɕύX
 		} while (!end);
-		KyoroString ret =new KyoroString(mBuffer.getAllBufferedMoji(),
-				mBuffer.getCurrentBufferedMojiSize());
+		KyoroString ret =new KyoroString(mBuffer.getBuffer(),
+				mBuffer.length());
 		ret.setCash(mWidths.getBuffer(),mWidths.length(), (int)textSize);
 		ret.setCashContent(mSource.getBuffer(),mSource.length());
 		//time2 = System.currentTimeMillis();

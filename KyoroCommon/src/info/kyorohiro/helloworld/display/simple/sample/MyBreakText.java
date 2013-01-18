@@ -23,7 +23,7 @@ public class MyBreakText extends BreakText {
 		//long time1 = 0;
 		//long time2 = 0;
 		//time1 = System.currentTimeMillis();		
-		int len = BreakText.breakText(this, b.getAllBufferedMoji(), 0, b.getCurrentBufferedMojiSize(), width);
+		int len = BreakText.breakText(this, b.getBuffer(), 0, b.length(), width);
 		//time2 = System.currentTimeMillis();
 		//android.util.Log.v("kiyo","time a="+(time2-time1));
 

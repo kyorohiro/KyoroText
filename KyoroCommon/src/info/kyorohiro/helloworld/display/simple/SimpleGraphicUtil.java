@@ -76,8 +76,8 @@ public class SimpleGraphicUtil {
 	private static FloatArrayBuilder sWidthBuffer = new FloatArrayBuilder();
 	private static synchronized int drawControlCode(SimpleGraphics graphics, KyoroString st, float zoom, int x, int y, int textSize) {
 		char[] buffer = st.getChars();
-		slineBuffer.setLength(buffer.length*2);
-		char[] line = slineBuffer.getAllBufferedMoji();
+		slineBuffer.setBufferLength(buffer.length*2);
+		char[] line = slineBuffer.getBuffer();
 		sWidthBuffer.setBufferLength(buffer.length*2);
 		float[] widths = sWidthBuffer.getBuffer();
 		int j=0;

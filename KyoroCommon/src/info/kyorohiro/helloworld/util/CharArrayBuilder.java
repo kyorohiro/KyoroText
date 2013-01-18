@@ -1,29 +1,31 @@
 package info.kyorohiro.helloworld.util;
 
 //
-// KyoroString‚É‹zŽû‚³‚ê‚éB
+// KyoroStringï¿½É‹zï¿½ï¿½ï¿½ï¿½B
 public class CharArrayBuilder {
 	private int mPointer = 0;
-	private int mLength = 256;
-	private char[] mBuffer = new char[mLength];
+	private char[] mBuffer = new char[256];
 
 	public void append(char moji){
-		if(mPointer >= mLength){
+		if(mPointer >= mBuffer.length){
 			updateBuffer();
 		}
 		mBuffer[mPointer] = moji;
 		mPointer++;
 	}
 
-	public void setLength(int length) {
-		if(mLength < length) {
-			mLength = length*2/3;
-			updateBuffer();
+	public void setBufferLength(int length) {
+		if(mBuffer.length < length) {
+			updateBuffer(length>mBuffer.length*2?length:mBuffer.length*2);
 		}
 	}
+
 	private void updateBuffer() {
-		mLength *=2;
-		char[] tmp = new char[mLength*2];
+		updateBuffer(mBuffer.length*2);
+	}
+
+	private void updateBuffer(int length) {
+		char[] tmp = new char[length];
 		for(int i=0;i<mBuffer.length;i++) {
 			tmp[i] = mBuffer[i];
 		}
@@ -33,24 +35,11 @@ public class CharArrayBuilder {
 		mPointer = 0;
 	}
 
-	public void clearFirst(int num) {
-		if(num <0){
-			return;
-		}
-		for(int i=0;(i+num)<mBuffer.length;i++) {
-			mBuffer[i] = mBuffer[i+num]; 
-		}		
-		mPointer -= num;
-		if(mPointer < 0){
-			mPointer = 0;
-		}
-	}
-
-	public char[] getAllBufferedMoji(){
+	public char[] getBuffer(){
 		return mBuffer;
 	}
 
-	public int getCurrentBufferedMojiSize(){
+	public int length(){
 		return mPointer;
 	}
 
