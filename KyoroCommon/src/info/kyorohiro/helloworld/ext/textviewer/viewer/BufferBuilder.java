@@ -1,11 +1,11 @@
 package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
-import info.kyorohiro.helloworld.display.simple.SimpleApplication;
+//import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.display.simple.sample.MyBreakText;
-import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+//import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 
@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 public class BufferBuilder {
 	public static int COLOR_FONT1 = SimpleGraphicUtil.parseColor("#dd0044ff");
 	public static int COLOR_FONT2 = SimpleGraphicUtil.parseColor("#ddff0044");
-	private SimpleApplication mApplication = null;
+//	private SimpleApplication mApplication = null;
 	private VirtualFile mFile = null;
 	private String mCharset = "utf8";
 

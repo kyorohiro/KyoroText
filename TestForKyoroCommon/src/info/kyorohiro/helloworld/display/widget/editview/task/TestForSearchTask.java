@@ -38,7 +38,7 @@ public class TestForSearchTask extends TestCase {
 					view.getLeft().setCursorCol(0);
 					view.getLeft().setCursorRow(0);
 					t.start();
-					atask.waitForTask();
+					atask.syncTask();
 					assertEquals(2, view.getLeft().getCursorRow());
 					assertEquals(0, view.getLeft().getCursorCol());
 				}
@@ -48,7 +48,7 @@ public class TestForSearchTask extends TestCase {
 					AsyncronousTask atask = new AsyncronousTask(task);
 					Thread t = new Thread(atask);
 					t.start();
-					atask.waitForTask();
+					atask.syncTask();
 					assertEquals(4, view.getLeft().getCursorRow());
 					assertEquals(0, view.getLeft().getCursorCol());
 				}
@@ -58,7 +58,7 @@ public class TestForSearchTask extends TestCase {
 					AsyncronousTask atask = new AsyncronousTask(task);
 					Thread t = new Thread(atask);
 					t.start();
-					atask.waitForTask();
+					atask.syncTask();
 					assertEquals(2, view.getLeft().getCursorRow());
 					assertEquals(0, view.getLeft().getCursorCol());
 				}
@@ -70,7 +70,7 @@ public class TestForSearchTask extends TestCase {
 				view.getLeft().setCursorCol(0);
 				view.getLeft().setCursorRow(0);
 				t.start();
-				atask.waitForTask();
+				atask.syncTask();
 				assertEquals(1, view.getLeft().getCursorRow());
 				assertEquals(1, view.getLeft().getCursorCol());
 			}
@@ -80,7 +80,7 @@ public class TestForSearchTask extends TestCase {
 				AsyncronousTask atask = new AsyncronousTask(task);
 				Thread t = new Thread(atask);
 				t.start();
-				atask.waitForTask();
+				atask.syncTask();
 				assertEquals(1, view.getLeft().getCursorRow());
 				assertEquals(1, view.getLeft().getCursorCol());
 			}
@@ -92,7 +92,7 @@ public class TestForSearchTask extends TestCase {
 				view.getLeft().setCursorCol(0);
 				view.getLeft().setCursorRow(0);
 				t.start();
-				atask.waitForTask();
+				atask.syncTask();
 				assertEquals(1, view.getLeft().getCursorRow());
 				assertEquals(0, view.getLeft().getCursorCol());
 			}
@@ -102,7 +102,7 @@ public class TestForSearchTask extends TestCase {
 				AsyncronousTask atask = new AsyncronousTask(task);
 				Thread t = new Thread(atask);
 				t.start();
-				atask.waitForTask();
+				atask.syncTask();
 				assertEquals(5, view.getLeft().getCursorRow());
 				assertEquals(2, view.getLeft().getCursorCol());
 			}
@@ -112,7 +112,7 @@ public class TestForSearchTask extends TestCase {
 				AsyncronousTask atask = new AsyncronousTask(task);
 				Thread t = new Thread(atask);
 				t.start();
-				atask.waitForTask();
+				atask.syncTask();
 				assertEquals(1, view.getLeft().getCursorRow());
 				assertEquals(0, view.getLeft().getCursorCol());
 			}
@@ -122,7 +122,7 @@ public class TestForSearchTask extends TestCase {
 				AsyncronousTask atask = new AsyncronousTask(task);
 				Thread t = new Thread(atask);
 				t.start();
-				atask.waitForTask();
+				atask.syncTask();
 				assertEquals(2, view.getLeft().getCursorRow());
 				assertEquals(1, view.getLeft().getCursorCol());
 			}
@@ -133,7 +133,7 @@ public class TestForSearchTask extends TestCase {
 				AsyncronousTask atask = new AsyncronousTask(task);
 				Thread t = new Thread(atask);
 				t.start();
-				atask.waitForTask();
+				atask.syncTask();
 				assertEquals(2, view.getLeft().getCursorRow());
 				assertEquals(1, view.getLeft().getCursorCol());
 			}

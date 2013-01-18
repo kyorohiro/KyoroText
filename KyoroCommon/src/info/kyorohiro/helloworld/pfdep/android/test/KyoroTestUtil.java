@@ -27,7 +27,7 @@ public class KyoroTestUtil {
 		AsyncronousTask syncTask = new AsyncronousTask(task);
 		mApplication.runOnUIThread(syncTask);
 		if(async) {
-			syncTask.waitForTask();
+			syncTask.syncTask();
 		}
 		if(mApplication!=null){mApplication.showMessage("end captureScreen");}
 	}

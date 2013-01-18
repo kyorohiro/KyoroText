@@ -375,7 +375,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		OtherWindowTask task = new OtherWindowTask();
 		AsyncronousTask atask = new AsyncronousTask(task);
 		getMiniBuffer().startTask(atask);
-		atask.waitForTask();
+		atask.syncTask();
 	}
 
 

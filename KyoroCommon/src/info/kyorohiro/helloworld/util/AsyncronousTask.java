@@ -11,33 +11,40 @@ public class AsyncronousTask implements Runnable {
 
 	public void run() {
 		try {
+			log("start task");
 			mTask.run();
-			
 		} finally {
 			mIsAlive = false;
 			awake();
+			log("end task");
 		}
 	}
 
 	public synchronized void awake() {
+		log("awake");
 		notifyAll();
 	}
 
-	public synchronized boolean waitForTask() {
+	public synchronized boolean syncTask() {
 		if (mIsAlive) {
 			try {
-//				android.util.Log.v("kiyo","-------1------");
+				log("before wait");
 				wait();
-//				android.util.Log.v("kiyo","-------2------");
+				log("after wait");
 				return true;
 			} catch (InterruptedException e) {
-//				android.util.Log.v("kiyo","------------e------");
+				log("interrupted");
 				e.printStackTrace();
 				return false;
 			}
-//			android.util.Log.v("kiyo","-------3------");
 		} else {
+			log("none");
 			return true;
 		}
+	}
+
+	private void log(String log) {
+//		System.out.println("#AsyncronousTask#"+log);
+//		android.util.Log.v("kiyo", "#AsyncronousTask#"+log);
 	}
 }

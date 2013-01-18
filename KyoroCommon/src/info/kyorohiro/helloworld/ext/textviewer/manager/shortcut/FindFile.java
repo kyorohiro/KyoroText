@@ -29,12 +29,14 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager.Task;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.message.FindFileReceiver;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward.ISearchForwardTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.AsyncronousTask;
 import info.kyorohiro.helloworld.util.AutocandidateList;
+import info.kyorohiro.helloworld.util.FileListGetter;
 
 public class FindFile implements Task {
 
@@ -291,7 +293,7 @@ public class FindFile implements Task {
 				modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), getCurrentFile(),""));			
 			//}
 				//
-			MessageDispatcher.getInstance().addReceiver(new MyReceiver(this));
+			MessageDispatcher.getInstance().addReceiver(new FindFileReceiver(this));
 
 		}
 		@Override
@@ -358,7 +360,7 @@ public class FindFile implements Task {
 					Thread t = new Thread(sync);
 					t.start();
 //					android.util.Log.v("kiyo","QWW--1-");
-					if(!sync.waitForTask()) {
+					if(!sync.syncTask()) {
 						return;
 					}
 //					android.util.Log.v("kiyo","QWW--2-");
@@ -440,36 +442,4 @@ public class FindFile implements Task {
 
 	}
 
-	public static class MyReceiver implements Receiver {
-		public static FindFileTask sTask = null;
-		private WeakReference<FindFileTask> mTask = null;
-		public MyReceiver(FindFileTask task) {
-//			android.util.Log.v("kiyo","rev new");
-			sTask = task;
-			mTask = new WeakReference<FindFileTask>(task);
-		}
-
-		@Override
-		public String getType() {
-//			android.util.Log.v("kiyo","revtype");
-			return "find";
-		}
-
-		@Override
-		public void onReceived(KyoroString message, String type) {
-//			android.util.Log.v("kiyo","rev="+message);
-//			android.util.Log.v("kiyo","rev="+message.getExtra());
-			FindFileTask task = mTask.get();
-			if(!task.isAlive()){
-//				android.util.Log.v("kiyo","rev=--1--");
-				return;
-			}
-			if(task != null) {
-//				android.util.Log.v("kiyo","rev=--2--");
-				//task.input(message.toString());
-				task.input(message.getExtra());
-				//task.tab(message.getExtra());
-			}
-		}
-	}
 }

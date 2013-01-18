@@ -12,7 +12,6 @@ public class FileListGetter implements Runnable {
 	private Thread mParentThread = null;
 	private String mFilter = null;
 	private File[] mList = null;
-	//private boolean mIsEndTask = false;
 
 	public FileListGetter(File targetPath, String filter, Thread parentThread) {
 		mTargetPath = targetPath;
@@ -25,7 +24,6 @@ public class FileListGetter implements Runnable {
 
 	@Override
 	public synchronized void run() {
-		//try {
 		int start = 0;
 		int end = 0;
 		if(mParentThread != null && mParentThread.isInterrupted()) {
@@ -58,20 +56,9 @@ public class FileListGetter implements Runnable {
 			Arrays.sort(list, start, end, new FileComparator());
 		}
 		mList = list;
-		//} finally {
-		//	mIsEndTask = true;
-		//	notifyAll();
-		//}
 	}
 
 	public synchronized File[] getFileList() {
-		//try {
-		//	if(!mIsEndTask) {
-		//		wait();
-		//	}
-		//} catch (InterruptedException e) {
-		//	e.printStackTrace();
-		//}
 		return mList;
 	}
 
