@@ -3,6 +3,9 @@ package info.kyorohiro.helloworld.util;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 
+//
+// now creating
+//
 public class LockableCyclingList extends CyclingList<KyoroString>
 implements SimpleLockInter {
 	public LockableCyclingList(int listSize) {

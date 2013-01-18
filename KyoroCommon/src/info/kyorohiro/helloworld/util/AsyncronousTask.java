@@ -1,5 +1,8 @@
 package info.kyorohiro.helloworld.util;
 
+//
+// add syncTask() in Runnable. syncTask is wait for finishing task。
+//
 public class AsyncronousTask implements Runnable {
 	private boolean mIsAlive = false;
 	private Runnable mTask = null;
