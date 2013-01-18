@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.nio.channels.FileChannel;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //import android.webkit.ConsoleMessage.MessageLevel;
 
@@ -322,40 +325,25 @@ public class FindFile implements Task {
 //				android.util.Log.v("kiyo","FT: start ");
 				int c=0;
 				mCandidate.clear();
-//				android.util.Log.v("kiyo","FT: start 00001-1-");
-
-//				MyFilter filter = new MyFilter(mFilter);
-//				android.util.Log.v("kiyo","FT: start 00001-2-");
 				BufferManager.getManager().beginInfoBuffer();
-//				android.util.Log.v("kiyo","FT: start 00001-3-");
 				EditableLineView viewer = mInfo.getLineView();
-//				android.util.Log.v("kiyo","FT: start 00001-4-");
 				mInfo.getTextViewerBuffer().getBigLineData().ffformatterOn();
-//				android.util.Log.v("kiyo","FT: start 00001-5-");
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
 				viewer.setTextSize(BufferManager.getManager().getBaseTextSize());
-//				android.util.Log.v("kiyo","FT: start 00001-6-");
 				buffer.setCursor(0, 0);
-//				android.util.Log.v("kiyo","FT: start 00001-7-");
 				if(mPath == null) {
 					return;
 				}
-//				android.util.Log.v("kiyo","FT: start 00001-6-");
-///*
-//				android.util.Log.v("kiyo","FT: start 00001");
+
 				VirtualFile vfile = mInfo.getTextViewerBuffer().getBigLineData().getVFile();
 
 				{
 					File p = mPath.getParentFile();
-					//if(p!=null&&mPath.isFile()) {
-					//	p = p.getParentFile()
-					//}
 					Thread.sleep(0);
 					if(p!=null&&p.getParentFile() != null && p.getParentFile().isDirectory()) {
 						addFile(vfile, p.getParentFile(), "../..");						
 					}
 					if(p!=null&&p.isDirectory()) {
-//						android.util.Log.v("kiyo",""+p.toString());
 						addFile(vfile, p, "..");
 					}
 				}
@@ -365,7 +353,7 @@ public class FindFile implements Task {
 //				android.util.Log.v("kiyo","FT: start 00002");
 				if(mPath.isDirectory()) {
 //					android.util.Log.v("kiyo","QWW--0-");
-					FileListGetter getter = new FileListGetter(mPath, Thread.currentThread());
+					FileListGetter getter = new FileListGetter(mPath, mFilter, Thread.currentThread());
 					AsyncronousTask sync = new AsyncronousTask(getter);
 					Thread t = new Thread(sync);
 					t.start();
@@ -413,30 +401,54 @@ public class FindFile implements Task {
 		public static class FileListGetter implements Runnable {
 			private File mTargetPath = null;
 			private Thread mParentThread = null;
+			private String mFilter = null;
 			private File[] mList = null;
 			//private boolean mIsEndTask = false;
 
-			public FileListGetter(File targetPath, Thread parentThread) {
+			public FileListGetter(File targetPath, String filter, Thread parentThread) {
 				mTargetPath = targetPath;
 				mParentThread = parentThread;
+				mFilter = filter;
+				if(mFilter != null && mFilter.length() == 0) {
+					mFilter = null;
+				}
 			}
 
 			@Override
 			public synchronized void run() {
 				//try {
-					if(mParentThread != null && mParentThread.isInterrupted()) {
-						return;
-					}
+				int start = 0;
+				int end = 0;
+				if(mParentThread != null && mParentThread.isInterrupted()) {
+					return;
+				}
 
-					File[] list = mTargetPath.listFiles();
-					if(mParentThread != null && mParentThread.isInterrupted()) {
-						return;
+				File[] list = mTargetPath.listFiles();
+				if(mParentThread != null && mParentThread.isInterrupted()) {
+					return;
+				}
+				if(list == null) {
+					return;
+				}
+				end = list.length;
+				if(mFilter != null) {
+					ArrayList<File> calcList = new ArrayList<File>();
+					for(File t:list) {
+						if(t.getName().startsWith(mFilter)) {
+							calcList.add(t);
+						}
 					}
-					if(list == null) {
-						return;
-					}
-					Arrays.sort(list, new FileComparator());
-					mList = list;
+					end  = calcList.size();
+					list = null;
+					list = new File[end];
+					calcList.toArray(list);
+				}
+				if(start == end) {
+					list = new File[0];
+				} else {
+					Arrays.sort(list, start, end, new FileComparator());
+				}
+				mList = list;
 				//} finally {
 				//	mIsEndTask = true;
 				//	notifyAll();
