@@ -2,12 +2,13 @@ package info.kyorohiro.helloworld.util.arraybuilder;
 
 import junit.framework.TestCase;
 
-public class TestForByteArrayBuilder extends TestCase {
+public class TestForFloatArrayBuilder extends TestCase {
 
-	public static int LEVEL = 10;
+
+	private static final int LEVEL = 10;
 
 	private void log(String log) {
-		android.util.Log.v("kiyo","#TestForByteArrayBuilder#"+log);
+		android.util.Log.v("kiyo","#TestForFloatArrayBuilder#"+log);
 	}
 
 
@@ -16,10 +17,10 @@ public class TestForByteArrayBuilder extends TestCase {
 	}
 
 	public void testAppend() {
-		ByteArrayBuilder builder = new ByteArrayBuilder();
-		byte[] testdata = new byte[1024];
+		FloatArrayBuilder builder = new FloatArrayBuilder();
+		float[] testdata = new float[1024];
 		for(int i=0;i<testdata.length;i++) {
-			testdata[i] = (byte)i;
+			testdata[i] = (float)i;
 		}
 
 		for(int i=0;i<testdata.length;i++) {
@@ -27,13 +28,13 @@ public class TestForByteArrayBuilder extends TestCase {
 			builder.append(testdata[i]);
 			// check
 			{
-				byte[] result = builder.getBuffer(); 
+				float[] result = builder.getBuffer(); 
 				int s = 0;
 				int e = builder.length();
 				assertEquals(i+1, e);
 				if(i==0||i%LEVEL==0){
 					for(int j=s;j<e;j++) {
-						assertEquals((byte)j, result[j]);
+						assertTrue((float)j==result[j]);
 					}
 				}
 			}
@@ -41,10 +42,10 @@ public class TestForByteArrayBuilder extends TestCase {
 	}
 
 	public void testClear() {
-		ByteArrayBuilder builder = new ByteArrayBuilder();
-		byte[] testdata = new byte[1024];
+		FloatArrayBuilder builder = new FloatArrayBuilder();
+		float[] testdata = new float[1024];
 		for(int i=0;i<testdata.length;i++) {
-			testdata[i] = (byte)i;
+			testdata[i] = (float)i;
 		}
 
 		builder.clear();
@@ -53,13 +54,13 @@ public class TestForByteArrayBuilder extends TestCase {
 			builder.append(testdata[i]);
 			// check
 			{
-				byte[] result = builder.getBuffer(); 
+				float[] result = builder.getBuffer(); 
 				int s = 0;
 				int e = builder.length();
 				assertEquals(i+1, e);
 				if(i==0||i%LEVEL==0){
 					for(int j=s;j<e;j++) {
-						assertEquals((byte)j, result[j]);
+						assertEquals((float)j, result[j]);
 					}
 				}
 			}
@@ -70,13 +71,13 @@ public class TestForByteArrayBuilder extends TestCase {
 			builder.append(testdata[i]);
 			// check
 			{
-				byte[] result = builder.getBuffer(); 
+				float[] result = builder.getBuffer(); 
 				int s = 0;
 				int e = builder.length();
 				assertEquals(i+1, e);
 				if(i==0||i%LEVEL==0){
 					for(int j=s;j<e;j++) {
-						assertEquals((byte)j, result[j]);
+						assertEquals((float)j, result[j]);
 					}
 				}
 			}
@@ -84,10 +85,10 @@ public class TestForByteArrayBuilder extends TestCase {
 	}
 
 	public void testSetBufferLength() {
-		ByteArrayBuilder builder = new ByteArrayBuilder();
-		byte[] testdata = new byte[777];
+		FloatArrayBuilder builder = new FloatArrayBuilder();
+		float[] testdata = new float[777];
 		for(int i=0;i<testdata.length;i++) {
-			testdata[i] = (byte)i;
+			testdata[i] = (float)i;
 		}
 
 		builder.clear();
@@ -97,13 +98,13 @@ public class TestForByteArrayBuilder extends TestCase {
 			builder.setBufferLength(i+2);
 			// check
 			{
-				byte[] result = builder.getBuffer(); 
+				float[] result = builder.getBuffer(); 
 				int s = 0;
 				int e = builder.length();
 				assertEquals(i+1, e);
 				if(i==0||i%LEVEL==0){
 					for(int j=s;j<e;j++) {
-						assertEquals((byte)j, result[j]);
+						assertEquals((float)j, result[j]);
 					}
 				}
 			}
@@ -115,13 +116,13 @@ public class TestForByteArrayBuilder extends TestCase {
 			builder.append(testdata[i]);
 			// check
 			{
-				byte[] result = builder.getBuffer(); 
+				float[] result = builder.getBuffer(); 
 				int s = 0;
 				int e = builder.length();
 				assertEquals(i+1, e);
 				if(i==0||i%LEVEL==0){
 					for(int j=s;j<e;j++) {
-						assertEquals((byte)j, result[j]);
+						assertEquals((float)j, result[j]);
 					}
 				}
 			}
@@ -129,10 +130,10 @@ public class TestForByteArrayBuilder extends TestCase {
 	}
 
 	public void testRemoveLast() {
-		ByteArrayBuilder builder = new ByteArrayBuilder();
-		byte[] testdata = new byte[777];
+		FloatArrayBuilder builder = new FloatArrayBuilder();
+		float[] testdata = new float[777];
 		for(int i=0;i<testdata.length;i++) {
-			testdata[i] = (byte)i;
+			testdata[i] = (float)i;
 		}
 
 		builder.clear();
@@ -141,13 +142,13 @@ public class TestForByteArrayBuilder extends TestCase {
 			builder.append(testdata[i]);
 			// check
 			{
-				byte[] result = builder.getBuffer(); 
+				float[] result = builder.getBuffer(); 
 				int s = 0;
 				int e = builder.length();
 				assertEquals(i+1, e);
 				if(i==0||i%LEVEL==0){
 					for(int j=s;j<e;j++) {
-						assertEquals((byte)j, result[j]);
+						assertEquals((float)j, result[j]);
 					}
 				}
 			}
@@ -156,13 +157,13 @@ public class TestForByteArrayBuilder extends TestCase {
 			builder.removeLast();
 			// check
 			{
-				byte[] result = builder.getBuffer(); 
+				float[] result = builder.getBuffer(); 
 				int s = 0;
 				int e = builder.length();
 				assertEquals(testdata.length-i-1, e);
 				if(i==0||i%LEVEL==0){
 					for(int j=s;j<e;j++) {
-						assertEquals((byte)j, result[j]);
+						assertEquals((float)j, result[j]);
 					}
 				}
 			}

@@ -2,7 +2,9 @@ package info.kyorohiro.helloworld.text;
 
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 
-///*
+//
+// todo refactring
+//
 public class KyoroString  implements CharSequence {
 	public char[] mContent = null;
 	private float[] mCashWidth = null;

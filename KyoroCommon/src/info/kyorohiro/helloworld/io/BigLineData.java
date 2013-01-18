@@ -31,10 +31,10 @@ public class BigLineData {
 	public void ffformatterOn() {
 		msFormater = new FindFileFormatter();
 	}
+
 	public BigLineData(VirtualFile path) throws FileNotFoundException {
 		init(path, mCharset);
 	}
-
 
 	public BigLineData(VirtualFile path, String charset, BreakText breakText) throws FileNotFoundException {
 		mBreakText = breakText;
@@ -193,7 +193,6 @@ public class BigLineData {
 		return mLinePosition;
 	}
 
-	//	@Deprecated
 	public long getLastLinePosition() {
 		return mLastLinePosition;
 	}

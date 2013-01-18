@@ -1,7 +1,8 @@
 package info.kyorohiro.helloworld.util.arraybuilder;
 
 //
-// KyoroString�ɋz����B
+//promitive 型なので テンプレートが使えない？
+//
 public class CharArrayBuilder {
 	private int mPointer = 0;
 	private char[] mBuffer = new char[256];
