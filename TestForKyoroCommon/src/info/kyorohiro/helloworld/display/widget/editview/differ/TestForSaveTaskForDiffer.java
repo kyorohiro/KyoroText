@@ -1,11 +1,13 @@
 package info.kyorohiro.helloworld.display.widget.editview.differ;
 
 import java.io.File;
+import java.io.IOException;
 
 import android.os.Environment;
 import info.kyorohiro.helloworld.display.widget.editview.differ.TestForDiffer.MyBuffer;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
+import info.kyorohiro.helloworld.util.TaskTicket;
 import junit.framework.TestCase;
 
 public class TestForSaveTaskForDiffer extends TestCase {
@@ -36,8 +38,19 @@ public class TestForSaveTaskForDiffer extends TestCase {
 			File path = new File(Environment.getExternalStorageDirectory(),"__kyoro_test__.txt");
 			VirtualFile vfile = new VirtualFile(path, 501);
 			differ.deleteLine(0);
-			SaveTaskForDiffer task = new SaveTaskForDiffer(buffer, differ, vfile);
-			task.save();
+			TaskTicket<String> ticket = differ.save(vfile);
+			try {
+				String result = ticket.getT();
+				byte[] b = new byte[2056];
+				vfile.seek(0);
+				int len = vfile.read(b);
+				SaveTaskForDiffer.encodeDeleteLine(buffer.get(0).getBeginPointer(), 
+						buffer.get(0).getEndPointer()); 
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			
 		}
 

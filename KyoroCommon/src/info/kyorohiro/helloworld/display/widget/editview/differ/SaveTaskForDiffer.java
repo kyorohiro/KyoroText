@@ -15,15 +15,15 @@ import info.kyorohiro.helloworld.util.TaskTicket;
 public class SaveTaskForDiffer implements CheckAction ,TaskTicket.Task<String>, Runnable {
 	private TaskTicket<String> mTicket = null;
 	private Differ mDiffer = null;
-	private LineViewBufferSpec mBase = null;
-	private VirtualFile mVfile = null;
+	private LineViewBufferSpec mTarget = null;
+	private VirtualFile mVFile = null;
 
 	public SaveTaskForDiffer(Differ differ, LineViewBufferSpec spec, VirtualFile path) {
 		super();
 		mTicket = new TaskTicket<String>(this);
 		mDiffer = differ;
-		mBase = spec;
-		mVfile = path;
+		mTarget = spec;
+		mVFile = path;
 	}
 
 
@@ -53,7 +53,8 @@ public class SaveTaskForDiffer implements CheckAction ,TaskTicket.Task<String>, 
 	@Override
 	public boolean check(Differ owner, int lineLocation, int patchedPosition,
 			int unpatchedPosition, int index) {
-		
+		Line targetLine = owner.getLine(lineLocation);
+
 		return false;
 	}
 
@@ -61,17 +62,9 @@ public class SaveTaskForDiffer implements CheckAction ,TaskTicket.Task<String>, 
 	public void end(LinkedList<Line> ll) {
 	}
 
-
-}
-
-/*
-implements Runnable {
-
-
-	private LineViewBufferSpec mTarget;
-	private Differ mDiffer;
-	private VirtualFile mVFile;
-	
+	//
+	//
+	//
 	public static String encodeDeleteLine(long beginPointer, long endPointer) {
 		String encode = "DEL:b=" + beginPointer + ",e=" + endPointer+";";
 		return encode;
@@ -81,29 +74,6 @@ implements Runnable {
 		String encode = "DEL:b=" + beginPointer + ",e=" + endPointer+",t="+text+";";
 		return encode;
 	}
-
-	public SaveTaskForDiffer(LineViewBufferSpec target, Differ differ,
-			VirtualFile file) {
-		mTarget = target;
-		mDiffer = differ;
-		mVFile = file;
-	}
-
-	@Override
-	public void run() {
-	}
-
-	public void save() {
-		int numOfLine = mDiffer.numOfLine();
-		for (int location = 0; location < numOfLine; location++) {
-			Line line = mDiffer.getLine(location);
-			if (line instanceof AddLine) {
-
-			} else if (line instanceof DeleteLine) {
-			}
-		}
-	}
-
 	public void save(int unpatchedPosition, int patchedPositon, AddLine line) throws FaileSaveException {
 		int start = unpatchedPosition + line.begin();
 		int end = start + line.length();
@@ -138,12 +108,6 @@ implements Runnable {
 		}
 
 	}
-
-	public void save(AddLine line) {
-
-	}
-
 	public static class FaileSaveException extends Exception {
 	}
 }
-*/
