@@ -38,14 +38,17 @@ public class TestForSaveTaskForDiffer extends TestCase {
 			File path = new File(Environment.getExternalStorageDirectory(),"__kyoro_test__.txt");
 			VirtualFile vfile = new VirtualFile(path, 501);
 			differ.deleteLine(0);
-			TaskTicket<String> ticket = differ.save(vfile);
+			TaskTicket<String> ticket = differ.save(buffer, vfile);
+			
 			try {
 				String result = ticket.getT();
 				byte[] b = new byte[2056];
 				vfile.seek(0);
 				int len = vfile.read(b);
-				SaveTaskForDiffer.encodeDeleteLine(buffer.get(0).getBeginPointer(), 
-						buffer.get(0).getEndPointer()); 
+				String tag = SaveTaskForDiffer.encodeDeleteLine(buffer.get(0).getBeginPointer(), 
+						buffer.get(0).getEndPointer());
+				assertTrue(""+len +">= 0",len >= 0);
+				assertEquals(tag, new String(b,0,len,"utf8"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {

@@ -26,6 +26,9 @@ public class SaveTaskForDiffer implements CheckAction ,TaskTicket.Task<String>, 
 		mVFile = path;
 	}
 
+	TaskTicket<String> getTicket() {
+		return mTicket;
+	}
 
 	@Override
 	public String get() {

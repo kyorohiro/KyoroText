@@ -82,8 +82,11 @@ public class Differ {
 		return mLength;
 	}
 
-	public synchronized TaskTicket<String> save(VirtualFile file) {
-		return null;
+	public synchronized TaskTicket<String> save(LineViewBufferSpec spec, VirtualFile file) {
+		SaveTaskForDiffer stask = new SaveTaskForDiffer(this, spec, file);
+		Thread t = new Thread(stask);
+		t.start();
+		return stask.getTicket();
 	}
 
 	public synchronized KyoroString get(LineViewBufferSpec spec, int _index) {
