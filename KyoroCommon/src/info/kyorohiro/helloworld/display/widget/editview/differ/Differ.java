@@ -23,6 +23,16 @@ public class Differ {
 	private String mType = "";
 	private String mExtra = "";
 	private int mColor = SimpleGraphicUtil.BLACK;
+	private boolean mIsLogOn = false;
+
+	public void logon() {
+		mIsLogOn = true;
+	}
+
+	public void logoff() {
+		mIsLogOn = false;
+	}
+
 
 	//
 	// no test
@@ -123,6 +133,7 @@ public class Differ {
 				Line targetLine = mLineList.get(lineLocation);
 				patchedPosition += targetLine.begin();
 				unpatchedPosition += targetLine.begin();
+				//debugPrint("#line+"+lineLocation+","+patchedPosition+","+unpatchedPosition);
 				if (targetLine instanceof DeleteLine) {
 					patchedPosition += 0;
 					unpatchedPosition += targetLine.length();
@@ -173,7 +184,9 @@ public class Differ {
 	}
 
 	public void debugPrint(String message) {
-		//android.util.Log.v("kiyo", "#Differ#"+message);
+		if(mIsLogOn) {
+			android.util.Log.v("kiyo", "#Differ#"+message);
+		}
 	}
 	public void debugPrint() {	
 		if(true){

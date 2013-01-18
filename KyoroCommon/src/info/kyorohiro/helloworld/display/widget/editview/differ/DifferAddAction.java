@@ -59,8 +59,9 @@ public class DifferAddAction extends CheckAction {
 				int start = mPrevPatchedPosition+targetLine.begin(); 
 				if(mTargetPatchedPosition < start) {
 					// new AddLine
-					owner.addLine(lineLocation, new AddLine(mTargetPatchedPosition - mPrevPatchedPosition, mLine));	
-					//targetLine.setStart(targetLine.begin()-1);
+					int n = mTargetPatchedPosition - mPrevPatchedPosition;
+					owner.addLine(lineLocation, new AddLine(n, mLine));	
+					targetLine.setStart(targetLine.begin()-n);
 					// loop end
 					mIsAdded = true;
 					return false;
