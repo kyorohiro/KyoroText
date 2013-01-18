@@ -25,6 +25,8 @@ public class AsyncronousTask implements Runnable {
 		notifyAll();
 	}
 
+	//
+	// if interrupted, return false else return true
 	public synchronized boolean syncTask() {
 		if (mIsAlive) {
 			try {
@@ -47,4 +49,5 @@ public class AsyncronousTask implements Runnable {
 //		System.out.println("#AsyncronousTask#"+log);
 //		android.util.Log.v("kiyo", "#AsyncronousTask#"+log);
 	}
+
 }

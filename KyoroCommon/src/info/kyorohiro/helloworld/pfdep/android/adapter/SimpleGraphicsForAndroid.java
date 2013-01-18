@@ -96,8 +96,8 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		if(widths == null){
 			return;
 		}
-		sWidthBuffer.setLength(widths.length*2);
-		float[] pos = sWidthBuffer.getAllBufferedMoji();
+		sWidthBuffer.setBufferLength(widths.length*2);
+		float[] pos = sWidthBuffer.getBuffer();
 		float t=0;
 		for(int i=0;i<widths.length*2;i+=2) {
 			if(i==0) {

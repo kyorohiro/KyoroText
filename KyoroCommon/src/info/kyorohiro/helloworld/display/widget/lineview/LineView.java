@@ -300,7 +300,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	public int getXToPosX(int cursorCol, int xx, int cur) {
 		float x = xx;// /getScale();
 		x -= getLeftForStartDrawLine();
-		float[] ws = widths.getAllBufferedMoji();
+		float[] ws = widths.getBuffer();
 		int l = getWidth(cursorCol, ws);
 		float ww = 0;
 		for (int i = 0; i < l; i++) {

@@ -1,22 +1,18 @@
 package info.kyorohiro.helloworld.util;
 
 //
-// KyoroString�ɋz����B
 public class FloatArrayBuilder {
 	private int mPointer = 0;
-	private int mLength = 256;
-	private float[] mBuffer = new float[mLength];
+	private float[] mBuffer = new float[256];
 
-	public void setLength(int length) {
-		if(mLength < length) {
-			mLength = length*2/3;
+	public void setBufferLength(int length) {
+		if(mBuffer.length < length) {
 			updateBuffer();
 		}
 	}
 
 	private void updateBuffer() {
-		mLength *=2;
-		float[] tmp = new float[mLength*2];
+		float[] tmp = new float[mBuffer.length*2];
 		for(int i=0;i<mBuffer.length;i++) {
 			tmp[i] = mBuffer[i];
 		}
@@ -24,7 +20,7 @@ public class FloatArrayBuilder {
 	}
 
 	public void append(float moji){
-		if(mPointer >= mLength){
+		if(mPointer >= mBuffer.length){
 			updateBuffer();
 		}
 		mBuffer[mPointer] = moji;
@@ -35,24 +31,11 @@ public class FloatArrayBuilder {
 		mPointer = 0;
 	}
 
-	public void clearFirst(int num) {
-		if(num <0){
-			return;
-		}
-		for(int i=0;(i+num)<mBuffer.length;i++) {
-			mBuffer[i] = mBuffer[i+num]; 
-		}		
-		mPointer -= num;
-		if(mPointer < 0){
-			mPointer = 0;
-		}
-	}
-
-	public float[] getAllBufferedMoji(){
+	public float[] getBuffer(){
 		return mBuffer;
 	}
 
-	public int getCurrentBufferedMojiSize(){
+	public int length(){
 		return mPointer;
 	}
 

@@ -4,6 +4,8 @@ package info.kyorohiro.helloworld.util;
 import java.util.Collections;
 import java.util.LinkedList;
 
+//
+// now creating
 public class AutocandidateList {
 	private LinkedList<String> mList = new LinkedList<String>();
 

@@ -51,7 +51,7 @@ public class SimpleGraphicUtil {
 		if(cash == null) {
 			cash = mCash;
 		}
-		cash.setLength(len);
+		cash.setBufferLength(len);
 		//float[] widths = cash.getAllBufferedMoji(); 
 		int start = 0;
 		int end = 0;
@@ -78,8 +78,8 @@ public class SimpleGraphicUtil {
 		char[] buffer = st.getChars();
 		slineBuffer.setLength(buffer.length*2);
 		char[] line = slineBuffer.getAllBufferedMoji();
-		sWidthBuffer.setLength(buffer.length*2);
-		float[] widths = sWidthBuffer.getAllBufferedMoji();
+		sWidthBuffer.setBufferLength(buffer.length*2);
+		float[] widths = sWidthBuffer.getBuffer();
 		int j=0;
 		float t=0;
 		int c = graphics.getColor();

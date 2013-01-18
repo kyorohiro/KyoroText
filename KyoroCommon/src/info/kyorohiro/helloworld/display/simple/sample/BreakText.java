@@ -37,10 +37,10 @@ public abstract class BreakText {
 
 	public static synchronized int breakText(BreakText breaktext, char[] text, int index, int count, int width) {
 		float s = breaktext.getSimpleFont().getFontSize();
-		mWidths.setLength(count);
+		mWidths.setBufferLength(count);
 		int len = text.length;
 		
-		float[] ws = mWidths.getAllBufferedMoji();
+		float[] ws = mWidths.getBuffer();
 		breaktext.getTextWidths(text, index, index+count, ws, s);
 		float l=0;
 		
