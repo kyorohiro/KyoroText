@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.display.simple.sample;
 import java.util.ArrayList;
 
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -17,18 +18,9 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 	private SelectMenu mMenu = new SelectMenu();
 	private ArrayList<Item> itemList = new ArrayList<Item>();
 	private CircleMenuItem mListener = null;
-//	private MenuMove mMoveAction = new MenuMove();
-//	private String _message = "---1---";;
-	//private int mDegree = 30;
-/*
-	@Override
-	protected CircleControllerAction getInternalAction() {
-		if(mFocus) {
-			return mMoveAction;
-		} else {
-			return super.getInternalAction();
-		}
-	}*/
+	public static final String KEY_TEXTSIZE = "SCCMP_TEXTSIZE";
+	public static final String KEY_MENUCOLOR = "SCCMP_MENUCOLOR";
+
 	public void setCircleMenuItem(CircleMenuItem listener) {
 		mListener = listener;
 	}
@@ -78,10 +70,13 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 
 		@Override
 		public void paint(SimpleGraphics graphics) {
+			int textSize = CrossCuttingProperty.getInstance().getProperty(KEY_TEXTSIZE, graphics.getTextSize());
+			int textColor = CrossCuttingProperty.getInstance().getProperty(KEY_MENUCOLOR, SimpleGraphicUtil.GREEN);
 			int x = SimpleCircleControllerMenuPlus.this.getCenterX();
 			int y = SimpleCircleControllerMenuPlus.this.getCenterY();
 			int radius = SimpleCircleControllerMenuPlus.this.getMinRadius();
-			graphics.setColor(SimpleGraphicUtil.GREEN);
+			graphics.setTextSize(textSize);
+			graphics.setColor(textColor);
 			graphics.setStrokeWidth(3);
 			graphics.drawCircle(x + mCurrentX, y + mCurrentY, radius * 4 / 5);
 			graphics.drawCircle(x + mCurrentX, y + mCurrentY, radius * 3 / 5);
@@ -143,8 +138,8 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 				graphics.drawCircle(x, y, radiusN * 4 / 5);
 				graphics.drawCircle(x, y, radiusN * 3 / 5);
 
-//				int div = 12;
-				int div = 18;
+				int div = 16;
+				//int div = 18;
 				double angle = Math.PI * 2 / div;
 
 				// �ｽ�ｽ�ｽﾝ位置
@@ -172,7 +167,8 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 					if (i == selected) {
 						graphics.setColor(SimpleGraphicUtil.YELLOW);
 					} else {
-						graphics.setColor(SimpleGraphicUtil.GREEN);
+						int textColor = CrossCuttingProperty.getInstance().getProperty(KEY_MENUCOLOR, SimpleGraphicUtil.GREEN);
+						graphics.setColor(textColor);
 					}
 
 					graphics.drawLine(
@@ -198,7 +194,7 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 								itemList.get(selected).title)) {
 							mFocus = false;
 						}
-					} else if (selected >= itemList.size() * 2) {
+					} else if (selected >= itemList.size() ) {
 						if(isMinimized()) {
 							maxmize();
 							mFocus = false;
@@ -225,19 +221,4 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 	public void setEventListener(CircleControllerAction event) {
 		super.setEventListener(event);
 	}
-/*
-	private class MenuMove implements CircleControllerAction {
-		@Override
-		public void upButton(int action) {
-		}
-
-		@Override
-		public void downButton(int action) {
-		}
-
-		@Override
-		public void moveCircle(int action, int degree, int rateDegree) {
-			_message = ""+degree; 
-		}
-	}*/
 }

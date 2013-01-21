@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.textviewer;
 
+import info.kyorohiro.helloworld.textviewer.util.Util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -17,7 +18,7 @@ public class KyoroSetting {
 
 	public static final String CURRENT_CHARSET_DEFAULT = "utf8";
 	public static final String VALUE_NONE = "none";
-	public static final int CURRENT_FONT_SIZE_DEFAULT = 12;
+	public static final int CURRENT_FONT_SIZE_DEFAULT = (int)Util.inchi2pixel(Util.mm2inchi(2.6));
 	private static Object lock = new Object();
 
 	public static String getCurrentCRLF() {

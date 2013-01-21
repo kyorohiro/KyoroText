@@ -6,6 +6,7 @@ import java.io.IOException;
 
 //import android.view.FocusFinder;
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
@@ -65,6 +66,9 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	public BufferManager(SimpleApplication application,
 			AppDependentAction builder, int baseTextSize, int textSize,
 			int width, int height, int mergine, int menuWidth) {
+		CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_TEXTSIZE, textSize);
+		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_MENUCOLOR, SimpleGraphicUtil.parseColor("#FF2222AA"));
 		mBaseTextSize = baseTextSize;
 		mApplication = application;
 		mBuilder = builder;
@@ -182,6 +186,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		mRoot.setPoint(0, 0);
 		// mRoot.setRect(graphics.getWidth(), graphics.getHeight() - t);
 		mRoot.setRect(graphics.getWidth(), graphics.getHeight());
+		//todo
 		super.paint(graphics);
 		int xy[] = new int[2];
 		getFocusingTextViewer().getGlobalXY(xy);
