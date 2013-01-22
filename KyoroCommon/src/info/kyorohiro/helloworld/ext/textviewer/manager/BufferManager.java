@@ -67,8 +67,8 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			AppDependentAction builder, int baseTextSize, int textSize,
 			int width, int height, int mergine, int menuWidth) {
 		CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
-		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_TEXTSIZE, textSize);
-		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_MENUCOLOR, SimpleGraphicUtil.parseColor("#FF2222AA"));
+		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_TEXTSIZE, baseTextSize);
+		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_MENUCOLOR, SimpleGraphicUtil.parseColor("#FF22AA22"));
 		mBaseTextSize = baseTextSize;
 		mApplication = application;
 		mBuilder = builder;
