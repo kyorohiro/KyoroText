@@ -1,18 +1,18 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager.message;
 
 import info.kyorohiro.helloworld.display.simple.MessageDispatcher.Receiver;
-import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile.FindFileTask;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile.FindFileJob;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 import java.lang.ref.WeakReference;
 
 public class FindFileReceiver implements Receiver {
 	public final static String TYPE = "find";
-	public static FindFileTask sTask = null;
-	private WeakReference<FindFileTask> mTask = null;
-	public FindFileReceiver(FindFileTask task) {
+	public static FindFileJob sTask = null;
+	private WeakReference<FindFileJob> mTask = null;
+	public FindFileReceiver(FindFileJob task) {
 		sTask = task;
-		mTask = new WeakReference<FindFileTask>(task);
+		mTask = new WeakReference<FindFileJob>(task);
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class FindFileReceiver implements Receiver {
 
 	@Override
 	public void onReceived(KyoroString message, String type) {
-		FindFileTask task = mTask.get();
+		FindFileJob task = mTask.get();
 		if(!task.isAlive()){
 			return;
 		}

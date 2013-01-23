@@ -31,6 +31,7 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.message.FindFileReceiver;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward.ISearchForwardTask;
+import info.kyorohiro.helloworld.ext.textviewer.manager.task.FindFileTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
@@ -51,17 +52,17 @@ public class FindFile implements Task {
 		if(target == null || view != target.getLineView()) {
 			return;
 		}
-		BufferManager.getManager().getMiniBuffer().startMiniBufferJob(new FindFileTask(target));
+		BufferManager.getManager().getMiniBuffer().startMiniBufferJob(new FindFileJob(target));
 		buffer.clearYank();
 	}
 
-	public static class FindFileTask implements MiniBufferJob {
+	public static class FindFileJob implements MiniBufferJob {
 //		private TextViewer mViewer = null;
 		private WeakReference<TextViewer> mViewer = null;
 
 		private File _mCurrentPath  = new File("");
 		private File mCurrentDir  = new File("");
-		private UpdateInfo mUpdate = null;
+		private FindFileTask mUpdate = null;
 		private boolean mFirstFocosIsInfo = false;
 
 		public void setCurrentPath(File path) {
@@ -71,18 +72,18 @@ public class FindFile implements Task {
 		public File getCurrentFile() {
 			return _mCurrentPath;
 		}
-		public FindFileTask(TextViewer viewer, File path, boolean firstFocosIsInfo) {
+		public FindFileJob(TextViewer viewer, File path, boolean firstFocosIsInfo) {
 			mViewer = new WeakReference<TextViewer>(viewer);
 			setCurrentPath(path);
 			mFirstFocosIsInfo = firstFocosIsInfo;
 		}
 
-		public FindFileTask(TextViewer viewer, File path) {
+		public FindFileJob(TextViewer viewer, File path) {
 			mViewer = new WeakReference<TextViewer>(viewer);
 			setCurrentPath(path);
 		}
 
-		public FindFileTask(TextViewer viewer) {
+		public FindFileJob(TextViewer viewer) {
 			mViewer = new WeakReference<TextViewer>(viewer);
 			setCurrentPath(new File(viewer.getCurrentPath()));
 		}
@@ -244,14 +245,14 @@ public class FindFile implements Task {
 					setCurrentPath(lf.getAbsoluteFile());
 					mCurrentDir = lf.getAbsoluteFile();
 //					android.util.Log.v("kiyo","FT: start 00");
-					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), new File(line), ""));
+					modeBuffer.startTask(mUpdate = new FindFileTask(BufferManager.getManager().getInfoBuffer(), new File(line), ""));
 				} else if(pf.exists()){
 //					android.util.Log.v("kiyo","tab--10--");
 //					android.util.Log.v("kiyo","##--------4-2-----------");
 					setCurrentPath(lf.getAbsoluteFile());
 					mCurrentDir = pf;
 //					android.util.Log.v("kiyo","FT: start 01");
-					modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), pf, lf.getName()));	
+					modeBuffer.startTask(mUpdate = new FindFileTask(BufferManager.getManager().getInfoBuffer(), pf, lf.getName()));	
 				}
 			}
 		}
@@ -290,7 +291,7 @@ public class FindFile implements Task {
 //			android.util.Log.v("kiyo","FT: start 03");
 			//if(mFirst) {
 				setCurrentPath(base.getAbsoluteFile());
-				modeBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer(), getCurrentFile(),""));			
+				modeBuffer.startTask(mUpdate = new FindFileTask(BufferManager.getManager().getInfoBuffer(), getCurrentFile(),""));			
 			//}
 				//
 			MessageDispatcher.getInstance().addReceiver(new FindFileReceiver(this));
@@ -301,151 +302,6 @@ public class FindFile implements Task {
 //			android.util.Log.v("kiyo","end ");
 			BufferManager.getManager().endInfoBuffer();			
 		}
-	}
-
-	public static class UpdateInfo implements Runnable {
-		private TextViewer mInfo = null;
-		private File mPath = null;
-		private String mFilter = "";
-		private AutocandidateList mCandidate = new AutocandidateList(); 
-		public UpdateInfo(TextViewer info, File path, String filter) {
-//			android.util.Log.v("kiyo","---UpdateInfo"+path+","+filter);
-			mInfo = info;
-			mPath = path;
-			mFilter = filter;
-		}
-
-		public String getCandidate(String c) {
-			return mCandidate.candidateText(c);
-		}
-
-		@Override
-		public void run() {
-//			android.util.Log.v("kiyo","-------D1------");
-
-			try {
-//				android.util.Log.v("kiyo","FT: start ");
-				int c=0;
-				mCandidate.clear();
-				BufferManager.getManager().beginInfoBuffer();
-				EditableLineView viewer = mInfo.getLineView();
-				mInfo.getTextViewerBuffer().getBigLineData().ffformatterOn();
-				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
-				viewer.setTextSize(BufferManager.getManager().getBaseTextSize());
-				buffer.setCursor(0, 0);
-				if(mPath == null) {
-					return;
-				}
-
-				VirtualFile vfile = mInfo.getTextViewerBuffer().getBigLineData().getVFile();
-
-				{
-					File p = mPath.getParentFile();
-					Thread.sleep(0);
-					if(p!=null&&p.getParentFile() != null && p.getParentFile().isDirectory()) {
-						addFile(vfile, p.getParentFile(), "../..");						
-					}
-					if(p!=null&&p.isDirectory()) {
-						addFile(vfile, p, "..");
-					}
-				}
-				if(!mPath.isDirectory()&&mPath.isFile()) {
-					addFile(vfile, mPath, null);
-				}
-//				android.util.Log.v("kiyo","FT: start 00002");
-				if(mPath.isDirectory()) {
-//					android.util.Log.v("kiyo","QWW--0-");
-					FileListGetter getter = new FileListGetter(mPath, mFilter, Thread.currentThread());
-					AsyncronousTask sync = new AsyncronousTask(getter);
-					Thread t = new Thread(sync);
-					t.start();
-//					android.util.Log.v("kiyo","QWW--1-");
-					if(!sync.syncTask()) {
-						return;
-					}
-//					android.util.Log.v("kiyo","QWW--2-");
-//					android.util.Log.v("kiyo","-------D01------");
-					if(Thread.currentThread().isInterrupted()) {
-//						android.util.Log.v("kiyo","-------D01-1------");
-						return;
-					}
-//					android.util.Log.v("kiyo","-------D01-2-----");
-					File[] list = getter.getFileList();
-//					android.util.Log.v("kiyo","-------D02------");
-					Thread.sleep(0);
-//					android.util.Log.v("kiyo","QWW--3-");
-					addFileList(vfile, viewer, buffer, list);
-					{
-						File p = mPath.getParentFile();
-						if(p!=null&&p.isDirectory()) {
-							addFile(vfile, p, "..");
-						}
-					}
-				} else {
-					{
-						File p = mPath.getParentFile();
-						if(p!=null&&p.isDirectory()) {
-							addFile(vfile, p, "..");
-						}
-					}
-				}
-//				android.util.Log.v("kiyo","FT: start 00003");
-			} catch(Throwable t) {
-//				android.util.Log.v("kiyo","-------D1------");
-				t.printStackTrace();
-			} finally {
-//				android.util.Log.v("kiyo","-------D2------");
-//				android.util.Log.v("kiyo","FT: end ");
-			}
-		}
-
-
-
-
-
-		private void addFileList(VirtualFile v, EditableLineView viewer,	
-				EditableLineViewBuffer buffer,
-				//Collection<File> fileList
-				File[] fileList
-				) throws InterruptedException, UnsupportedEncodingException, IOException {
-			int size = buffer.getDiffer().length();
-			int c=0;
-			if(fileList == null) {
-				return;
-			}
-			for(File f : fileList) {
-				Thread.sleep(0);
-				if(f == null) {
-					continue;
-				}
-				c++;
-				if(c<100){
-					mCandidate.add(f.getName());
-				}
-				addFile(v, f, null);
-				if(c%100==0){
-					Thread.sleep(10);
-				}
-			}
-		}
-
-		private void addFile(VirtualFile vFile, File file, String label) throws UnsupportedEncodingException, IOException, InterruptedException {
-			Thread.sleep(0);
-			if(file == null) {
-				return;
-			}
-			String INFO = ":::"+file.getAbsolutePath();
-			if(label == null) {
-				label = file.getName();
-			}
-			vFile.addChunk(("●"+label+(file.isDirectory()?"/":"")+INFO).getBytes("utf8"));
-			String date = DateFormat.getDateTimeInstance().format(new Date(file.lastModified()));
-			vFile.addChunk(("\r\n  "+date+""+INFO).getBytes("utf8"));
-			vFile.addChunk(("\r\n  "+file.length()+"byte"+INFO+":::HR").getBytes("utf8"));			
-			vFile.addChunk(("\r\n").getBytes("utf8"));			
-		}
-
-
 	}
 
 }

@@ -13,7 +13,7 @@ import info.kyorohiro.helloworld.textviewer.KyoroTextViewerActivity;
 import info.kyorohiro.helloworld.textviewer.appparts.MenuActionWarningMessagePlus.MyTask;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile;
-import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile.FindFileTask;
+import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile.FindFileJob;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -77,7 +77,7 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 							if (showedDirectry == null || !showedDirectry.exists()||!showedDirectry.canRead()) {
 								showedDirectry = thirdCandidateDirectory;
 							} 
-							FindFileTask t = new FindFileTask(viewer, showedDirectry, true);
+							FindFileJob t = new FindFileJob(viewer, showedDirectry, true);
 							BufferManager.getManager().getMiniBuffer().startMiniBufferJob(t);
 					 }
 				 }
