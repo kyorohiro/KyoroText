@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager.Task;
-import info.kyorohiro.helloworld.display.widget.editview.task.SearchTask;
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.task.SearchTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.text.KyoroString;
 

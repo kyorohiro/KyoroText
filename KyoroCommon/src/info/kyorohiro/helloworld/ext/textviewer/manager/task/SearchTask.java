@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.display.widget.editview.task;
+package info.kyorohiro.helloworld.ext.textviewer.manager.task;
 
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;

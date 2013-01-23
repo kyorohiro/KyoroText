@@ -410,6 +410,9 @@ public class FindFile implements Task {
 				) throws InterruptedException, UnsupportedEncodingException, IOException {
 			int size = buffer.getDiffer().length();
 			int c=0;
+			if(fileList == null) {
+				return;
+			}
 			for(File f : fileList) {
 				Thread.sleep(0);
 				if(f == null) {
@@ -428,6 +431,9 @@ public class FindFile implements Task {
 
 		private void addFile(VirtualFile vFile, File file, String label) throws UnsupportedEncodingException, IOException, InterruptedException {
 			Thread.sleep(0);
+			if(file == null) {
+				return;
+			}
 			String INFO = ":::"+file.getAbsolutePath();
 			if(label == null) {
 				label = file.getName();

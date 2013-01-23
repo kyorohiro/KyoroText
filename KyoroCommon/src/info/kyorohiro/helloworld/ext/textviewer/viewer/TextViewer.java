@@ -3,6 +3,7 @@ package info.kyorohiro.helloworld.ext.textviewer.viewer;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
@@ -27,6 +28,8 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public static int COLOR_BG = SimpleGraphicUtil.parseColor("#FFE7DDAA");
 	public static int COLOR_FONT1 = SimpleGraphicUtil.parseColor("#dd0044ff");
 	public static int COLOR_FONT2 = SimpleGraphicUtil.parseColor("#ddff0044");
+	public static final String KEY_TEXTVIEWER_BGCOLOR = "TV_BGCOLOR";
+	public static final String KEY_TEXTVIEWER_SCROLLBAR_COLOR = "TV_SCROLLBAR_COLOR";
 
 	private String mCurrentCharset = "utf8";
 	private ManagedLineViewBuffer mBuffer = null;
@@ -62,7 +65,11 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 		mLineView = new EditableLineView(mBuffer.getBase(), textSize, 200);
 		mLineView.isTail(false);
-		mLineView.setBgColor(COLOR_BG);
+		{
+		CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+		int c = cp.getProperty(KEY_TEXTVIEWER_BGCOLOR, COLOR_BG);
+		mLineView.setBgColor(c);
+		}
 		setRect(width, width/2);
 		mScrollBar = new ScrollBar(mLineView);
 		addChild(new TouchAndMoveActionForLineView(mLineView));
@@ -227,7 +234,12 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		public void paint(SimpleGraphics graphics) {
 			setTextViewSize(graphics);
 			paintScroll(graphics);
-			SimpleDisplayObject.getStage(this).setColor(COLOR_BG);
+
+			{
+				CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+				int c = cp.getProperty(KEY_TEXTVIEWER_BGCOLOR, COLOR_BG);
+				SimpleDisplayObject.getStage(this).setColor(c);
+			}
 		}
 
 		private void setTextViewSize(SimpleGraphics graphics) {
@@ -248,7 +260,11 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 			int beginPosition = TextViewer.this.mLineView.getShowingTextStartPosition();
 			int endPosition = TextViewer.this.mLineView.getShowingTextEndPosition();
 			mScrollBar.setStatus(beginPosition, endPosition, bufferSize);
-			mScrollBar.setColor(COLOR_FONT1);
+			{
+				CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+				int c = cp.getProperty(KEY_TEXTVIEWER_SCROLLBAR_COLOR, COLOR_FONT1);
+				mScrollBar.setColor(c);
+			}
 		}
 	}
 	

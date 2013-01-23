@@ -5,12 +5,12 @@ import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMen
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus.CircleMenuItem;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
-import info.kyorohiro.helloworld.display.widget.editview.task.SearchTask;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.CircleControllerEvent;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward;
+import info.kyorohiro.helloworld.ext.textviewer.manager.task.SearchTask;
 
 public class CircleControllerManager {
 	public static int COLOR_CIRCLE_DEFAULT = SimpleGraphicUtil.parseColor("#44FFAA44");
