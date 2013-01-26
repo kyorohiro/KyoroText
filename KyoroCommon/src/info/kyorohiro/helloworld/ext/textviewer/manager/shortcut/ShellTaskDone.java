@@ -1,10 +1,12 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager.Task;
@@ -24,7 +26,7 @@ public class ShellTaskDone implements Task {
 
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
-		BufferManager.getManager().getApplication().showMessage("-- "+getCommandName());
+//		BufferManager.getManager().getApplication().showMessage("-- "+getCommandName());
 		buffer.clearYank();
 		Thread t = new Thread(new A(BufferManager.getManager().getFocusingTextViewer()));
 		t.start();
@@ -51,8 +53,39 @@ public class ShellTaskDone implements Task {
 				}
 				builder.append(line.toString());
 			}
-			command.start(""+builder.toString());
+			//
 			buffer.crlf();
+			//
+
+			android.util.Log.v("kiyo", "--0000--"+builder.toString());
+			{
+				String tmp = builder.toString().replace("^[\\s]*|[\\s]*$", "");
+				String [] a = tmp.split("\\s");
+				android.util.Log.v("kiyo", "--0000--"+a.length+","+tmp);
+				if("cd".equals(""+a[0])&&a.length >= 2){
+					String curDirS = CrossCuttingProperty.getInstance().getProperty("user.dir","/");
+					File curDir = new File(curDirS);
+					File curAbFil = new File(a[1]);
+					File curFil = new File(curDir, a[1]);
+					android.util.Log.v("kiyo", "--0001--"+curDirS);
+					if(curAbFil.exists()) {
+						android.util.Log.v("kiyo", "--0002--");
+						//absolute path
+						CrossCuttingProperty.getInstance().setProperty("user.dir",curAbFil.getAbsolutePath());
+						return;
+					}
+					else if(curFil.exists()) {
+						android.util.Log.v("kiyo", "--0003--");
+						CrossCuttingProperty.getInstance().setProperty("user.dir",curFil.getAbsolutePath());
+						return;						
+					} 
+					else {
+						android.util.Log.v("kiyo", "--0004--");
+						// 
+					}
+				}
+			}
+			command.start(""+builder.toString());
 
 			InputStream output = null;
 			InputStream error  = null;

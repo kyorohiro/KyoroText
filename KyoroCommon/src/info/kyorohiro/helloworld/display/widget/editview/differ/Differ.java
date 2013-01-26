@@ -190,6 +190,15 @@ public class Differ {
 		}
 	}
 	public void debugPrint() {	
+		int i=0;
+		for (Line l : mLineList) {
+			if(l instanceof DeleteLine) {
+				i++;
+			} else {
+				
+			}
+		}
+		android.util.Log.v("kiyo","#############"+mLineList.size()+","+i);		
 		if(true){
 			return;
 		}

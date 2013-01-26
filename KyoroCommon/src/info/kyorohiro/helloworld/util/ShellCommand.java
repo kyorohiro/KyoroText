@@ -1,12 +1,14 @@
 package info.kyorohiro.helloworld.util;
 
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
+
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ShellCommand extends Object {
 
-	private String mOption = "";
 	private Process mCommandProcess = null;
 
 	public ShellCommand(){
@@ -17,15 +19,13 @@ public class ShellCommand extends Object {
 		stop();
 		Runtime r = Runtime.getRuntime();
 		try {
-			mCommandProcess = r.exec(command);
+			mCommandProcess = r.exec(command, null, 
+					new File(CrossCuttingProperty.getInstance().getProperty("user.dir","/")));
 		} catch (Exception e) {
 			;
 		}
 	}
 
-	public String getOption() {
-		return mOption;
-	}
 
 	public boolean isAlive() {
 		if (mCommandProcess == null) {
