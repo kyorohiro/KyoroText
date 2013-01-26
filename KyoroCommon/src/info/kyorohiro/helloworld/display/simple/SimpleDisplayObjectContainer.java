@@ -168,7 +168,7 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 		bound[3] = super.getY() + super.getHeight();
 
 		for(SimpleDisplayObject child: mMyChildren){
-			if(child != null&&child.includeParentRect()) {
+			if(child != null&&child.includeParentRect()&&child.isVisible()) {
 				tmp[0] = child.getX();
 				tmp[1] = child.getX() + child.getWidth();
 				tmp[2] = child.getY();

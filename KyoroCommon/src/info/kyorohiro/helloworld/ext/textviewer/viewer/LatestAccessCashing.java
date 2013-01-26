@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.CyclingList;
@@ -30,7 +31,11 @@ public class LatestAccessCashing {
 		for(int i=num-1;i>=0;i--) {
 			if(index == mCash.get(i).getLinePosition()) {
 				KyoroString c =  mCash.get(i);
-				c.setColor(COlOR_RECASH2);
+				{
+					CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+					int co = cp.getProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR3, COlOR_RECASH2);
+					c.setColor(co);
+				}
 				mCash.moveLast(c, i);
 				return c;
 			}

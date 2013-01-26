@@ -23,7 +23,6 @@ public class StartupBuffer extends TextViewer {
 
 	public static final String GUARD = "guard";
 	public static final String UNGUARD = "unguard";
-	private SimpleSwitchButton mFitButton = null;
 	private SimpleSwitchButton mGuardButton = null;
 
 	public static StartupBuffer newStartupBuffer(BufferManager manager, int textSize, int width, int mergine, boolean message) {
@@ -63,28 +62,11 @@ public class StartupBuffer extends TextViewer {
 		}
 		//android.util.Log.v("kiyo", "-------------StartupService --C");
 
-		addChild(mFitButton = new SimpleSwitchButton("fit", 1, new FitAction(this)));
-		addChild(mGuardButton = new SimpleSwitchButton("guard", 3, new GuardAction(this)));
+		addChild(mGuardButton = new SimpleSwitchButton("guard", 1, new GuardAction(this)));
 	//	A a= new A();
 	//	a.start();
 	}
 
-
-
-	public class FitAction implements SimpleSwitchButton.SwithAction {
-		public TextViewer mViewer = null;
-		public FitAction(TextViewer viewer) {
-			mViewer = viewer;
-		}
-		@Override
-		public boolean on() {
-			return mViewer.getLineView().fittableToView();
-		}
-		@Override
-		public void on(boolean value) {
-			mViewer.getLineView().fittableToView(value);
-		}		
-	}
 
 	public class GuardAction implements SimpleSwitchButton.SwithAction {
 		public TextViewer mViewer = null;
@@ -104,10 +86,8 @@ public class StartupBuffer extends TextViewer {
 	@Override
 	public void paintGroup(SimpleGraphics graphics) {
 		if(!IsExtraUI()) {
-			mFitButton.isVisible(false);
 			mGuardButton.isVisible(false);
 		} else {
-			mFitButton.isVisible(true);
 			mGuardButton.isVisible(true);
 		}
 		super.paintGroup(graphics);

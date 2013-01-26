@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
 //import info.kyorohiro.helloworld.display.simple.SimpleApplication;
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
@@ -79,13 +80,21 @@ public class BufferBuilder {
 		@Override
 		public synchronized void head(KyoroString element) {
 			super.head(element);
-			element.setColor(COLOR_FONT2);
+			{
+				CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+				int c = cp.getProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2, COLOR_FONT2);
+				element.setColor(c);
+			}
 		}
 
 		@Override
 		public synchronized void add(KyoroString element) {
 			super.add(element);
-			element.setColor(COLOR_FONT1);
+			{
+				CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+				int c = cp.getProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR1, COLOR_FONT1);
+				element.setColor(c);
+			}
 		}
 	}
 }

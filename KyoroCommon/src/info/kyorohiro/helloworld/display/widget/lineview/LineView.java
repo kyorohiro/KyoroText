@@ -6,17 +6,12 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.SimpleImage;
-import info.kyorohiro.helloworld.display.simple.SimpleTypeface;
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.SimpleLockInter;
 import info.kyorohiro.helloworld.util.arraybuilder.FloatArrayBuilder;
 
-//
-// 縺薙�繧ｯ繝ｩ繧ｹ縺ｯ縺ｧ縺九☆縺弱ｋ縺ｮ縺ｧ蟆上＆縺上☆繧�
-//
 public class LineView extends SimpleDisplayObjectContainer {
-//	public static float[] widths = new float[256];
 	public static FloatArrayBuilder widths = new FloatArrayBuilder();
 
 	private KyoroString[] mCashBuffer = new KyoroString[0];
@@ -42,10 +37,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private boolean mIsTail = true;
 	private int mDefaultCashSize = 100;
 	private boolean mIsLockScreen = false;
-	//private SimpleTypeface mTypeface = null;
-	//public void setSimpleTypeface(SimpleTypeface typeface) {
-	//	mTypeface = typeface;
-	//}	
 
 	public void isLockScreen(boolean lock) {
 		mIsLockScreen = lock;
@@ -97,13 +88,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
-	public boolean fittableToView() {
-		return mDrawingPosition.fittableToView();
-	}
-
-	public void fittableToView(boolean fit) {
-		mDrawingPosition.fittableToView(fit);
-	}
 
 	public LineView(LineViewBufferSpec inputtedText, int textSize) {
 		mInputtedText = inputtedText;
@@ -207,7 +191,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	public void setPositionX(int x) {
 		if(mIsLockScreen){
-		// lock
 			return;
 		}
 		setPositionX(x, false);
@@ -305,13 +288,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 		float ww = 0;
 		for (int i = 0; i < l; i++) {
 			ww += ws[i];
-			//ww += widths.get[i];// * getSclaeFromTextSize();
 			if (ww > x) {
-//				android.util.Log.v("xxx","000"+ww);
 				return i;
 			}
 		}
-//		android.util.Log.v("xxx","001"+ww);
 		return l;
 	}
 
@@ -361,19 +341,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 					textMax-viewMax
 					+(viewMax-textMax)/2;			
 		}
-//		android.util.Log.v("kiyo","len="+positionMax+","+(getWidth() - getMergine() * 2.0));
-//		positionMax -= (positionMax - getWidth())/2;
-//		if(0>positionMax){
-//			positionMax -= getWidth();// + getMergine();// * 2.0;
-//		} else {
-//			positionMax += getWidth() + getMergine() * 2.2;			
-//		}
-//		if (getWidth()-getMergine()<positionMax){
-			positionMax *= -1;
-//		} else {
-//			positionMax -= getWidth() - getMergine()*2;
-//		}	
-//		android.util.Log.v("kiyo","len ret="+positionMax+","+mPositionX);
+		positionMax *= -1;
 		if (mPositionX < positionMax) {
 			mPositionX = (int) positionMax;
 		}
@@ -433,17 +401,14 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
-//		System.out.println("===============begin paint");
 		graphics.clipRect(0, 0, getWidth(), getHeight());
 		if (mBiasAboutMoveLine > 0) {
 			mBiasAboutMoveLine--;
 		}
 		if(mIsLockScreen){
-		// lock
 			graphics.drawText("now lockscreen",100, 100);
 			return;
 		}
-		// todo �ｽ�ｽ�ｽL�ｽR�ｽ[�ｽh�ｽﾉ茨ｿｽa�ｽ�ｽ
 		graphics.setSimpleFont(getBreakText().getSimpleFont());
 		LineViewBufferSpec showingText = mInputtedText;
 		KyoroString[] list = null;
@@ -465,10 +430,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 		graphics.setTextSize(getShowingTextSize());// todo mScale
 
 		// draw extra
-
-		{//
-			//graphics.setTypeface(mTypeface);
-		}
 		{// bg
 			drawBG(graphics);
 		}
@@ -479,7 +440,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 			graphics.drawText("" + getShowingTextStartPosition() + ":"
 					+ getShowingTextEndPosition(), 30, s * 4);
 			graphics.setTextSize(s);
-//			System.out.println("===============do"+mInputtedText.getNumberOfStockedElement());
 		}
 		{// scale in out animation
 			if (mScaleTime > 0) {
@@ -490,14 +450,11 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 		// draw content
 		if (list != null) {// bug fix
-//			System.out.println("===============do"+len);
 			showLineDate(graphics, list, len);
-		}
-		// */
+		}// */
 		// fin
 		super.paint(graphics);
 		graphics.clipRect(-1, -1, -1, -1);
-//		System.out.println("===============end paint");
 	}
 
 	private int _getBuffer(LineViewBufferSpec showingText) {
@@ -515,18 +472,13 @@ public class LineView extends SimpleDisplayObjectContainer {
 			}
 			mCashBuffer = new KyoroString[buffeSize];
 		}
-//		if(showingText.isSync()) {
-			cashing(showingText, start, end);
-//		} else {
-//			mCashBuffer = showingText.getElements(mCashBuffer, start, end);
-//		}
+		cashing(showingText, start, end);
 		return len;
 	}
 
 	private void cashing(LineViewBufferSpec showingText, int start, int end) {
 		int len = end -start;
 		for(int i =0;i<len&&i+start<showingText.getNumberOfStockedElement();i++) {
-//			android.util.Log.v("kiyo","#len#==-"+(start+i)+","+showingText.getNumberOfStockedElement());
 			mCashBuffer[i] = showingText.get(start+i);
 		}
 	}

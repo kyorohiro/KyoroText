@@ -417,8 +417,8 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			if(getChild(i) instanceof TextViewer) {
 				int cx = ((TextViewer)getChild(i)).getX();
 				int cy = ((TextViewer)getChild(i)).getY();
-				int cw = ((TextViewer)getChild(i)).getWidth();
-				int ch = ((TextViewer)getChild(i)).getHeight();
+				int cw = ((TextViewer)getChild(i)).getWidth(false);
+				int ch = ((TextViewer)getChild(i)).getHeight(false);
 				if(cx<x&&x<cx+cw) {
 					if(cy<y&&y<cy+ch){
 						BufferManager.getManager().changeFocus((TextViewer)getChild(i));

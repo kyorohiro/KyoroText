@@ -10,12 +10,14 @@ import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.textviewer.appparts.MainActivityNewShellBufferAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityOpenFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySaveFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySaveasFileAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCRLFAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetCharsetDetectionAction;
+import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetColorAction;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivitySetTextSizeAction;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferGroup;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
@@ -50,6 +52,7 @@ public class KyoroTextViewerActivity extends MainActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		//
 		mViewerManager = newTextManager();
 		mStage = new SimpleStageForAndroid(this);
 		mStage.getRoot().addChild(mViewerManager);
@@ -65,9 +68,11 @@ public class KyoroTextViewerActivity extends MainActivity {
 		setMenuAction(new MainActivityOpenFileAction(mViewerManager));
 		setMenuAction(new MainActivitySaveFileAction(mViewerManager));
 		setMenuAction(new MainActivitySaveasFileAction(mViewerManager));
+		setMenuAction(new MainActivityNewShellBufferAction(mViewerManager));
 		setMenuAction(new MainActivitySetTextSizeAction(mViewerManager));
 		setMenuAction(new MainActivitySetCharsetAction(mViewerManager));
 		setMenuAction(new MainActivitySetCRLFAction(mViewerManager));
+		setMenuAction(new MainActivitySetColorAction(mViewerManager));
 
 		// todo following yaxtuke sigoto
 		mViewerManager.setEvent(new A());
@@ -233,6 +238,12 @@ public class KyoroTextViewerActivity extends MainActivity {
 			circleSize = 18/ 2;
 		} 
 		int baseTextSize = (int) Util.inchi2pixel(Util.mm2inchi(1.6));
+		// color
+		if(KyoroSetting.DEFAULT_COLOR_MOONLIGHT.equals(KyoroSetting.getCurrentColor())){
+			BufferManager.setMoonLight();			
+		} else {
+			BufferManager.setSnowLight();
+		}
 		return new BufferManager(KyoroApplication.getKyoroApplication(),
 				new MyBuilder(), baseTextSize, textSize, screenWidth,
 				screenHeight, screenMargine, (int) Util.inchi2pixel(Util

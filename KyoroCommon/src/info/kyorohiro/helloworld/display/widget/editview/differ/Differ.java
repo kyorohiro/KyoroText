@@ -14,6 +14,7 @@ import java.util.LinkedList;
 
 
 public class Differ {
+	public static final String KEY_DIFFER_FONT_COLOR1 = "KEY_DIFFER_FONT_COLOR1";
 	private final DifferGetAction mGetAction = new DifferGetAction();
 	private final DifferAddAction mAddAction = new DifferAddAction();
 	private final DifferDeleteAction mDeleteAction = new DifferDeleteAction();

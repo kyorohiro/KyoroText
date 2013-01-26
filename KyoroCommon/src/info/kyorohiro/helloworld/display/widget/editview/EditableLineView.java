@@ -4,7 +4,6 @@ package info.kyorohiro.helloworld.display.widget.editview;
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
-import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
@@ -19,6 +18,8 @@ public class EditableLineView extends CursorableLineView {
 
 	private EditableLineViewBuffer mTextBuffer = null;
 	private KeyEventManager mKeyEventManager = new KeyEventManager();
+	private int mR = 0;
+	private int mC = 0;
 
 	public EditableLineView(LineViewBufferSpec v, int textSize, int cashSize) {
 		super(new EditableLineViewBuffer(v), textSize, cashSize);
@@ -40,26 +41,19 @@ public class EditableLineView extends CursorableLineView {
 		}
 	}
 
-	public void iSearchForward() {
-		//TODO
-	}
-
 	public void recenter() {
-		int s = getShowingTextStartPosition();
-		int e = getShowingTextEndPosition();
 		setPositionY(-getLeft().getCursorCol()+
 				-(getShowingTextEndPosition()-getShowingTextStartPosition())/2
 				+ getLineViewBuffer().getNumberOfStockedElement());
 	}
 
-	private int mR = 0;
-	private int mC = 0;
 	private void modCursor(int r, int c) {
 		if(mR!=r||mC!=c){
-			mTextBuffer.clearYank();
+			EditableLineViewBuffer.clearYank();
+		} else {
+			mR = r;
+			mC = c;
 		}
-		mR = r;
-		mC = c;
 	}
 
 	@Override
@@ -69,6 +63,9 @@ public class EditableLineView extends CursorableLineView {
 			try {
 				updateCommitTextFromIME();
 				if (editable()) {
+					if(isTail()){
+						getLeft().setCursorCol(getLineViewBuffer().getNumberOfStockedElement()-1);
+					}
 					updateComposingTextFromIME();
 				}
 				// android.util.Log.v("kiyo","abaP="+getLeft().getCursorCol()+","+getLeft().getCursorRow());

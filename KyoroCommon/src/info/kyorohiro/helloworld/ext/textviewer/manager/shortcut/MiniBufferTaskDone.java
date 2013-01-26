@@ -18,5 +18,5 @@ public class MiniBufferTaskDone implements Task {
 		MiniBuffer mBuffer = BufferManager.getManager().getMiniBuffer();
 		mBuffer.doneJob();
 	}
-	
+
 }

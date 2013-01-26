@@ -13,10 +13,13 @@ import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
+import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
+import info.kyorohiro.helloworld.display.widget.editview.differ.Differ;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager;
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
+import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.CircleControllerManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferGroup;
@@ -29,6 +32,8 @@ import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.util.AsyncronousTask;
 
 public class BufferManager extends SimpleDisplayObjectContainer {
+	public static final String SHELL_BUFFER = CursorableLineView.MODE_EDIT+" shell";
+
 	private static BufferManager sInstance = null;
 	private CircleControllerManager mCircleManager = new CircleControllerManager();
 	private int mWidth = 100;
@@ -62,16 +67,46 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 	public int getBaseTextSize() {
 		return mBaseTextSize;
 	}
+	public static int COLOR_BG = SimpleGraphicUtil.parseColor("#FF101030");	
+	public static int COLOR_D  = SimpleGraphicUtil.parseColor("#ff80c9f4");
+ 	public static int COLOR_I  = SimpleGraphicUtil.parseColor("#ff80f4c9");
+    public static int COLOR_V  = SimpleGraphicUtil.parseColor("#ffc9f480");
+    public static int COLOR_W  = SimpleGraphicUtil.parseColor("#fff4f480");
+    public static int COLOR_E  = SimpleGraphicUtil.parseColor("#fff48080");
+    public static int COLOR_F  = SimpleGraphicUtil.parseColor("#ffff8080");
+    public static int COLOR_S  = SimpleGraphicUtil.parseColor("#ffff8080");
+    public static void setMoonLight() {
+		CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_MENUCOLOR, SimpleGraphicUtil.parseColor("#FF11AA22"));
+		cp.setProperty(SimpleCircleController.KEY_MENU_BGCOLOR, SimpleGraphicUtil.parseColor("##99ffff86"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_BGCOLOR, COLOR_BG);//SimpleGraphicUtil.parseColor("#FF000022"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR1, COLOR_E);//SimpleGraphicUtil.parseColor("#FF000022"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2, COLOR_E);//SimpleGraphicUtil.parseColor("#FF000022"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR3, COLOR_D);//SimpleGraphicUtil.parseColor("#FF000022"));
+		cp.setProperty(Differ.KEY_DIFFER_FONT_COLOR1, COLOR_V);//SimpleGraphicUtil.parseColor("#FF000022"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_SCROLLBAR_COLOR, SimpleGraphicUtil.parseColor("#99ffff86"));
+		cp.setProperty(MyCursor.TAG_CURSOR_MESSAGE_COLOR, COLOR_V);
+    }
+
+    public static void setSnowLight() {
+		CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_MENUCOLOR, SimpleGraphicUtil.parseColor("#FF11AA22"));
+		cp.setProperty(SimpleCircleController.KEY_MENU_BGCOLOR, SimpleGraphicUtil.parseColor("#44FFAA44"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_BGCOLOR, SimpleGraphicUtil.parseColor("#FFE7DDAA"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR1, SimpleGraphicUtil.parseColor("#dd0044ff"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2, SimpleGraphicUtil.parseColor("#ddff0044"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR3, SimpleGraphicUtil.parseColor("#FF112299"));
+		cp.setProperty(Differ.KEY_DIFFER_FONT_COLOR1, SimpleGraphicUtil.parseColor("#FF000022"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_SCROLLBAR_COLOR, SimpleGraphicUtil.parseColor("#dd0044ff"));
+		cp.setProperty(MyCursor.TAG_CURSOR_MESSAGE_COLOR, SimpleGraphicUtil.parseColor("#FF000022"));
+    }
+
 	// ���Singletone�ɂ���B
 	public BufferManager(SimpleApplication application,
 			AppDependentAction builder, int baseTextSize, int textSize,
-			int width, int height, int mergine, int menuWidth) {
+			int width, int height, int mergine, int menuWidth) {	
 		CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
 		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_TEXTSIZE, baseTextSize);
-		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_MENUCOLOR, SimpleGraphicUtil.parseColor("#FF11AA22"));
-		cp.setProperty(TextViewer.KEY_TEXTVIEWER_BGCOLOR, SimpleGraphicUtil.parseColor("#FFE7DDAA"));
-//		cp.setProperty(TextViewer.KEY_TEXTVIEWER_BGCOLOR, SimpleGraphicUtil.parseColor("#FF000022"));
-		cp.setProperty(TextViewer.KEY_TEXTVIEWER_SCROLLBAR_COLOR, SimpleGraphicUtil.parseColor("#dd0044ff"));
 
 		mBaseTextSize = baseTextSize;
 		mApplication = application;
@@ -87,7 +122,6 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		mCircleManager.init();
 		setCircleMenuRadius(menuWidth);
 		//
-		first.getTextViewer().getLineView().fittableToView();
 		// /*
 		// command
 		// android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
@@ -96,7 +130,6 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		// mModeLine.setCurrentFontSize(baseTextSize);
 		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
 		first.setSeparatorPoint(0.05f);
-		g.getTextViewer().getLineView().fittableToView(true);
 		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
 		g.getTextViewer().isGuard(true);
 		g.isVisible(false);
@@ -162,7 +195,6 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		TextViewer viewer = StartupBuffer.newStartupBuffer(this, mTextSize, mWidth, mMergine, true);
 		viewer.getLineView().setKeyEventManager(mKeyEventManager);
 		mList.add(viewer);
-		// viewer.getLineView().fittableToView(true);
 		return viewer;
 	}
 
@@ -215,16 +247,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		int ph = getHeight(false);
 		mCircleMenu.setPoint(pw - cr, ph - cr);
 	}
-//
-//	public void convertTextViewer(TextViewer textViewer) {
-//		TextViewer prev = getFocusingTextViewer();
-//		BufferGroup group = null;
-//		if(prev.getParent() instanceof BufferGroup) {
-//			group = (BufferGroup)prev.getParent();
-//			group.setTextViewer(textViewer);
-//		}
-// 	}
-//
+
 	public void changeFocus(TextViewer textViewer) {
 		TextViewer p = BufferManager.getManager().getFocusingTextViewer();
 		if (textViewer != p) {
@@ -308,6 +331,46 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return (BufferGroup)parent;
 	}
 
+	public synchronized VirtualFile createShellBuffer(String name) {
+		// ガード処理は後で作成する。
+		// 分割対象に、 MiniBuffer と InfoBUfferを含まないことなど
+		//  ==>todo こういった制限はなくてよいようにする予定。
+		//
+		TextViewer shellBuffer = splitWindowHorizontally().getTextViewer();
+		shellBuffer.setCharset("utf8");
+		shellBuffer.getLineView().isTail(true);
+		shellBuffer.getLineView().setMode(BufferManager.SHELL_BUFFER);
+		File infoFile = new File(getApplication().getApplicationDirectory(),"shell_"+name+".txt");
+		File baseDir = infoFile.getParentFile();
+
+		try {
+			if(!baseDir.exists()) {
+				baseDir.mkdirs();
+			}
+			if(infoFile.exists()) {
+				infoFile.delete();
+			}
+			if(!infoFile.exists()) {
+				infoFile.createNewFile();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			VirtualFile ret = new VirtualFile(infoFile, 501);
+			mInfo.getLineView().isLockScreen(true);
+			mInfo.readFile(ret);
+			mInfo.getLineView().isLockScreen(false);
+			return ret;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public synchronized VirtualFile beginInfoBuffer() {
 		
 		if(mInfo == null || mInfo.isDispose()) {
@@ -316,7 +379,6 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			mInfo.setCurrentFontSize((int)(getBaseTextSize()*1.4));
 			mInfo.setMininumScale(0.80f);
 			mInfo.asisSetBufferWidth(mWidth*3/6);
-			mInfo.getLineView().fittableToView(true);
 			mInfo.setCharset("utf8");
 			if(mInfo == null) {
 				return null;

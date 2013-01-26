@@ -1,7 +1,5 @@
 package info.kyorohiro.helloworld.display.simple;
 
-import java.io.File;
-
 public abstract class SimpleGraphics {
 	public final static int STYLE_STROKE = 1;
 	public final static int STYLE_FILL = 2;
@@ -10,6 +8,8 @@ public abstract class SimpleGraphics {
 
 	public abstract int getGlobalX();
 	public abstract int getGlobalY();
+	public abstract void saveSetting();
+	public abstract void restoreSetting();	
 	public abstract void setGlobalPoint(SimpleGraphics graphics, int x,int y);
 	public abstract SimpleGraphics getChildGraphics(SimpleGraphics graphics, int globalX, int globalY);
 	public abstract void drawCircle(int x, int y, int radius);	

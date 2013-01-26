@@ -241,21 +241,9 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 		}
 	}
 
-//	public int getTextWidth(String line) {
-//		float[] w = new float[line.length()];
-//		mPaint.getTextWidths(line, w);
-//		float margine = 0;
-//		int len = line.length();
-//		for (int i = 0; i < len; i++) {
-//			margine += w[i];
-//		}
-//		return (int) margine;
-//	}
-
 	@Override
 	public SimpleDisplayObject createImage(byte[] data, int offset, int length) {
 		Bitmap bitmap = BitmapFactory.decodeByteArray(data, offset, length);
-
 		return null;
 	}
 
@@ -292,5 +280,15 @@ public class SimpleGraphicsForAndroid extends SimpleGraphics {
 	@Override
 	public SimpleFont getSimpleFont() {
 		return mFont;
+	}
+
+	@Override
+	public void saveSetting() {
+		mCanvas.save();
+	}
+
+	@Override
+	public void restoreSetting() {
+		mCanvas.restore();
 	}
 }

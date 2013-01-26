@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.lineview;
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
@@ -17,6 +18,7 @@ public class MyCursor extends SimpleDisplayObject {
 	private boolean focus = false;
 	private WeakReference<CursorableLineView> mParent;
 	private CharSequence mMessage = "";
+	public static final String TAG_CURSOR_MESSAGE_COLOR = "TAG_CURSOR_MESSAGE_COLOR";
 
 	public MyCursor(CursorableLineView lineview) {
 		mParent = new WeakReference<CursorableLineView>(lineview);
@@ -73,10 +75,24 @@ public class MyCursor extends SimpleDisplayObject {
 		drawCursor(graphics, 0, 0);
 
 		if(mMessage != null&&mMessage.length()!=0){
-			graphics.setColor(SimpleGraphicUtil.parseColor("#FF000000"));
-			graphics.setTextSize(mParent.get().getTextSize());
-//			graphics.drawText(mMessage, 0, 0);//-1*mParent.get().getShowingTextSize());
-			graphics.drawText(mMessage, 0, -1*mParent.get().getShowingTextSize());
+			{
+				graphics.saveSetting();
+				graphics.clipRect(0, -2*mParent.get().getShowingTextSize(), ((SimpleDisplayObject)getParent()).getWidth(), getHeight());
+				//				graphics.clipRect(left, top, right, bottom);
+				CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+				int c = cp.getProperty(TAG_CURSOR_MESSAGE_COLOR, SimpleGraphicUtil.parseColor("#FF000000"));
+				graphics.setColor(c);
+				graphics.setTextSize(mParent.get().getTextSize());
+				//			graphics.drawText(mMessage, 0, 0);//-1*mParent.get().getShowingTextSize());
+				int[] xy = new int[2];
+				getGlobalXY(xy);
+				if(xy[1]-2*mParent.get().getShowingTextSize() < 0) {
+					graphics.drawText(mMessage, 0, 1*mParent.get().getShowingTextSize());					
+				} else {
+					graphics.drawText(mMessage, 0,-1*mParent.get().getShowingTextSize());
+				}
+				graphics.restoreSetting();
+			}
 		}
 		graphics.setTextSize(26);
 		graphics.drawText("x=" + cursorRow + ",y=" + cursorCol.getPoint(), 10, 100);

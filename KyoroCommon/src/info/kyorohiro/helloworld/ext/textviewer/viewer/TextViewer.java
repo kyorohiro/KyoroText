@@ -30,6 +30,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public static int COLOR_FONT2 = SimpleGraphicUtil.parseColor("#ddff0044");
 	public static final String KEY_TEXTVIEWER_BGCOLOR = "TV_BGCOLOR";
 	public static final String KEY_TEXTVIEWER_SCROLLBAR_COLOR = "TV_SCROLLBAR_COLOR";
+	public static final String KEY_TEXTVIEWER_FONT_COLOR1 = "TV_FONT_COLOR1";
+	public static final String KEY_TEXTVIEWER_FONT_COLOR2 = "TV_FONT_COLOR2";
+	public static final String KEY_TEXTVIEWER_FONT_COLOR3 = "TV_FONT_COLOR3";
 
 	private String mCurrentCharset = "utf8";
 	private ManagedLineViewBuffer mBuffer = null;

@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.display.simple.sample;
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObjectContainer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
@@ -10,6 +11,7 @@ import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
 
 public class SimpleCircleController extends SimpleDisplayObjectContainer {
 
+	public static final String KEY_MENU_BGCOLOR = "KEY_MENU_BGCOLOR";
 	private CircleControllerAction mEvent = new NullCircleControllerEvent();
 	private int mMaxRadius = 100;
 	private int mMinRadius = 50;
@@ -143,7 +145,10 @@ public class SimpleCircleController extends SimpleDisplayObjectContainer {
 				return;
 			}
 
-			graphics.setColor(mColorWhenDefault);
+			{
+				int textColor = CrossCuttingProperty.getInstance().getProperty(KEY_MENU_BGCOLOR, mColorWhenDefault);
+				graphics.setColor(textColor);
+			}
 			graphics.setStyle(SimpleGraphics.STYLE_STROKE);
 			graphics.setStrokeWidth(4);
 

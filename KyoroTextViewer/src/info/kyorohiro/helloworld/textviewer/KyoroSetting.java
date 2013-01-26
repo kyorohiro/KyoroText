@@ -14,12 +14,34 @@ public class KyoroSetting {
 	public static final String VALUE_CRLF = "CRLF";
 	public static final String VALUE_LF = "LF";
 	public static final String DEFAULT_CRLF = VALUE_CRLF;
+	public static final String TAG_COLOR = "current color";
+	public static final String DEFAULT_COLOR_MOONLIGHT = "moon light(月光)";
+	public static final String DEFAULT_COLOR_SHOWLIGHT = "snow light(氷菓)";
 
 
 	public static final String CURRENT_CHARSET_DEFAULT = "utf8";
 	public static final String VALUE_NONE = "none";
 	public static final int CURRENT_FONT_SIZE_DEFAULT = (int)Util.inchi2pixel(Util.mm2inchi(2.6));
 	private static Object lock = new Object();
+
+	public static void setCurrentColor(String value) {
+		try{
+			setData(TAG_COLOR, value);
+		} catch (Throwable t){
+		}
+	}
+
+	public static String getCurrentColor() {
+		String crlf = DEFAULT_COLOR_MOONLIGHT;
+		try {
+			String t = getData(TAG_COLOR);
+			if(t != null && !t.equals(VALUE_NONE)){
+				crlf = t;
+			}			
+		} catch(Throwable t) {
+		}
+		return crlf;
+	}
 
 	public static String getCurrentCRLF() {
 		String crlf = DEFAULT_CRLF;

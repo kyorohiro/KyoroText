@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
+ package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;

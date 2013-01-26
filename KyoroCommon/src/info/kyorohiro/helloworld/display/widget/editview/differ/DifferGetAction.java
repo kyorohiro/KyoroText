@@ -3,11 +3,13 @@ package info.kyorohiro.helloworld.display.widget.editview.differ;
 
 import java.util.LinkedList;
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.CheckAction;
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.Line;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
+import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.text.KyoroString;
 
 public class DifferGetAction implements CheckAction {
@@ -28,9 +30,20 @@ public class DifferGetAction implements CheckAction {
 		try {
 			if (isDiffer()) {
 				if(mReturnString instanceof KyoroString) {
+					int c = 0;
+					{
+						CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+						c = cp.getProperty(Differ.KEY_DIFFER_FONT_COLOR1, SimpleGraphicUtil.BLACK);
+					}
+					((KyoroString)mReturnString).setColor(c);
 					return (KyoroString)mReturnString;	
 				} else {
-					return new KyoroString(mReturnString, SimpleGraphicUtil.BLACK);
+					int c = 0;
+					{
+						CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+						c = cp.getProperty(Differ.KEY_DIFFER_FONT_COLOR1, SimpleGraphicUtil.BLACK);
+					}
+					return new KyoroString(mReturnString, c);
 				}
 			} else {
 				return spec.get(mTargetUnpatchedPosition);

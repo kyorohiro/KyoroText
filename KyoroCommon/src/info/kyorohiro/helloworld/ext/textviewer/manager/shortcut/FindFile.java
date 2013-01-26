@@ -1,43 +1,19 @@
 package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.nio.channels.FileChannel;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-//import android.webkit.ConsoleMessage.MessageLevel;
 
 import info.kyorohiro.helloworld.display.simple.MessageDispatcher;
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
-import info.kyorohiro.helloworld.display.simple.MessageDispatcher.Receiver;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager.Task;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.message.FindFileReceiver;
-import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward.ISearchForwardTask;
 import info.kyorohiro.helloworld.ext.textviewer.manager.task.FindFileTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
-import info.kyorohiro.helloworld.io.VirtualFile;
-import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.util.AsyncronousTask;
-import info.kyorohiro.helloworld.util.AutocandidateList;
-import info.kyorohiro.helloworld.util.FileListGetter;
 
 public class FindFile implements Task {
 
