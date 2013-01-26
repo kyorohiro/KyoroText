@@ -331,43 +331,49 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return (BufferGroup)parent;
 	}
 
+	TextViewer mShellBuffer = null;
 	public synchronized VirtualFile createShellBuffer(String name) {
 		// ガード処理は後で作成する。
 		// 分割対象に、 MiniBuffer と InfoBUfferを含まないことなど
 		//  ==>todo こういった制限はなくてよいようにする予定。
 		//
-		TextViewer shellBuffer = splitWindowHorizontally().getTextViewer();
-		shellBuffer.setCharset("utf8");
-		shellBuffer.getLineView().isTail(true);
-		shellBuffer.getLineView().setMode(BufferManager.SHELL_BUFFER);
-		File infoFile = new File(getApplication().getApplicationDirectory(),"shell_"+name+".txt");
-		File baseDir = infoFile.getParentFile();
+		TextViewer shellBuffer = null;
+		if(mShellBuffer == null||mShellBuffer.isDispose()) {
+			shellBuffer = splitWindowHorizontally().getTextViewer();
+			shellBuffer.setCharset("utf8");
+			shellBuffer.getLineView().isTail(true);
+			shellBuffer.getLineView().setMode(BufferManager.SHELL_BUFFER);
+			mShellBuffer = shellBuffer;
+			File infoFile = new File(getApplication().getApplicationDirectory(),"shell_.txt");
+			File baseDir = infoFile.getParentFile();
+			try {
+				if(!baseDir.exists()) {
+					baseDir.mkdirs();
+				}
+				if(infoFile.exists()) {
+					infoFile.delete();
+				}
+				if(!infoFile.exists()) {
+					infoFile.createNewFile();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-		try {
-			if(!baseDir.exists()) {
-				baseDir.mkdirs();
+			try {
+				VirtualFile ret = new VirtualFile(infoFile, 1024);
+				mShellBuffer.getLineView().isLockScreen(true);
+				mShellBuffer.readFile(ret);
+				mShellBuffer.getLineView().isLockScreen(false);
+				return ret;
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
 			}
-			if(infoFile.exists()) {
-				infoFile.delete();
-			}
-			if(!infoFile.exists()) {
-				infoFile.createNewFile();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+		shellBuffer = mShellBuffer;
 
-		try {
-			VirtualFile ret = new VirtualFile(infoFile, 501);
-			mInfo.getLineView().isLockScreen(true);
-			mInfo.readFile(ret);
-			mInfo.getLineView().isLockScreen(false);
-			return ret;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
 		return null;
 	}
 

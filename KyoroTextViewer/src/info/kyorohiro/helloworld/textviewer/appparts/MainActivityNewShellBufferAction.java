@@ -1,6 +1,10 @@
 package info.kyorohiro.helloworld.textviewer.appparts;
 
+import java.io.File;
+
 import info.kyorohiro.helloworld.pfdep.android.base.MainActivityMenuAction;
+import info.kyorohiro.helloworld.textviewer.KyoroSetting;
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import android.app.Activity;
@@ -55,8 +59,11 @@ public class MainActivityNewShellBufferAction implements MainActivityMenuAction 
 	public static int NUM=0;
 	public class A implements Runnable {
 		public void run() {
-			BufferManager.getManager().createShellBuffer(""+NUM);
-			NUM++;
+			File f= new File(""+KyoroSetting.getCurrentFile());
+			if(f.getParentFile() != null&& f.getParentFile().exists()) {
+				CrossCuttingProperty.getInstance().setProperty("user.dir",f.getParent());				
+			}
+			BufferManager.getManager().createShellBuffer("");
 		}
 	}
 }

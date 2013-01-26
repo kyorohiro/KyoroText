@@ -20,8 +20,8 @@ public class TextViewerBuffer extends LockableCyclingList implements LineViewBuf
 	private int mCurrentBufferEndLinePosition = 0;
 	private int mCurrentPosition = 0;
 	private VirtualFile mVFile = null;
-	private KyoroString mErrorLineMessage = new KyoroString("error..\n", SimpleGraphicUtil.parseColor("#FFFF0000"));
-	private KyoroString mLoadingLineMessage = new KyoroString("loading..\n", SimpleGraphicUtil.parseColor("#33FFFF00"));
+	private KyoroString mErrorLineMessage = new KyoroString("error..", SimpleGraphicUtil.parseColor("#FFFF0000"));
+	private KyoroString mLoadingLineMessage = new KyoroString("loading..", SimpleGraphicUtil.parseColor("#33FFFF00"));
 
 	public static final int SYNC_GET_LINE_COLOR = SimpleGraphicUtil.parseColor("#FF2222FF"); 
 	private NeiborhoodCashing mNeiborCashing = null;

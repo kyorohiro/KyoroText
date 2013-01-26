@@ -13,8 +13,8 @@ public class SingleTaskRunner {
 	private Thread mTaskUpdater = null;
 
 	private void log(String message) {
-		System.out.println("#SingleTaskRunner#"+message);
-//		android.util.Log.v("kiyo","#SingleTaskRunner#"+message);
+//		System.out.println("#SingleTaskRunner#"+message);
+		android.util.Log.v("kiyo","#SingleTaskRunner#"+message);
 	}
 
 	//
@@ -38,6 +38,7 @@ public class SingleTaskRunner {
 	public synchronized void endTask() {
 		log("endTask");
 		if(mTaskRunner !=null && mTaskRunner.isAlive()) {
+			log("endTask -1-");
 			mTaskRunner.interrupt();
 			mTaskRunner = null;
 		}

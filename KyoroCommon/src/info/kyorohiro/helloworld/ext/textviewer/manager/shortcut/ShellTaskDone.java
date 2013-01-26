@@ -7,16 +7,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
+import info.kyorohiro.helloworld.display.simple.SimpleStage;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager.Task;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
-import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.ISearchForward.ISearchForwardTask;
+import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.ShellCommand;
 import info.kyorohiro.helloworld.util.ShellCommand.CommandException;
 
+//
+// まずは、課題抽出用に書いた、基本書き直す予定
+// 
 public class ShellTaskDone implements Task {
 
 	@Override
@@ -26,12 +30,14 @@ public class ShellTaskDone implements Task {
 
 	@Override
 	public void act(EditableLineView view, EditableLineViewBuffer buffer) {
-//		BufferManager.getManager().getApplication().showMessage("-- "+getCommandName());
 		buffer.clearYank();
-		Thread t = new Thread(new A(BufferManager.getManager().getFocusingTextViewer()));
-		t.start();
+
+		//
+		// share MiniBuffer thread
+		MiniBuffer miniBuffer = BufferManager.getManager().getMiniBuffer();
+		miniBuffer.startTask(new A(BufferManager.getManager().getFocusingTextViewer()));
 	}
- 
+
 	public class A implements Runnable {
 		private TextViewer mTarget = null;
 		public A(TextViewer target) {
@@ -40,7 +46,6 @@ public class ShellTaskDone implements Task {
 
 		@Override
 		public void run() {
-			android.util.Log.v("kiyo", "--1--");
 			ShellCommand command = new ShellCommand();
 			EditableLineViewBuffer buffer = (EditableLineViewBuffer)mTarget.getLineView().getLineViewBuffer();
 
@@ -54,28 +59,33 @@ public class ShellTaskDone implements Task {
 				builder.append(line.toString());
 			}
 			//
+			try {
+				buffer.setCursor(buffer.get(buffer.getCol()).length(), buffer.getCol());
+			} catch(Throwable e) {
+				e.printStackTrace();
+			}finally {
+			}
 			buffer.crlf();
 			//
 
-			android.util.Log.v("kiyo", "--0000--"+builder.toString());
 			{
 				String tmp = builder.toString().replace("^[\\s]*|[\\s]*$", "");
 				String [] a = tmp.split("\\s");
-				android.util.Log.v("kiyo", "--0000--"+a.length+","+tmp);
-				if("cd".equals(""+a[0])&&a.length >= 2){
+//				android.util.Log.v("kiyo", "--0000--"+a.length+","+tmp);
+				if(a.length >= 2&&"cd".equals(""+a[0])){
 					String curDirS = CrossCuttingProperty.getInstance().getProperty("user.dir","/");
 					File curDir = new File(curDirS);
 					File curAbFil = new File(a[1]);
 					File curFil = new File(curDir, a[1]);
-					android.util.Log.v("kiyo", "--0001--"+curDirS);
-					if(curAbFil.exists()) {
-						android.util.Log.v("kiyo", "--0002--");
+//					android.util.Log.v("kiyo", "--0001--"+curDirS);
+					if(curAbFil.exists()&& curAbFil.isDirectory()) {
+//						android.util.Log.v("kiyo", "--0002--");
 						//absolute path
 						CrossCuttingProperty.getInstance().setProperty("user.dir",curAbFil.getAbsolutePath());
 						return;
 					}
-					else if(curFil.exists()) {
-						android.util.Log.v("kiyo", "--0003--");
+					else if(curFil.exists()&&curDir.isDirectory()) {
+//						android.util.Log.v("kiyo", "--0003--");
 						CrossCuttingProperty.getInstance().setProperty("user.dir",curFil.getAbsolutePath());
 						return;						
 					} 
@@ -83,6 +93,12 @@ public class ShellTaskDone implements Task {
 						android.util.Log.v("kiyo", "--0004--");
 						// 
 					}
+				}
+				else if(a.length >= 1&&"pwd".equals(""+a[0])) {
+					String line = CrossCuttingProperty.getInstance().getProperty("user.dir","/");
+					buffer.pushCommit(line, 1);
+					buffer.crlf();
+					return;
 				}
 			}
 			command.start(""+builder.toString());
@@ -92,7 +108,11 @@ public class ShellTaskDone implements Task {
 
 			BufferedReader outputReader = null;
 			BufferedReader errorReader = null;
+			SimpleStage stage = BufferManager.getManager().getStage(BufferManager.getManager());
+
 			android.util.Log.v("kiyo", "--2--"+builder.toString());
+			char[] text = new char[127];
+			byte[] buff = new byte[512];
 			try {
 				output = command.getInputStream();
 				error  = command.getErrorStream();
@@ -102,34 +122,29 @@ public class ShellTaskDone implements Task {
 				android.util.Log.v("kiyo", "--3--");
 				while(true) {
 
-					//if(output.available() != 0){
-					{
+					if(output.available() != 0){
 						String line = null;
 						do {
-						line = outputReader.readLine();
-						if(line != null) {
-							buffer.pushCommit(line, 1);
-							buffer.crlf();
-						}
-						Thread.yield();
+							int l = output.read(buff);
+							mTarget.getVFile().addChunk(buff,0, l);
+							Thread.yield();
+							Thread.sleep(0);
 						} while(line != null);
 					}
-					{
+					if(error.available() != 0){
 						String line = null;
 						do {
-						line = errorReader.readLine();
-						if(line != null) {
-							buffer.pushCommit(line, 1);
-							buffer.crlf();
-						}
-						Thread.yield();
+							int l = error.read(buff);
+							mTarget.getVFile().addChunk(buff,0, l);
+							Thread.yield();
+							Thread.sleep(0);
 						} while(line != null);
 					}
-					Thread.sleep(10);
 					if(!command.isAlive()&&error.available()==0&&output.available()==0){
-						android.util.Log.v("kiyo", "--1-3-");
 						break;
-					} 
+					} else {
+						Thread.sleep(100);						
+					}
 				}
 				android.util.Log.v("kiyo", "--5--");
 			} catch (CommandException e) {
@@ -138,9 +153,28 @@ public class ShellTaskDone implements Task {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (Throwable e) {
+				e.printStackTrace();				
+			} finally {
+				try {
+					if(errorReader != null) {
+						errorReader.close();
+					}
+					if(error != null) {
+						error.close();
+					}
+					if(output != null) {
+						output.close();
+					}
+					if(outputReader != null) {
+						outputReader.close();
+					}
+				} catch (Throwable e) {
+					e.printStackTrace();				
+				}
 			}
 			android.util.Log.v("kiyo", "--6--");
 		}
 	}
-	
+
 }

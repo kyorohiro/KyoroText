@@ -401,6 +401,9 @@ public class LineView extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void paint(SimpleGraphics graphics) {
+		if(getLineViewBuffer().isLoading()) {
+			getStage(this).resetTimer();
+		}
 		graphics.clipRect(0, 0, getWidth(), getHeight());
 		if (mBiasAboutMoveLine > 0) {
 			mBiasAboutMoveLine--;

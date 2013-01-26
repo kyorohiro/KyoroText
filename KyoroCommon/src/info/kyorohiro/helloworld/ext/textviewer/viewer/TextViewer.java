@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.ref.WeakReference;
 
 import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleApplication;
@@ -44,6 +45,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	private int mMergine = 0;
 	private BreakText mBreakText = null;
 	private float mMininumScale = 0.75f;//3/4;
+	private WeakReference<VirtualFile> mVFile = null;
 
 	public TextViewer(TextViewerBuffer buffer, int textSize, int width, int mergine, String charset) {
 		mBreakText = buffer.getBreakText();
@@ -177,12 +179,23 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return false;
 	}
 
+	public VirtualFile getVFile() {
+		if(mVFile == null) {
+			return null;
+		} else {
+			return mVFile.get();
+		}
+	}
+
 	public boolean readFile(File file) throws FileNotFoundException, NullPointerException {
-		return readFile(new VirtualFile(file,0));
+		VirtualFile vFile = new VirtualFile(file,0);
+		mVFile = new WeakReference<VirtualFile>(vFile);
+		return readFile(vFile);
 	}
 
 	public boolean readFile(VirtualFile file) throws FileNotFoundException, NullPointerException {	
 //		android.util.Log.v("kiyo","RFrf: start 00001-1-");
+		mVFile = new WeakReference<VirtualFile>(file);
 		mCurrentPath = file.getBase().getAbsolutePath();
 		BufferBuilder builder = new BufferBuilder(file);
 		builder.setCharset(mCurrentCharset);

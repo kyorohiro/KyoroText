@@ -198,7 +198,7 @@ public class Differ {
 				
 			}
 		}
-		android.util.Log.v("kiyo","#############"+mLineList.size()+","+i);		
+		//android.util.Log.v("kiyo","#############"+mLineList.size()+","+i);		
 		if(true){
 			return;
 		}
