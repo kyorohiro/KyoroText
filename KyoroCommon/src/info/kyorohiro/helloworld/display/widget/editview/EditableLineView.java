@@ -10,6 +10,8 @@ import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 
 /**
  * This Class
@@ -63,7 +65,7 @@ public class EditableLineView extends CursorableLineView {
 			try {
 				updateCommitTextFromIME();
 				if (editable()) {
-					if(isTail()){
+					if(isTail()){//&&!BufferManager.getManager().getMiniBuffer().isAliveTask()){
 						getLeft().setCursorCol(getLineViewBuffer().getNumberOfStockedElement()-1);
 					}
 					updateComposingTextFromIME();

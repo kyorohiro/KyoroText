@@ -122,6 +122,12 @@ public class MiniBuffer extends TextViewer {
 	// MiniBuffer Task Runner
 	//
 	private SingleTaskRunner mSingleTaskRunner = new SingleTaskRunner();
+	public boolean isAliveTask() {
+		if(mSingleTaskRunner == null) {
+			return false;
+		}
+		return mSingleTaskRunner.isAlive();
+	}
 	public synchronized void startTask(Runnable nextTask) {
 		android.util.Log.v("kiyo","-s-startTask--");
 		mSingleTaskRunner.startTask(nextTask);

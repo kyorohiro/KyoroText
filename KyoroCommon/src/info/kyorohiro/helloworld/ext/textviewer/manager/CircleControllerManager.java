@@ -50,6 +50,14 @@ public class CircleControllerManager {
 //			SimpleCircleControllerMenuPlus circleMenu = BufferManager.getManager().getCircleMenu();
 			circleMenu.clearCircleMenu();
 			circleMenu.addCircleMenu(0, "Paste");
+			mLineView.setMode(MiniBuffer.MODE_LINE_BUFFER);
+			textviewer.isGuard(true);
+		}
+		else if(title.equals(BufferManager.SHELL_BUFFER)) {
+			circleMenu.clearCircleMenu();
+//			circleMenu.addCircleMenu(0, MENU_SEARCH);
+			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+			mLineView.setMode(BufferManager.SHELL_BUFFER);
 			textviewer.isGuard(true);
 		}
 		else if (title.equals(CursorableLineView.MODE_VIEW)
@@ -74,20 +82,23 @@ public class CircleControllerManager {
 			}
 
 		} else if (title.equals(CursorableLineView.MODE_SELECT)) {
-			if(mInfo !=null && mInfo == textviewer) {
+			if(mInfo == textviewer) {
+				android.util.Log.v("kiyo","----0---");
 				circleMenu.clearCircleMenu();
 				circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 				circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 				circleMenu.addCircleMenu(0, MENU_SEARCH);
-				if (!CursorableLineView.MODE_SELECT.equals(mLineView.getMode())) {
-					mLineView.setMode(CursorableLineView.MODE_SELECT);
-				}
+			} else if(BufferManager.getManager().getShellBuffer() == textviewer) {
+				android.util.Log.v("kiyo","----1---");
+				circleMenu.clearCircleMenu();
+				circleMenu.addCircleMenu(0, BufferManager.SHELL_BUFFER);
 			} else {
+				android.util.Log.v("kiyo","----2---");
 				clear();
 				circleMenu.addCircleMenu(0, MENU_SEARCH);
-				if (!CursorableLineView.MODE_SELECT.equals(mLineView.getMode())) {
-					mLineView.setMode(CursorableLineView.MODE_SELECT);
-				}
+			}
+			if (!CursorableLineView.MODE_SELECT.equals(mLineView.getMode())) {
+				mLineView.setMode(CursorableLineView.MODE_SELECT);
 			}
 			circleMenu.addCircleMenu(0, "Copy");
 		} else if (title.equals("Copy")) {
@@ -112,7 +123,12 @@ public class CircleControllerManager {
 				circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 				circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 				circleMenu.addCircleMenu(0, MENU_SEARCH);
-			} else {
+			}
+			else if(mInfo !=null && BufferManager.getManager().getShellBuffer() == textviewer) {
+				circleMenu.clearCircleMenu();
+				circleMenu.addCircleMenu(0, BufferManager.SHELL_BUFFER);				
+			} 
+			else {
 				clear();
 				circleMenu.addCircleMenu(0, MENU_SEARCH);
 			}

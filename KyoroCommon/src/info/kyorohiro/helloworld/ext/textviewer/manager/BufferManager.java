@@ -59,6 +59,10 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return mModeLine;
 	}
 
+	public TextViewer getShellBuffer() {
+		return mShellBuffer;
+	}
+
 	public TextViewer getInfoBuffer() {
 		return mInfo;
 	}

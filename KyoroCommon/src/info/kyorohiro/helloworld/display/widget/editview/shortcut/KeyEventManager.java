@@ -162,6 +162,7 @@ public class KeyEventManager extends IMEController{
 		} else {
 			//android.util.Log.v("kiyo","#key  --2-- ="+text.getText());
 			if(getMode().toString().startsWith(CursorableLineView.MODE_EDIT)) {
+				//
 				mTextBuffer.pushCommit(text.getText(),
 						text.getNewCursorPosition());
 			}

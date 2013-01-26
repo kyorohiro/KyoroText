@@ -17,6 +17,13 @@ public class SingleTaskRunner {
 		android.util.Log.v("kiyo","#SingleTaskRunner#"+message);
 	}
 
+	public boolean isAlive() {
+		if(mTaskUpdater == null || !mTaskUpdater.isAlive()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	//
 	// current running thread is end. and nextTask is run.
 	//
