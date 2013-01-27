@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.util;
+package info.kyorohiro.helloworld.util.shell;
 
 
 import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
@@ -7,19 +7,23 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ShellCommand extends Object {
+public class CLIAppKicker extends Object {
 
 	private Process mCommandProcess = null;
 
-	public ShellCommand(){
+	public void log(String message) {
+//		android.util.Log.v("kiyo","#CLIAppKicker#"+message);
+	}
+
+	public CLIAppKicker(){
 		super();
 	}
 
 	public synchronized void start(String command) {
+		log("start");
 		stop();
 		Runtime r = Runtime.getRuntime();
 		try {
-			android.util.Log.v("kiyo","---CMD CMD");
 			r.availableProcessors();
 			mCommandProcess = r.exec(command//);
 			, null, new File(CrossCuttingProperty.getInstance().getProperty("user.dir","/")));
@@ -46,13 +50,14 @@ public class ShellCommand extends Object {
 	}
 
 	private synchronized void stop() {
+		log("stop");
 		if (mCommandProcess != null) {
 			mCommandProcess.destroy();
 			mCommandProcess = null;
 		}
 	}
 
-	public InputStream getInputStream() throws CommandException {
+	public InputStream getInputStream() throws CLIAppKickerException {
 		ActionWithForceErrorCheck action = new ActionWithForceErrorCheck(
 				new Action() { public Object run() {
 					return mCommandProcess.getInputStream();
@@ -61,7 +66,7 @@ public class ShellCommand extends Object {
 		return (InputStream)action.getResult();
 	}
 
-	public OutputStream getOutputStream() throws CommandException {
+	public OutputStream getOutputStream() throws CLIAppKickerException {
 		ActionWithForceErrorCheck action = new ActionWithForceErrorCheck(
 				new Action() { public Object run() {
 					return mCommandProcess.getOutputStream();
@@ -70,7 +75,7 @@ public class ShellCommand extends Object {
 		return (OutputStream)action.getResult();
 	}
 
-	public InputStream getErrorStream() throws CommandException {
+	public InputStream getErrorStream() throws CLIAppKickerException {
 		ActionWithForceErrorCheck action = new ActionWithForceErrorCheck(
 				new Action() { public Object run() {
 					return mCommandProcess.getErrorStream();
@@ -80,13 +85,13 @@ public class ShellCommand extends Object {
 	}
 
 	@SuppressWarnings("serial")
-	public static class CommandException extends Exception {
+	public static class CLIAppKickerException extends Exception {
 		public static final String CODING_ERROR_SETTED_NULL_ACTION = "coding error: setted null action";
 		public static final String UNEXPECTED_ERROR_AND_RETRUN_NULL_FROM_SYSTEM = "sorry unexpected error. pf return null";
 		public static final String NEED_TO_CALL_START_METHOD = "please call ShellCommand#start()";
 		private String mCommandInfo = "";
 
-		public CommandException(String logcatInfo) {
+		public CLIAppKickerException(String logcatInfo) {
 			super(logcatInfo);
 			mCommandInfo = logcatInfo;
 		}
@@ -103,18 +108,18 @@ public class ShellCommand extends Object {
 			mAction = action;
 		}
 
-		public Object getResult()throws CommandException {
+		public Object getResult()throws CLIAppKickerException {
 			try {
 				if (mAction == null) {
-					throw new CommandException(CommandException.CODING_ERROR_SETTED_NULL_ACTION);					
+					throw new CLIAppKickerException(CLIAppKickerException.CODING_ERROR_SETTED_NULL_ACTION);					
 				}
 				if (mCommandProcess == null) {
-					throw new CommandException(CommandException.NEED_TO_CALL_START_METHOD);
+					throw new CLIAppKickerException(CLIAppKickerException.NEED_TO_CALL_START_METHOD);
 				}
 				Object obj = mAction.run();
 				if (obj == null) {
-					throw new CommandException(
-							CommandException.UNEXPECTED_ERROR_AND_RETRUN_NULL_FROM_SYSTEM);
+					throw new CLIAppKickerException(
+							CLIAppKickerException.UNEXPECTED_ERROR_AND_RETRUN_NULL_FROM_SYSTEM);
 				}
 				return obj;
 			} finally {

@@ -17,16 +17,16 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
-import info.kyorohiro.helloworld.util.ShellCommand;
-import info.kyorohiro.helloworld.util.ShellCommand.CommandException;
-import info.kyorohiro.helloworld.util.shell.Cmd;
+import info.kyorohiro.helloworld.util.shell.CmdSession;
+import info.kyorohiro.helloworld.util.shell.CLIAppKicker;
+import info.kyorohiro.helloworld.util.shell.CLIAppKicker.CLIAppKickerException;
 
 //
 // まずは、課題抽出用に書いた、基本書き直す予定
 // 
 public class ShellTaskDone implements Task {
 
-	private static Cmd mCmd = null;
+	private static CmdSession mCmd = null;
 
 	@Override
 	public String getCommandName() {
@@ -60,7 +60,7 @@ public class ShellTaskDone implements Task {
 				if(mCmd != null) {
 					mCmd.end();
 				}
-				mCmd = new Cmd(targetVFile, BufferManager.getManager().getMiniBuffer().getSingleTaskRunner());
+				mCmd = new CmdSession(targetVFile, BufferManager.getManager().getMiniBuffer().getSingleTaskRunner());
 			}
 
 			// input
