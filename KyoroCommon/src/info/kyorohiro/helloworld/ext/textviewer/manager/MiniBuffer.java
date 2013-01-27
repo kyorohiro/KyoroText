@@ -122,12 +122,12 @@ public class MiniBuffer extends TextViewer {
 	// MiniBuffer Task Runner
 	//
 	private final SingleTaskRunner mSingleTaskRunner = new SingleTaskRunner();
-	public boolean isAliveTask() {
-		if(mSingleTaskRunner == null) {
-			return false;
-		}
-		return mSingleTaskRunner.isAlive();
-	}
+//	public boolean isAliveTask() {
+//		if(mSingleTaskRunner == null) {
+//			return false;
+//		}
+//		return mSingleTaskRunner.isAlive();
+//	}
 
 	public SingleTaskRunner getSingleTaskRunner() {
 		return mSingleTaskRunner;

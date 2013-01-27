@@ -17,22 +17,28 @@ public class SingleTaskRunner {
 
 	private void log(String message) {
 //		System.out.println("#SingleTaskRunner#"+message);
-		android.util.Log.v("kiyo","#SingleTaskRunner#"+message);
+//		android.util.Log.v("kiyo","#SingleTaskRunner#"+message);
 	}
 
 	public Runnable getCurrentTask() {
 		return mCurrentTask;
 	}
 
-	public boolean isAlive() {
+	public boolean isAliveUpdater() {
 		if(mTaskUpdater == null || !mTaskUpdater.isAlive()) {
-//			log("isAlive false");
 			return false;
 		} else {
-//			log("isAlive true");
 			return true;
 		}
 	}
+	public boolean isAlive() {
+		if(mTaskRunner == null || !mTaskRunner.isAlive()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	//
 	// current running thread is end. and nextTask is run.
 	//

@@ -19,8 +19,10 @@ public class ShellCommand extends Object {
 		stop();
 		Runtime r = Runtime.getRuntime();
 		try {
-			mCommandProcess = r.exec(command, null, 
-					new File(CrossCuttingProperty.getInstance().getProperty("user.dir","/")));
+			android.util.Log.v("kiyo","---CMD CMD");
+			r.availableProcessors();
+			mCommandProcess = r.exec(command//);
+			, null, new File(CrossCuttingProperty.getInstance().getProperty("user.dir","/")));
 		} catch (Exception e) {
 			;
 		}

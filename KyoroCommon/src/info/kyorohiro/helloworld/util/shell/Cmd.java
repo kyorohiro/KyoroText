@@ -36,7 +36,8 @@ public class Cmd {
 	}
 
 	public void input(String input) {
-		if (mRunner.getCurrentTask()!= this||!mRunner.isAlive()) {
+		if (!mRunner.isAlive()) {
+			android.util.Log.v("kiyo","--start--+"+(mRunner.getCurrentTask()!= this)+","+mRunner.isAliveUpdater());
 			start(mCmdTask = new CmdRunner());
 		}
 		// 念のためガード
