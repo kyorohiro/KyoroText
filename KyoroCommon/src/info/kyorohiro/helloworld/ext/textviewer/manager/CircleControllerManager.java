@@ -15,7 +15,6 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.task.SearchTask;
 public class CircleControllerManager {
 	public static int COLOR_CIRCLE_DEFAULT = SimpleGraphicUtil.parseColor("#44FFAA44");
 	public static String MENU_SEARCH = "Search";
-//	public static String MENU_GUARD_OFF = "GUARD_OFF";
 
 	public void init() {
 		SimpleCircleControllerMenuPlus circleMenu = BufferManager.getManager().getCircleMenu();
@@ -36,9 +35,6 @@ public class CircleControllerManager {
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 		circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-
-//		circleMenu.addCircleMenu(0, MENU_GUARD_ON);
-//		circleMenu.addCircleMenu(0, MENU_GUARD_OFF);
 	}
 	public boolean _circleSelected(CharSequence title) {
 //		android.util.Log.v("kiyo","selected="+title);

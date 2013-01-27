@@ -152,8 +152,13 @@ public class VirtualFile implements KyoroFile {
 		mRAFile.close();
 		mRAFile = null;
 		mWriteCash = null;
+		mIsClose = true;
 	}
 
+	private boolean mIsClose = false;
+	public boolean isClose() {
+		return mIsClose;
+	}
 	public long getStartChunk() {
 		return mCashStartPointPerFile;
 	}

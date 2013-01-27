@@ -65,7 +65,7 @@ public class EditableLineView extends CursorableLineView {
 			try {
 				updateCommitTextFromIME();
 				if (editable()) {
-					if(isTail()){//&&!BufferManager.getManager().getMiniBuffer().isAliveTask()){
+					if(isTail()&&!CursorableLineView.MODE_SELECT.equals(getMode())){//&&!BufferManager.getManager().getMiniBuffer().isAliveTask()){
 						getLeft().setCursorCol(getLineViewBuffer().getNumberOfStockedElement()-1);
 					}
 					updateComposingTextFromIME();

@@ -32,7 +32,7 @@ import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.util.AsyncronousTask;
 
 public class BufferManager extends SimpleDisplayObjectContainer {
-	public static final String SHELL_BUFFER = CursorableLineView.MODE_EDIT+" shell";
+	public static final String SHELL_BUFFER = CursorableLineView.MODE_EDIT+" shell?";
 
 	private static BufferManager sInstance = null;
 	private CircleControllerManager mCircleManager = new CircleControllerManager();
@@ -84,8 +84,10 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_MENUCOLOR, SimpleGraphicUtil.parseColor("#FF11AA22"));
 		cp.setProperty(SimpleCircleController.KEY_MENU_BGCOLOR, SimpleGraphicUtil.parseColor("##99ffff86"));
 		cp.setProperty(TextViewer.KEY_TEXTVIEWER_BGCOLOR, COLOR_BG);//SimpleGraphicUtil.parseColor("#FF000022"));
-		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR1, COLOR_E);//SimpleGraphicUtil.parseColor("#FF000022"));
-		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2, COLOR_E);//SimpleGraphicUtil.parseColor("#FF000022"));
+//		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR1, COLOR_E);//SimpleGraphicUtil.parseColor("#FF000022"));
+//		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2, COLOR_E);//SimpleGraphicUtil.parseColor("#FF000022"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR1, COLOR_D);//SimpleGraphicUtil.parseColor("#FF000022"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2, COLOR_D);//SimpleGraphicUtil.parseColor("#FF000022"));
 		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR3, COLOR_D);//SimpleGraphicUtil.parseColor("#FF000022"));
 		cp.setProperty(Differ.KEY_DIFFER_FONT_COLOR1, COLOR_V);//SimpleGraphicUtil.parseColor("#FF000022"));
 		cp.setProperty(TextViewer.KEY_TEXTVIEWER_SCROLLBAR_COLOR, SimpleGraphicUtil.parseColor("#99ffff86"));

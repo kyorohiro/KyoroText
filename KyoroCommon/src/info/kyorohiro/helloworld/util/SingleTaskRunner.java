@@ -11,16 +11,25 @@ public class SingleTaskRunner {
 	private Thread mTaskRunner = null;
 	private Runnable mNextTask = null;
 	private Thread mTaskUpdater = null;
+	
+	// todo following field have memory leak potential
+	private Runnable mCurrentTask = null;
 
 	private void log(String message) {
 //		System.out.println("#SingleTaskRunner#"+message);
 		android.util.Log.v("kiyo","#SingleTaskRunner#"+message);
 	}
 
+	public Runnable getCurrentTask() {
+		return mCurrentTask;
+	}
+
 	public boolean isAlive() {
 		if(mTaskUpdater == null || !mTaskUpdater.isAlive()) {
+//			log("isAlive false");
 			return false;
 		} else {
+//			log("isAlive true");
 			return true;
 		}
 	}
@@ -81,7 +90,7 @@ public class SingleTaskRunner {
 			}
 		}
 		log("done 2-3");
-		mTaskRunner = new Thread(task);
+		mTaskRunner = new Thread(mCurrentTask = task);
 		mTaskRunner.start();
 	}
 
