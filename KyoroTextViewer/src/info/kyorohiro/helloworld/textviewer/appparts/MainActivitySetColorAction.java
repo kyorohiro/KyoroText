@@ -71,29 +71,39 @@ public class MainActivitySetColorAction implements MainActivityMenuAction {
 	public class DialogForShowCRLFSetting extends Dialog {
 		RadioButton rb1 = new RadioButton(getContext());
 		RadioButton rb2 = new RadioButton(getContext());
+		RadioButton rb3 = new RadioButton(getContext());
 
 		public DialogForShowCRLFSetting(Context context) {
 			super(context);
 			rb1.setId(301);
 			rb2.setId(302);
+			rb3.setId(303);
 			RadioGroup l = new RadioGroup(getContext());
 			l.setOrientation(LinearLayout.VERTICAL);
 			rb1.setText(KyoroSetting.DEFAULT_COLOR_MOONLIGHT);
 			rb2.setText(KyoroSetting.DEFAULT_COLOR_SHOWLIGHT);
+			rb3.setText(KyoroSetting.DEFAULT_COLOR_SIMPLE);
 			l.addView(rb1);
 			l.addView(rb2);
+			l.addView(rb3);
+
 			setContentView(l);
 			rb1.setSelected(false);
+			rb2.setSelected(false);
 			rb2.setSelected(false);
 			if (KyoroSetting.DEFAULT_COLOR_MOONLIGHT.equals(KyoroSetting
 					.getCurrentColor())) {
 				// android.util.Log.v("kiyo","kkk=sdf -1-");
 				rb1.setSelected(true);
 				l.check(rb1.getId());
-			} else {
+			} else if (KyoroSetting.DEFAULT_COLOR_SHOWLIGHT.equals(KyoroSetting
+					.getCurrentColor())) {
 				// android.util.Log.v("kiyo","kkk=sdf -2-");
 				rb2.setSelected(true);
 				l.check(rb2.getId());
+			} else {
+				rb3.setSelected(true);
+				l.check(rb3.getId());				
 			}
 
 			l.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -111,11 +121,19 @@ public class MainActivitySetColorAction implements MainActivityMenuAction {
 						BufferManager.getStage(BufferManager.getManager())
 								.resetTimer();
 						// v.isCrlfMode(true);
-					} else {
+					} else if(checkedId == rb2.getId()) {
 						// android.util.Log.v("kiyo","kkk=sdf -4-");
 						KyoroSetting
 								.setCurrentColor(KyoroSetting.DEFAULT_COLOR_SHOWLIGHT);
 						BufferManager.setSnowLight();
+						BufferManager.getStage(BufferManager.getManager())
+								.resetTimer();
+						// v.isCrlfMode(false);
+					}  else if(checkedId == rb3.getId()) {
+						// android.util.Log.v("kiyo","kkk=sdf -4-");
+						KyoroSetting
+								.setCurrentColor(KyoroSetting.DEFAULT_COLOR_SIMPLE);
+						BufferManager.setSimpleLight();
 						BufferManager.getStage(BufferManager.getManager())
 								.resetTimer();
 						// v.isCrlfMode(false);

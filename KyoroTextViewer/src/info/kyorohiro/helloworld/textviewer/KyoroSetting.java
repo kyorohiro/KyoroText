@@ -17,6 +17,7 @@ public class KyoroSetting {
 	public static final String TAG_COLOR = "current color";
 	public static final String DEFAULT_COLOR_MOONLIGHT = "moon light(月光)";
 	public static final String DEFAULT_COLOR_SHOWLIGHT = "snow light(氷菓)";
+	public static final String DEFAULT_COLOR_SIMPLE    = "simple";
 
 
 	public static final String CURRENT_CHARSET_DEFAULT = "utf8";

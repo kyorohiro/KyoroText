@@ -128,7 +128,20 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		cp.setProperty(MyCursor.TAG_CURSOR_MESSAGE_COLOR, SimpleGraphicUtil.parseColor("#FF000022"));
     }
 
-	// ���Singletone�ɂ���B
+    public static void setSimpleLight() {
+		CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+		cp.setProperty(SimpleCircleControllerMenuPlus.KEY_MENUCOLOR, SimpleGraphicUtil.parseColor("#FF11AA22"));
+		cp.setProperty(SimpleCircleController.KEY_MENU_BGCOLOR,      SimpleGraphicUtil.parseColor("#dd999999"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_BGCOLOR,            SimpleGraphicUtil.parseColor("#FFFFFFFF"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR1,        SimpleGraphicUtil.parseColor("#dd000000"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2,        SimpleGraphicUtil.parseColor("#dd000000"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR3,        SimpleGraphicUtil.parseColor("#FF000000"));
+		cp.setProperty(Differ.KEY_DIFFER_FONT_COLOR1,                SimpleGraphicUtil.parseColor("#FF000044"));
+		cp.setProperty(TextViewer.KEY_TEXTVIEWER_SCROLLBAR_COLOR,    SimpleGraphicUtil.parseColor("#dd999999"));
+		cp.setProperty(MyCursor.TAG_CURSOR_MESSAGE_COLOR,            SimpleGraphicUtil.parseColor("#FF999999"));
+    }
+
+    // ���Singletone�ɂ���B
 	public BufferManager(SimpleApplication application,
 			AppDependentAction builder, int baseTextSize, int textSize,
 			int width, int height, int mergine, int menuWidth) {	
