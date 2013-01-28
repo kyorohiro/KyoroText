@@ -63,6 +63,27 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return mShellBuffer;
 	}
 
+	//todo
+	public void clearShellBuffer() {
+		if(mShellBuffer == null || mShellBuffer.isDispose()) {
+			return;
+		} else {
+			mShellBuffer.getLineView().isTail(false);
+			getMiniBuffer().endTask();
+		}
+		mShellBuffer = null;
+	}
+	public void clearInfoBuffer() {
+		if(mInfo == null || mInfo.isDispose()) {
+			return;
+		} else {
+			mInfo.getLineView().isTail(false);
+			
+			getMiniBuffer().endTask();
+		}
+		mShellBuffer = null;
+	}
+
 	public TextViewer getInfoBuffer() {
 		return mInfo;
 	}

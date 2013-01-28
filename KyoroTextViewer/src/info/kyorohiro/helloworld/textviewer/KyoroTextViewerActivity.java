@@ -8,6 +8,7 @@ import info.kyorohiro.helloworld.pfdep.android.base.MainActivity;
 import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
 import info.kyorohiro.helloworld.display.simple.SimpleFont;
 import info.kyorohiro.helloworld.display.simple.SimpleStage;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.textviewer.appparts.MainActivityNewShellBufferAction;
@@ -30,6 +31,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.CursorWrapper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -264,8 +266,24 @@ public class KyoroTextViewerActivity extends MainActivity {
 							mViewerManager.otherWindow();
 							fo = mViewerManager.getFocusingTextViewer();
 						}
+						TextViewer mini = BufferManager.getManager().getMiniBuffer();
+						TextViewer current = mViewerManager.getFocusingTextViewer();
+						if(mini == current) {
+							BufferManager.getManager().otherWindow();
+						}
 						mViewerManager.getFocusingTextViewer().readFile(
 								new File(uri.getPath()));
+						//todo
+						TextViewer info = BufferManager.getManager().getInfoBuffer();
+						TextViewer shell = BufferManager.getManager().getShellBuffer();
+						if(shell ==current) {
+							BufferManager.getManager().clearShellBuffer();
+							current.getLineView().setMode(CursorableLineView.MODE_VIEW);
+						}
+						else if(info == current) {
+							BufferManager.getManager().clearInfoBuffer();
+							current.getLineView().setMode(CursorableLineView.MODE_VIEW);							
+						}
 					}
 				}
 			}

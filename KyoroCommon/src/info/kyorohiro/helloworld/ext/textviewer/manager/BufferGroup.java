@@ -288,17 +288,17 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 		if(isControlBuffer()) {
 			return false;
 		}
-		TextViewer info =BufferManager.getManager().getInfoBuffer();
-		if(child == info) {
-			return false;
-		}
+//		TextViewer info =BufferManager.getManager().getInfoBuffer();
+//		if(child == info) {
+//			return false;
+//		}
 		if(child instanceof BufferGroup){
 			if(((BufferGroup) child).isControlBuffer()){
 				return false;
 			}
-			if(((BufferGroup) child).getTextViewer() == info){
-				return false;
-			}
+//			if(((BufferGroup) child).getTextViewer() == info){
+//				return false;
+//			}
 		}
 		if(kill instanceof BufferGroup){
 			if(((BufferGroup) kill).isControlBuffer()){

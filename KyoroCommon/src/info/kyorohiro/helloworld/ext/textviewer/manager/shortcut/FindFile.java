@@ -9,6 +9,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleApplication;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManager.Task;
+import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.message.FindFileReceiver;
@@ -97,11 +98,18 @@ public class FindFile implements Task {
 			}
 			try {
 				SimpleApplication app = BufferManager.getManager().getApplication();
-				if(newFile.getParentFile().equals(app.getApplicationDirectory())) {
+				//if(newFile.getParentFile().equals(app.getApplicationDirectory())) {
 					viewer.readFile(newFile);
-				} else {
-					viewer.readFile(newFile);
-				}
+					//String currentMode = viewer.getLineView().getMode();
+					TextViewer info = BufferManager.getManager().getInfoBuffer();
+					TextViewer shell = BufferManager.getManager().getShellBuffer();
+					if(shell == viewer) {
+						BufferManager.getManager().clearShellBuffer();
+						viewer.getLineView().setMode(CursorableLineView.MODE_VIEW);
+					} 
+				//} else {
+				//	viewer.readFile(newFile);
+				//}
 			} catch(Exception e) {
 				e.printStackTrace();
 			} finally {

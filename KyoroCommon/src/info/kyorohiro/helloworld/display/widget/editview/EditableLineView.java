@@ -94,7 +94,7 @@ public class EditableLineView extends CursorableLineView {
 	public void setMode(String mode) {
 		if(!mIsChMode) {
 			super.setMode(mode);
-			if(CursorableLineView.MODE_EDIT!=mode){
+			if(CursorableLineView.MODE_EDIT.startsWith(""+mode)){
 				hideIME();
 			}
 		}
@@ -136,6 +136,7 @@ public class EditableLineView extends CursorableLineView {
 			return false;
 		}
 	}
+
 
 	private void showIME() {
 		SimpleStage stage = getStage(this);
