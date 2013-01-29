@@ -99,7 +99,7 @@ public class FindFile implements Task {
 			try {
 				SimpleApplication app = BufferManager.getManager().getApplication();
 				//if(newFile.getParentFile().equals(app.getApplicationDirectory())) {
-					viewer.readFile(newFile);
+//					viewer.readFile(newFile);
 					//String currentMode = viewer.getLineView().getMode();
 					TextViewer info = BufferManager.getManager().getInfoBuffer();
 					TextViewer shell = BufferManager.getManager().getShellBuffer();
@@ -107,6 +107,13 @@ public class FindFile implements Task {
 						BufferManager.getManager().clearShellBuffer();
 						viewer.getLineView().setMode(CursorableLineView.MODE_VIEW);
 					} 
+					if(info == viewer) {
+						BufferManager.getManager().clearInfoBuffer();
+						viewer.getLineView().setMode(CursorableLineView.MODE_VIEW);
+					} 
+					
+					viewer.readFile(newFile);
+
 				//} else {
 				//	viewer.readFile(newFile);
 				//}

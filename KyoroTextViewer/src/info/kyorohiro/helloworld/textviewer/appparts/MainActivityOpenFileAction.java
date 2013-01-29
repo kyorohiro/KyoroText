@@ -36,7 +36,7 @@ public class MainActivityOpenFileAction implements MainActivityMenuAction {
 		TextViewer viewer = BufferManager.getManager().getFocusingTextViewer();
 		TextViewer mini = BufferManager.getManager().getMiniBuffer();
 		TextViewer info = BufferManager.getManager().getInfoBuffer();
-		if(viewer == null||viewer == mini|| viewer == info) {
+		if(viewer == null||viewer == mini){//|| viewer == info) {
 			return false;
 		} else {
 			return true;

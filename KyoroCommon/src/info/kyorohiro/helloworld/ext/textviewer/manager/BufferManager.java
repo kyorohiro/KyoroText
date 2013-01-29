@@ -74,14 +74,23 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		mShellBuffer = null;
 	}
 	public void clearInfoBuffer() {
+		android.util.Log.v("kiyo","clearInfoBuffer --0--");
 		if(mInfo == null || mInfo.isDispose()) {
+			android.util.Log.v("kiyo","clearInfoBuffer--1--");
 			return;
 		} else {
+			android.util.Log.v("kiyo","clearInfoBuffer--2--");
 			mInfo.getLineView().isTail(false);
-			
+			mInfo.IsExtraUI(true);
 			getMiniBuffer().endTask();
+			if(mInfo.getParent() instanceof BufferGroup) {
+				android.util.Log.v("kiyo","clearInfoBuffer--3--");
+				BufferGroup group = (BufferGroup)mInfo.getParent();
+				group.isVisible(true);
+			}
 		}
-		mShellBuffer = null;
+		android.util.Log.v("kiyo","clearInfoBuffer--4--");
+		mInfo = null;
 	}
 
 	public TextViewer getInfoBuffer() {
