@@ -3,14 +3,14 @@ package info.kyorohiro.helloworld.display.widget.lineview;
 
 public class DrawingPositionForLineView {
 	private int mPosition = 0;
-	private int mNumOfLine = 0;
+	private int mNumOfShowingLine = 0;
 	private int mStart = 0;
 	private int mEnd = 0;
 	private int mBlank = 0;
 
 
 	public int getNumOfLine() {
-		return mNumOfLine;
+		return mNumOfShowingLine;
 	}
 
 	public int getStart() {
@@ -21,35 +21,40 @@ public class DrawingPositionForLineView {
 		return mEnd;
 	}
 
+	//
+	@Deprecated
 	public int getBlank() {
 		return mBlank;
 	}
 
 	public void updateInfo(LineView view, int position, int height, int textSize, 
-			double scale,LineViewBufferSpec showingText) {
-		mNumOfLine = (int)(height / (textSize*1.2*scale));
-		resetInfo(view);
+			double scale,LineViewBufferSpec buffer) {
+		mNumOfShowingLine = (int)(height / (textSize*1.2*scale));
+		//
+ 
+		int pos = buffer.getNumberOfStockedElement() - mNumOfShowingLine;
+
+		// end position
+		if (view.getPositionY() < -1*mNumOfShowingLine/3) {
+			view.setPositionY(-1*mNumOfShowingLine/3, true);
+			mPosition = -1*mNumOfShowingLine/3;
+		}
+		// begin position
+		else if (view.getPositionY() > pos) {
+			mPosition  = pos;
+			view.setPositionY(pos, true);
+		}
+
 		mPosition = view.getPositionY();
-		mStart = start(showingText);
-		mEnd = end(showingText);
+		mStart = start(buffer);
+		mEnd = end(buffer);
 		mBlank = 0;
 	}
 
-	private void resetInfo(LineView view) {
-		int blankSpace = mNumOfLine;
-		int pos = view.getPositionY();
-		LineViewBufferSpec buffer = view.getLineViewBuffer();
-
-		if (pos <-(mNumOfLine - blankSpace)) {
-			view.setPositionY(-(mNumOfLine - blankSpace) - 1, true);
-		} else if (pos > (buffer.getNumberOfStockedElement() - blankSpace)) {
-			view.setPositionY(buffer.getNumberOfStockedElement()- blankSpace, true);
-		}
-	}
 
 	private int start(LineViewBufferSpec showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - (mPosition + mNumOfLine);
+		int referPoint = numOfStackedString - (mPosition + mNumOfShowingLine);
 		if(referPoint < 0) {
 			referPoint = 0;
 		}
@@ -59,7 +64,7 @@ public class DrawingPositionForLineView {
 	public int end(LineViewBufferSpec showingText) {
 		int numOfStackedString = showingText.getNumberOfStockedElement();
 		int referPoint = start(showingText);
-		int end = referPoint + mNumOfLine;
+		int end = referPoint + mNumOfShowingLine;
 		if (end < 0) {
 			end = 0;
 		}
