@@ -21,6 +21,9 @@ public class DrawingPositionForLineView {
 		return mEnd;
 	}
 
+	public int getPosition() {
+		return mPosition;
+	}
 	//
 	@Deprecated
 	public int getBlank() {
@@ -36,16 +39,18 @@ public class DrawingPositionForLineView {
 
 		// end position
 		if (view.getPositionY() < -1*mNumOfShowingLine/3) {
-			view.setPositionY(-1*mNumOfShowingLine/3, true);
+			//view.setPositionY(-1*mNumOfShowingLine/3, true);
 			mPosition = -1*mNumOfShowingLine/3;
 		}
 		// begin position
 		else if (view.getPositionY() > pos) {
 			mPosition  = pos;
-			view.setPositionY(pos, true);
+			//view.setPositionY(pos, true);
 		}
-
-		mPosition = view.getPositionY();
+		else {
+			mPosition = view.getPositionY();
+		}
+		//
 		mStart = start(buffer);
 		mEnd = end(buffer);
 		mBlank = 0;
