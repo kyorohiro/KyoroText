@@ -252,4 +252,16 @@ public class SimpleGraphicsForJ2SE extends SimpleGraphics {
 		return mFont;
 	}
 
+	@Override
+	public void saveSetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void restoreSetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

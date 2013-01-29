@@ -2,6 +2,7 @@ package info.kyorohiro.helloworld.display.simple;
 
 import info.kyorohiro.helloworld.text.KyoroString;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.WeakHashMap;
 
@@ -22,11 +23,13 @@ public class MessageDispatcher {
 
 //	private LinkedList<Receiver> mReceivers = new LinkedList<Receiver>();
 	private WeakHashMap<String, Receiver> mReveivers = new WeakHashMap<String, Receiver>();
+//	private HashMap<String, Receiver> mReveivers = new HashMap<String, Receiver>();
+
 	public synchronized void send(KyoroString message) {
 		if(message == null) {
 			return;
 		}
-//		android.util.Log.v("kiyo","#send:"+message+","+message.getType()+","+message.getExtra());
+//		android.util.Log.v("kiyo","#send:"+message+","+message.getType()+","+message.getExtra()+","+message.getType());
 		Receiver r = mReveivers.get(message.getType());
 		if(r != null) {
 			r.onReceived(message, message.getType());

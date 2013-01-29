@@ -65,6 +65,9 @@ public class FindFile implements Task {
 			setCurrentPath(new File(viewer.getCurrentPath()));
 		}
 
+		public void asisSetTextViewer(TextViewer viewer) {
+			mViewer = new WeakReference<TextViewer>(viewer);
+		}
 		public boolean isAlive() {
 			TextViewer viewer = mViewer.get();
 			if(viewer == null) {
@@ -103,6 +106,12 @@ public class FindFile implements Task {
 					//String currentMode = viewer.getLineView().getMode();
 					TextViewer info = BufferManager.getManager().getInfoBuffer();
 					TextViewer shell = BufferManager.getManager().getShellBuffer();
+					if(viewer.isDispose()) {
+//						android.util.Log.v("kiyo","FF--1--");
+						viewer = info;
+					}
+//					android.util.Log.v("kiyo","FF--2--");
+
 					if(shell == viewer) {
 						BufferManager.getManager().clearShellBuffer();
 						viewer.getLineView().setMode(CursorableLineView.MODE_VIEW);
@@ -111,7 +120,6 @@ public class FindFile implements Task {
 						BufferManager.getManager().clearInfoBuffer();
 						viewer.getLineView().setMode(CursorableLineView.MODE_VIEW);
 					} 
-					
 					viewer.readFile(newFile);
 
 				//} else {
@@ -285,7 +293,7 @@ public class FindFile implements Task {
 				modeBuffer.startTask(mUpdate = new FindFileTask(BufferManager.getManager().getInfoBuffer(), getCurrentFile(),""));			
 			//}
 				//
-			MessageDispatcher.getInstance().addReceiver(new FindFileReceiver(this));
+			MessageDispatcher.getInstance().addReceiver(FindFileReceiver.newFindFileReceiver(this));
 
 		}
 		@Override

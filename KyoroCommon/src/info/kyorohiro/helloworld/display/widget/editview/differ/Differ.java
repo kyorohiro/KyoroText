@@ -186,7 +186,7 @@ public class Differ {
 
 	public void debugPrint(String message) {
 		if(mIsLogOn) {
-			android.util.Log.v("kiyo", "#Differ#"+message);
+///			android.util.Log.v("kiyo", "#Differ#"+message);
 		}
 	}
 	public void debugPrint() {	

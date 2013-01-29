@@ -117,7 +117,7 @@ public class SaveTaskForDiffer implements CheckAction ,TaskTicket.Task<String>, 
 		int end = start + line.length();
 		try {
 			for (int location = start; location < end; location++) {
-				android.util.Log.v("kiyo",""+location);
+//				android.util.Log.v("kiyo",""+location);
 				KyoroString deletedLine = mTarget.get(location);
 				long beginPointer = deletedLine.getBeginPointer();
 				long endPointer = deletedLine.getEndPointer();

@@ -79,17 +79,17 @@ public class CircleControllerManager {
 
 		} else if (title.equals(CursorableLineView.MODE_SELECT)) {
 			if(mInfo == textviewer) {
-				android.util.Log.v("kiyo","----0---");
+//				android.util.Log.v("kiyo","----0---");
 				circleMenu.clearCircleMenu();
 				circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
 				circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 				circleMenu.addCircleMenu(0, MENU_SEARCH);
 			} else if(BufferManager.getManager().getShellBuffer() == textviewer) {
-				android.util.Log.v("kiyo","----1---");
+//				android.util.Log.v("kiyo","----1---");
 				circleMenu.clearCircleMenu();
 				circleMenu.addCircleMenu(0, BufferManager.SHELL_BUFFER);
 			} else {
-				android.util.Log.v("kiyo","----2---");
+//				android.util.Log.v("kiyo","----2---");
 				clear();
 				circleMenu.addCircleMenu(0, MENU_SEARCH);
 			}

@@ -2,7 +2,6 @@ package info.kyorohiro.helloworld.display.widget.editview.differ;
 
 import java.util.LinkedList;
 
-import android.util.Log;
 
 import info.kyorohiro.helloworld.display.widget.editview.differ.AddLine;
 import info.kyorohiro.helloworld.display.widget.editview.differ.DeleteLine;
