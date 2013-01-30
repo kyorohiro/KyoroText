@@ -11,6 +11,9 @@ import info.kyorohiro.helloworld.display.simple.SimpleMotionEvent;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleController;
 import info.kyorohiro.helloworld.display.simple.sample.SimpleCircleControllerMenuPlus;
 
+//
+// todo need to rewrite 
+//
 public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 
 	private boolean mFocus = false;
@@ -193,6 +196,10 @@ public class SimpleCircleControllerMenuPlus extends SimpleCircleController {
 						if (mListener.selected(itemList.get(selected).id,
 								itemList.get(selected).title)) {
 							mFocus = false;
+							//todo
+							SimpleCircleControllerMenuPlus.this.mFocus = false;
+							SimpleCircleControllerMenuPlus.this.mButton.mCurrentX = 0;
+							SimpleCircleControllerMenuPlus.this.mButton.mCurrentY = 0;
 						}
 					} else if (selected >= itemList.size() ) {
 						if(isMinimized()) {

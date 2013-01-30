@@ -227,6 +227,16 @@ public class KeyEventManagerPlus extends KeyEventManager {
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_SPACE, false, false)}, new SingleByteSpaceTask()),		
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_ENTER, false, false)}, new MiniBufferTaskDone()),	
 		new Command(new CommandPart[]{new CommandPart(SimpleKeyEvent.KEYCODE_TAB, false, false)}, new MiniBufferTaskNext()),	
+		///
+		//
+		//
+		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('{', true, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('<', false, false)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart((char)0x1b, false, false), new CommandPart('>', false, false)}, new EndOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('<', false, true)}, new BeginningOfBuffer()),
+		new Command(new CommandPart[]{new CommandPart('>', false, true)}, new EndOfBuffer()),
+
 	};
 
 

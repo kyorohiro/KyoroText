@@ -48,6 +48,7 @@ public class CircleControllerManager {
 			circleMenu.addCircleMenu(0, "Paste");
 			mLineView.setMode(MiniBuffer.MODE_LINE_BUFFER);
 			textviewer.isGuard(true);
+			return true;
 		}
 		else if(title.equals(BufferManager.SHELL_BUFFER)) {
 			circleMenu.clearCircleMenu();
@@ -55,6 +56,7 @@ public class CircleControllerManager {
 			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 			mLineView.setMode(BufferManager.SHELL_BUFFER);
 			textviewer.isGuard(true);
+			return true;
 		}
 		else if (title.equals(CursorableLineView.MODE_VIEW)
 				|| title.equals(CursorableLineView.MODE_EDIT)) {
@@ -97,19 +99,20 @@ public class CircleControllerManager {
 				mLineView.setMode(CursorableLineView.MODE_SELECT);
 			}
 			circleMenu.addCircleMenu(0, "Copy");
+			return true;
 		} else if (title.equals("Copy")) {
-			clear();
+			//clear();
 //			CopyTask.copyStart();
-			if(!title.equals(MiniBuffer.MODE_LINE_BUFFER)) {
-				circleMenu.addCircleMenu(0, MENU_SEARCH);
-			}
+			//if(!title.equals(MiniBuffer.MODE_LINE_BUFFER)) {
+			//	circleMenu.addCircleMenu(0, MENU_SEARCH);
+			//}
 			BufferManager.getManager().copyStart();
 			return true;
 		} else if(title.equals("Paste")){
-			circleMenu.clearCircleMenu();
-			circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
-			circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
-			circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
+			//circleMenu.clearCircleMenu();
+			//circleMenu.addCircleMenu(0, CursorableLineView.MODE_VIEW);
+			//circleMenu.addCircleMenu(0, CursorableLineView.MODE_EDIT);
+			//circleMenu.addCircleMenu(0, CursorableLineView.MODE_SELECT);
 			BufferManager.getManager().pastStart();
 			return true;
 		} else if(title.equals(MENU_SEARCH)){
