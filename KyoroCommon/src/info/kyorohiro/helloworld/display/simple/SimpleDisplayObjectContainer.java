@@ -8,7 +8,11 @@ public class SimpleDisplayObjectContainer extends SimpleDisplayObject {
 
 	private ArrayList<SimpleDisplayObject> mMyChildren = new ArrayList<SimpleDisplayObject>();
 	private SimpleGraphics mCashGraphics = null;
+	private boolean mIncludeChildIfTouchTest = true;
 
+	public void includeChildIfTouchTest(boolean include) {
+		mIncludeChildIfTouchTest = include;
+	}
 	/**
 	 * 
 	 */

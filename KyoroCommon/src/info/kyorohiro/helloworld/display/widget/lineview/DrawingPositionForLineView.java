@@ -36,6 +36,7 @@ public class DrawingPositionForLineView {
 		//
  
 		int pos = buffer.getNumberOfStockedElement() - mNumOfShowingLine;
+		int numOfStackedString = buffer.getNumberOfStockedElement();
 
 		// end position
 		if (view.getPositionY() < -1*mNumOfShowingLine/3) {
@@ -51,32 +52,25 @@ public class DrawingPositionForLineView {
 			mPosition = view.getPositionY();
 		}
 		//
-		mStart = start(buffer);
-		mEnd = end(buffer);
+		{
+			int referPoint = numOfStackedString - (mPosition + mNumOfShowingLine);
+			if(referPoint < 0) {
+				referPoint = 0;
+			}
+			mStart = referPoint;
+		}
+		{
+			int end = mStart + mNumOfShowingLine;
+			if (end < 0) {
+				end = 0;
+			}
+			if (end >= numOfStackedString) {
+				end = numOfStackedString;
+			}
+			mEnd = end;
+		}
 		mBlank = 0;
 	}
 
-
-	private int start(LineViewBufferSpec showingText) {
-		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = numOfStackedString - (mPosition + mNumOfShowingLine);
-		if(referPoint < 0) {
-			referPoint = 0;
-		}
-		return referPoint;
-	}
-
-	public int end(LineViewBufferSpec showingText) {
-		int numOfStackedString = showingText.getNumberOfStockedElement();
-		int referPoint = start(showingText);
-		int end = referPoint + mNumOfShowingLine;
-		if (end < 0) {
-			end = 0;
-		}
-		if (end >= numOfStackedString) {
-			end = numOfStackedString;
-		}
-		return end;
-	}
 
 }

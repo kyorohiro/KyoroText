@@ -67,7 +67,16 @@ public class StartupBuffer extends TextViewer {
 	//	a.start();
 	}
 
-
+	@Override
+	public boolean onTouchTest(int x, int y, int action) {
+		int w = getWidth(false);
+		int h = getHeight(false);
+		if(0<=x&&x<w&&0<=y&&y<h) {
+			return super.onTouchTest(x, y, action);
+		} else {
+			return false;
+		}
+	}
 	public class GuardAction implements SimpleSwitchButton.SwithAction {
 		public TextViewer mViewer = null;
 		public GuardAction(TextViewer viewer) {

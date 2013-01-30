@@ -115,8 +115,9 @@ public class SeparateUI extends SimpleDisplayObject {
 
 	private boolean mIsReachedAtOnce = false;
 
-	@Override
-	public boolean onTouchTest(int x, int y, int action) {
+	//@Override
+	
+	public boolean _onTouchTest(int x, int y, int action) {
 		if(!mIsVisible) {
 			return false;
 		}
@@ -154,11 +155,15 @@ public class SeparateUI extends SimpleDisplayObject {
 					}
 				} else {
 					if (isUnreached(x, y)) {
+//						android.util.Log.v("kiyo","----sep_1");
 						if (mManager.combine(this)) {
+//							android.util.Log.v("kiyo","----sep_2");
 							mIsReached = false;
 						} else {
+	//						android.util.Log.v("kiyo","----sep_3");
 							mIsReachedAtOnce = false;
 						}
+	//					android.util.Log.v("kiyo","----sep_4");
 					}
 				}
 				return true;
@@ -215,7 +220,7 @@ public class SeparateUI extends SimpleDisplayObject {
 	}
 
 	public void resetPosition() {
-		SimpleDisplayObject target = (SimpleDisplayObject) getParent();
+		SimpleDisplayObjectContainer target = (SimpleDisplayObjectContainer) getParent();
 		int rate = 2;
 		if (mIsReached) {
 			rate = 2;
@@ -232,9 +237,9 @@ public class SeparateUI extends SimpleDisplayObject {
 		}
 
 		if (isVertical()) {
-			setPoint(z, target.getHeight() / rate);
+			setPoint(z, target.getHeight(false) / rate);
 		} else {
-			setPoint(target.getWidth() / rate, z);
+			setPoint(target.getWidth(false) / rate, z);
 		}
 	}
 

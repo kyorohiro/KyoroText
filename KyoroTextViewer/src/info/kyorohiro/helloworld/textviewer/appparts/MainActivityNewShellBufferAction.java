@@ -24,7 +24,7 @@ public class MainActivityNewShellBufferAction implements MainActivityMenuAction 
 		TextViewer viewer = BufferManager.getManager().getFocusingTextViewer();
 		TextViewer mini = BufferManager.getManager().getMiniBuffer();
 		TextViewer info = BufferManager.getManager().getInfoBuffer();
-		if (viewer == null || viewer == mini || viewer == info) {
+		if (viewer == null ){//|| viewer == mini || viewer == info) {
 			return false;
 		} else {
 			return true;
@@ -63,7 +63,16 @@ public class MainActivityNewShellBufferAction implements MainActivityMenuAction 
 			if(f.getParentFile() != null&& f.getParentFile().exists()) {
 				CrossCuttingProperty.getInstance().setProperty("user.dir",f.getParent());				
 			}
+			TextViewer v = BufferManager.getManager().getFocusingTextViewer();
+			TextViewer mini = BufferManager.getManager().getMiniBuffer();
+			if(v == mini) {
+				BufferManager.getManager().otherWindow();
+			}
 			BufferManager.getManager().createShellBuffer("");
+			TextViewer shell = BufferManager.getManager().getShellBuffer();
+			if(shell != null && !shell.isDispose()) {
+				BufferManager.getManager().changeFocus(shell);
+			}
 		}
 	}
 }

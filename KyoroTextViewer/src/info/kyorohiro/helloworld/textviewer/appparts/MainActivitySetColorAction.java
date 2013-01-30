@@ -33,14 +33,14 @@ public class MainActivitySetColorAction implements MainActivityMenuAction {
 	}
 
 	private boolean isOn() {
-		TextViewer viewer = BufferManager.getManager().getFocusingTextViewer();
-		TextViewer mini = BufferManager.getManager().getMiniBuffer();
-		TextViewer info = BufferManager.getManager().getInfoBuffer();
-		if (viewer == null || viewer == mini || viewer == info) {
-			return false;
-		} else {
+		//TextViewer viewer = BufferManager.getManager().getFocusingTextViewer();
+		//TextViewer mini = BufferManager.getManager().getMiniBuffer();
+		//TextViewer info = BufferManager.getManager().getInfoBuffer();
+		//if (viewer == null || viewer == mini || viewer == info) {
+		//	return false;
+		//} else {
 			return true;
-		}
+		//}
 	}
 
 	public boolean onPrepareOptionsMenu(Activity activity, Menu menu) {

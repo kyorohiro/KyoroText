@@ -30,7 +30,8 @@ public class MainActivitySetCharsetAction implements MainActivityMenuAction {
 		TextViewer viewer = BufferManager.getManager().getFocusingTextViewer();
 		TextViewer mini = BufferManager.getManager().getMiniBuffer();
 		TextViewer info = BufferManager.getManager().getInfoBuffer();
-		if(viewer == null||viewer == mini|| viewer == info) {
+		TextViewer shell = BufferManager.getManager().getShellBuffer();
+		if(viewer == null||viewer == mini|| viewer == info || viewer == shell ) {
 			return false;
 		} else {
 			return true;

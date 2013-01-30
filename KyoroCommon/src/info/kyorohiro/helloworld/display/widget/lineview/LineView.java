@@ -494,9 +494,6 @@ public class LineView extends SimpleDisplayObjectContainer {
 				addPoint(showingText.getNumOfAdd());
 			}
 			showingText.clearNumOfAdd();
-			//if(mPositionY > showingText.getNumberOfStockedElement()){
-			//	mPositionY = showingText.getNumberOfStockedElement();
-			//}
 			mDrawingPosition.updateInfo(this, mPositionY, getHeight(), mTextSize, mScale, showingText);
 			this.setPositionY(mDrawingPosition.getPosition(), true);
 

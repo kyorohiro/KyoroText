@@ -74,7 +74,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 		}
 	}
 
-	public boolean isEdit() {
+/*	public boolean isEdit() {
 		if(isEdit(getChild(0))){
 			return true;
 		}
@@ -85,6 +85,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			return false;
 		}
 	}
+	*/
 	public boolean mIsControlBuffer = false;
 	public boolean isControlBuffer() {
 		// todo refactring target
@@ -92,8 +93,9 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 		//	if(getChild(i)
 		MiniBuffer compare = BufferManager.getManager().getMiniBuffer();
 		Object p = compare.getParent();
-		Object pp = (compare.getParent()!=null?((SimpleDisplayObject)p).getParent():null);
-		if(this == p || mTextViewer == compare || this == pp){
+//		Object pp = (compare.getParent()!=null?((SimpleDisplayObject)p).getParent():null);
+		if(this == p || mTextViewer == compare){//|| this == pp){
+			
 //			android.util.Log.v("kiyo","isCont=true");
 			return true;
 		}
@@ -106,6 +108,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 	public void isControlBuffer(boolean on) {
 		mIsControlBuffer = on;
 	}
+	/*
 	private static boolean isEdit(SimpleDisplayObject child) {
 		if(child == null){
 			return false;
@@ -122,7 +125,7 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			return false;
 		}
 	}
-
+*/
 	@Override
 	public synchronized void paint(SimpleGraphics graphics) {
 		SimpleDisplayObject[] obj = new SimpleDisplayObject[2];
@@ -305,19 +308,20 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 				return false;
 			}
 		}
-		if(!BufferManager.getManager().notifyEvent(child, kill)){
-			return false;
-		}
-		return true;
+		return BufferManager.getManager().notifyEvent(child, kill);
 	}
 	///
 	///
 	public boolean combine(SimpleDisplayObject child, SimpleDisplayObject kill) {
 		Object parent = getParent();
+//		android.util.Log.v("kiyo","----de1");
 		if(!deleteable(child, kill)) {
+//			android.util.Log.v("kiyo","----deleteable^^1");
 			return false;
 		}
+//		android.util.Log.v("kiyo","----de2");
 		if(child != null){
+//			android.util.Log.v("kiyo","----de3");
 			// refactaring
 			int index = ((SimpleDisplayObjectContainer)parent).getIndex(this);
 			this.removeChild(child);
@@ -329,16 +333,18 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			dispose();
 			BufferManager.getManager().getBufferList().doGrabage();
 		} 
+//		android.util.Log.v("kiyo","----de4");
 		return true;
 	}
 
 	public boolean combine(SeparateUI separate) {
+//		android.util.Log.v("kiyo","----com1");
 		Object parent = getParent();
 		SimpleDisplayObject child = null;
 		SimpleDisplayObject kill = null;
-		if(isControlBuffer()) {
-			return false;
-		}
+		//if(isControlBuffer()) {
+		//	return false;
+		//}
 		if(separate.getPersentY()>0.5){
 			child = getChild(0);
 			kill = getChild(1);
@@ -347,10 +353,10 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			kill = getChild(0);
 		}
 
-		if(!BufferManager.getManager().notifyEvent(child, kill)){
-			//todo mSeparate.resetPosition();
-			return false;
-		}
+		//if(!BufferManager.getManager().notifyEvent(child, kill)){
+		//	//todo mSeparate.resetPosition();
+		//	return false;
+		//}
 		return combine(child, kill);
 /*
 		if(child != null){
@@ -408,6 +414,10 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 			if(SimpleMotionEvent.ACTION_DOWN == action){
 				focusTest(x, y);
 			}
+			boolean ret = mSeparate._onTouchTest(x-mSeparate.getX(), y-mSeparate.getY(), action);
+			if(ret) {
+				return ret;
+			}
 		}
 		return super.onTouchTest(x, y, action);
 	}
@@ -419,8 +429,9 @@ public class BufferGroup extends SimpleDisplayObjectContainer{
 				int cy = ((TextViewer)getChild(i)).getY();
 				int cw = ((TextViewer)getChild(i)).getWidth(false);
 				int ch = ((TextViewer)getChild(i)).getHeight(false);
-				if(cx<x&&x<cx+cw) {
-					if(cy<y&&y<cy+ch){
+				if(cx<=x&&x<cx+cw) {
+					if(cy<=y&&y<cy+ch){
+//						android.util.Log.v("kiyo","-----focusChange"+cy+"<="+y+"&&"+y+"<"+cy+"+"+ch);
 						BufferManager.getManager().changeFocus((TextViewer)getChild(i));
 						break;
 					}

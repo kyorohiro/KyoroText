@@ -95,7 +95,12 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	public boolean isGuard() {
-		return mGuard;
+		//todo
+		if(getLineView().getMode().equals(BufferManager.SHELL_BUFFER)) {
+			return false;
+		} else { 
+			return mGuard;
+		}
 	}
 
 	public TextViewerBuffer getTextViewerBuffer() {

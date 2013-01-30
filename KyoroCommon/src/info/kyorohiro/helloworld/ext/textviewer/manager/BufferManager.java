@@ -178,7 +178,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		// /*
 		// command
 		// android.util.Log.v("kiyo","###base ="+baseTextSize+","+menuWidth);
-		BufferGroup g = first.divideAndNew(true, mModeLine = MiniBuffer.newMiniBuffer(this,
+/*		BufferGroup g = first.divideAndNew(true, mModeLine = MiniBuffer.newMiniBuffer(this,
 				baseTextSize, mWidth, mMergine, false));
 		// mModeLine.setCurrentFontSize(baseTextSize);
 		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
@@ -191,6 +191,20 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		// */
 	}
 
+	private void createMiniBuffer() {
+		BufferGroup first = getRoot();
+		BufferGroup g = first.divideAndNew(true, mModeLine = MiniBuffer.newMiniBuffer(this,
+				mBaseTextSize, mWidth, mMergine, false));
+		// mModeLine.setCurrentFontSize(baseTextSize);
+		mModeLine.getLineView().setKeyEventManager(mKeyEventManager);
+		first.setSeparatorPoint(0.1f);
+		g.getTextViewer().getLineView().setMode(EditableLineView.MODE_EDIT);
+		g.getTextViewer().isGuard(true);
+		g.isVisible(false);
+		g.getTextViewer().IsExtraUI(false);
+		g.isControlBuffer(true);
+		
+	}
 	@Override
 	public void start() {
 		super.start();
@@ -265,9 +279,12 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		return mRoot;
 	}
 
+	//
+	boolean mIsFirst = false;
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		// android.util.Log.v("kiyo","BufferManager.paint()");
+		includeChildIfTouchTest(false);
 		setRect(graphics.getWidth(), graphics.getHeight());
 		_layout();
 		// int t = mCircleMenu.getMinRadius();
@@ -284,6 +301,11 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 		graphics.setColor(SimpleGraphicUtil.RED);
 		graphics.drawText("now focusing", x, y);
 		graphics.setColor(SimpleGraphicUtil.BLACK);
+		if(!mIsFirst) {
+//			android.util.Log.v("kiyo","adf");
+			createMiniBuffer();
+			mIsFirst = true;
+		}
 	}
 
 	public void setCircleMenuRadius(int radius) {
