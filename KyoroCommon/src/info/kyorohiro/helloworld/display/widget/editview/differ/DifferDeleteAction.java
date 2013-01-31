@@ -40,6 +40,8 @@ public class DifferDeleteAction implements CheckAction {
 		try {
 			// in
 			if(mPrevPatchedPosition <= mTargetPatchedPosition && mTargetPatchedPosition < patchedPosition) {
+//			if(mPrevPatchedPosition <= mTargetPatchedPosition && mTargetPatchedPosition <= patchedPosition) {
+//				if(mTargetPatchedPosition <= mPrevPatchedPosition+targetLine.begin()) {
 				if(mTargetPatchedPosition < mPrevPatchedPosition+targetLine.begin()) {
 					owner.addLine(lineLocation, new DeleteLine(mTargetPatchedPosition-mPrevPatchedPosition));
 					targetLine.setStart(targetLine.begin()-(mTargetPatchedPosition-mPrevPatchedPosition+1));

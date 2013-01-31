@@ -90,6 +90,8 @@ public class Differ {
 		return stask.getTicket();
 	}
 
+
+
 	public synchronized KyoroString get(LineViewBufferSpec spec, int _index) {
 		return mGetAction.get(this, spec, _index);
 	}

@@ -52,6 +52,7 @@ public class VirtualFile implements KyoroFile {
 		}
 	}
 
+	@Override
 	public synchronized long getFilePointer() {
 		return mSeek;
 	}
@@ -91,16 +92,17 @@ public class VirtualFile implements KyoroFile {
 //		}
 
 	}
+
 	@Override
 	public synchronized int read(byte[] buffer) throws IOException {
-//		android.util.Log.v("kiyo", "---------read---------"+buffer.length);
-		//
-		//
+		return read(buffer, buffer.length);
+	}
 
+	@Override
+	public synchronized int read(byte[] buffer, int buffLen) throws IOException {
 
 		init();
 		seek(mSeek);
-
 
 		long current = getFilePointer();
 		long raLen = mRAFile.length();
@@ -114,13 +116,19 @@ public class VirtualFile implements KyoroFile {
 		if(mCashStartPointPerFile <= current && current< (mCashStartPointPerFile+mCashLength)) {
 			int srcPos = (int)(current-mCashStartPointPerFile);
 			int len = mCashLength -srcPos;
-			if(len>buffer.length) {
-				len = buffer.length;
+//			if(len>buffer.length) {
+//				len = buffer.length;
+//			}
+			if(len>buffLen) {
+				len = buffLen;
 			}
+
 			System.arraycopy(mWriteCash, srcPos, buffer, 0, len);
-			if((mCashLength-srcPos)<buffer.length&&raLen>caLen) {
+//			if((mCashLength-srcPos)<buffer.length&&raLen>caLen) {
+			if((mCashLength-srcPos)<buffLen&&raLen>caLen) {
 				mRAFile.seek(current + mCashLength-srcPos);
-				ret = mRAFile.read(buffer, mCashLength-srcPos, buffer.length-(mCashLength-srcPos));
+//				ret = mRAFile.read(buffer, mCashLength-srcPos, buffer.length-(mCashLength-srcPos));
+				ret = mRAFile.read(buffer, mCashLength-srcPos, buffLen-(mCashLength-srcPos));
 			}
 			if(ret == -1) {
 				ret = 0;
@@ -130,7 +138,8 @@ public class VirtualFile implements KyoroFile {
 			ret = mRAFile.read(buffer);
 			if(ret!=-1&&raLen<caLen) {
 				int srcPos = (int)(current-mCashStartPointPerFile+ret);
-				int len = buffer.length-ret;
+//				int len = buffer.length-ret;
+				int len = buffLen-ret;
 				if(len >mCashLength-srcPos) {
 					len = mCashLength-srcPos;
 				}
@@ -244,5 +253,36 @@ public class VirtualFile implements KyoroFile {
 		mCashLength = 0;
 		seek(cp);
 //		android.util.Log.v("kiyo", "-------------syncWrite() --E "+cp);
+	}
+
+	public static String readLine(KyoroFile vFile, String charset) throws IOException {
+		byte[] buffer = new byte[256];
+		long pointer = 0;
+		long ret = 0;
+		long startPointer = vFile.getFilePointer();
+		// search LF
+		END:do {
+			ret = 256;
+			if(ret > 0) {
+				ret = vFile.read(buffer);
+				for(int j=0;j<ret;j++) {
+					if(buffer[j] == '\n') {
+						pointer += j+1;
+						break END;
+					}
+				}
+				if(ret>0) {
+					pointer+=ret;
+				}
+			}
+			if(ret<=0) {
+				break;
+			}
+		} while(true);
+		// 
+		buffer = new byte[(int)pointer];
+		vFile.seek(startPointer);
+		vFile.read(buffer);
+		return new String(buffer, charset);
 	}
 }

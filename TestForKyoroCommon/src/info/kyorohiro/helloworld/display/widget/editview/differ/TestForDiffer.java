@@ -772,7 +772,7 @@ public class TestForDiffer extends TestCase {
 				tmp.setLinePosition(i);
 				tmp.setBeginPointer(size);
 				try {
-					size = text.getBytes("utf8").length;
+					size += text.getBytes("utf8").length;
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
