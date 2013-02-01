@@ -16,6 +16,9 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.message.FindFileReceiver
 import info.kyorohiro.helloworld.ext.textviewer.manager.task.FindFileTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
+// 
+// todo rewrite all.this code is writen for exam spec 
+//
 public class FindFile implements Task {
 
 	@Override

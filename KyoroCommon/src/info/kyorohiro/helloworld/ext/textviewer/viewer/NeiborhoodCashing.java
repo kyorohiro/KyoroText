@@ -6,6 +6,9 @@ import info.kyorohiro.helloworld.text.KyoroString;
 import java.lang.ref.WeakReference;
 
 
+//
+// todo now TextViewerBuffer have cashing data. next bersion This class have cashing data
+//
 public class NeiborhoodCashing {
 	private boolean mIsDispose = false;
 	private WeakReference<TextViewerBuffer> mBuffer = null;

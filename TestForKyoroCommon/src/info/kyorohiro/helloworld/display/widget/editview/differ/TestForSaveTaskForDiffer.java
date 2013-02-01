@@ -76,7 +76,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 			byte[] b = new byte[2056];
 			vIndex.seek(0);
 			int len = vIndex.read(b);
-			String tag = SaveTaskForDiffer.encodeDeleteLine(buffer.get(0)
+			String tag = DifferSaveAction.encodeDeleteLine(buffer.get(0)
 					.getBeginPointer(), buffer.get(0).getEndPointer());
 			assertEquals("" + tag + "," + new String(b, 0, len, "utf8"), tag,
 					new String(b, 0, len, "utf8"));
@@ -86,7 +86,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 			//
 			vIndex.seek(0);
 			vInput.seek(0);
-			SaveTaskForDiffer.restore(vIndex, vInput, vRestore);
+			DifferSaveAction.restore(vIndex, vInput, vRestore);
 
 			vRestore.seek(0);
 			String m = "ABCDEFG" + "NONONON" + "0123456";
@@ -869,7 +869,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 			vIndex.seek(0);
 			int len = vIndex.read(b);
 			if(expectOne != null) {
-				String tag = SaveTaskForDiffer.encodeDeleteLine(buffer.get(0)
+				String tag = DifferSaveAction.encodeDeleteLine(buffer.get(0)
 						.getBeginPointer(), buffer.get(0).getEndPointer());
 				assertEquals(""+expectOne, expectOne,
 						new String(b, 0, len, "utf8"));
@@ -886,7 +886,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		vIndex.seek(0);
 		vInput.seek(0);
 		vRestore.seek(0);
-		SaveTaskForDiffer.restore(vIndex, vInput, vRestore);
+		DifferSaveAction.restore(vIndex, vInput, vRestore);
 
 		vRestore.seek(0);
 		int i = 0;

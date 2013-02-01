@@ -1,11 +1,6 @@
 package info.kyorohiro.helloworld.display.widget.editview.differ;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.LinkedList;
 
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.CheckAction;
@@ -16,14 +11,14 @@ import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.TaskTicket;
 
-public class SaveTaskForDiffer implements CheckAction, TaskTicket.Task<String>,
+public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 		Runnable {
 	private TaskTicket<String> mTicket = null;
 	private Differ mDiffer = null;
 	private LineViewBufferSpec mTarget = null;
 	private VirtualFile mVFile = null;
 
-	public SaveTaskForDiffer(Differ differ, LineViewBufferSpec spec, VirtualFile path) {
+	public DifferSaveAction(Differ differ, LineViewBufferSpec spec, VirtualFile path) {
 		super();
 		mTicket = new TaskTicket<String>(this);
 		mDiffer = differ;
