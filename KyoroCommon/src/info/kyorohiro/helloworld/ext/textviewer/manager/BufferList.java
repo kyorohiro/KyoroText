@@ -7,8 +7,7 @@ import java.util.LinkedList;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 
 //
-//
-//
+// 
 //
 public class BufferList {
 	private LinkedList<TextViewer> mList = new LinkedList<TextViewer>();
@@ -25,6 +24,7 @@ public class BufferList {
 	public TextViewer getTextViewer(int i) {
 		return mList.get(i);
 	}
+
 	public synchronized void lockAll() {
 		for(int i=0;i<mList.size();i++) {
 			TextViewer c = mList.get(i);
@@ -44,7 +44,6 @@ public class BufferList {
 	}
 
 	public synchronized void updateFileName(File currentPath, File backupPath) {
-		String path = currentPath.getAbsolutePath();
 		if(backupPath != null) {
 			for(int i=0;i<mList.size();i++) {
 				TextViewer c = mList.get(i);
