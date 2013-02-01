@@ -199,29 +199,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
-	private synchronized boolean lineIsEmpty(CharSequence line) {
-		if (line == null || line.length() == 0) {
-			return true;
-		} else if (line.length() == 1 && line.subSequence(0, 1).equals("\n")) {
-			return true;
-		} else if (mIsCrlfMode && line.length() == 2
-				&& line.subSequence(0, 2).equals("\r\n")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private synchronized boolean deleteTargetIsEmpty() {
-		if (mCursorLine == 0 && mCursorRow <= 0) {
-			return true;
-		} else if (0 == getNumberOfStockedElement()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	private synchronized boolean isEOF(int index) {
 		int length = getNumberOfStockedElement();
 		index += 1;
@@ -583,10 +560,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	private final KyoroString EMPTY = new KyoroString("");
 
 	private synchronized void moveCursor(int move) {
-		int t = mCursorRow;
 		mCursorRow += move;
 		KyoroString c = EMPTY;// <--- 無駄
-		KyoroString p = EMPTY;// <--- 無駄
 		if (mCursorLine >= getNumberOfStockedElement()) {
 			return;
 		} else if (mCursorLine < 0) {
@@ -664,14 +639,14 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 			// android.util.Log.v("kiyo", "__f0=" +
 			// f+","+cursorLine+"."+cursor);
 
-			int w = this.getBreakText().getWidth();
+//			int w = this.getBreakText().getWidth();
 			int breakLinePoint = 0;
 			int currentLineLength = 0;
 			boolean hasAlreadyExecuteFirstAction = false;
-			int i = 0;
+//			int i = 0;
 			int g = 0;
 			do {
-				i++;
+//				i++;
 				// android.util.Log.v("kiyo", "_aaa1=" + f.length() + "," + w +
 				// ","+ f);
 				// breakLinePoint = getBreakText().breakText(f, 0, f.length(),
@@ -765,11 +740,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		if (i >= b.length()) {
 			i = b.length();
 		}
-		// ----------
-		// if(i<0){
-		// i=0;
-		// }
-		// ------
 		if (i == 0) {
 			return new KyoroString("" + s + b);
 		} else if (i == b.length()) {

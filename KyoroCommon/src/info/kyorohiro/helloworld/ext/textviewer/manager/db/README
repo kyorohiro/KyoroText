@@ -1,0 +1,13 @@
+SAVE CURRENT BUFFERS STATE
+
+# 
+ ./buffer/list.txt
+   #00-xx label
+ ./buffer/00/info.txt
+           #path, charset, latest showing line
+ ./buffer/00/differ.txt
+           #editing but unsaved data
+ ./buffer/01
+ ./buffer/02
+ ./buffer/03
+ ./buffer/04
