@@ -14,6 +14,7 @@ import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBufferJob;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile.FindFileJob;
+import info.kyorohiro.helloworld.ext.textviewer.manager.task.ListBufferTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.AutocandidateList;
@@ -33,15 +34,15 @@ public class ListBuffers implements Task {
 		if(target == null || view != target.getLineView()) {
 			return;
 		}
-		BufferManager.getManager().getMiniBuffer().startMiniBufferJob(new ListBuffersTask(target));
+		BufferManager.getManager().getMiniBuffer().startMiniBufferJob(new ListBuffersJob(target));
 		buffer.clearYank();
 	}
 
-	public static class ListBuffersTask implements MiniBufferJob {
-		private UpdateInfo mUpdate = null;
+	public static class ListBuffersJob implements MiniBufferJob {
+		private ListBufferTask mUpdate = null;
 		private WeakReference<TextViewer> mViewer = null;
 
-		public ListBuffersTask(TextViewer viewer) {
+		public ListBuffersJob(TextViewer viewer) {
 			mViewer = new WeakReference<TextViewer>(viewer);
 		}
 
@@ -70,7 +71,7 @@ public class ListBuffers implements Task {
 			miniBuffer.getLineView().recenter();
 			
 			//
-			miniBuffer.startTask(mUpdate = new UpdateInfo(BufferManager.getManager().getInfoBuffer()));
+			miniBuffer.startTask(mUpdate = new ListBufferTask(BufferManager.getManager().getInfoBuffer()));
 
 			//
 			MessageDispatcher.getInstance().addReceiver(new MyListBuffersReceiver(this, mViewer.get()));
@@ -82,54 +83,13 @@ public class ListBuffers implements Task {
 		}
 	}
 
-	public static class UpdateInfo implements Runnable {
-		private TextViewer mInfo = null;
-		private AutocandidateList mCandidate = new AutocandidateList(); 
-		public UpdateInfo(TextViewer info) {
-			mInfo = info;
-		}
-
-		public String getCandidate(String c) {
-			return mCandidate.candidateText(c);
-		}
-
-		@Override
-		public void run() {
-			try {
-				int c=0;
-				mCandidate.clear();
-				EditableLineView infoBufferEViewer = mInfo.getLineView();
-				EditableLineViewBuffer infoBufferEBuffer = (EditableLineViewBuffer)mInfo.getLineView().getLineViewBuffer();
-				BufferList bufferList = BufferManager.getManager().getBufferList();
-				infoBufferEViewer.setTextSize(BufferManager.getManager().getBaseTextSize());
-				infoBufferEBuffer.clear();
-
-				{
-					for(int i=0;i<bufferList.size();i++) {
-						TextViewer tmp = bufferList.getTextViewer(i);
-						if(tmp != null && !tmp.isDispose()) {
-							infoBufferEBuffer.getDiffer().asisSetType("list-buffers");
-							infoBufferEBuffer.getDiffer().asisSetExtra(""+i+":"+tmp.getCurrentPath());
-							infoBufferEBuffer.pushCommit(""+i+":   sorry now creating: "+tmp.getCurrentPath(), 1);
-							infoBufferEBuffer.crlf(false, false);	
-							infoBufferEBuffer.crlf(false, false);	
-							infoBufferEBuffer.crlf();
-						}
-					}
-				}
-			} catch(Throwable t) {
-				t.printStackTrace();
-			}
-		}
-	}
-
 	public static class MyListBuffersReceiver implements Receiver {
-		public static ListBuffersTask sTask = null;
-		private WeakReference<ListBuffersTask> mTask = null;
+		public static ListBuffersJob sTask = null;
+		private WeakReference<ListBuffersJob> mTask = null;
 		private TextViewer mTarget = null;
-		public MyListBuffersReceiver(ListBuffersTask task, TextViewer target) {
+		public MyListBuffersReceiver(ListBuffersJob task, TextViewer target) {
 			sTask = task;
-			mTask = new WeakReference<ListBuffersTask>(task);
+			mTask = new WeakReference<ListBuffersJob>(task);
 			mTarget = target;
 		}
 
@@ -142,7 +102,7 @@ public class ListBuffers implements Task {
 		@Override
 		public void onReceived(KyoroString message, String type) {
 //			android.util.Log.v("kiyo","rev="+message);
-			ListBuffersTask task = mTask.get();
+			ListBuffersJob task = mTask.get();
 
 			if(task != null) {
 				//task.input(message.toString());
