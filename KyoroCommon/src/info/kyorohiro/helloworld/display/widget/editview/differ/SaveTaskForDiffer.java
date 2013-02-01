@@ -23,8 +23,7 @@ public class SaveTaskForDiffer implements CheckAction, TaskTicket.Task<String>,
 	private LineViewBufferSpec mTarget = null;
 	private VirtualFile mVFile = null;
 
-	public SaveTaskForDiffer(Differ differ, LineViewBufferSpec spec,
-			VirtualFile path) {
+	public SaveTaskForDiffer(Differ differ, LineViewBufferSpec spec, VirtualFile path) {
 		super();
 		mTicket = new TaskTicket<String>(this);
 		mDiffer = differ;
@@ -68,16 +67,23 @@ public class SaveTaskForDiffer implements CheckAction, TaskTicket.Task<String>,
 			int unpatchedPosition, int index) {
 		Line targetLine = owner.getLine(lineLocation);
 
+		android.util.Log.v("kiyo","##check#A#"+owner.length()+","+lineLocation);
 		try {
 			if (targetLine instanceof DeleteLine) {
 				try {
-					save(unpatchedPosition, patchedPosition,
-							(DeleteLine) targetLine);
+					save(unpatchedPosition, patchedPosition, (DeleteLine) targetLine);
 				} catch (FaileSaveException e) {
-					// todo
 					e.printStackTrace();
 				}
 			}
+			else if(targetLine instanceof AddLine) {
+				try {
+					save(unpatchedPosition, patchedPosition, (AddLine) targetLine);
+				} catch (FaileSaveException e) {
+					e.printStackTrace();
+				}				
+			}
+			android.util.Log.v("kiyo","##check#B#"+owner.length()+","+lineLocation);
 		} finally {
 			mPrevPatchedPosition = patchedPosition;
 			mPrevUnpatchedPosition = unpatchedPosition;
@@ -107,21 +113,35 @@ public class SaveTaskForDiffer implements CheckAction, TaskTicket.Task<String>,
 
 	public void save(int unpatchedPosition, int patchedPositon, AddLine line)
 			throws FaileSaveException {
-		int start = unpatchedPosition + line.begin();
+		android.util.Log.v("kiyo","save add #A#"+unpatchedPosition +","+ patchedPositon +"," + line);
+		int start = mPrevUnpatchedPosition + line.begin();
+		//unpatchedPosition + line.begin();
 		int end = start + line.length();
 		try {
-			for (int location = start, lineLocation = 0; location < end; location++) {
-				KyoroString insertedLine = mTarget.get(location);
-				long beginPointer = insertedLine.getBeginPointer();
-				long endPointer = insertedLine.getEndPointer();
-				String encodedData = encodeAddLine(beginPointer, endPointer,
-						line.get(lineLocation).toString());
+			long beginPointer = 0;
+			long endPointer = 0;
+			if(start < mTarget.getNumberOfStockedElement()) {
+				KyoroString insertedLine = mTarget.get(start);
+				beginPointer = insertedLine.getBeginPointer();
+				endPointer = insertedLine.getEndPointer();
+			}
+			else {
+				KyoroString insertedLine = mTarget.get(mTarget.getNumberOfStockedElement()-1);
+				beginPointer = insertedLine.getEndPointer();
+				endPointer = insertedLine.getEndPointer();				
+			}
+			android.util.Log.v("kiyo","save add #B-1#");
+			for (int lineLocation = 0; lineLocation < end; lineLocation++) {
+				String encodedData = 
+					encodeAddLine(beginPointer, endPointer, line.get(lineLocation).toString());
 				mVFile.addChunk(encodedData.getBytes("utf8"));
 			}
+			android.util.Log.v("kiyo","save add #B-2#");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new FaileSaveException();
 		}
+		android.util.Log.v("kiyo","save add #C#");
 	}
 
 	public void save(int unpatchedPosition, int patchedPositon, DeleteLine line)
@@ -184,9 +204,27 @@ public class SaveTaskForDiffer implements CheckAction, TaskTicket.Task<String>,
 					android.util.Log.v("kiyo","#4fp"+input.getFilePointer()+","+output.getFilePointer());
 					inputPosition +=(end-begin);
 					android.util.Log.v("kiyo","#5fp"+input.getFilePointer()+","+output.getFilePointer());
+					
 				} else if(line.startsWith("ADD")) {
+					//
+					// "ADD:b=" + beginPointer + ",e=" + endPointer + ",t="+ text + ";\n";
+					//
 					android.util.Log.v("kiyo","#restore()--5--");
-
+					String tmp = line.substring(6,line.length());
+					String[] sp = tmp.split(",e=|,t=|;");
+					long begin = Long.parseLong(sp[0]);
+					long end = Long.parseLong(sp[1]);
+					String text = sp[2];
+					//
+					// write begin
+					android.util.Log.v("kiyo","#a1fp"+input.getFilePointer()+","+output.getFilePointer());
+					saveF(input, output, 0, begin-inputPosition);
+					android.util.Log.v("kiyo","#a2fp"+input.getFilePointer()+","+output.getFilePointer());
+					inputPosition += begin-inputPosition;
+					android.util.Log.v("kiyo","#a3fp"+input.getFilePointer()+","+output.getFilePointer());
+					// write text
+					byte[] buf = text.getBytes();
+					output.addChunk(buf, 0, buf.length);
 				} else {
 					android.util.Log.v("kiyo","#restore()--6--"+line);
 				}

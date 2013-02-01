@@ -32,11 +32,10 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		assertEquals("check get", 21, differ.get(buffer, 2).getEndPointer());
 		assertEquals("check get", 28, differ.get(buffer, 3).getEndPointer());	
 
-
 		assertEquals("check get", 0, differ.length());
 	}
 
-	public void testRandomSenario() throws UnsupportedEncodingException,
+	public void testRandomSenarioDel000() throws UnsupportedEncodingException,
 			IOException, InterruptedException {
 		String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456", };
 		{
@@ -95,7 +94,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		}
 	}
 
-	public void testRandomSenario001() throws UnsupportedEncodingException,
+	public void testRandomSenarioDel001() throws UnsupportedEncodingException,
 			IOException, InterruptedException {
 		String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
 		String[] expect = { "ABCDEFG" + "NONONON" + "0123456" };
@@ -107,7 +106,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		});
 	}
 
-	public void testRandomSenario002() throws UnsupportedEncodingException,
+	public void testRandomSenarioDel002() throws UnsupportedEncodingException,
 			IOException, InterruptedException {
 		String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
 		String[] expect = { "NONONON" + "0123456" };
@@ -120,7 +119,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		});
 	}
 
-	public void testRandomSenario003() throws UnsupportedEncodingException,
+	public void testRandomSenarioDel003() throws UnsupportedEncodingException,
 	IOException, InterruptedException {
 		String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
 		String[] expect = { "0123456" };
@@ -134,7 +133,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		});
 	}
 
-	public void testRandomSenario004() throws UnsupportedEncodingException,
+	public void testRandomSenarioDel004() throws UnsupportedEncodingException,
 	IOException, InterruptedException {
 		String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
 		String[] expect = { "" };
@@ -149,7 +148,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		});
 	}
 
-	public void testRandomSenario005() throws UnsupportedEncodingException,
+	public void testRandomSenarioDel005() throws UnsupportedEncodingException,
 	IOException, InterruptedException {
 		{
 			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
@@ -199,7 +198,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		}
 	}
 
-	public void testRandomSenario006() throws UnsupportedEncodingException,
+	public void testRandomSenarioDel006() throws UnsupportedEncodingException,
 	IOException, InterruptedException {
 		{
 			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
@@ -249,8 +248,7 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		}
 	}
 
-
-	public void testRandomSenario007() throws UnsupportedEncodingException,
+	public void testRandomSenarioDel007() throws UnsupportedEncodingException,
 	IOException, InterruptedException {
 		{
 			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
@@ -301,6 +299,519 @@ public class TestForSaveTaskForDiffer extends TestCase {
 	}
 
 
+	public void testRandomSenarioAdd001() throws UnsupportedEncodingException,
+	IOException, InterruptedException {
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--0--"+ "abcdefg"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--0--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"--0--"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(1, "--0--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG" +"--0--"+ "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(2, "--0--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG"+ "NONONON"+"--0--" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(3, "--0--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG"+ "NONONON" + "0123456" +"--0--" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(4, "--0--");
+				}
+			});
+		}
+	}
+
+	public void testRandomSenarioAdd002() throws UnsupportedEncodingException,
+	IOException, InterruptedException {
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--"+"--0--"+ "abcdefg"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--0--");
+					differ.addLine(0, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"--1--"+"--0--"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(1, "--0--");
+					differ.addLine(1, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG"+"--1--"+"--0--" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(2, "--0--");
+					differ.addLine(2, "--1--");
+				}
+			});
+		}
+
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG" + "NONONON"+"--1--"+"--0--" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(3, "--0--");
+					differ.addLine(3, "--1--");
+				}
+			});
+		}
+
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG" + "NONONON" + "0123456" +"--1--"+"--0--"};
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(4, "--0--");
+					differ.addLine(4, "--1--");
+				}
+			});
+		}
+
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--0--"+"--1--"+"abcdefg"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--0--");
+					differ.addLine(1, "--1--");
+				}
+			});
+		}
+
+	}
+
+	public void testRandomSenarioAdd003() throws UnsupportedEncodingException,
+	IOException, InterruptedException {
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--0--"+"--1--"+"abcdefg"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--0--");
+					differ.addLine(1, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--"+"abcdefg"+"--0--"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(1, "--0--");
+					differ.addLine(0, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--0--"+"abcdefg"+"--1--"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--0--");
+					differ.addLine(2, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--"+"abcdefg"+"ABCDEFG" +"--0--"+ "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(2, "--0--");
+					differ.addLine(0, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--0--"+"abcdefg"+"ABCDEFG" +"--1--"+ "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--0--");
+					differ.addLine(3, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--"+"abcdefg"+"ABCDEFG" + "NONONON" +"--0--"+ "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(3, "--0--");
+					differ.addLine(0, "--1--");
+				}
+			});
+		}
+
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--0--"+"abcdefg"+"ABCDEFG" + "NONONON" +"--1--"+ "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--0--");
+					differ.addLine(4, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--"+"abcdefg"+"ABCDEFG" + "NONONON" + "0123456" +"--0--"};
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(4, "--0--");
+					differ.addLine(0, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--0--"+"abcdefg"+"ABCDEFG" + "NONONON" + "0123456" +"--1--"};
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--0--");
+					differ.addLine(5, "--1--");
+				}
+			});
+		}
+	}
+	
+
+	public void testRandomSenarioAddDel001() throws UnsupportedEncodingException,
+	IOException, InterruptedException {
+		//del and add
+		//
+		//
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(0);
+					differ.addLine(0, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--1--");
+					differ.deleteLine(0);
+				}
+			});
+		}
+
+		//
+		//
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+ "--1--"+ "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(1);
+					differ.addLine(1, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(1, "--1--");
+					differ.deleteLine(1);
+				}
+			});
+		}
+
+		//
+		//
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+ "ABCDEFG"+ "--1--" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(2);
+					differ.addLine(2, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(2, "--1--");
+					differ.deleteLine(2);
+				}
+			});
+		}
+
+		//
+		//
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+ "ABCDEFG"+ "NONONON"+ "--1--" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(3);
+					differ.addLine(3, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "abcdefg"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(3, "--1--");
+					differ.deleteLine(3);
+				}
+			});
+		}
+
+	}
+
+	public void testRandomSenarioAddDel002() throws UnsupportedEncodingException,
+	IOException, InterruptedException {
+		//del and add
+		//
+		//
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "ABCDEFG" + "--1--"+"NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(0);
+					differ.addLine(1, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(1, "--1--");
+					differ.deleteLine(0);
+				}
+			});
+		}
+
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "ABCDEFG" +"NONONON" + "--1--"+ "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(0);
+					differ.addLine(2, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "ABCDEFG" +"--1--"+ "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(2, "--1--");
+					differ.deleteLine(0);
+				}
+			});
+		}
+
+
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "ABCDEFG" +"NONONON" + "0123456" + "--1--" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(0);
+					differ.addLine(3, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "ABCDEFG" + "NONONON" +"--1--"+ "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(3, "--1--");
+					differ.deleteLine(0);
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "ABCDEFG" + "NONONON" + "0123456" +"--1--"};
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(4, "--1--");
+					differ.deleteLine(0);
+				}
+			});
+		}
+
+	}
+
+	public void testRandomSenarioAddDel003() throws UnsupportedEncodingException,
+	IOException, InterruptedException {
+		//del and add
+		//
+		//
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--" + "abcdefg" +"NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(1);
+					differ.addLine(0, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = { "--1--"+"ABCDEFG" + "NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(0, "--1--");
+					differ.deleteLine(1);
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = {  "abcdefg" +"NONONON" + "--1--" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(1);
+					differ.addLine(2, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = {"abcdefg" + "--1--"+"NONONON" + "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(2, "--1--");
+					differ.deleteLine(1);
+				}
+			});
+		}
+
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = {  "abcdefg" +"NONONON" + "0123456"  + "--1--" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.deleteLine(1);
+					differ.addLine(3, "--1--");
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = {"abcdefg"+"NONONON"  + "--1--"+ "0123456" };
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(3, "--1--");
+					differ.deleteLine(1);
+				}
+			});
+		}
+		{
+			String[] message = { "abcdefg", "ABCDEFG", "NONONON", "0123456" };
+			String[] expect = {"abcdefg"+"NONONON" + "0123456" + "--1--"};
+			basicSenario(message, null, expect, new Action() {
+				@Override
+				public void act(Differ differ) {
+					differ.addLine(4, "--1--");
+					differ.deleteLine(1);
+				}
+			});
+		}
+
+	}
+	
+
 	public static interface Action {
 		public void act(Differ differ);
 	}
@@ -346,6 +857,8 @@ public class TestForSaveTaskForDiffer extends TestCase {
 		//
 		// differ.deleteLine(0);
 		act.act(differ);
+		//
+		android.util.Log.v("kiyo","---boundary --1--");
 		TaskTicket<String> ticket = differ.save(buffer, vIndex);
 		String result = ticket.getT();
 
@@ -361,7 +874,11 @@ public class TestForSaveTaskForDiffer extends TestCase {
 				assertEquals(""+expectOne, expectOne,
 						new String(b, 0, len, "utf8"));
 			} else {
-				android.util.Log.v("kiyo","##co##"+new String(b, 0, len, "utf8"));
+				if(len>0) {
+					android.util.Log.v("kiyo","##co##"+new String(b, 0, len, "utf8"));
+				} else {
+					android.util.Log.v("kiyo","##co##"+len);					
+				}
 			}
 		//
 		// check 2 # restore test
