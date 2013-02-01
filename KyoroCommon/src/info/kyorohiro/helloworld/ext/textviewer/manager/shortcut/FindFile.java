@@ -12,6 +12,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManage
 import info.kyorohiro.helloworld.display.widget.lineview.CursorableLineView;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBufferJob;
 import info.kyorohiro.helloworld.ext.textviewer.manager.message.FindFileReceiver;
 import info.kyorohiro.helloworld.ext.textviewer.manager.task.FindFileTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
@@ -81,6 +82,7 @@ public class FindFile implements Task {
 			}
 			return true;
 		}
+
 		@Override
 		public void enter(String line) {
 //			android.util.Log.v("kiyo","enter " + line);

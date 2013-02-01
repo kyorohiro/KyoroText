@@ -10,5 +10,6 @@ public interface KyoroFile {
 	public int read(byte[] buffer, int buffLen) throws IOException;
 	public void close() throws IOException;	
 	public void addChunk(byte[] buffer, int begin, int end) throws IOException;
+	public void addChunk(byte[] buffer) throws IOException;
 	public void syncWrite() throws IOException;
 }

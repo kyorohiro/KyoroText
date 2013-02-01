@@ -9,6 +9,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManage
 import info.kyorohiro.helloworld.display.widget.lineview.MyCursor;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBufferJob;
 import info.kyorohiro.helloworld.ext.textviewer.manager.task.SearchTask;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.text.KyoroString;

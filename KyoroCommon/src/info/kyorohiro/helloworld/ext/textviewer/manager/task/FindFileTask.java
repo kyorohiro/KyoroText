@@ -4,6 +4,7 @@ import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
+import info.kyorohiro.helloworld.io.KyoroFile;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.util.AsyncronousTask;
 import info.kyorohiro.helloworld.util.AutocandidateList;
@@ -20,8 +21,8 @@ public class FindFileTask implements Runnable {
 	private File mPath = null;
 	private String mFilter = "";
 	private AutocandidateList mCandidate = new AutocandidateList(); 
+
 	public FindFileTask(TextViewer info, File path, String filter) {
-//		android.util.Log.v("kiyo","---UpdateInfo"+path+","+filter);
 		mInfo = info;
 		mPath = path;
 		mFilter = filter;
@@ -31,13 +32,41 @@ public class FindFileTask implements Runnable {
 		return mCandidate.candidateText(c);
 	}
 
+
+	private void drawBeginState(KyoroFile output) throws InterruptedException, UnsupportedEncodingException, IOException {
+		File p = mPath.getParentFile();
+		Thread.sleep(0);
+		if(p!=null&&p.getParentFile() != null && p.getParentFile().isDirectory()) {
+			showFile(output, p.getParentFile(), "../..");						
+		}
+		if(p!=null&&p.isDirectory()) {
+			showFile(output, p, "..");
+		}
+	}
+
+	private void drawEndState(KyoroFile output) throws UnsupportedEncodingException, IOException, InterruptedException {
+		File p = mPath.getParentFile();
+		if(p!=null&&p.isDirectory()) {
+			showFile(output, p, "..");
+		}
+	}
+
+	private FileListGetter getFileList() {
+		FileListGetter getter = new FileListGetter(mPath, mFilter, Thread.currentThread());
+		AsyncronousTask sync = new AsyncronousTask(getter);
+		Thread t = new Thread(sync);
+		t.start();
+		if(!sync.syncTask()) {
+			// call interruped 
+			return null;
+		} else {
+			return getter;
+		}
+	}
+
 	@Override
 	public void run() {
-//		android.util.Log.v("kiyo","-------D1------");
-
 		try {
-//			android.util.Log.v("kiyo","FT: start ");
-			int c=0;
 			mCandidate.clear();
 			BufferManager.getManager().beginInfoBuffer();
 			EditableLineView viewer = mInfo.getLineView();
@@ -51,72 +80,47 @@ public class FindFileTask implements Runnable {
 
 			VirtualFile vfile = mInfo.getTextViewerBuffer().getBigLineData().getVFile();
 
-			{
-				File p = mPath.getParentFile();
-				Thread.sleep(0);
-				if(p!=null&&p.getParentFile() != null && p.getParentFile().isDirectory()) {
-					addFile(vfile, p.getParentFile(), "../..");						
-				}
-				if(p!=null&&p.isDirectory()) {
-					addFile(vfile, p, "..");
-				}
-			}
+			//
+			// draw ./ ../
+			drawBeginState(vfile);
+
+			//
+			// target path is file 
 			if(!mPath.isDirectory()&&mPath.isFile()) {
-				addFile(vfile, mPath, null);
+				showFile(vfile, mPath, null);
 			}
-//			android.util.Log.v("kiyo","FT: start 00002");
-			if(mPath.isDirectory()) {
-//				android.util.Log.v("kiyo","QWW--0-");
-				FileListGetter getter = new FileListGetter(mPath, mFilter, Thread.currentThread());
-				AsyncronousTask sync = new AsyncronousTask(getter);
-				Thread t = new Thread(sync);
-				t.start();
-//				android.util.Log.v("kiyo","QWW--1-");
-				if(!sync.syncTask()) {
+			//
+			// target path is directory
+			else if(mPath.isDirectory()) {
+				// get file list
+				FileListGetter getter = getFileList();
+				if(getter == null) {
+					// call interropted
 					return;
 				}
-//				android.util.Log.v("kiyo","QWW--2-");
-//				android.util.Log.v("kiyo","-------D01------");
+
+				// todo following code is needless
 				if(Thread.currentThread().isInterrupted()) {
-//					android.util.Log.v("kiyo","-------D01-1------");
 					return;
 				}
-//				android.util.Log.v("kiyo","-------D01-2-----");
+
+				// show
 				File[] list = getter.getFileList();
-//				android.util.Log.v("kiyo","-------D02------");
 				Thread.sleep(0);
-//				android.util.Log.v("kiyo","QWW--3-");
-				addFileList(vfile, viewer, buffer, list);
-				{
-					File p = mPath.getParentFile();
-					if(p!=null&&p.isDirectory()) {
-						addFile(vfile, p, "..");
-					}
-				}
-			} else {
-				{
-					File p = mPath.getParentFile();
-					if(p!=null&&p.isDirectory()) {
-						addFile(vfile, p, "..");
-					}
-				}
+				showFileList(vfile,// viewer,
+						//buffer,
+						list);
+				
+				drawEndState(vfile);
 			}
-//			android.util.Log.v("kiyo","FT: start 00003");
 		} catch(Throwable t) {
-//			android.util.Log.v("kiyo","-------D1------");
 			t.printStackTrace();
 		} finally {
-//			android.util.Log.v("kiyo","-------D2------");
 //			android.util.Log.v("kiyo","FT: end ");
 		}
 	}
 	
-	private void addFileList(VirtualFile v, EditableLineView viewer,	
-			EditableLineViewBuffer buffer,
-			//Collection<File> fileList
-			File[] fileList
-			) throws InterruptedException, UnsupportedEncodingException, IOException {
-		int size = buffer.getDiffer().length();
+	private void showFileList(VirtualFile v,File[] fileList) throws InterruptedException, UnsupportedEncodingException, IOException {
 		int c=0;
 		if(fileList == null) {
 			return;
@@ -130,14 +134,15 @@ public class FindFileTask implements Runnable {
 			if(c<100){
 				mCandidate.add(f.getName());
 			}
-			addFile(v, f, null);
+			showFile(v, f, null);
 			if(c%100==0){
-				Thread.sleep(10);
+				Thread.yield();
+				Thread.sleep(5);
 			}
 		}
 	}
 
-	private void addFile(VirtualFile vFile, File file, String label) throws UnsupportedEncodingException, IOException, InterruptedException {
+	private void showFile(KyoroFile vFile, File file, String label) throws UnsupportedEncodingException, IOException, InterruptedException {
 		Thread.sleep(0);
 		if(file == null) {
 			return;

@@ -1,4 +1,4 @@
-package info.kyorohiro.helloworld.ext.textviewer.manager.shortcut;
+package info.kyorohiro.helloworld.ext.textviewer.manager;
 
 public interface MiniBufferJob {
 	void enter(String line);

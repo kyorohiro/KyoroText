@@ -12,6 +12,7 @@ import info.kyorohiro.helloworld.display.widget.editview.shortcut.KeyEventManage
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferList;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.MiniBufferJob;
 import info.kyorohiro.helloworld.ext.textviewer.manager.shortcut.FindFile.FindFileJob;
 import info.kyorohiro.helloworld.ext.textviewer.viewer.TextViewer;
 import info.kyorohiro.helloworld.text.KyoroString;
