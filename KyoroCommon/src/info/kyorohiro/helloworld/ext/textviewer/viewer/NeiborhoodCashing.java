@@ -1,5 +1,6 @@
 package info.kyorohiro.helloworld.ext.textviewer.viewer;
 
+import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.text.KyoroString;
@@ -7,9 +8,12 @@ import java.lang.ref.WeakReference;
 
 
 //
-// todo now TextViewerBuffer have cashing data. next bersion This class have cashing data
+// todo now TextViewerBuffer have cashing data. next version This class have cashing data
 //
 public class NeiborhoodCashing {
+	public static int COLOR_FONT1 = SimpleGraphicUtil.parseColor("#dd0044ff");
+	public static int COLOR_FONT2 = SimpleGraphicUtil.parseColor("#ddff0044");
+
 	private boolean mIsDispose = false;
 	private WeakReference<TextViewerBuffer> mBuffer = null;
 	private ReadBackBuilder mBackBuilder = new ReadBackBuilder();
@@ -165,13 +169,13 @@ public class NeiborhoodCashing {
 		}
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = false;
-		if(!buffer.getBigLineData().isEOF()||(position+1)<buffer.getBigLineData().getLastLinePosition()){
+//		if(!buffer.getBigLineData().isEOF()||(position+1)<buffer.getBigLineData().getLastLinePosition()){
 //			android.util.Log.v("kiyo","="+position+"<"+buffer.getBigLineData().getLinePosition());
 			startTask(mForwardBuilder);
-		} else {
-			startTask(mForwardBuilder);
+//		} else {
+//			startTask(mForwardBuilder);
 //			android.util.Log.v("kiyo","="+position+"NN"+buffer.getBigLineData().getLinePosition()+","+buffer.getBigLineData().isEOF());			
-		}
+//		}
 	}
 
 
@@ -220,6 +224,8 @@ public class NeiborhoodCashing {
 		public void run() {
 //			android.util.Log.v("kiyo","start rbt");
 //			android.util.Log.v("kiyo","SD:::B"+mStartWithoutOwn);
+			CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+			int c = cp.getProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2, COLOR_FONT2);
 			try {
 				mBigLineData.moveLine(mStartWithoutOwn - BigLineData.FILE_LIME);
 
@@ -230,7 +236,7 @@ public class NeiborhoodCashing {
 						i++) {
 					CharSequence line = mBigLineData.readLine();
 					KyoroString lineWP = (KyoroString) line;
-					lineWP.setColor(SimpleGraphicUtil.WHITE);
+					lineWP.setColor(c);
 					if (mStartWithoutOwn > (int) lineWP.getLinePosition()) {
 						builder[j++] = lineWP;
 					}
@@ -271,6 +277,8 @@ public class NeiborhoodCashing {
 		}
 
 		public void run() {
+			CrossCuttingProperty cp = CrossCuttingProperty.getInstance();
+			int c = cp.getProperty(TextViewer.KEY_TEXTVIEWER_FONT_COLOR2, COLOR_FONT2);
 //			android.util.Log.v("kiyo","start rft");
 			try {
 				if (mClear) {
@@ -285,8 +293,7 @@ public class NeiborhoodCashing {
 						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
 					KyoroString lineWP = (KyoroString) mBigLineData.readLine();
-///					android.util.Log.v("kiyo","start rft="+lineWP);
-					lineWP.setColor(SimpleGraphicUtil.WHITE);
+					lineWP.setColor(c);
 					if (lineWP.getLinePosition() > mStartWithoutOwn) {
 						mTextViewer.add(lineWP);
 					}
