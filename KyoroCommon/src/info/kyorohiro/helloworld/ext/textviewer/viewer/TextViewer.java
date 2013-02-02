@@ -21,6 +21,7 @@ import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndMove
 import info.kyorohiro.helloworld.display.widget.lineview.extraparts.TouchAndZoomForLineView;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferList;
 import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
+import info.kyorohiro.helloworld.ext.textviewer.manager.db.BufferDB;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 //import info.kyorohiro.helloworld.textviewer.KyoroSetting;
@@ -235,6 +236,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void dispose() {
+		BufferDB.getBufferDB().start(BufferManager.getManager().getApplication(), this);
 		super.dispose();
 		LineViewBufferSpec prevBuffer = getLineView().getLineViewBuffer();
 		prevBuffer.dispose();

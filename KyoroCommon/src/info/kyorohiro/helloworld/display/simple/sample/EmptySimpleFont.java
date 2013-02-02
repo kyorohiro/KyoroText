@@ -14,7 +14,8 @@ public class EmptySimpleFont extends SimpleFont {
 //		System.out.println("Aw="+len);
 		for(int i=0;i<len;i++){
 //			System.out.println("Aw["+i+"]="+textSize);
-			widths[i+start]=textSize;
+//			widths[i+start]=textSize;
+			widths[i]=textSize;
 		}
 		return len;
 	}

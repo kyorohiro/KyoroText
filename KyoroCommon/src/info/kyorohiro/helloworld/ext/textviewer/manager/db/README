@@ -4,9 +4,11 @@ SAVE CURRENT BUFFERS STATE
  ./buffer/list.txt
    #00-xx label
  ./buffer/00/info.txt
-           #path, charset, latest showing line
+           #path, charset, latest showing line, textsize
  ./buffer/00/differ.txt
            #editing but unsaved data
+ ./buffer/00/restore.txt
+           #restore data
  ./buffer/01
  ./buffer/02
  ./buffer/03

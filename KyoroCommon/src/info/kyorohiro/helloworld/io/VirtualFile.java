@@ -158,8 +158,11 @@ public class VirtualFile implements KyoroFile {
 	@Override
 	public synchronized void close() throws IOException {
 		init();
-		mRAFile.close();
+		if(mRAFile != null) {
+			mRAFile.close();
+		}
 		mRAFile = null;
+		mInit = false;
 		mWriteCash = null;
 		mIsClose = true;
 	}
@@ -235,7 +238,7 @@ public class VirtualFile implements KyoroFile {
 	@Override
 	public synchronized void syncWrite() throws IOException {
 //		android.util.Log.v("kiyo", "-------------syncWrite() --A");
-		init();
+//		init();
 //		android.util.Log.v("kiyo", "-------------syncWrite() --B");
 		seek(mSeek);
 //		android.util.Log.v("kiyo", "-------------syncWrite() --C");

@@ -12,6 +12,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
+import android.provider.UserDictionary.Words;
+
 
 public class SimpleTextDecoder {
 
@@ -32,6 +34,12 @@ public class SimpleTextDecoder {
 		mBreakText = breakText;
 	}
 
+	public long getFilePointer() throws IOException {
+		return mReader.getFilePointer();
+	}
+	public long length() throws IOException {
+		return mReader.length();
+	}
 	public boolean isEOF() {
 		try {
 			if (mReader.getFilePointer() < mReader.length()) {
@@ -76,10 +84,14 @@ public class SimpleTextDecoder {
 
 		long todoPrevPosition = mReader.getFilePointer();
 		
-		float[] ws = new float[5];
+		float[] ws = new float[10];
 		float textLength = 0;
-		int width = mBreakText.getWidth();
-		float textSize = mBreakText.getSimpleFont().getFontSize();
+		int width = Integer.MAX_VALUE;
+		float textSize = 12;
+		if(mBreakText != null) {
+			width = mBreakText.getWidth();
+			textSize = mBreakText.getSimpleFont().getFontSize();
+		}
 	//	android.util.Log.v("kiyo","textSize="+textSize+","+width);
 		int len = 0;
 

@@ -1,6 +1,7 @@
 package info.kyorohiro.helloworld.display.widget.editview.differ;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 import info.kyorohiro.helloworld.display.widget.editview.differ.Differ.CheckAction;
@@ -95,15 +96,25 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 	//
 	public static String encodeDeleteLine(long beginPointer, long endPointer) {
 		String encode = "DEL:b=" + beginPointer + ",e=" + endPointer + ";\n";
-		return encode;
+		try {
+			return "TAG"+encode.getBytes("utf8").length+":"+encode;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
-	public static String encodeAddLine(long beginPointer, long endPointer,
-			String text) {
-		String encode = "ADD:b=" + beginPointer + ",e=" + endPointer + ",t="
+	public static String encodeAddLine(long beginPointer, long endPointer, String text) {
+		String encode = "ADD:b=" + beginPointer + ",e=" + endPointer + ",l="+text.length()+",t="
 				+ text + ";\n";
-		return encode;
+		try {
+			return "TAG"+encode.getBytes("utf8").length+":"+encode;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 
 	public void save(int unpatchedPosition, int patchedPositon, AddLine line)
@@ -111,7 +122,7 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 		android.util.Log.v("kiyo","save add #A#"+unpatchedPosition +","+ patchedPositon +"," + line);
 		int start = mPrevUnpatchedPosition + line.begin();
 		//unpatchedPosition + line.begin();
-		int end = start + line.length();
+		//int end = start + line.length();
 		try {
 			long beginPointer = 0;
 			long endPointer = 0;
@@ -126,7 +137,8 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 				endPointer = insertedLine.getEndPointer();				
 			}
 			android.util.Log.v("kiyo","save add #B-1#");
-			for (int lineLocation = 0; lineLocation < end; lineLocation++) {
+//			for (int lineLocation = 0; lineLocation < end; lineLocation++) {
+			for (int lineLocation = 0; lineLocation < line.length(); lineLocation++) {
 				String encodedData = 
 					encodeAddLine(beginPointer, endPointer, line.get(lineLocation).toString());
 				mVFile.addChunk(encodedData.getBytes("utf8"));
@@ -164,6 +176,25 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 	public static class FaileSaveException extends Exception {
 	}
 
+	public static String readTag(KyoroFile vFile) throws IOException {
+		byte[] header = new byte[128];
+		long pointer = vFile.getFilePointer();
+		vFile.read(header);
+		int sep = 0;
+		for(int i=0;i<header.length;i++) {
+			if(':' == header[i]) {
+				sep = i;
+				break;
+			}
+		}
+		String sizeAsS = new String(header,3,sep-3);
+		//android.util.Log.v("kiyo","##NNNN#"+new String(header,0,header.length));
+		long size = Long.parseLong(sizeAsS);
+		vFile.seek(pointer+sep+1);
+		byte[] body = new byte[(int)size];
+		vFile.read(body);
+		return new String(body,"utf8");
+	}
 	//
 	// call close in this method
 	public static void restore(KyoroFile index, KyoroFile input, KyoroFile output) throws IOException {
@@ -176,7 +207,9 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 			android.util.Log.v("kiyo","#restore()--2-"+index.getFilePointer()+"<"+index.length());
 			while(index.getFilePointer()<index.length()) {
 				android.util.Log.v("kiyo","#restore()--3-"+index.getFilePointer()+"<"+index.length());
-				String line = VirtualFile.readLine(index, "utf8");
+//				String line = VirtualFile.readLine(index, "utf8");
+				String line = readTag(index);
+
 				//
 				// "DEL:b=" + beginPointer + ",e=" + endPointer + ";/n";
 				//
@@ -202,14 +235,15 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 					
 				} else if(line.startsWith("ADD")) {
 					//
-					// "ADD:b=" + beginPointer + ",e=" + endPointer + ",t="+ text + ";\n";
+					// "ADD:b=" + beginPointer + ",e=" + endPointer +",l="+",t="+ text + ";\n";
 					//
 					android.util.Log.v("kiyo","#restore()--5--");
 					String tmp = line.substring(6,line.length());
-					String[] sp = tmp.split(",e=|,t=|;");
+					String[] sp = tmp.split(",e=|,t=|;|,l=");
 					long begin = Long.parseLong(sp[0]);
 					long end = Long.parseLong(sp[1]);
-					String text = sp[2];
+					long length = Long.parseLong(sp[2]);
+					String text = tmp.substring((int)(tmp.length()-length-2), tmp.length()-2);
 					//
 					// write begin
 					android.util.Log.v("kiyo","#a1fp"+input.getFilePointer()+","+output.getFilePointer());
