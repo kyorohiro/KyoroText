@@ -92,7 +92,7 @@ public class EditableLineView extends CursorableLineView {
 	public void setMode(String mode) {
 		if(!mIsChMode) {
 			super.setMode(mode);
-			if(CursorableLineView.MODE_EDIT.startsWith(""+mode)){
+			if(!CursorableLineView.MODE_EDIT.startsWith(""+mode)){
 				hideIME();
 			}
 		}

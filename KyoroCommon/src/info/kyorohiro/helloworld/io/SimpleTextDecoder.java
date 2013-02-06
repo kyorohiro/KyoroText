@@ -12,7 +12,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
-import android.provider.UserDictionary.Words;
 
 
 public class SimpleTextDecoder {

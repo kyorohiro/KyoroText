@@ -236,7 +236,9 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 
 	@Override
 	public void dispose() {
-		BufferDB.getBufferDB().start(BufferManager.getManager().getApplication(), this);
+		//
+		// todo BufferManager.getManager().getApplication()
+		//BufferDB.getBufferDB(BufferManager.getManager().getApplication()).start(BufferManager.getManager().getApplication(), this);
 		super.dispose();
 		LineViewBufferSpec prevBuffer = getLineView().getLineViewBuffer();
 		prevBuffer.dispose();

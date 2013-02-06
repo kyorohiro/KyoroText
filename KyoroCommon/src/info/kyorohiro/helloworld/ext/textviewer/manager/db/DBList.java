@@ -71,8 +71,8 @@ public class DBList {
 			while(!decoder.isEOF()) {
 				KyoroString line = (KyoroString)decoder.decodeLine();
 				if(line.length() == 0) {
-					android.util.Log.v("kiyo","----"
-				+decoder.getFilePointer()+","+decoder.length());
+//					android.util.Log.v("kiyo","----"
+//				+decoder.getFilePointer()+","+decoder.length());
 					if(decoder.isEOF()) {
 						break;
 					} else {
@@ -89,7 +89,7 @@ public class DBList {
 				int idEnd = i;
 				int labelStart = i+1;
 				int id = Integer.parseInt(""+new String(tmp, 0, idEnd));
-				String label = new String(tmp, labelStart, tmp.length-i);
+				String label = new String(tmp, labelStart, tmp.length-labelStart);
 				mList.add(new Item(id, label));
 			}
 		} catch (FileNotFoundException e) {
@@ -133,7 +133,7 @@ public class DBList {
 		public Item(int id, String label) {
 			mId = id;
 			mLabel = label;
-			android.util.Log.v("kiyo","ITEM#"+id+","+label);
+//			android.util.Log.v("kiyo","ITEM#"+id+","+label);
 		}
 
 		public int id() {

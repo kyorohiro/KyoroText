@@ -15,15 +15,27 @@ public class BufferDB {
   
 	private SimpleApplication mApplication = null;
 	private static BufferDB sInstance = null;
-	private BufferDB() {
+	
+	private DBList mDbList = null;
+	private BufferDB(SimpleApplication app) {
+		mApplication = app;
 	};
 
-	public static BufferDB getBufferDB() {
+	public static BufferDB getBufferDB(SimpleApplication app) {
 		if(sInstance == null) {
-			sInstance = new BufferDB();
+			sInstance = new BufferDB(app);
 		}
 		return sInstance;
 	}
+
+	public DBList getDBList() throws IOException {
+		if(mDbList == null) {
+			mDbList = new DBList(mApplication);
+			mDbList.file2List();
+		}
+		return mDbList;
+	}
+
 
 	public void start(SimpleApplication app, TextViewer target) {
 		//
@@ -47,14 +59,18 @@ public class BufferDB {
 
 		public void run() {
 			try {
-				android.util.Log.v("kiyo", "buffer task# ---1--");
-				DBList list = new DBList(mApp);
+				if(mTarget == null) {
+					return;
+				}
+//				android.util.Log.v("kiyo", "buffer task# ---1--");
+				BufferDB b = BufferDB.getBufferDB(mApp);
+				DBList list = b.getDBList();
 				list.file2List();
 				int id =list.getEmptyID();
 
 				//
 				// create infofile
-				android.util.Log.v("kiyo", "buffer task# ---5--");
+//				android.util.Log.v("kiyo", "buffer task# ---5--");
 				String path = mTarget.getCurrentPath();
 				String charset = mTarget.getCharset();
 				int textsize = mTarget.getLineView().getTextSize();
@@ -70,7 +86,7 @@ public class BufferDB {
 				
 				//
 				// create differfile
-				android.util.Log.v("kiyo", "buffer task# ---10--");
+//				android.util.Log.v("kiyo", "buffer task# ---10--");
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mTarget.getLineView().getLineViewBuffer();
 				Differ differ = buffer.getDiffer();
 				File base = getPath(mApp, ""+id, "differ.txt");
@@ -85,15 +101,15 @@ public class BufferDB {
 				File l = new File(mTarget.getCurrentPath());
 				list.add(new Item(id, ""+l.getName()));
 				list.list2File();
-				android.util.Log.v("kiyo", "buffer task# ---15--"+differ.length());
+//				android.util.Log.v("kiyo", "buffer task# ---15--"+differ.length());
 			} catch (IOException e) {
-				android.util.Log.v("kiyo", "buffer task# ---20--");
+//				android.util.Log.v("kiyo", "buffer task# ---20--");
 				e.printStackTrace();
 			} finally {
-				android.util.Log.v("kiyo", "buffer task# ---25--");
+//				android.util.Log.v("kiyo", "buffer task# ---25--");
 				mTarget.getManagedLineViewBuffer().reserve();
 			}
-			android.util.Log.v("kiyo", "buffer task# ---30--");
+//			android.util.Log.v("kiyo", "buffer task# ---30--");
 		}
 	}
 
@@ -139,8 +155,8 @@ public class BufferDB {
 	}
 
 	public static File getPath(File parent, File listTxt) throws IOException {
-		android.util.Log.v("kiyo",""+parent.getAbsolutePath());
-		android.util.Log.v("kiyo",""+listTxt.getAbsolutePath());
+//		android.util.Log.v("kiyo",""+parent.getAbsolutePath());
+//		android.util.Log.v("kiyo",""+listTxt.getAbsolutePath());
 		if(!parent.exists()) {
 			parent.mkdirs();
 		}

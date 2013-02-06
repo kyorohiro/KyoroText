@@ -63,7 +63,7 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 			int unpatchedPosition, int index) {
 		Line targetLine = owner.getLine(lineLocation);
 
-		android.util.Log.v("kiyo","##check#A#"+owner.length()+","+lineLocation);
+//		android.util.Log.v("kiyo","##check#A#"+owner.length()+","+lineLocation);
 		try {
 			if (targetLine instanceof DeleteLine) {
 				try {
@@ -79,7 +79,7 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 					e.printStackTrace();
 				}				
 			}
-			android.util.Log.v("kiyo","##check#B#"+owner.length()+","+lineLocation);
+//			android.util.Log.v("kiyo","##check#B#"+owner.length()+","+lineLocation);
 		} finally {
 			mPrevPatchedPosition = patchedPosition;
 			mPrevUnpatchedPosition = unpatchedPosition;
@@ -119,7 +119,7 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 
 	public void save(int unpatchedPosition, int patchedPositon, AddLine line)
 			throws FaileSaveException {
-		android.util.Log.v("kiyo","save add #A#"+unpatchedPosition +","+ patchedPositon +"," + line);
+//		android.util.Log.v("kiyo","save add #A#"+unpatchedPosition +","+ patchedPositon +"," + line);
 		int start = mPrevUnpatchedPosition + line.begin();
 		//unpatchedPosition + line.begin();
 		//int end = start + line.length();
@@ -136,19 +136,19 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 				beginPointer = insertedLine.getEndPointer();
 				endPointer = insertedLine.getEndPointer();				
 			}
-			android.util.Log.v("kiyo","save add #B-1#");
+//			android.util.Log.v("kiyo","save add #B-1#");
 //			for (int lineLocation = 0; lineLocation < end; lineLocation++) {
 			for (int lineLocation = 0; lineLocation < line.length(); lineLocation++) {
 				String encodedData = 
 					encodeAddLine(beginPointer, endPointer, line.get(lineLocation).toString());
 				mVFile.addChunk(encodedData.getBytes("utf8"));
 			}
-			android.util.Log.v("kiyo","save add #B-2#");
+//			android.util.Log.v("kiyo","save add #B-2#");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new FaileSaveException();
 		}
-		android.util.Log.v("kiyo","save add #C#");
+//		android.util.Log.v("kiyo","save add #C#");
 	}
 
 	public void save(int unpatchedPosition, int patchedPositon, DeleteLine line)
@@ -160,8 +160,8 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 				KyoroString deletedLine = mTarget.get(location);
 				long beginPointer = deletedLine.getBeginPointer();
 				long endPointer = deletedLine.getEndPointer();
-				android.util.Log.v("kiyo","location:"+location+","
-						+beginPointer+","+endPointer+","+deletedLine);
+//				android.util.Log.v("kiyo","location:"+location+","
+//						+beginPointer+","+endPointer+","+deletedLine);
 
 				String encodedData = encodeDeleteLine(beginPointer, endPointer);
 				mVFile.addChunk(encodedData.getBytes("utf8"));
@@ -198,15 +198,15 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 	//
 	// call close in this method
 	public static void restore(KyoroFile index, KyoroFile input, KyoroFile output) throws IOException {
-		android.util.Log.v("kiyo","#restore()--1--");
+//		android.util.Log.v("kiyo","#restore()--1--");
 
 		//BufferedReader isrIndex = new BufferedReader(new InputStreamReader(input));
 		long inputPosition = 0;
 		try {
-			android.util.Log.v("kiyo","#restore()--2-"+input.getFilePointer()+"<"+input.length());
-			android.util.Log.v("kiyo","#restore()--2-"+index.getFilePointer()+"<"+index.length());
+//			android.util.Log.v("kiyo","#restore()--2-"+input.getFilePointer()+"<"+input.length());
+//			android.util.Log.v("kiyo","#restore()--2-"+index.getFilePointer()+"<"+index.length());
 			while(index.getFilePointer()<index.length()) {
-				android.util.Log.v("kiyo","#restore()--3-"+index.getFilePointer()+"<"+index.length());
+//				android.util.Log.v("kiyo","#restore()--3-"+index.getFilePointer()+"<"+index.length());
 //				String line = VirtualFile.readLine(index, "utf8");
 				String line = readTag(index);
 
@@ -214,30 +214,30 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 				// "DEL:b=" + beginPointer + ",e=" + endPointer + ";/n";
 				//
 				if(line.startsWith("DEL")) {
-					android.util.Log.v("kiyo","#restore()--4--");
+//					android.util.Log.v("kiyo","#restore()--4--");
 					String tmp = line.substring(6,line.length());
 					String[] sp = tmp.split(",e=|;");
 					long begin = Long.parseLong(sp[0]);
 					long end = Long.parseLong(sp[1]);
-					android.util.Log.v("kiyo","#be="+begin+","+end);
+//					android.util.Log.v("kiyo","#be="+begin+","+end);
 					//
 					// write begin
-					android.util.Log.v("kiyo","#1fp"+input.getFilePointer()+","+output.getFilePointer());
+//					android.util.Log.v("kiyo","#1fp"+input.getFilePointer()+","+output.getFilePointer());
 					saveF(input, output, 0, begin-inputPosition);
-					android.util.Log.v("kiyo","#2fp"+input.getFilePointer()+","+output.getFilePointer());
+//					android.util.Log.v("kiyo","#2fp"+input.getFilePointer()+","+output.getFilePointer());
 					inputPosition += begin-inputPosition;
-					android.util.Log.v("kiyo","#3fp"+input.getFilePointer()+","+output.getFilePointer());
+//					android.util.Log.v("kiyo","#3fp"+input.getFilePointer()+","+output.getFilePointer());
 					// jump 
 					input.seek(input.getFilePointer()+(end-begin));
-					android.util.Log.v("kiyo","#4fp"+input.getFilePointer()+","+output.getFilePointer());
+//					android.util.Log.v("kiyo","#4fp"+input.getFilePointer()+","+output.getFilePointer());
 					inputPosition +=(end-begin);
-					android.util.Log.v("kiyo","#5fp"+input.getFilePointer()+","+output.getFilePointer());
+//					android.util.Log.v("kiyo","#5fp"+input.getFilePointer()+","+output.getFilePointer());
 					
 				} else if(line.startsWith("ADD")) {
 					//
 					// "ADD:b=" + beginPointer + ",e=" + endPointer +",l="+",t="+ text + ";\n";
 					//
-					android.util.Log.v("kiyo","#restore()--5--");
+//					android.util.Log.v("kiyo","#restore()--5--");
 					String tmp = line.substring(6,line.length());
 					String[] sp = tmp.split(",e=|,t=|;|,l=");
 					long begin = Long.parseLong(sp[0]);
@@ -246,16 +246,16 @@ public class DifferSaveAction implements CheckAction, TaskTicket.Task<String>,
 					String text = tmp.substring((int)(tmp.length()-length-2), tmp.length()-2);
 					//
 					// write begin
-					android.util.Log.v("kiyo","#a1fp"+input.getFilePointer()+","+output.getFilePointer());
+//					android.util.Log.v("kiyo","#a1fp"+input.getFilePointer()+","+output.getFilePointer());
 					saveF(input, output, 0, begin-inputPosition);
-					android.util.Log.v("kiyo","#a2fp"+input.getFilePointer()+","+output.getFilePointer());
+//					android.util.Log.v("kiyo","#a2fp"+input.getFilePointer()+","+output.getFilePointer());
 					inputPosition += begin-inputPosition;
-					android.util.Log.v("kiyo","#a3fp"+input.getFilePointer()+","+output.getFilePointer());
+//					android.util.Log.v("kiyo","#a3fp"+input.getFilePointer()+","+output.getFilePointer());
 					// write text
 					byte[] buf = text.getBytes();
 					output.addChunk(buf, 0, buf.length);
 				} else {
-					android.util.Log.v("kiyo","#restore()--6--"+line);
+//					android.util.Log.v("kiyo","#restore()--6--"+line);
 				}
 			}
 			long av = input.length()-input.getFilePointer();
