@@ -3,11 +3,8 @@ package info.kyorohiro.helloworld.pfdep.android.adapter;
 import info.kyorohiro.helloworld.display.simple.CommitText;
 import info.kyorohiro.helloworld.display.simple.IMEController;
 import info.kyorohiro.helloworld.display.simple.MyInputConnection;
-import info.kyorohiro.helloworld.display.simple.SimpleDisplayObject;
-import info.kyorohiro.helloworld.display.simple.SimpleKeyEvent;
-import info.kyorohiro.helloworld.display.simple.SimpleStage;
+import info.kyorohiro.helloworld.pfdep.android.util.Utility;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import android.content.Context;
@@ -15,9 +12,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.LogPrinter;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -122,8 +116,10 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
-		log("dispatchKeyEvent" + event.getKeyCode() + "," + event.toString());
-		log("dispatchKeyEvent" + event.getDisplayLabel());
+		if(Utility.isDebuggingFromCash()) {
+			log("dispatchKeyEvent" + event.getKeyCode() + "," + event.toString());
+			log("dispatchKeyEvent" + event.getDisplayLabel());
+		}
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 		// if(!mIMEIsShow) {
 		// return super.dispatchKeyEvent(event);
@@ -154,17 +150,24 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 	@Override
 	public boolean dispatchKeyShortcutEvent(KeyEvent event) {
-		log("dispatchKeyShortcutEvent" + event.getKeyCode() + ","
-				+ event.toString());
+		if(Utility.isDebuggingFromCash()) {
+			log("dispatchKeyShortcutEvent" + 
+					(event == null? "" : event.getKeyCode() + ","
+							+ event.toString()));
+		}
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 		return super.dispatchKeyShortcutEvent(event);
 	}
 
 	@Override
 	public boolean dispatchKeyEventPreIme(KeyEvent event) {
-		log("dispatchKeyEventPreIme" + event.getKeyCode() + ","
-				+ event.toString());
-		log("dispatchKeyEventPreIme" + event.getDisplayLabel());
+		if(Utility.isDebuggingFromCash()) {
+			log("dispatchKeyEventPreIme" +
+					(event == null? "":event.getKeyCode() + ","
+					+ event.toString()));
+			log("dispatchKeyEventPreIme" + 
+					(event == null? "":event.getDisplayLabel()));
+		}
 		// android.util.Log.v("kiyo","dispatchKeyEventPreIme");
 		setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 
@@ -187,7 +190,9 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 	}
 
 	public void setMetaForCommit(boolean alt, boolean ctl) {
-		log("#-esf-alt/ctl=" + alt + "/" + ctl);
+		if(Utility.isDebuggingFromCash()) {
+			log("#-esf-alt/ctl=" + alt + "/" + ctl);
+		}
 		// mPushingAlt = alt;
 		// mPushingCtl = ctl;
 	}
@@ -205,19 +210,25 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 		@Override
 		public int getCursorCapsMode(int reqModes) {
-			log("getCursorCapsMode" + reqModes);
+			if(Utility.isDebuggingFromCash()) {
+				log("getCursorCapsMode" + reqModes);
+			}
 			return super.getCursorCapsMode(reqModes);
 		}
 
 		@Override
 		public boolean beginBatchEdit() {
-			log("beginBatchEditn");
+			if(Utility.isDebuggingFromCash()) {
+				log("beginBatchEditn");
+			}
 			return super.beginBatchEdit();
 		}
 
 		@Override
 		public boolean endBatchEdit() {
-			log("endBatchEdit");
+			if(Utility.isDebuggingFromCash()) {
+				log("endBatchEdit");
+			}
 			return super.endBatchEdit();
 		}
 
@@ -239,18 +250,24 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 		public _MyInputConnection(View targetView, boolean fullEditor) {
 			super(targetView, fullEditor);
-			log("new MyInputConnection");
+			if(Utility.isDebuggingFromCash()) {
+				log("new MyInputConnection");
+			}
 		}
 
 		@Override
 		protected void finalize() throws Throwable {
-			log("finalize()");
+			if(Utility.isDebuggingFromCash()) {
+				log("finalize()");
+			}
 			super.finalize();
 		}
 
 		@Override
 		public boolean finishComposingText() {
-			log("finishComposingText");
+			if(Utility.isDebuggingFromCash()) {
+				log("finishComposingText");
+			}
 			// for asus fskaren
 			{
 				if (mCommitText != null && mComposingText.length() != 0) {
@@ -274,36 +291,36 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 		@Override
 		public boolean setComposingText(CharSequence text, int newCursorPosition) {
-			log("setComposingText=" + text + "," + newCursorPosition);
-			// if(pushingCtl(event)){//todo
-			// mComposingText = "";
-			// mCommitText = "";
-			// commitText(text, 0);
-			// getEditable().clear();
-			// mManager.restartInput(EditableSurfaceView.this);
-			// return super.setComposingText("", 0);
-			// } else {
+			if(Utility.isDebuggingFromCash()) {
+				log("setComposingText=" + text + "," + newCursorPosition);
+			}
+			resetTimer();
 			mComposingText = text;
 			mNewCursorPosition = newCursorPosition;
 			return super.setComposingText(text, newCursorPosition);
-			// }
 		}
 
 		@Override
 		public boolean setSelection(int start, int end) {
-			log("setSelection s=" + start + ",e=" + end);
+			if(Utility.isDebuggingFromCash()) {
+				log("setSelection s=" + start + ",e=" + end);
+			}
 			return super.setSelection(start, end);
 		}
 
 		@Override
 		public boolean clearMetaKeyStates(int states) {
-			log("clearMEtaKetStates s=" + states);
+			if(Utility.isDebuggingFromCash()) {
+				log("clearMEtaKetStates s=" + states);
+			}
 			return super.clearMetaKeyStates(states);
 		}
 
 		@Override
 		public boolean commitCompletion(CompletionInfo text) {
-			log("commitCompletion=" + text);
+			if(Utility.isDebuggingFromCash()) {
+				log("commitCompletion=" + text);
+			}
 			try {
 				mCommitText = text.getText();
 				addCommitText(new CommitText(text.getText(), text.getPosition()));
@@ -316,12 +333,15 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 		@Override
 		public boolean commitText(CharSequence text, int newCursorPosition) {
-			log("commitText=" + text + "," + newCursorPosition);
-			log("--1--=" + Selection.getSelectionStart(text));
-			log("--2--=" + Selection.getSelectionEnd(text));
-			log("--3--a/c=" + pushingAltForCommitText() + "/"
-					+ pushingCtlForCommitText());
+			if(Utility.isDebuggingFromCash()) {
+				log("commitText=" + text + "," + newCursorPosition);
+				log("--1--=" + Selection.getSelectionStart(text));
+				log("--2--=" + Selection.getSelectionEnd(text));
+				log("--3--a/c=" + pushingAltForCommitText() + "/"
+						+ pushingCtlForCommitText());
+			}
 
+			resetTimer();
 			mController.decorateKey(mCurrentInputConnection, text,
 					newCursorPosition, false, pushingCtlForCommitText(),
 					pushingAltForCommitText());
@@ -339,8 +359,10 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		public CharSequence getTextAfterCursor(int length, int flags) {
 			try {
 				CharSequence a = super.getTextAfterCursor(length, flags);
-				log("getTextAfterCursor=" + a.toString() + "," + length + ","
-						+ flags);
+				if(Utility.isDebuggingFromCash()) {
+					log("getTextAfterCursor=" + a.toString() + "," + length + ","
+							+ flags);
+				}
 				return a;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -351,14 +373,18 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public CharSequence getTextBeforeCursor(int length, int flags) {
 			CharSequence a = super.getTextBeforeCursor(length, flags);
-			log("getTextBeforeCursor=" + a.toString() + "," + length + ","
-					+ flags);
+			if(Utility.isDebuggingFromCash()) {
+				log("getTextBeforeCursor=" + a.toString() + "," + length + ","
+						+ flags);
+			}
 			return a;
 		}
 
 		@Override
 		public void addCommitText(CommitText text) {
-			log("# addlast---" + text);
+			if(Utility.isDebuggingFromCash()) {
+				log("# addlast---" + text);
+			}
 			resetTimer();
 			mCommitTextList.addLast(text);
 		}
@@ -373,7 +399,10 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		//
 		@Override
 		public boolean sendKeyEvent(KeyEvent event) {
-			log("sendKeyEvent=" + event.toString());
+			if(Utility.isDebuggingFromCash()) {
+				log("sendKeyEvent=" + event.toString());
+			}
+			resetTimer();
 			setMetaForCommit(event.isAltPressed(), pushingCtl(event));
 			return super.sendKeyEvent(event);
 		}
@@ -381,13 +410,18 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 		@Override
 		public ExtractedText getExtractedText(ExtractedTextRequest request,
 				int flags) {
-			log("getExtractedText=" + request.hintMaxChars + "," + flags);
+			if(Utility.isDebuggingFromCash()) {
+				log("getExtractedText=" + 
+						(request==null?"":request.hintMaxChars + "," + flags));
+			}
 			return super.getExtractedText(request, flags);
 		}
 
 		@Override
 		public boolean performEditorAction(int actionCode) {
-			log("performEditorAction=" + actionCode);
+			if(Utility.isDebuggingFromCash()) {
+				log("performEditorAction=" + actionCode);
+			}
 			return super.performEditorAction(actionCode);
 		}
 
@@ -399,19 +433,25 @@ public class EditableSurfaceView extends MultiTouchSurfaceView {
 
 		@Override
 		public boolean performPrivateCommand(String action, Bundle data) {
-			log("performPrivateCommand=" + action + "," + data.toString());
+			if(Utility.isDebuggingFromCash()) {
+				log("performPrivateCommand=" + action + "," + data.toString());
+			}
 			return super.performPrivateCommand(action, data);
 		}
 
 		@Override
 		public boolean reportFullscreenMode(boolean enabled) {
-			log("reportFullscreenMode=" + enabled);
+			if(Utility.isDebuggingFromCash()) {
+				log("reportFullscreenMode=" + enabled);
+			}
 			return super.reportFullscreenMode(enabled);
 		}
 
 	}
 
 	public static void log(String log) {
-	//	android.util.Log.v("kiyo", ""+log);
+		if(Utility.isDebuggingFromCash()) {
+			android.util.Log.v("kiyo", ""+log);
+		}
 	}
 }
