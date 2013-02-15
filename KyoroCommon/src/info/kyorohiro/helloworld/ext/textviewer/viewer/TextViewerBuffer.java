@@ -3,13 +3,11 @@ package info.kyorohiro.helloworld.ext.textviewer.viewer;
 import info.kyorohiro.helloworld.display.simple.SimpleGraphicUtil;
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
-import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.io.BigLineData;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.text.KyoroString;
 import info.kyorohiro.helloworld.util.LockableCyclingList;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -30,12 +28,12 @@ public class TextViewerBuffer extends LockableCyclingList implements
 	private NeiborhoodCashing mNeiborCashing = null;
 	private LatestAccessCashing mLatestCashing = new LatestAccessCashing(100);
 	private boolean mIsSync = false;
+	public KyoroString mLast = null;
 
 	public TextViewerBuffer(int listSize, int cash2, BreakText breakText,
 			VirtualFile path, String charset) throws FileNotFoundException {
 		super(listSize);
 		mVFile = path;
-		// android.util.Log.v("kiyo","cash2="+cash2);
 		mLatestCashing = new LatestAccessCashing(cash2);
 		mErrorLineMessage.isNowLoading(true);
 		mLoadingLineMessage.isNowLoading(true);
@@ -120,19 +118,12 @@ public class TextViewerBuffer extends LockableCyclingList implements
 			mLast = element;
 		}
 		int curr = (int) mLast.getLinePosition();
-		if (prev < curr) {// &&curr>getMaxOfStackedElement()) {
-			// if(!mP) {
-			// mP = true;
-			// setNumOfAdd(num+(curr-prev));//-getMaxOfStackedElement());
-			// } else {
+		if (prev < curr) {
 			setNumOfAdd(num + (curr - prev));
-			// }
 		}
 	}
 
-	private boolean mP = false;
 
-	public KyoroString mLast = null;
 
 	public synchronized int getNumberOfStockedElement() {
 		update();
@@ -218,7 +209,7 @@ public class TextViewerBuffer extends LockableCyclingList implements
 				mLatestCashing.addLine(ret, false);
 			}
 		}
-		return ret;// new KyoroString(""+ret.getLinePosition()+":"+ret);
+		return ret;
 	}
 
 	private int lineNumberToBufferedNumber(int lineNumber) {

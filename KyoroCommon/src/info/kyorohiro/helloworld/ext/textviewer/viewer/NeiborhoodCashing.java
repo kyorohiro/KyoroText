@@ -227,7 +227,7 @@ public class NeiborhoodCashing {
 					CharSequence[] lines = mBigLineData.readLine();
 					for(int n=0;n<lines.length;n++) {
 						KyoroString lineWP = (KyoroString) lines[n];
-						android.util.Log.v("kiyo", "#B#"+lineWP.getLinePosition()+""+lineWP);
+//						android.util.Log.v("kiyo", "#B#"+lineWP.getLinePosition()+""+lineWP);
 						lineWP.setColor(c);
 						if (mStartWithoutOwn > lineWP.getLinePosition()) {
 							builder[j++] = lineWP;

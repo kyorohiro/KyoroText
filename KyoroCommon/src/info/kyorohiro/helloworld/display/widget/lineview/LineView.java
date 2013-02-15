@@ -399,6 +399,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 		}
 	}
 
+	public static final String LABEL_LOCK_SCREEN = "now lockscreen";
 	@Override
 	public void paint(SimpleGraphics graphics) {
 		if(getLineViewBuffer().isLoading()) {
@@ -409,7 +410,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 			mBiasAboutMoveLine--;
 		}
 		if(mIsLockScreen){
-			graphics.drawText("now lockscreen",100, 100);
+			graphics.drawText(LABEL_LOCK_SCREEN, 100, 100);
 			return;
 		}
 		graphics.setSimpleFont(getBreakText().getSimpleFont());
@@ -456,7 +457,10 @@ public class LineView extends SimpleDisplayObjectContainer {
 			showLineDate(graphics, list, len);
 		}// */
 		// fin
-		super.paint(graphics);
+		//if(false) {
+			super.paint(graphics);
+		//	return;
+		//}
 		graphics.clipRect(-1, -1, -1, -1);
 	}
 

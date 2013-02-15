@@ -15,7 +15,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	private int mCursorRow = 0;
 	private int mCursorLine = 0;
 	private boolean mIsCrlfMode = false;
-	private boolean mIsNormalized = false;
 
 	public EditableLineViewBuffer(LineViewBufferSpec owner) {
 		super();
@@ -30,16 +29,10 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		mCursorRow = 0;
 		mCursorLine = 0;
 		mIsCrlfMode = false;
-		mIsNormalized = false;
 		mIsCrlfMode = false;
 		mDiffer.clear();
 	}
 	public synchronized boolean isEdit() {
-		//if (mIsNormalized) {
-		//	return (mDiffer.lengthOfLine() <= 1 ? false : true);
-		//} else {
-		//	return (mDiffer.lengthOfLine() <= 0 ? false : true);
-		//}
 		return (mDiffer.lengthOfLine() <= 0 ? false : true);
 	}
 
@@ -744,7 +737,6 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 
 	@Override
 	public synchronized void dispose() {
-		//mDiffer.clear();
 		mOwner.dispose();
 	}
 

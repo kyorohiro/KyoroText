@@ -71,7 +71,6 @@ public class BigLineData {
 	public synchronized void moveLine(long lineNumber) throws IOException {
 		//
 		if(mLinePosition == lineNumber) {
-//			android.util.Log.v("kiyo","--lineNumber="+lineNumber);
 			return;
 		}
 		//
@@ -94,7 +93,6 @@ public class BigLineData {
 
 	public boolean wasEOF() {
 		try {
-//			android.util.Log.v("kiyo","wasEOF="+mReader.length()+","+mLastFilePointer);
 			if (mReader.length() > mLastFilePointer) {
 				return false;
 			} else {
@@ -109,7 +107,6 @@ public class BigLineData {
 	public boolean isEOF() {
 		try {
 			if (mReader.length() <= mReader.getFilePointer()) {
-//			if (mReader.length() <= mLastFilePointer) {
 				return true;
 			} else {
 				return false;
@@ -150,7 +147,10 @@ public class BigLineData {
 		tmp.setLinePosition(lineNumber);
 		tmp.setBeginPointer(begin);
 		tmp.setEndPointer(end);
-		if(tmp.getEndPointer() >= mPath.length()) {
+		//
+		// todo following mPath.getChunkSize() is bad.
+		//
+		if(tmp.getEndPointer() >= mPath.length()){// && 0==mPath.getChunkSize()) {
 			KyoroString EOF = new KyoroString("");
 			EOF.setBeginPointer(tmp.getEndPointer());
 			EOF.setEndPointer(tmp.getEndPointer());
