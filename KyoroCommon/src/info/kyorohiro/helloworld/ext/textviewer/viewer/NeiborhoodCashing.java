@@ -117,11 +117,8 @@ public class NeiborhoodCashing {
 			return true;
 		}
 		if ((sp - chunkSize * LOOKAGEAD_lentgth) <= cp && cp <= (ep + chunkSize * LOOKAGEAD_lentgth)) {
-//			android.util.Log.v("kiyo",":::TRUE("+sp+"- "+chunkSize+" * 3) <= "+cp+" && "+cp +"<= ("+ep +"+"+ chunkSize+" * 3)");
 			return true;
 		} else {
-//			Debug.waitForDebugger();
-//			android.util.Log.v("kiyo",":::FALSE("+sp+"- "+chunkSize+" * 3) <= "+cp+" && "+cp +"<= ("+ep +"+"+ chunkSize+" * 3)");
 			return false;
 		}
 	}
@@ -132,7 +129,6 @@ public class NeiborhoodCashing {
 	}
 
 	public synchronized void stopTask() {
-//		android.util.Log.v("kiyo","buffer =stop()");
 		if (mTaskRunnter != null && mTaskRunnter.isAlive()) {
 			mTaskRunnter.interrupt();
 			mTaskRunnter = null;
@@ -169,13 +165,7 @@ public class NeiborhoodCashing {
 		}
 		mForwardBuilder.position = position;
 		mForwardBuilder.clear = false;
-//		if(!buffer.getBigLineData().isEOF()||(position+1)<buffer.getBigLineData().getLastLinePosition()){
-//			android.util.Log.v("kiyo","="+position+"<"+buffer.getBigLineData().getLinePosition());
-			startTask(mForwardBuilder);
-//		} else {
-//			startTask(mForwardBuilder);
-//			android.util.Log.v("kiyo","="+position+"NN"+buffer.getBigLineData().getLinePosition()+","+buffer.getBigLineData().isEOF());			
-//		}
+		startTask(mForwardBuilder);
 	}
 
 
@@ -234,11 +224,14 @@ public class NeiborhoodCashing {
 						!Thread.interrupted()&& i < BigLineData.FILE_LIME  && !mBigLineData.isEOF()
 						&&mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
-					CharSequence line = mBigLineData.readLine();
-					KyoroString lineWP = (KyoroString) line;
-					lineWP.setColor(c);
-					if (mStartWithoutOwn > (int) lineWP.getLinePosition()) {
-						builder[j++] = lineWP;
+					CharSequence[] lines = mBigLineData.readLine();
+					for(int n=0;n<lines.length;n++) {
+						KyoroString lineWP = (KyoroString) lines[n];
+						android.util.Log.v("kiyo", "#B#"+lineWP.getLinePosition()+""+lineWP);
+						lineWP.setColor(c);
+						if (mStartWithoutOwn > lineWP.getLinePosition()) {
+							builder[j++] = lineWP;
+						}
 					}
 					Thread.sleep(0);
 					Thread.yield();
@@ -292,10 +285,18 @@ public class NeiborhoodCashing {
 						i < BigLineData.FILE_LIME && !mBigLineData.isEOF()&&
 						mTaskRunnter != null&&mTaskRunnter == Thread.currentThread();
 						i++) {
-					KyoroString lineWP = (KyoroString) mBigLineData.readLine();
-					lineWP.setColor(c);
-					if (lineWP.getLinePosition() > mStartWithoutOwn) {
-						mTextViewer.add(lineWP);
+					
+					KyoroString[] lines = mBigLineData.readLine();
+//					android.util.Log.v("kiyo", "len="+lines.length);
+					for(int n=0;n<lines.length;n++) {
+						KyoroString lineWP = (KyoroString) lines[n];
+//						android.util.Log.v("kiyo", "#F#"+lineWP.getLinePosition()+""+lineWP);
+//						android.util.Log.v("kiyo", "len00="+lineWP);
+						lineWP.setColor(c);
+						if (lineWP.getLinePosition() > mStartWithoutOwn) {
+//							android.util.Log.v("kiyo", "len01="+lineWP);
+							mTextViewer.add(lineWP);
+						}
 					}
 					Thread.sleep(0);
 					Thread.yield();

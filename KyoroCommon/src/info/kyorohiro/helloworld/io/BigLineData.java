@@ -121,7 +121,7 @@ public class BigLineData {
 	}
 
 	private long mLastFilePointer = 0;
-	public synchronized KyoroString readLine() throws IOException {
+	public synchronized KyoroString[] readLine() throws IOException {
 		KyoroString tmp = new KyoroString(new char[]{}, 0);
 		int lineNumber = (int) mLinePosition;
 		long begin = 0;
@@ -150,7 +150,15 @@ public class BigLineData {
 		tmp.setLinePosition(lineNumber);
 		tmp.setBeginPointer(begin);
 		tmp.setEndPointer(end);
-		return tmp;
+		if(tmp.getEndPointer() >= mPath.length()) {
+			KyoroString EOF = new KyoroString("");
+			EOF.setBeginPointer(tmp.getEndPointer());
+			EOF.setEndPointer(tmp.getEndPointer());
+			EOF.setLinePosition(tmp.getLinePosition()+1);
+			return new KyoroString[]{tmp, EOF};
+		} else {
+			return new KyoroString[]{tmp};
+		}
 	}
 
 	public synchronized void close() throws IOException {
@@ -179,7 +187,6 @@ public class BigLineData {
 		}
 		if (index < mPositionPer100Line.size()) {
 			long filePointer = mPositionPer100Line.get(index);
-			// mReader.seek(0);
 			mReader.seek(filePointer);
 			mLinePosition = index * BigLineData.FILE_LIME;
 			return true;

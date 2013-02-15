@@ -35,11 +35,12 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		mDiffer.clear();
 	}
 	public synchronized boolean isEdit() {
-		if (mIsNormalized) {
-			return (mDiffer.lengthOfLine() <= 1 ? false : true);
-		} else {
-			return (mDiffer.lengthOfLine() <= 0 ? false : true);
-		}
+		//if (mIsNormalized) {
+		//	return (mDiffer.lengthOfLine() <= 1 ? false : true);
+		//} else {
+		//	return (mDiffer.lengthOfLine() <= 0 ? false : true);
+		//}
+		return (mDiffer.lengthOfLine() <= 0 ? false : true);
 	}
 
 	public void IsCrlfMode(boolean isCrlfMode) {
@@ -77,11 +78,11 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 	@Override
 	public synchronized KyoroString get(int i) {
 		// android.util.Log.v("kiyo","sync="+isSync());
-		if (!isSync() && isEOF(i) && !isNormalize) {
+		if (!isSync() && isEOF(i) ){//&& !isNormalize) {
 			// todo need to lock
-			isNormalize = true;
-			normalize(i);
-			isNormalize = false;
+			//isNormalize = true;
+			//normalize(i);
+			//isNormalize = false;
 		}
 		return mDiffer.get(mOwner, i);
 	}
@@ -217,18 +218,8 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 				return;
 			}
 			if (line.includeLF()) {
-				//android.util.Log.v("kiyo",
-				// "--nor \""+line+"\""+getNumberOfStockedElement()+","+index);
-				// todo need to lock here
-				// int cursolIndex = getCol();
-				// int cursolRow = getRow();
-				// setCursor(line.length(), index);
 				mDiffer.addLine(index + 1, "");
-				mIsNormalized = true;
-				// crlf(true, true);
-				// setCursor(cursolRow, cursolIndex);
-				// todo
-				// mDiffer.addLine(mCursorLine, c.subSequence(row, c.length()));
+//				mIsNormalized = true;
 			}
 		}
 	}
