@@ -90,7 +90,7 @@ public class BufferDB {
 				EditableLineViewBuffer buffer = (EditableLineViewBuffer)mTarget.getLineView().getLineViewBuffer();
 				Differ differ = buffer.getDiffer();
 				File base = getPath(mApp, ""+id, "differ.txt");
-				VirtualFile file = new VirtualFile(base, 201);
+				VirtualFile file = VirtualFile.createReadWrite(base, 201);
 				TaskTicket<String> ticket=
 				differ.save(buffer, file);
 				ticket.syncTask();
@@ -123,7 +123,7 @@ public class BufferDB {
 
 	public void save(TextViewer viewer, File path) throws IOException {
 		EditableLineViewBuffer buffer = (EditableLineViewBuffer)viewer.getLineView().getLineViewBuffer();
-		VirtualFile vfile = new VirtualFile(path, 512);
+		VirtualFile vfile = VirtualFile.createReadWrite(path, 512);
 		buffer.getDiffer().save(buffer, vfile);
 		vfile.syncWrite();
 		vfile.close();

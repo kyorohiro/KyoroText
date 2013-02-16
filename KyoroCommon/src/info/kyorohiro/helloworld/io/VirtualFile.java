@@ -15,8 +15,39 @@ public class VirtualFile implements KyoroFile {
 	public final static int CHUNK_SIZE = 100;
 	private long mSeek = 0;
 	private File mBase = null;
+	private boolean mIsReadOnly = false;
 
-	public VirtualFile(File base, int writeCashSize) {
+	public static VirtualFile createReadOnly(File base) {
+		VirtualFile v = new VirtualFile(base, 0);
+		v.isReadonly(true);
+		return v;
+	}
+
+	public static VirtualFile createReadWrite(File base, int writeCashSize) {
+		VirtualFile v = new VirtualFile(base, writeCashSize);
+		v.isReadonly(false);
+		return v;
+	}
+
+
+	private void isReadonly(boolean on) {
+		mIsReadOnly = on;
+	}
+
+	public boolean isReadonly() {
+		return mIsReadOnly;
+	}
+
+	private boolean mIsLoading = false;
+	public boolean isPushing() {
+		return mIsLoading;
+	}
+
+	public void finishPushing() {
+		mIsLoading = false;
+	}
+
+	private VirtualFile(File base, int writeCashSize) {
 		mBase = base;
 		int numOfchunk = writeCashSize/CHUNK_SIZE;
 		mWriteCash = new byte[CHUNK_SIZE*numOfchunk];

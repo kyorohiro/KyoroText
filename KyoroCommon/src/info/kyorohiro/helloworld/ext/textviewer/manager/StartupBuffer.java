@@ -28,7 +28,7 @@ public class StartupBuffer extends TextViewer {
 	public static StartupBuffer newStartupBuffer(BufferManager manager, int textSize, int width, int mergine, boolean message) {
 		StartupBuffer ret = null;
 		File file = new File(BufferManager.getManager().getApplication().getApplicationDirectory(),"dummy");
-		BufferBuilder builder = new BufferBuilder(new VirtualFile(file, 1024));
+		BufferBuilder builder = new BufferBuilder(VirtualFile.createReadWrite(file, 1024));
 		TextViewerBuffer buffer;
 		try {
 			if(!file.exists()) {

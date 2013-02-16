@@ -34,96 +34,89 @@ public class ShellTaskDone implements Task {
 	}
 
 	@Override
-	public synchronized void act(EditableLineView view, EditableLineViewBuffer buffer) {
+	public synchronized void act(EditableLineView view,
+			EditableLineViewBuffer buffer) {
 		buffer.clearYank();
 
 		//
-		//MiniBuffer miniBuffer = BufferManager.getManager().getMiniBuffer();
-		//miniBuffer.startTask(new A(BufferManager.getManager().getFocusingTextViewer()));
+		// MiniBuffer miniBuffer = BufferManager.getManager().getMiniBuffer();
+		// miniBuffer.startTask(new
+		// A(BufferManager.getManager().getFocusingTextViewer()));
 		//
-		//todo 
-		Thread t = new Thread(new A(BufferManager.getManager().getFocusingTextViewer()));
+		// todo
+		Thread t = new Thread(new A(BufferManager.getManager()
+				.getFocusingTextViewer()));
 		t.start();
 	}
 
 	public class A implements Runnable {
 		private TextViewer mTarget = null;
+
 		public A(TextViewer target) {
 			mTarget = target;
 		}
 
 		@Override
 		public void run() {
-			EditableLineViewBuffer buffer = (EditableLineViewBuffer)mTarget.getLineView().getLineViewBuffer();
+			EditableLineViewBuffer buffer = (EditableLineViewBuffer) mTarget
+					.getLineView().getLineViewBuffer();
 			VirtualFile targetVFile = mTarget.getVFile();
-			if(mCmd == null || mCmd.getVFile() != targetVFile) {
-				if(mCmd != null) {
+			if (mCmd == null || mCmd.getVFile() != targetVFile) {
+				if (mCmd != null) {
 					mCmd.end();
 				}
-				mCmd = new CmdSession(targetVFile, BufferManager.getManager().getMiniBuffer().getSingleTaskRunner());
+				mCmd = new CmdSession(targetVFile, BufferManager.getManager()
+						.getMiniBuffer().getSingleTaskRunner());
 			}
 
 			// input
 			int len = buffer.getNumberOfStockedElement();
-			StringBuilder builder = new StringBuilder();
-			for(int i=1;len-i>=0;i++) {
-				KyoroString line = buffer.get(len-i);
-				if(line.includeLF()) {
-					break;
-				}
-				builder.append(line.toString());
+			// StringBuilder builder = new StringBuilder();
+			// for(int i=1;len-i>=0;i++) {
+			// KyoroString line = buffer.get(len-i);
+			// if(line.includeLF()) {
+			// break;
+			// }
+			// builder.append(line.toString());
+			// }
+			EditableLineViewBuffer editor = BufferManager.getManager()
+					.getShellBuffer().getLineView().getEditableLineBuffer();
+			editor.normalize(editor.getNumberOfStockedElement());
+			int index = editor.getCol();
+			;// buffer.getCol();
+			if (index >= len - 1) {
+				index = len - 1;
 			}
+			KyoroString line = buffer.get(index);
+			android.util.Log.v("kiyo",
+					"line>" + line.toString().replace("\r\n|\n", ""));
+			// builder.append(line.toString());
+
 			//
 			try {
-				buffer.setCursor(buffer.get(buffer.getCol()).length(), buffer.getCol());
-			} catch(Throwable e) {
+				buffer.setCursor(buffer.get(buffer.getCol()).length(),
+						buffer.getCol());
+			} catch (Throwable e) {
 				e.printStackTrace();
-			}finally {
+			} finally {
 			}
 			buffer.crlf();
+			buffer.clear();
 			//
 			//
-			mCmd.input(builder.toString());
-			builder.setLength(0);
-			builder = null;
+			String input = line.toString().replaceAll("\r\n|\n", "");
+			if(input.length() == 0) {
+				return;
+			}
+			try {
+				targetVFile.addChunk((">>"+input+"\r\n").getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			mCmd.input(line.toString().replaceAll("\r\n|\n", ""));
+			// builder.setLength(0);
+			// builder = null;
 		}
 	}
 
 }
-
-
-/*
-{
-	String tmp = builder.toString().replace("^[\\s]*|[\\s]*$", "");
-	String [] a = tmp.split("\\s");
-//	android.util.Log.v("kiyo", "--0000--"+a.length+","+tmp);
-	if(a.length >= 2&&"cd".equals(""+a[0])){
-		String curDirS = CrossCuttingProperty.getInstance().getProperty("user.dir","/");
-		File curDir = new File(curDirS);
-		File curAbFil = new File(a[1]);
-		File curFil = new File(curDir, a[1]);
-//		android.util.Log.v("kiyo", "--0001--"+curDirS);
-		if(curAbFil.exists()&& curAbFil.isDirectory()) {
-//			android.util.Log.v("kiyo", "--0002--");
-			//absolute path
-			CrossCuttingProperty.getInstance().setProperty("user.dir",curAbFil.getAbsolutePath());
-			return;
-		}
-		else if(curFil.exists()&&curDir.isDirectory()) {
-//			android.util.Log.v("kiyo", "--0003--");
-			CrossCuttingProperty.getInstance().setProperty("user.dir",curFil.getAbsolutePath());
-			return;						
-		} 
-		else {
-			android.util.Log.v("kiyo", "--0004--");
-			// 
-		}
-	}
-	else if(a.length >= 1&&"pwd".equals(""+a[0])) {
-		String line = CrossCuttingProperty.getInstance().getProperty("user.dir","/");
-		buffer.pushCommit(line, 1);
-		buffer.crlf();
-		return;
-	}
-}
-*/

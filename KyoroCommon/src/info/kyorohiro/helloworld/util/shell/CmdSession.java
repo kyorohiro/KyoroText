@@ -1,6 +1,8 @@
 package info.kyorohiro.helloworld.util.shell;
 
 import info.kyorohiro.helloworld.display.simple.CrossCuttingProperty;
+import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
+import info.kyorohiro.helloworld.ext.textviewer.manager.BufferManager;
 import info.kyorohiro.helloworld.io.VirtualFile;
 import info.kyorohiro.helloworld.util.shell.CLIAppKicker.CLIAppKickerException;
 import info.kyorohiro.helloworld.util.SingleTaskRunner;
@@ -91,7 +93,11 @@ public class CmdSession {
 				if(len<=0) {
 					break;
 				}
+				android.util.Log.v("kiyo","----"+new String(buff,0,len));
 				mVFile.addChunk(buff, 0, len);
+				mVFile.addChunk(("\r\n").getBytes());
+				//mVFile.isLoading(false);
+				
 				Thread.yield();
 				Thread.sleep(0);
 			}

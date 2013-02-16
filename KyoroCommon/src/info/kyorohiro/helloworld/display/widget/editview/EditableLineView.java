@@ -29,7 +29,9 @@ public class EditableLineView extends CursorableLineView {
 	public void setKeyEventManager(KeyEventManager manager) {
 		mKeyEventManager = manager;
 	}
-
+	public EditableLineViewBuffer getEditableLineBuffer() {
+		return mTextBuffer;
+	}
 	@Override
 	public synchronized MyCursor getLeft() {
 		return super.getLeft();

@@ -486,6 +486,7 @@ public class LineView extends SimpleDisplayObjectContainer {
 	private void cashing(LineViewBufferSpec showingText, int start, int end) {
 		int len = end -start;
 		for(int i =0;i<len&&i+start<showingText.getNumberOfStockedElement();i++) {
+//			android.util.Log.v("kiyo","#=#"+i+"/"+showingText.getNumberOfStockedElement());
 			mCashBuffer[i] = showingText.get(start+i);
 		}
 	}

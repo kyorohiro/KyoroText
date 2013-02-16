@@ -423,7 +423,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 			}
 
 			try {
-				VirtualFile ret = new VirtualFile(infoFile, 1024);
+				VirtualFile ret = VirtualFile.createReadWrite(infoFile, 1024);
 				mShellBuffer.getLineView().isLockScreen(true);
 				mShellBuffer.readFile(ret);
 				mShellBuffer.getLineView().isLockScreen(false);
@@ -479,7 +479,7 @@ public class BufferManager extends SimpleDisplayObjectContainer {
 //		android.util.Log.v("kiyo","BG: start 00001-5-");
 
 		try {
-			VirtualFile ret = new VirtualFile(infoFile, 501);
+			VirtualFile ret = VirtualFile.createReadWrite(infoFile, 501);
 			
 //			android.util.Log.v("kiyo","BG: start 00001-6-");
 			mInfo.getLineView().isLockScreen(true);

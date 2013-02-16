@@ -79,7 +79,6 @@ public class FindFileTask implements Runnable {
 			}
 
 			VirtualFile vfile = mInfo.getTextViewerBuffer().getBigLineData().getVFile();
-
 			//
 			// draw ./ ../
 			drawBeginState(vfile);
@@ -113,6 +112,7 @@ public class FindFileTask implements Runnable {
 				
 				drawEndState(vfile);
 			}
+			vfile.finishPushing();
 		} catch(Throwable t) {
 			t.printStackTrace();
 		} finally {

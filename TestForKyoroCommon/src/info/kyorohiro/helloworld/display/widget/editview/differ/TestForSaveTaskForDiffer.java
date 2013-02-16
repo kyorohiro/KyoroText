@@ -55,9 +55,9 @@ public class TestForSaveTaskForDiffer extends TestCase {
 					Environment.getExternalStorageDirectory(),
 					"__kyoro_test_02_.txt");
 
-			VirtualFile vIndex = new VirtualFile(savePath, 512 + 1);
-			VirtualFile vInput = new VirtualFile(inputPath, 512 + 1);
-			VirtualFile vRestore = new VirtualFile(restorePath, 512 + 1);
+			VirtualFile vIndex = VirtualFile.createReadWrite(savePath, 512 + 1);
+			VirtualFile vInput = VirtualFile.createReadWrite(inputPath, 512 + 1);
+			VirtualFile vRestore = VirtualFile.createReadWrite(restorePath, 512 + 1);
 
 			for (String s : message) {
 				vInput.addChunk(s.getBytes("utf8"));
@@ -844,9 +844,9 @@ public class TestForSaveTaskForDiffer extends TestCase {
 			inputPath.delete();
 		}
 
-		VirtualFile vIndex = new VirtualFile(savePath, 512 + 1);
-		VirtualFile vInput = new VirtualFile(inputPath, 512 + 1);
-		VirtualFile vRestore = new VirtualFile(restorePath, 512 + 1);
+		VirtualFile vIndex = VirtualFile.createReadWrite(savePath, 512 + 1);
+		VirtualFile vInput = VirtualFile.createReadWrite(inputPath, 512 + 1);
+		VirtualFile vRestore = VirtualFile.createReadWrite(restorePath, 512 + 1);
 
 		for (String s : message) {
 			vInput.addChunk(s.getBytes("utf8"));

@@ -86,14 +86,14 @@ public class DBInfo {
 				"1.0,id="+mId+",pa="+mPath+",ch="+mCharset+
 				",ts="+mTextSize+",be="+mBegin+",en="+mEnd+
 				",tlm="+mLastModify+",tsi="+mFileSize;
-		VirtualFile v = new VirtualFile(file, 512);
+		VirtualFile v = VirtualFile.createReadWrite(file, 512);
 		v.addChunk(save.getBytes("utf8"));
 		v.syncWrite();
 	}
 
 	public void file2Inter() throws IOException {
 		File file = getPath();
-		VirtualFile v = new VirtualFile(file, 512);
+		VirtualFile v = VirtualFile.createReadWrite(file, 512);
 		byte[] buffer = new byte[(int)v.length()];
 		v.read(buffer);
 		String base =  new String(buffer,"utf8");

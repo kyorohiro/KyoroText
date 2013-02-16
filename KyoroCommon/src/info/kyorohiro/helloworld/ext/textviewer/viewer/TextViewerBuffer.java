@@ -134,14 +134,16 @@ public class TextViewerBuffer extends LockableCyclingList implements
 				return 1;
 			}
 		}
-		if (mLineManagerFromFile.wasEOF()) {
-			// /
-			// android.util.Log.v("kiyo","number  wE= "+((int)mLast.getLinePosition()+1));
-			return (int) mLast.getLinePosition() + 1 +(mLast.includeLF()?1:0);
-		} else {
+		return (int) mLast.getLinePosition() + 1;
+		/*
+		if (isLoading()) {
 			// android.util.Log.v("kiyo","number !wE= "+((int)mLast.getLinePosition()+2));
 			return (int) mLast.getLinePosition() + 2;
-		}
+		} else {
+			// /
+			// android.util.Log.v("kiyo","number  wE= "+((int)mLast.getLinePosition()+1));
+			return (int) mLast.getLinePosition() + 1;// + 1 +(mLast.includeLF()?1:0);
+		}*/
 	}
 
 	// so bad performance!! must to improve
@@ -178,8 +180,7 @@ public class TextViewerBuffer extends LockableCyclingList implements
 				return mLoadingLineMessage;
 			}
 
-			KyoroString bufferedDataForReturn = super
-					.get(lineNumberToBufferedNumber(i));
+			KyoroString bufferedDataForReturn = super.get(lineNumberToBufferedNumber(i));
 			// todo
 			if (bufferedDataForReturn == null) {
 				// android.util.Log.v("kiyo","ERROR --2--");
@@ -209,6 +210,21 @@ public class TextViewerBuffer extends LockableCyclingList implements
 				mLatestCashing.addLine(ret, false);
 			}
 		}
+//		android.util.Log.v("kiyo","#-#"+i+"/"+getNumberOfStockedElement());
+
+///*
+ 		if(!mIsSync&&!mLineManagerFromFile.wasEOF()) {
+//			android.util.Log.v("kiyo","---"+mLast.getLinePosition());
+			update();
+//			android.util.Log.v("kiyo","#-#"+i+"/"+getNumberOfStockedElement());
+			if(ret == mLast&&!mLineManagerFromFile.wasEOF()) {
+				resetBufferedStartEndPosition((int)mLast.getLinePosition()+1);
+				if (mNeiborCashing != null) {
+					mNeiborCashing.updateBufferedStatus();
+				}
+			}
+		}
+		//*/
 		return ret;
 	}
 
@@ -235,10 +251,8 @@ public class TextViewerBuffer extends LockableCyclingList implements
 			CharSequence endLine = super.get(bufferSize - 1);
 			KyoroString startLineWithPosition = (KyoroString) startLine;
 			KyoroString endLineWithPosition = (KyoroString) endLine;
-			mCurrentBufferStartLinePosition = (int) startLineWithPosition
-					.getLinePosition();
-			mCurrentBufferEndLinePosition = (int) endLineWithPosition
-					.getLinePosition();
+			mCurrentBufferStartLinePosition = (int) startLineWithPosition.getLinePosition();
+			mCurrentBufferEndLinePosition = (int) endLineWithPosition.getLinePosition();
 			// android.util.Log.v("kiyo","AA="+startLine+","+endLine);
 		} else {
 			mCurrentBufferStartLinePosition = 0;

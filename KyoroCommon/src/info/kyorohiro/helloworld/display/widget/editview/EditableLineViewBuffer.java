@@ -203,7 +203,7 @@ public class EditableLineViewBuffer implements LineViewBufferSpec, IMEClient {
 		}
 	}
 
-	private synchronized void normalize(int index) {
+	public synchronized void normalize(int index) {
 		boolean isEOF = isEOF(index);
 		if (isEOF) {
 			KyoroString line = get(index);

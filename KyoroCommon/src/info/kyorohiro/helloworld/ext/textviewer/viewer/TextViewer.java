@@ -14,6 +14,7 @@ import info.kyorohiro.helloworld.display.simple.SimpleGraphics;
 import info.kyorohiro.helloworld.display.simple.sample.BreakText;
 import info.kyorohiro.helloworld.display.simple.sample.MyBreakText;
 import info.kyorohiro.helloworld.display.widget.editview.EditableLineView;
+import info.kyorohiro.helloworld.display.widget.editview.EditableLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.LineViewBufferSpec;
 import info.kyorohiro.helloworld.display.widget.lineview.ManagedLineViewBuffer;
 import info.kyorohiro.helloworld.display.widget.lineview.extraparts.ScrollBar;
@@ -123,7 +124,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	public void asisChangeBufferPath(File bufferPath) throws FileNotFoundException {
 		if(mBuffer != null && mBuffer.getBase() != null){
 			TextViewerBuffer buffer = (TextViewerBuffer)mBuffer.getBase();
-			buffer.getBigLineData().asisChangePath(new VirtualFile(bufferPath,0));
+			buffer.getBigLineData().asisChangePath(VirtualFile.createReadOnly(bufferPath));
 		}
 	}
 	public String getCurrentPath() {
@@ -166,6 +167,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 		return mLineView;
 	}
 
+
 	public ManagedLineViewBuffer getManagedLineViewBuffer() {
 		return mBuffer;
 	}
@@ -194,7 +196,7 @@ public class TextViewer extends SimpleDisplayObjectContainer {
 	}
 
 	public boolean readFile(File file) throws FileNotFoundException, NullPointerException {
-		VirtualFile vFile = new VirtualFile(file,0);
+		VirtualFile vFile = VirtualFile.createReadOnly(file);
 		mVFile = new WeakReference<VirtualFile>(vFile);
 		return readFile(vFile);
 	}

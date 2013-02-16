@@ -28,6 +28,7 @@ public class BigLineData {
 	private KyoroString mLastString = null;
 
 	private FindFileFormatter msFormater = null;
+
 	public void ffformatterOn() {
 		msFormater = new FindFileFormatter();
 	}
@@ -36,7 +37,8 @@ public class BigLineData {
 		init(path, mCharset);
 	}
 
-	public BigLineData(VirtualFile path, String charset, BreakText breakText) throws FileNotFoundException {
+	public BigLineData(VirtualFile path, String charset, BreakText breakText)
+			throws FileNotFoundException {
 		mBreakText = breakText;
 		init(path, charset);
 	}
@@ -45,54 +47,61 @@ public class BigLineData {
 		return mPath;
 	}
 
-	public synchronized void asisChangePath(VirtualFile path) throws FileNotFoundException {
-		mReader = new MarkableFileReader(mPath=path, (int)(512*1.5));
+	public synchronized void asisChangePath(VirtualFile path)
+			throws FileNotFoundException {
+		mReader = new MarkableFileReader(mPath = path, (int) (512 * 1.5));
 	}
 
 	public File getPath() {
 		return mPath.getBase();
 	}
 
-	private void init(VirtualFile path, String charset) throws FileNotFoundException {
+	private void init(VirtualFile path, String charset)
+			throws FileNotFoundException {
 		mPath = path;
 		mCharset = charset;
-		mReader = new MarkableFileReader(path, (int)(512));
+		mReader = new MarkableFileReader(path, (int) (512));
 		mPositionPer100Line.add(0l);
-		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader, mBreakText);
+		mDecoder = new SimpleTextDecoder(Charset.forName(charset), mReader,
+				mBreakText);
 	}
 
-	public BreakText getBreakText(){
+	public BreakText getBreakText() {
 		return mBreakText;
 	}
 
-	public MarkableReader  getMarkableReader() {
+	public MarkableReader getMarkableReader() {
 		return mReader;
 	}
+
 	public synchronized void moveLine(long lineNumber) throws IOException {
 		//
-		if(mLinePosition == lineNumber) {
+		if (mLinePosition == lineNumber) {
 			return;
 		}
 		//
 		//
-		if(lineNumber == getNextLinePosition()){
+		if (lineNumber == getNextLinePosition()) {
 			return;
 		}
-		long index = lineNumber/FILE_LIME;
-		long number = lineNumber%FILE_LIME;
-		long t = lineNumber-mLastLinePosition;
-		if(t<0||t>number) {
-			moveLinePer100((int)index);
+		long index = lineNumber / FILE_LIME;
+		long number = lineNumber % FILE_LIME;
+		long t = lineNumber - mLastLinePosition;
+		if (t < 0 || t > number) {
+			moveLinePer100((int) index);
 		} else {
-			number = Math.abs(mLastLinePosition-lineNumber);
+			number = Math.abs(mLastLinePosition - lineNumber);
 		}
-		for(int i=0;i<number;i++){
+		for (int i = 0; i < number; i++) {
 			readLine();
 		}
 	}
 
 	public boolean wasEOF() {
 		try {
+			if (mPath.isPushing()) {
+				return false;
+			}
 			if (mReader.length() > mLastFilePointer) {
 				return false;
 			} else {
@@ -102,10 +111,12 @@ public class BigLineData {
 			e.printStackTrace();
 		}
 		return false;
-		
+
 	}
+
 	public boolean isEOF() {
 		try {
+
 			if (mReader.length() <= mReader.getFilePointer()) {
 				return true;
 			} else {
@@ -118,15 +129,20 @@ public class BigLineData {
 	}
 
 	private long mLastFilePointer = 0;
+
+	//
+	//
+	// current return length 2 or 1
+	// if length == 2 , return[1] is EOF
 	public synchronized KyoroString[] readLine() throws IOException {
-		KyoroString tmp = new KyoroString(new char[]{}, 0);
+		KyoroString tmp = new KyoroString(new char[] {}, 0);
 		int lineNumber = (int) mLinePosition;
 		long begin = 0;
 		long end = 0;
 		try {
 			begin = mReader.getFilePointer();
-			if(msFormater == null) {
-				tmp = (KyoroString)mDecoder.decodeLine();
+			if (msFormater == null) {
+				tmp = (KyoroString) mDecoder.decodeLine();
 			} else {
 				tmp = msFormater.read(mDecoder);
 			}
@@ -139,7 +155,7 @@ public class BigLineData {
 			if (mLastFilePointer < end) {
 				mLastFilePointer = end;
 				mLastString = tmp;
-			}			
+			}
 			updateIndex();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -150,14 +166,16 @@ public class BigLineData {
 		//
 		// todo following mPath.getChunkSize() is bad.
 		//
-		if(tmp.getEndPointer() >= mPath.length()){// && 0==mPath.getChunkSize()) {
+		if (tmp.getEndPointer() >= mPath.length() && tmp.includeLF() && !mPath.isPushing()) {
+			android.util.Log.v("kiyo", "EOF");
 			KyoroString EOF = new KyoroString("");
 			EOF.setBeginPointer(tmp.getEndPointer());
 			EOF.setEndPointer(tmp.getEndPointer());
-			EOF.setLinePosition(tmp.getLinePosition()+1);
-			return new KyoroString[]{tmp, EOF};
+			EOF.setLinePosition(tmp.getLinePosition() + 1);
+			mLastLinePosition = EOF.getLinePosition();
+			return new KyoroString[] { tmp, EOF };
 		} else {
-			return new KyoroString[]{tmp};
+			return new KyoroString[] { tmp };
 		}
 	}
 
@@ -170,19 +188,17 @@ public class BigLineData {
 			int index = mPositionPer100Line.size() - 1;
 			long stackedPosition = 0;
 			if (index > 0) {
-				stackedPosition = mPositionPer100Line
-						.get(mPositionPer100Line.size() - 1);
+				stackedPosition = mPositionPer100Line.get(mPositionPer100Line
+						.size() - 1);
 			}
 			if (stackedPosition < mCurrentPosition) {
 				mPositionPer100Line.add(mCurrentPosition);
 			}
-		}		
+		}
 	}
 
-
-
 	private boolean moveLinePer100(int index) throws IOException {
-		if(index <0) {
+		if (index < 0) {
 			return true;
 		}
 		if (index < mPositionPer100Line.size()) {
@@ -194,7 +210,6 @@ public class BigLineData {
 			return false;
 		}
 	}
-
 
 	public long getNextLinePosition() {
 		return mLinePosition;

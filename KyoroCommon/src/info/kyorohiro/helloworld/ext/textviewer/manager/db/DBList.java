@@ -66,7 +66,7 @@ public class DBList {
 			File listTxt = getPath();
 			int writeCash = 0;
 			int readCash  = 512;
-			reader = new MarkableFileReader(new VirtualFile(listTxt, writeCash), readCash);
+			reader = new MarkableFileReader(VirtualFile.createReadWrite(listTxt, writeCash), readCash);
 			SimpleTextDecoder decoder = new SimpleTextDecoder(Charset.forName("utf8"), reader, new EmptyBreakText(new EmptySimpleFont(), Integer.MAX_VALUE));
 			while(!decoder.isEOF()) {
 				KyoroString line = (KyoroString)decoder.decodeLine();
@@ -103,7 +103,7 @@ public class DBList {
 
 	public void list2File() throws IOException {
 		File listTxt = getPath();
-		VirtualFile vFile = new VirtualFile(listTxt, 512);
+		VirtualFile vFile = VirtualFile.createReadWrite(listTxt, 512);
 		try {
 			for(Item item:mList) {
 				String chunk = ""+item.id()+","+item.label().replaceAll("\n|\r\n", "")+"\n";

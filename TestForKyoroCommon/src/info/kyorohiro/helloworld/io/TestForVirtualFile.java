@@ -24,7 +24,7 @@ public class TestForVirtualFile extends TestCase {
 			{
 				testPath.delete();
 				testPath.createNewFile();
-				VirtualFile vf = new VirtualFile(testPath, 200);
+				VirtualFile vf = VirtualFile.createReadWrite(testPath, 200);
 				byte[] buffer = new byte[101];
 				for(int i=0;i<buffer.length;i++) {
 					buffer[0] = 0;
@@ -40,7 +40,7 @@ public class TestForVirtualFile extends TestCase {
 				testPath.delete();
 				testPath.createNewFile();
 				byte[] add = {1, 2, 3, 4, 5};
-				VirtualFile vf = new VirtualFile(testPath, 200);
+				VirtualFile vf = VirtualFile.createReadWrite(testPath, 200);
 				byte[] read = new byte[6];
 				vf.addChunk(add, 0, 5);
 				assertEquals(0, vf.getStartChunk());
@@ -65,7 +65,7 @@ public class TestForVirtualFile extends TestCase {
 				testPath.delete();
 				testPath.createNewFile();
 				byte[] add = {1, 2, 3, 4, 5};
-				VirtualFile vf = new VirtualFile(testPath, 200);
+				VirtualFile vf = VirtualFile.createReadWrite(testPath, 200);
 				byte[] read = new byte[6];
 				vf.addChunk(add, 0, 5);
 				vf.syncWrite();
@@ -104,7 +104,7 @@ public class TestForVirtualFile extends TestCase {
 		try {
 			testPath.delete();
 			testPath.createNewFile();
-			VirtualFile vf = new VirtualFile(testPath, 101);
+			VirtualFile vf = VirtualFile.createReadWrite(testPath, 101);
 			byte[] buffer = new byte[1000];
 			for(int i=0;i<buffer.length;i++) {
 				buffer[0] = 0;
@@ -176,7 +176,7 @@ public class TestForVirtualFile extends TestCase {
 		try {
 			testPath.delete();
 			testPath.createNewFile();
-			VirtualFile vf = new VirtualFile(testPath, 101);
+			VirtualFile vf = VirtualFile.createReadWrite(testPath, 101);
 			byte[] buffer = new byte[1300];
 			for(int i=0;i<buffer.length;i++) {
 				buffer[0] = 0;
@@ -240,7 +240,7 @@ public class TestForVirtualFile extends TestCase {
 		try {
 			testPath.delete();
 			testPath.createNewFile();
-			VirtualFile vf = new VirtualFile(testPath, 501);
+			VirtualFile vf = VirtualFile.createReadWrite(testPath, 501);
 			byte[] buffer = new byte[1300];
 			for(int i=0;i<buffer.length;i++) {
 				buffer[0] = 0;

@@ -13,7 +13,7 @@ public class BufferBuilder {
 	private String mCharset = "utf8";
 
 	public BufferBuilder(File file) {
-		mFile = new VirtualFile(file, 0);
+		mFile = VirtualFile.createReadOnly(file);
 	}
 
 	public BufferBuilder(VirtualFile file) {
